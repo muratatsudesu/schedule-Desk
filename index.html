@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>マイ スケジュール管理</title>
+  <style>
+    body { font-family: sans-serif; max-width: 500px; margin: 20px auto; padding: 10px; background: #f0f2f5; }
+    h1 { text-align: center; color: #1a365d; font-size: 1.4rem; }
+    .box { background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    label { display: block; margin-top: 10px; font-weight: bold; font-size: 0.9rem; }
+    input, textarea { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+    button { width: 100%; margin-top: 15px; padding: 10px; background: #2b6cb0; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+    .item { background: white; padding: 12px; margin-bottom: 8px; border-radius: 6px; border-left: 4px solid #2b6cb0; display: flex; justify-content: space-between; align-items: center; }
+    .item-date { font-size: 0.8rem; color: #666; font-weight: bold; }
+    .item-title { font-weight: bold; margin-top: 2px; }
+    .item-memo { font-size: 0.85rem; color: #444; margin-top: 4px; }
+    .btn-del { background: #e53e3e; width: auto; margin-top: 0; padding: 5px 10px; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+
+  <h1>📅 マイ スケジュール</h1>
+
+  <div class="box">
+    <label>日付</label>
+    <input type="date" id="date">
+    
+    <label>予定のタイトル</label>
+    <input type="text" id="title" placeholder="例：〇〇社とお打ち合わせ">
+    
+    <label>メモ</label>
+    <textarea id="memo" rows="2" placeholder="例：場所や持参物など"></textarea>
+    
+    <button onclick="addSchedule()">予定を追加する</button>
+  </div>
+
+  <div id="schedule-list"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById("date").valueAsDate = new Date();
+      loadSchedules();
+    });
+
+    function addSchedule() {
+      var dateVal = document.getElementById("date").value;
+      var titleVal = document.getElementById("title").value;
+      var memoVal = document.getElementById("memo").value;
+
+      if (!dateVal || !titleVal) {
+        alert("日付とタイトルを入力してください");
+        return;
+      }
+
+      var newSchedule = { id: Date.now(), date: dateVal, title: titleVal, memo: memoVal };
+      var schedules = getSchedules();
+      schedules.push(newSchedule);
+      schedules.sort(function(a, b) { return new Date(a.date) - new Date(b.date); });
+
+      localStorage.setItem("my_schedules", JSON.stringify(schedules));
+
+      document.getElementById("title").value = "";
+      document.getElementById("memo").value = "";
+
+      loadSchedules();
+    }
+
+    function getSchedules() {
+      var data = localStorage.getItem("my_schedules");
+      return data ? JSON.parse(data) : [];
+    }
+
+    function loadSchedules() {
+      var listContainer = document.getElementById("schedule-list");
+      listContainer.innerHTML = "";
+      var schedules = getSchedules();
+
+      if (schedules.length === 0) {
+        listContainer.innerHTML = '<p style="text-align:center; color:#888;">予定はありません</p>';
+        return;
+      }
+
+      schedules.forEach(function(item) {
+        var div = document.createElement("div");
+        div.className = "item";
+        div.innerHTML = 
+          '<div>' +
+            '<div class="item-date">' + item.date + '</div>' +
+            '<div class="item-title">' + item.title + '</div>' +
+            '<div class="item-memo">' + item.memo + '</div>' +
+          '</div>' +
+          '<button class="btn-del" onclick="deleteSchedule(' + item.id + ')">削除</button>';
+        listContainer.appendChild(div);
+      });
+    }
+
+    function deleteSchedule(id) {
+      var schedules = getSchedules();
+      schedules = schedules.filter(function(item) { return item.id !== id; });
+      localStorage.setItem("my_schedules", JSON.stringify(schedules));
+      loadSchedules();
+    }
+  </script>
+</body>
+</html>
