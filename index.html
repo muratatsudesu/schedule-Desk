@@ -7,7 +7,7 @@
   <style>
     * { box-sizing: border-box; font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif; }
     body {
-      max-width: 900px; /* PC用に全体幅を広げました */
+      max-width: 960px;
       margin: 0 auto;
       padding: 16px;
       background-color: #f6f4f0;
@@ -19,7 +19,7 @@
     .header-banner {
       background: linear-gradient(135deg, #7a5c43 0%, #543c29 100%);
       color: #faf8f5;
-      padding: 22px 15px;
+      padding: 20px 15px;
       border-radius: 10px;
       text-align: center;
       box-shadow: 0 4px 15px rgba(84, 60, 41, 0.15);
@@ -96,36 +96,54 @@
       font-size: 0.85rem;
       font-weight: 600;
     }
-    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
-    .day-header { font-weight: 600; font-size: 0.8rem; color: #7a6b5d; padding: 6px 0; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; background: #e5dfd5; border: 1px solid #e5dfd5; border-radius: 6px; overflow: hidden; }
+    .day-header { background: #faf8f5; font-weight: 600; font-size: 0.8rem; color: #7a6b5d; padding: 8px 0; text-align: center; }
+    
     .day-cell {
-      background: #faf8f5;
-      border-radius: 6px;
-      padding: 6px 4px;
-      min-height: 55px; /* スマホ時の基本高さ */
-      font-size: 0.9rem;
+      background: #ffffff;
+      min-height: 70px;
+      font-size: 0.85rem;
       cursor: pointer;
       position: relative;
-      border: 1px solid #eee8df;
       color: #3e3332;
+      display: flex;
+      flex-direction: column;
     }
-    .day-cell:hover { background: #f2ece4; }
-    .day-cell.selected { border: 2px solid #7a5c43; background: #ebdcd0; font-weight: bold; }
-    .day-cell.today { color: #0055ff; font-weight: bold; }
+    .day-cell:hover { background: #faf5ee; }
+    .day-cell.selected { background: #fdf8f3; }
+    .day-number { padding: 4px 6px; font-weight: 600; }
+    .day-cell.today .day-number { color: #0055ff; font-weight: bold; }
     
-    /* カレンダー内の目立つドット */
-    .dot-container { display: flex; justify-content: center; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.15); }
+    /* イベントバー表示スタイル */
+    .events-container { display: flex; flex-direction: column; gap: 3px; flex-grow: 1; padding-bottom: 4px; }
+    .event-bar-wrapper { height: 20px; position: relative; width: 100%; }
+    .event-bar {
+      height: 20px;
+      line-height: 20px;
+      color: white;
+      font-size: 0.72rem;
+      padding: 0 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: absolute;
+      top: 0;
+      z-index: 2;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      font-weight: 500;
+    }
+    .event-bar.is-start { border-top-left-radius: 4px; border-bottom-left-radius: 4px; }
+    .event-bar.is-end { border-top-right-radius: 4px; border-bottom-right-radius: 4px; }
 
-    /* 視認性の高いはっきりしたカテゴリーカラー */
-    .cat-shinkansen { background-color: #0055ff; color: white; } /* 新幹線: ブルー */
-    .cat-airplane { background-color: #00aaff; color: white; }   /* 飛行機: スカイブルー */
-    .cat-office { background-color: #333333; color: white; }     /* 事務所: ダークグレー */
-    .cat-holiday { background-color: #ff2200; color: white; }    /* 休み: レッド */
-    .cat-meeting { background-color: #ff8800; color: white; }    /* 会議: オレンジ */
-    .cat-trip { background-color: #00aa44; color: white; }       /* 出張・施工: グリーン */
-    .cat-private { background-color: #aa00cc; color: white; }    /* プライベート: パープル */
-    .cat-other { background-color: #885522; color: white; }      /* その他: ブラウン */
+    /* カテゴリーカラー */
+    .cat-shinkansen { background-color: #0055ff; }
+    .cat-airplane { background-color: #00aaff; }
+    .cat-office { background-color: #333333; }
+    .cat-holiday { background-color: #ff2200; }
+    .cat-meeting { background-color: #ff8800; }
+    .cat-trip { background-color: #00aa44; }
+    .cat-private { background-color: #aa00cc; }
+    .cat-other { background-color: #885522; }
 
     /* 予定一覧 */
     .list-title { font-size: 1rem; font-weight: 600; margin-bottom: 14px; color: #543c29; display: flex; justify-content: space-between; align-items: center; }
@@ -141,7 +159,7 @@
       border-left: 6px solid #8e857e;
     }
     .schedule-info { flex-grow: 1; }
-    .badge { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 0.75rem; margin-right: 6px; font-weight: 600; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 0.75rem; margin-right: 6px; font-weight: 600; color: white; }
     .schedule-time { font-size: 0.85rem; color: #555; font-weight: 600; }
     .schedule-title { font-size: 1rem; font-weight: 600; margin: 5px 0; color: #2c2221; }
     .schedule-memo { font-size: 0.85rem; color: #555; white-space: pre-wrap; margin-top: 4px; line-height: 1.4; }
@@ -149,11 +167,11 @@
     .btn-edit { background: #557799; color: white; border: none; padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; cursor: pointer; }
     .btn-del { background: #cc3333; color: white; border: none; padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; cursor: pointer; }
 
-    /* PC・タブレット向けの特大表示設定 */
+    /* PC表示時の拡大設定 */
     @media (min-width: 768px) {
-      .day-cell { min-height: 80px; font-size: 1rem; }
-      .dot { width: 10px; height: 10px; }
-      .calendar-header h2 { font-size: 1.3rem; }
+      .day-cell { min-height: 105px; }
+      .event-bar { font-size: 0.78rem; height: 22px; line-height: 22px; }
+      .event-bar-wrapper { height: 22px; }
     }
   </style>
 </head>
@@ -379,39 +397,130 @@
       const lastDate = new Date(year, month + 1, 0).getDate();
       const schedules = getSchedules();
 
+      // 空白セル
       for (let i = 0; i < firstDay; i++) {
-        grid.appendChild(document.createElement("div"));
+        const emptyCell = document.createElement("div");
+        emptyCell.className = "day-cell";
+        emptyCell.style.background = "#f7f5f0";
+        grid.appendChild(emptyCell);
       }
 
       const todayStr = new Date().toISOString().split('T')[0];
 
+      // イベントの縦位置レイアウト計算
+      const daySlots = {};
+      for (let d = 1; d <= lastDate; d++) {
+        const monthFormatted = String(month + 1).padStart(2, '0');
+        const dayFormatted = String(d).padStart(2, '0');
+        daySlots[`${year}-${monthFormatted}-${dayFormatted}`] = [];
+      }
+
+      // 当月にかかるスケジュールを抽出・ソート
+      const activeSchedules = schedules.filter(s => {
+        const start = s.startDate;
+        const end = s.endDate || s.startDate;
+        const monthStart = `${year}-${String(month + 1).padStart(2, '0')}-01`;
+        const monthEnd = `${year}-${String(month + 1).padStart(2, '0')}-${String(lastDate).padStart(2, '0')}`;
+        return start <= monthEnd && end >= monthStart;
+      });
+
+      // スロット割り当て
+      const scheduleSlots = {};
+      activeSchedules.forEach(s => {
+        let slot = 0;
+        let available = false;
+        while (!available) {
+          available = true;
+          for (let d = 1; d <= lastDate; d++) {
+            const mStr = String(month + 1).padStart(2, '0');
+            const dStr = String(d).padStart(2, '0');
+            const dateStr = `${year}-${mStr}-${dStr}`;
+            if (dateStr >= s.startDate && dateStr <= (s.endDate || s.startDate)) {
+              if (daySlots[dateStr][slot]) {
+                available = false;
+                slot++;
+                break;
+              }
+            }
+          }
+        }
+        scheduleSlots[s.id] = slot;
+        for (let d = 1; d <= lastDate; d++) {
+          const mStr = String(month + 1).padStart(2, '0');
+          const dStr = String(d).padStart(2, '0');
+          const dateStr = `${year}-${mStr}-${dStr}`;
+          if (dateStr >= s.startDate && dateStr <= (s.endDate || s.startDate)) {
+            daySlots[dateStr][slot] = s.id;
+          }
+        }
+      });
+
+      // カレンダーマスの描画
       for (let d = 1; d <= lastDate; d++) {
         const cell = document.createElement("div");
         const monthFormatted = String(month + 1).padStart(2, '0');
         const dayFormatted = String(d).padStart(2, '0');
         const dateStr = `${year}-${monthFormatted}-${dayFormatted}`;
+        const dayOfWeek = new Date(year, month, d).getDay();
 
         cell.className = "day-cell";
         if (dateStr === todayStr) cell.classList.add("today");
         if (dateStr === selectedDateStr) cell.classList.add("selected");
 
-        cell.innerHTML = `<div>${d}</div>`;
+        const dayNum = document.createElement("div");
+        dayNum.className = "day-number";
+        dayNum.innerText = d;
+        cell.appendChild(dayNum);
 
-        const daySchedules = schedules.filter(s => dateStr >= s.startDate && dateStr <= (s.endDate || s.startDate));
-        
-        if (daySchedules.length > 0) {
-          const dotBox = document.createElement("div");
-          dotBox.className = "dot-container";
-          daySchedules.slice(0, 3).forEach(s => {
-            const dot = document.createElement("span");
-            dot.className = "dot";
-            dot.style.backgroundColor = categoryColors[s.category] || "#885522";
-            dotBox.appendChild(dot);
-          });
-          cell.appendChild(dotBox);
+        const eventsContainer = document.createElement("div");
+        eventsContainer.className = "events-container";
+
+        const dayEvents = activeSchedules.filter(s => dateStr >= s.startDate && dateStr <= (s.endDate || s.startDate));
+        const maxSlot = Math.max(-1, ...dayEvents.map(s => scheduleSlots[s.id]));
+
+        for (let i = 0; i <= maxSlot; i++) {
+          const wrapper = document.createElement("div");
+          wrapper.className = "event-bar-wrapper";
+
+          const targetEvent = dayEvents.find(s => scheduleSlots[s.id] === i);
+          if (targetEvent) {
+            const bar = document.createElement("div");
+            bar.className = `event-bar cat-${targetEvent.category}`;
+            
+            const isStart = dateStr === targetEvent.startDate || dayOfWeek === 0 || d === 1;
+            const isEnd = dateStr === (targetEvent.endDate || targetEvent.startDate) || dayOfWeek === 6 || d === lastDate;
+
+            if (dateStr === targetEvent.startDate) bar.classList.add("is-start");
+            if (dateStr === (targetEvent.endDate || targetEvent.startDate)) bar.classList.add("is-end");
+
+            // 幅計算（日曜日か月の最終日、またはイベント終了日までの日数）
+            let spanDays = 1;
+            if (isStart) {
+              let curr = new Date(year, month, d);
+              while (true) {
+                const nextStr = curr.toISOString().split('T')[0];
+                if (nextStr > (targetEvent.endDate || targetEvent.startDate) || curr.getDay() === 6 || curr.getDate() === lastDate) {
+                  break;
+                }
+                spanDays++;
+                curr.setDate(curr.getDate() + 1);
+              }
+              bar.style.width = `calc(${spanDays * 100}% + ${(spanDays - 1) * 2}px)`;
+              bar.innerText = targetEvent.title;
+            } else {
+              // 続きの日は透明でスペースを確保
+              bar.style.opacity = "0";
+              bar.style.pointerEvents = "none";
+            }
+
+            wrapper.appendChild(bar);
+          }
+          eventsContainer.appendChild(wrapper);
         }
 
-        cell.onclick = () => {
+        cell.appendChild(eventsContainer);
+
+        cell.onclick = (e) => {
           selectedDateStr = dateStr;
           document.getElementById("startDate").value = dateStr;
           document.getElementById("endDate").value = dateStr;
@@ -461,7 +570,7 @@
           ? `${item.startDate} 〜 ${item.endDate}` 
           : item.startDate;
 
-        const catBadge = `<span class="badge cat-${item.category}">${categoryNames[item.category] || "その他"}</span>`;
+        const catBadge = `<span class="badge cat-${item.category}" style="background-color:${categoryColors[item.category]}">${categoryNames[item.category] || "その他"}</span>`;
 
         div.innerHTML = `
           <div class="schedule-info">
