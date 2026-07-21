@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Q.T.S-SCHEDULE</title>
+  
+  <!-- Firebase SDK の読み込み -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
   <style>
     * { box-sizing: border-box; font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif; }
     body {
@@ -59,7 +64,7 @@
       box-shadow: 0 0 0 2px rgba(122, 92, 67, 0.1);
     }
     
-    /* 終日チェックボックス用のレイアウト */
+    /* 終日チェックボックス */
     .all-day-box {
       display: flex;
       align-items: center;
@@ -70,11 +75,7 @@
       color: #543c29;
       cursor: pointer;
     }
-    .all-day-box input[type="checkbox"] {
-      width: auto;
-      margin: 0;
-      cursor: pointer;
-    }
+    .all-day-box input[type="checkbox"] { width: auto; margin: 0; cursor: pointer; }
 
     .btn-box { display: flex; gap: 10px; margin-top: 8px; }
     button.btn-add {
@@ -159,9 +160,9 @@
     .cat-shinkansen { background-color: #0055ff !important; }
     .cat-airplane { background-color: #00aaff !important; }
     .cat-hiace { background-color: #d97706 !important; }
-    .cat-shipping { background-color: #8a4baf !important; }  /* 出荷: パープル */
-    .cat-receiving { background-color: #2b6cb0 !important; } /* 入荷: ディープブルー */
-    .cat-delivery { background-color: #2f855a !important; }  /* 現場搬入: ダークグリーン */
+    .cat-shipping { background-color: #8a4baf !important; }  /* 出荷 */
+    .cat-receiving { background-color: #2b6cb0 !important; } /* 入荷 */
+    .cat-delivery { background-color: #2f855a !important; }  /* 現場搬入 */
     .cat-office { background-color: #333333 !important; }
     .cat-holiday { background-color: #ff2200 !important; }
     .cat-meeting { background-color: #ff8800 !important; }
@@ -191,7 +192,6 @@
     .btn-edit { background: #557799; color: white; border: none; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; }
     .btn-del { background: #cc3333; color: white; border: none; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; }
 
-    /* PC表示時の拡大設定 */
     @media (min-width: 768px) {
       .day-cell { min-height: 100px; }
       .event-bar { font-size: 0.78rem; height: 22px; line-height: 22px; padding: 0 6px; }
@@ -221,7 +221,6 @@
       </div>
     </div>
 
-    <!-- 終日設定チェックボックス -->
     <label class="all-day-box">
       <input type="checkbox" id="isAllDay" onchange="toggleAllDay()"> 終日
     </label>
@@ -262,7 +261,7 @@
 
     <div class="form-group">
       <label>メモ</label>
-      <textarea id="memo" rows="2" placeholder="トラックサイズ、搬入経路、担当者など"></textarea>
+      <textarea id="memo" rows="2" placeholder="場所や持ち物など"></textarea>
     </div>
 
     <div class="btn-box">
@@ -291,69 +290,67 @@
   </div>
 
   <script>
+    // ▼▼▼ Firebaseの設定（ご自身のFirebase設定情報に置き換えてください）▼▼▼
+   const firebaseConfig = {
+  apiKey: "AIzaSyCL6VijHRZryh7DdxNVcBdDXhRJtx2JU-4",
+  authDomain: "qts-schedule.firebaseapp.com",
+  projectId: "qts-schedule",
+  storageBucket: "qts-schedule.firebasestorage.app",
+  messagingSenderId: "641800381769",
+  appId: "1:641800381769:web:0fa2527128e11b605b6698"
+};
+    // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    let schedules = [];
     let currentDisplayDate = new Date();
     let selectedDateStr = new Date().toISOString().split('T')[0];
 
     const categoryNames = { 
-      shinkansen: "新幹線", 
-      airplane: "飛行機", 
-      hiace: "ハイエース",
-      shipping: "出荷",
-      receiving: "入荷",
-      delivery: "現場搬入",
-      office: "事務所", 
-      holiday: "休み", 
-      meeting: "会議", 
-      trip: "出張・施工", 
-      private: "プライベート", 
-      other: "その他" 
+      shinkansen: "新幹線", airplane: "飛行機", hiace: "ハイエース",
+      shipping: "出荷", receiving: "入荷", delivery: "現場搬入",
+      office: "事務所", holiday: "休み", meeting: "会議", 
+      trip: "出張・施工", private: "プライベート", other: "その他" 
     };
 
     const categoryColors = { 
-      shinkansen: "#0055ff", 
-      airplane: "#00aaff", 
-      hiace: "#d97706",
-      shipping: "#8a4baf",
-      receiving: "#2b6cb0",
-      delivery: "#2f855a",
-      office: "#333333", 
-      holiday: "#ff2200", 
-      meeting: "#ff8800", 
-      trip: "#00aa44", 
-      private: "#aa00cc", 
-      other: "#885522" 
+      shinkansen: "#0055ff", airplane: "#00aaff", hiace: "#d97706",
+      shipping: "#8a4baf", receiving: "#2b6cb0", delivery: "#2f855a",
+      office: "#333333", holiday: "#ff2200", meeting: "#ff8800", 
+      trip: "#00aa44", private: "#aa00cc", other: "#885522" 
     };
 
     document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("startDate").value = selectedDateStr;
       document.getElementById("endDate").value = selectedDateStr;
-      renderCalendar();
-      loadSchedules(selectedDateStr);
+
+      // Firestoreからリアルタイム同期（PC・スマホ双方で即時反映）
+      db.collection("schedules").onSnapshot(snapshot => {
+        schedules = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        schedules.sort((a, b) => (a.startDate + (a.startTime || "00:00")).localeCompare(b.startDate + (b.startTime || "00:00")));
+        renderCalendar();
+        loadSchedules(selectedDateStr);
+      });
     });
 
     function toggleAllDay() {
       const isChecked = document.getElementById("isAllDay").checked;
       const startTimeInput = document.getElementById("startTime");
       const endTimeInput = document.getElementById("endTime");
-      
       startTimeInput.disabled = isChecked;
       endTimeInput.disabled = isChecked;
-      
-      if (isChecked) {
-        startTimeInput.value = "";
-        endTimeInput.value = "";
-      }
+      if (isChecked) { startTimeInput.value = ""; endTimeInput.value = ""; }
     }
 
     function syncEndDate() {
       const start = document.getElementById("startDate").value;
       const end = document.getElementById("endDate").value;
-      if (!end || end < start) {
-        document.getElementById("endDate").value = start;
-      }
+      if (!end || end < start) { document.getElementById("endDate").value = start; }
     }
 
-    function addOrUpdateSchedule() {
+    async function addOrUpdateSchedule() {
       const editId = document.getElementById("editId").value;
       const startDate = document.getElementById("startDate").value;
       const endDate = document.getElementById("endDate").value || startDate;
@@ -369,37 +366,19 @@
         return;
       }
 
-      if (endDate < startDate) {
-        alert("終了日は開始日より後の日付を選択してください");
-        return;
-      }
-
-      let schedules = getSchedules();
+      const data = { startDate, endDate, isAllDay, startTime, endTime, title, category, memo };
 
       if (editId) {
-        schedules = schedules.map(item => {
-          if (item.id === Number(editId)) {
-            return { id: item.id, startDate, endDate, isAllDay, startTime, endTime, title, category, memo };
-          }
-          return item;
-        });
+        await db.collection("schedules").doc(editId).update(data);
       } else {
-        const newSchedule = { id: Date.now(), startDate, endDate, isAllDay, startTime, endTime, title, category, memo };
-        schedules.push(newSchedule);
+        await db.collection("schedules").add(data);
       }
-
-      schedules.sort((a, b) => (a.startDate + (a.startTime || "00:00")).localeCompare(b.startDate + (b.startTime || "00:00")));
-
-      localStorage.setItem("my_schedules", JSON.stringify(schedules));
 
       resetForm();
       selectedDateStr = startDate;
-      renderCalendar();
-      loadSchedules(selectedDateStr);
     }
 
     function editSchedule(id) {
-      const schedules = getSchedules();
       const item = schedules.find(s => s.id === id);
       if (!item) return;
 
@@ -419,7 +398,6 @@
 
       document.getElementById("btnSubmit").innerText = "予定を更新する";
       document.getElementById("btnCancel").style.display = "block";
-
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -435,18 +413,12 @@
       document.getElementById("btnCancel").style.display = "none";
     }
 
-    function getSchedules() {
-      const data = localStorage.getItem("my_schedules");
-      return data ? JSON.parse(data) : [];
-    }
-
     function renderCalendar() {
       const grid = document.getElementById("calendar-grid");
       grid.innerHTML = "";
 
       const year = currentDisplayDate.getFullYear();
       const month = currentDisplayDate.getMonth();
-
       document.getElementById("calendar-month-year").innerText = `${year}年 ${month + 1}月`;
 
       const days = ["日", "月", "火", "水", "木", "金", "土"];
@@ -459,9 +431,7 @@
 
       const firstDay = new Date(year, month, 1).getDay();
       const lastDate = new Date(year, month + 1, 0).getDate();
-      const schedules = getSchedules();
 
-      // 空白セル
       for (let i = 0; i < firstDay; i++) {
         const emptyCell = document.createElement("div");
         emptyCell.className = "day-cell";
@@ -471,7 +441,6 @@
 
       const todayStr = new Date().toISOString().split('T')[0];
 
-      // スロット割り当てロジック
       const daySlots = {};
       for (let d = 1; d <= lastDate; d++) {
         const mStr = String(month + 1).padStart(2, '0');
@@ -517,7 +486,6 @@
         }
       });
 
-      // マス描画
       for (let d = 1; d <= lastDate; d++) {
         const cell = document.createElement("div");
         const monthFormatted = String(month + 1).padStart(2, '0');
@@ -574,7 +542,7 @@
 
         cell.appendChild(eventsContainer);
 
-        cell.onclick = (e) => {
+        cell.onclick = () => {
           selectedDateStr = dateStr;
           document.getElementById("startDate").value = dateStr;
           document.getElementById("endDate").value = dateStr;
@@ -594,23 +562,23 @@
     function loadSchedules(filterDate = null) {
       const listContainer = document.getElementById("schedule-list");
       listContainer.innerHTML = "";
-      let schedules = getSchedules();
 
       const displayTitle = document.getElementById("selected-date-display");
+      let listData = schedules;
 
       if (filterDate) {
-        schedules = schedules.filter(s => filterDate >= s.startDate && filterDate <= (s.endDate || s.startDate));
+        listData = schedules.filter(s => filterDate >= s.startDate && filterDate <= (s.endDate || s.startDate));
         displayTitle.innerText = `📅 ${filterDate} の予定`;
       } else {
         displayTitle.innerText = `📅 すべての予定`;
       }
 
-      if (schedules.length === 0) {
+      if (listData.length === 0) {
         listContainer.innerHTML = '<p style="text-align:center; color:#888; font-size:0.85rem; margin:15px 0;">予定はありません</p>';
         return;
       }
 
-      schedules.forEach(item => {
+      listData.forEach(item => {
         const div = document.createElement("div");
         div.className = "schedule-item";
         div.style.borderLeftColor = categoryColors[item.category] || "#8e857e";
@@ -633,8 +601,8 @@
             ${item.memo ? `<div class="schedule-memo">${item.memo}</div>` : ''}
           </div>
           <div class="action-btns">
-            <button class="btn-edit" onclick="editSchedule(${item.id})">編集</button>
-            <button class="btn-del" onclick="deleteSchedule(${item.id})">削除</button>
+            <button class="btn-edit" onclick="editSchedule('${item.id}')">編集</button>
+            <button class="btn-del" onclick="deleteSchedule('${item.id}')">削除</button>
           </div>
         `;
         listContainer.appendChild(div);
@@ -647,13 +615,9 @@
       loadSchedules(null);
     }
 
-    function deleteSchedule(id) {
+    async function deleteSchedule(id) {
       if (!confirm("本当に削除しますか？")) return;
-      let schedules = getSchedules();
-      schedules = schedules.filter(item => item.id !== id);
-      localStorage.setItem("my_schedules", JSON.stringify(schedules));
-      renderCalendar();
-      loadSchedules(selectedDateStr);
+      await db.collection("schedules").doc(id).delete();
     }
   </script>
 </body>
