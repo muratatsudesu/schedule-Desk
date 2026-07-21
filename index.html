@@ -5,101 +5,278 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>マイ スケジュール管理</title>
   <style>
-    body { font-family: sans-serif; max-width: 500px; margin: 20px auto; padding: 10px; background: #f0f2f5; }
-    h1 { text-align: center; color: #1a365d; font-size: 1.4rem; }
-    .box { background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    label { display: block; margin-top: 10px; font-weight: bold; font-size: 0.9rem; }
-    input, textarea { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
-    button { width: 100%; margin-top: 15px; padding: 10px; background: #2b6cb0; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
-    .item { background: white; padding: 12px; margin-bottom: 8px; border-radius: 6px; border-left: 4px solid #2b6cb0; display: flex; justify-content: space-between; align-items: center; }
-    .item-date { font-size: 0.8rem; color: #666; font-weight: bold; }
-    .item-title { font-weight: bold; margin-top: 2px; }
-    .item-memo { font-size: 0.85rem; color: #444; margin-top: 4px; }
-    .btn-del { background: #e53e3e; width: auto; margin-top: 0; padding: 5px 10px; font-size: 0.8rem; }
+    * { box-sizing: border-box; font-family: sans-serif; }
+    body { max-width: 600px; margin: 0 auto; padding: 15px; background-color: #f4f6f8; color: #333; }
+    h1 { text-align: center; font-size: 1.4rem; color: #1a365d; margin-bottom: 15px; }
+    
+    .card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
+    .form-group { margin-bottom: 12px; }
+    .form-row { display: flex; gap: 10px; }
+    .form-row > div { flex: 1; }
+    label { display: block; margin-bottom: 4px; font-weight: bold; font-size: 0.85rem; color: #4a5568; }
+    input, select, textarea { width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 0.95rem; }
+    button.btn-add { width: 100%; padding: 12px; background-color: #2b6cb0; color: white; border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 5px; }
+    button.btn-add:hover { background-color: #2c5282; }
+
+    /* カレンダー スタイル */
+    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .calendar-header h2 { font-size: 1.1rem; margin: 0; color: #2d3748; }
+    .calendar-header button { background: #edf2f7; border: 1px solid #cbd5e0; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+    .day-header { font-weight: bold; font-size: 0.75rem; color: #718096; padding: 4px 0; }
+    .day-cell { background: #f7fafc; border-radius: 6px; padding: 6px 2px; min-height: 48px; font-size: 0.85rem; cursor: pointer; position: relative; border: 1px solid transparent; }
+    .day-cell:hover { background: #e2e8f0; }
+    .day-cell.selected { border-color: #2b6cb0; background: #ebf8ff; font-weight: bold; }
+    .day-cell.today { color: #2b6cb0; font-weight: bold; }
+    .dot-container { display: flex; justify-content: center; gap: 2px; margin-top: 4px; flex-wrap: wrap; }
+    .dot { width: 5px; height: 5px; border-radius: 50%; }
+
+    /* カテゴリーカラー */
+    .cat-work { background-color: #3182ce; color: white; } /* 仕事: 青 */
+    .cat-meeting { background-color: #dd6b20; color: white; } /* 会議: 橙 */
+    .cat-trip { background-color: #805ad5; color: white; } /* 出張: 紫 */
+    .cat-private { background-color: #38a169; color: white; } /* プライベート: 緑 */
+    .cat-other { background-color: #718096; color: white; } /* その他: 灰 */
+
+    /* 予定一覧リスト */
+    .list-title { font-size: 1rem; font-weight: bold; margin-bottom: 10px; color: #2d3748; display: flex; justify-content: space-between; align-items: center; }
+    .schedule-item { background: white; padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-start; box-shadow: 0 2px 4px rgba(0,0,0,0.03); border-left: 5px solid #cbd5e0; }
+    .schedule-info { flex-grow: 1; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-right: 6px; font-weight: bold; }
+    .schedule-time { font-size: 0.85rem; color: #4a5568; font-weight: bold; }
+    .schedule-title { font-size: 1rem; font-weight: bold; margin: 4px 0; }
+    .schedule-memo { font-size: 0.85rem; color: #718096; white-space: pre-wrap; }
+    .btn-del { background: #e53e3e; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; }
   </style>
 </head>
 <body>
 
   <h1>📅 マイ スケジュール</h1>
 
-  <div class="box">
-    <label>日付</label>
-    <input type="date" id="date">
+  <!-- 予定入力フォーム -->
+  <div class="card">
+    <div class="form-row">
+      <div class="form-group">
+        <label>日付</label>
+        <input type="date" id="date">
+      </div>
+      <div class="form-group">
+        <label>時間</label>
+        <input type="time" id="time">
+      </div>
+    </div>
     
-    <label>予定のタイトル</label>
-    <input type="text" id="title" placeholder="例：〇〇社とお打ち合わせ">
-    
-    <label>メモ</label>
-    <textarea id="memo" rows="2" placeholder="例：場所や持参物など"></textarea>
-    
-    <button onclick="addSchedule()">予定を追加する</button>
+    <div class="form-row">
+      <div class="form-group">
+        <label>タイトル</label>
+        <input type="text" id="title" placeholder="例：〇〇様と打ち合わせ">
+      </div>
+      <div class="form-group">
+        <label>カテゴリー</label>
+        <select id="category">
+          <option value="work">仕事</option>
+          <option value="meeting">会議</option>
+          <option value="trip">出張</option>
+          <option value="private">プライベート</option>
+          <option value="other">その他</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>メモ</label>
+      <textarea id="memo" rows="2" placeholder="場所やメモなど"></textarea>
+    </div>
+    <button class="btn-add" onclick="addSchedule()">予定を追加する</button>
   </div>
 
-  <div id="schedule-list"></div>
+  <!-- 月間カレンダー -->
+  <div class="card">
+    <div class="calendar-header">
+      <button onclick="changeMonth(-1)">◀ 前月</button>
+      <h2 id="calendar-month-year"></h2>
+      <button onclick="changeMonth(1)">次月 ▶</button>
+    </div>
+    <div class="calendar-grid" id="calendar-grid"></div>
+  </div>
+
+  <!-- 選択した日の予定一覧 -->
+  <div class="card">
+    <div class="list-title">
+      <span id="selected-date-display">予定一覧</span>
+      <button onclick="showAllSchedules()" style="font-size:0.75rem; padding: 3px 8px; cursor:pointer;">全表示</button>
+    </div>
+    <div id="schedule-list"></div>
+  </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      document.getElementById("date").valueAsDate = new Date();
-      loadSchedules();
+    let currentDisplayDate = new Date();
+    let selectedDateStr = new Date().toISOString().split('T')[0];
+
+    const categoryNames = { work: "仕事", meeting: "会議", trip: "出張", private: "プライベート", other: "その他" };
+    const categoryColors = { work: "#3182ce", meeting: "#dd6b20", trip: "#805ad5", private: "#38a169", other: "#718096" };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("date").value = selectedDateStr;
+      renderCalendar();
+      loadSchedules(selectedDateStr);
     });
 
     function addSchedule() {
-      var dateVal = document.getElementById("date").value;
-      var titleVal = document.getElementById("title").value;
-      var memoVal = document.getElementById("memo").value;
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+      const title = document.getElementById("title").value;
+      const category = document.getElementById("category").value;
+      const memo = document.getElementById("memo").value;
 
-      if (!dateVal || !titleVal) {
+      if (!date || !title) {
         alert("日付とタイトルを入力してください");
         return;
       }
 
-      var newSchedule = { id: Date.now(), date: dateVal, title: titleVal, memo: memoVal };
-      var schedules = getSchedules();
+      const newSchedule = { id: Date.now(), date, time, title, category, memo };
+      const schedules = getSchedules();
       schedules.push(newSchedule);
-      schedules.sort(function(a, b) { return new Date(a.date) - new Date(b.date); });
+      
+      // 日付と時間でソート
+      schedules.sort((a, b) => (a.date + (a.time || "00:00")).localeCompare(b.date + (b.time || "00:00")));
 
       localStorage.setItem("my_schedules", JSON.stringify(schedules));
 
       document.getElementById("title").value = "";
       document.getElementById("memo").value = "";
 
-      loadSchedules();
+      selectedDateStr = date;
+      renderCalendar();
+      loadSchedules(selectedDateStr);
     }
 
     function getSchedules() {
-      var data = localStorage.getItem("my_schedules");
+      const data = localStorage.getItem("my_schedules");
       return data ? JSON.parse(data) : [];
     }
 
-    function loadSchedules() {
-      var listContainer = document.getElementById("schedule-list");
+    function renderCalendar() {
+      const grid = document.getElementById("calendar-grid");
+      grid.innerHTML = "";
+
+      const year = currentDisplayDate.getFullYear();
+      const month = currentDisplayDate.getMonth();
+
+      document.getElementById("calendar-month-year").innerText = `${year}年 ${month + 1}月`;
+
+      const days = ["日", "月", "火", "水", "木", "金", "土"];
+      days.forEach(d => {
+        const h = document.createElement("div");
+        h.className = "day-header";
+        h.innerText = d;
+        grid.appendChild(h);
+      });
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const lastDate = new Date(year, month + 1, 0).getDate();
+      const schedules = getSchedules();
+
+      // 空白セル
+      for (let i = 0; i < firstDay; i++) {
+        grid.appendChild(document.createElement("div"));
+      }
+
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      for (let d = 1; d <= lastDate; d++) {
+        const cell = document.createElement("div");
+        const monthFormatted = String(month + 1).padStart(2, '0');
+        const dayFormatted = String(d).padStart(2, '0');
+        const dateStr = `${year}-${monthFormatted}-${dayFormatted}`;
+
+        cell.className = "day-cell";
+        if (dateStr === todayStr) cell.classList.add("today");
+        if (dateStr === selectedDateStr) cell.classList.add("selected");
+
+        cell.innerHTML = `<div>${d}</div>`;
+
+        // その日の予定ドットを表示
+        const daySchedules = schedules.filter(s => s.date === dateStr);
+        if (daySchedules.length > 0) {
+          const dotBox = document.createElement("div");
+          dotBox.className = "dot-container";
+          daySchedules.slice(0, 3).forEach(s => {
+            const dot = document.createElement("span");
+            dot.className = "dot";
+            dot.style.backgroundColor = categoryColors[s.category] || "#718096";
+            dotBox.appendChild(dot);
+          });
+          cell.appendChild(dotBox);
+        }
+
+        cell.onclick = () => {
+          selectedDateStr = dateStr;
+          document.getElementById("date").value = dateStr;
+          renderCalendar();
+          loadSchedules(dateStr);
+        };
+
+        grid.appendChild(cell);
+      }
+    }
+
+    function changeMonth(delta) {
+      currentDisplayDate.setMonth(currentDisplayDate.getMonth() + delta);
+      renderCalendar();
+    }
+
+    function loadSchedules(filterDate = null) {
+      const listContainer = document.getElementById("schedule-list");
       listContainer.innerHTML = "";
-      var schedules = getSchedules();
+      let schedules = getSchedules();
+
+      const displayTitle = document.getElementById("selected-date-display");
+
+      if (filterDate) {
+        schedules = schedules.filter(s => s.date === filterDate);
+        displayTitle.innerText = `📅 ${filterDate} の予定`;
+      } else {
+        displayTitle.innerText = `📅 すべての予定`;
+      }
 
       if (schedules.length === 0) {
-        listContainer.innerHTML = '<p style="text-align:center; color:#888;">予定はありません</p>';
+        listContainer.innerHTML = '<p style="text-align:center; color:#a0aec0; font-size:0.9rem; margin:10px 0;">予定はありません</p>';
         return;
       }
 
-      schedules.forEach(function(item) {
-        var div = document.createElement("div");
-        div.className = "item";
-        div.innerHTML = 
-          '<div>' +
-            '<div class="item-date">' + item.date + '</div>' +
-            '<div class="item-title">' + item.title + '</div>' +
-            '<div class="item-memo">' + item.memo + '</div>' +
-          '</div>' +
-          '<button class="btn-del" onclick="deleteSchedule(' + item.id + ')">削除</button>';
+      schedules.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "schedule-item";
+        div.style.borderLeftColor = categoryColors[item.category] || "#cbd5e0";
+
+        const timeText = item.time ? `⏰ ${item.time}` : "";
+        const catBadge = `<span class="badge cat-${item.category}">${categoryNames[item.category] || "その他"}</span>`;
+
+        div.innerHTML = `
+          <div class="schedule-info">
+            <div>${catBadge} <span class="schedule-time">${item.date} ${timeText}</span></div>
+            <div class="schedule-title">${item.title}</div>
+            ${item.memo ? `<div class="schedule-memo">${item.memo}</div>` : ''}
+          </div>
+          <button class="btn-del" onclick="deleteSchedule(${item.id})">削除</button>
+        `;
         listContainer.appendChild(div);
       });
     }
 
+    function showAllSchedules() {
+      selectedDateStr = null;
+      renderCalendar();
+      loadSchedules(null);
+    }
+
     function deleteSchedule(id) {
-      var schedules = getSchedules();
-      schedules = schedules.filter(function(item) { return item.id !== id; });
+      let schedules = getSchedules();
+      schedules = schedules.filter(item => item.id !== id);
       localStorage.setItem("my_schedules", JSON.stringify(schedules));
-      loadSchedules();
+      renderCalendar();
+      loadSchedules(selectedDateStr);
     }
   </script>
 </body>
