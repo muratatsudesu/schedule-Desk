@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>木質調 スケジュール管理</title>
+  <title>Q.T.S-SCHEDULE</title>
   <style>
     * { box-sizing: border-box; font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif; }
     body {
@@ -25,7 +25,7 @@
       box-shadow: 0 4px 15px rgba(84, 60, 41, 0.15);
       margin-bottom: 20px;
     }
-    .header-banner h1 { margin: 0; font-size: 1.25rem; letter-spacing: 0.15em; font-weight: 500; text-transform: uppercase; }
+    .header-banner h1 { margin: 0; font-size: 1.3rem; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; }
     
     /* 洗練されたカードデザイン */
     .card {
@@ -115,13 +115,15 @@
     .dot-container { display: flex; justify-content: center; gap: 3px; margin-top: 4px; flex-wrap: wrap; }
     .dot { width: 5px; height: 5px; border-radius: 50%; }
 
-    /* ナチュラル・スタイリッシュ カテゴリーカラー */
+    /* カテゴリーカラー設定 */
     .cat-shinkansen { background-color: #2b4c7e; color: white; } /* 新幹線: ダークネイビー */
     .cat-airplane { background-color: #4a86a8; color: white; }   /* 飛行機: スカイブルー */
+    .cat-office { background-color: #6c757d; color: white; }     /* 事務所: ウォームグレー */
+    .cat-holiday { background-color: #d97770; color: white; }    /* 休み: ソフトレッド/ピンク */
     .cat-meeting { background-color: #b86b4b; color: white; }    /* 会議: テラコッタ */
     .cat-trip { background-color: #5a7d65; color: white; }       /* 出張・施工: ディープグリーン */
     .cat-private { background-color: #c0933e; color: white; }    /* プライベート: アンティークゴールド */
-    .cat-other { background-color: #8e857e; color: white; }      /* その他: ウォームグレー */
+    .cat-other { background-color: #8e857e; color: white; }      /* その他: グレー */
 
     /* 予定一覧 */
     .list-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 14px; color: #543c29; display: flex; justify-content: space-between; align-items: center; }
@@ -149,7 +151,7 @@
 <body>
 
   <div class="header-banner">
-    <h1>WOODWORK SCHEDULE</h1>
+    <h1>Q.T.S-SCHEDULE</h1>
   </div>
 
   <!-- 予定入力フォーム -->
@@ -183,6 +185,8 @@
       <select id="category">
         <option value="shinkansen">新幹線</option>
         <option value="airplane">飛行機</option>
+        <option value="office">事務所</option>
+        <option value="holiday">休み</option>
         <option value="meeting">会議</option>
         <option value="trip">出張・施工</option>
         <option value="private">プライベート</option>
@@ -232,6 +236,8 @@
     const categoryNames = { 
       shinkansen: "新幹線", 
       airplane: "飛行機", 
+      office: "事務所", 
+      holiday: "休み", 
       meeting: "会議", 
       trip: "出張・施工", 
       private: "プライベート", 
@@ -241,6 +247,8 @@
     const categoryColors = { 
       shinkansen: "#2b4c7e", 
       airplane: "#4a86a8", 
+      office: "#6c757d", 
+      holiday: "#d97770", 
       meeting: "#b86b4b", 
       trip: "#5a7d65", 
       private: "#c0933e", 
