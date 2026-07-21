@@ -114,7 +114,7 @@
       font-size: 0.8rem;
       font-weight: 600;
     }
-    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: #e5dfd5; border: 1px solid #e5dfd5; border-radius: 6px; overflow: hidden; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: #e5dfd5; border: 1px solid #e5dfd5; border-radius: 6px; overflow: visible; }
     .day-header { background: #faf8f5; font-weight: 600; font-size: 0.75rem; color: #7a6b5d; padding: 6px 0; text-align: center; }
     
     .day-cell {
@@ -126,20 +126,20 @@
       color: #3e3332;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      overflow: visible; /* 横幅超過を許可 */
     }
     .day-cell:hover { background: #faf5ee; }
     .day-cell.selected { background: #fdf8f3; }
     .day-number { padding: 2px 4px; font-weight: 600; font-size: 0.75rem; }
     .day-cell.today .day-number { color: #0055ff; font-weight: bold; }
     
-    /* イベントバー表示スタイル（スマホ崩れ防止調整） */
+    /* イベントバー表示スタイル（多日跨ぎ崩れ防止策） */
     .events-container { display: flex; flex-direction: column; gap: 2px; flex-grow: 1; padding-bottom: 2px; width: 100%; }
     .event-bar-wrapper { height: 18px; position: relative; width: 100%; }
     .event-bar {
       height: 18px;
       line-height: 18px;
-      color: #ffffff !important; /* スマホでの白化防止 */
+      color: #ffffff !important;
       font-size: 0.65rem;
       padding: 0 4px;
       white-space: nowrap;
@@ -147,13 +147,13 @@
       text-overflow: ellipsis;
       position: absolute;
       top: 0;
-      z-index: 2;
+      left: 0;
+      z-index: 5;
       box-shadow: 0 1px 2px rgba(0,0,0,0.2);
       font-weight: 600;
-      -webkit-text-fill-color: #ffffff; /* WebKit向け白文字保持 */
+      -webkit-text-fill-color: #ffffff;
+      border-radius: 2px;
     }
-    .event-bar.is-start { border-top-left-radius: 3px; border-bottom-left-radius: 3px; }
-    .event-bar.is-end { border-top-right-radius: 3px; border-bottom-right-radius: 3px; }
 
     /* カテゴリーカラー */
     .cat-shinkansen { background-color: #0055ff !important; }
@@ -459,15 +459,14 @@
 
       const todayStr = new Date().toISOString().split('T')[0];
 
-      // イベントの縦位置レイアウト計算
+      // スロット割り当てロジック
       const daySlots = {};
       for (let d = 1; d <= lastDate; d++) {
-        const monthFormatted = String(month + 1).padStart(2, '0');
-        const dayFormatted = String(d).padStart(2, '0');
-        daySlots[`${year}-${monthFormatted}-${dayFormatted}`] = [];
+        const mStr = String(month + 1).padStart(2, '0');
+        const dStr = String(d).padStart(2, '0');
+        daySlots[`${year}-${mStr}-${dStr}`] = [];
       }
 
-      // 当月にかかるスケジュールを抽出
       const activeSchedules = schedules.filter(s => {
         const start = s.startDate;
         const end = s.endDate || s.startDate;
@@ -476,7 +475,6 @@
         return start <= monthEnd && end >= monthStart;
       });
 
-      // スロット割り当て
       const scheduleSlots = {};
       activeSchedules.forEach(s => {
         let slot = 0;
@@ -507,7 +505,7 @@
         }
       });
 
-      // カレンダーマスの描画
+      // マス描画
       for (let d = 1; d <= lastDate; d++) {
         const cell = document.createElement("div");
         const monthFormatted = String(month + 1).padStart(2, '0');
@@ -536,17 +534,13 @@
 
           const targetEvent = dayEvents.find(s => scheduleSlots[s.id] === i);
           if (targetEvent) {
-            const bar = document.createElement("div");
-            bar.className = `event-bar cat-${targetEvent.category}`;
-            
             const targetEnd = targetEvent.endDate || targetEvent.startDate;
-
-            if (dateStr === targetEvent.startDate) bar.classList.add("is-start");
-            if (dateStr === targetEnd) bar.classList.add("is-end");
-
             const isStart = dateStr === targetEvent.startDate || dayOfWeek === 0 || d === 1;
 
             if (isStart) {
+              const bar = document.createElement("div");
+              bar.className = `event-bar cat-${targetEvent.category}`;
+
               let spanDays = 0;
               let curr = new Date(year, month, d);
               while (true) {
@@ -557,14 +551,12 @@
                 if (curr.getDay() === 6 || curr.getDate() === lastDate) break;
                 curr.setDate(curr.getDate() + 1);
               }
-              bar.style.width = `calc(${spanDays * 100}% + ${(spanDays - 1) * 1}px)`;
-              bar.innerText = targetEvent.title;
-            } else {
-              bar.style.opacity = "0";
-              bar.style.pointerEvents = "none";
-            }
 
-            wrapper.appendChild(bar);
+              // 枠線ギャップ(1px)を補正して綺麗に跨ぐ計算
+              bar.style.width = `calc(${spanDays * 100}% + ${(spanDays - 1) * 2}px)`;
+              bar.innerText = targetEvent.title;
+              wrapper.appendChild(bar);
+            }
           }
           eventsContainer.appendChild(wrapper);
         }
