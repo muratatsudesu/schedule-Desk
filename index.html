@@ -9,7 +9,7 @@
     body {
       max-width: 960px;
       margin: 0 auto;
-      padding: 16px;
+      padding: 12px;
       background-color: #f6f4f0;
       color: #3e3332;
       letter-spacing: 0.02em;
@@ -19,38 +19,39 @@
     .header-banner {
       background: linear-gradient(135deg, #7a5c43 0%, #543c29 100%);
       color: #faf8f5;
-      padding: 20px 15px;
+      padding: 16px 12px;
       border-radius: 10px;
       text-align: center;
       box-shadow: 0 4px 15px rgba(84, 60, 41, 0.15);
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
-    .header-banner h1 { margin: 0; font-size: 1.4rem; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; }
+    .header-banner h1 { margin: 0; font-size: 1.3rem; letter-spacing: 0.15em; font-weight: 600; text-transform: uppercase; }
     
     /* カードデザイン */
     .card {
       background: #ffffff;
-      padding: 20px;
+      padding: 16px;
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(62, 51, 50, 0.04);
       border: 1px solid #e5dfd5;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
     
-    .form-group { margin-bottom: 14px; }
-    .form-row { display: flex; gap: 12px; }
+    .form-group { margin-bottom: 12px; }
+    .form-row { display: flex; gap: 10px; }
     .form-row > div { flex: 1; }
-    label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.85rem; color: #543c29; }
+    label { display: block; margin-bottom: 4px; font-weight: 600; font-size: 0.82rem; color: #543c29; }
     input, select, textarea {
       width: 100%;
-      padding: 10px 12px;
+      padding: 9px 10px;
       border: 1px solid #dcd5c9;
       border-radius: 6px;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       background-color: #faf8f5;
       color: #3e3332;
       transition: all 0.2s ease;
     }
+    input:disabled { background-color: #eee; color: #aaa; }
     input:focus, select:focus, textarea:focus {
       outline: none;
       border-color: #7a5c43;
@@ -58,6 +59,23 @@
       box-shadow: 0 0 0 2px rgba(122, 92, 67, 0.1);
     }
     
+    /* 終日チェックボックス用のレイアウト */
+    .all-day-box {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #543c29;
+      cursor: pointer;
+    }
+    .all-day-box input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+      cursor: pointer;
+    }
+
     .btn-box { display: flex; gap: 10px; margin-top: 8px; }
     button.btn-add {
       flex: 1;
@@ -84,95 +102,98 @@
     }
 
     /* カレンダー */
-    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-    .calendar-header h2 { font-size: 1.15rem; margin: 0; color: #543c29; font-weight: 600; letter-spacing: 0.05em; }
+    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .calendar-header h2 { font-size: 1.1rem; margin: 0; color: #543c29; font-weight: 600; }
     .calendar-header button {
       background: #f2ece4;
       border: 1px solid #dcd5c9;
       color: #543c29;
-      padding: 8px 16px;
+      padding: 6px 12px;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
     }
-    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; background: #e5dfd5; border: 1px solid #e5dfd5; border-radius: 6px; overflow: hidden; }
-    .day-header { background: #faf8f5; font-weight: 600; font-size: 0.8rem; color: #7a6b5d; padding: 8px 0; text-align: center; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: #e5dfd5; border: 1px solid #e5dfd5; border-radius: 6px; overflow: hidden; }
+    .day-header { background: #faf8f5; font-weight: 600; font-size: 0.75rem; color: #7a6b5d; padding: 6px 0; text-align: center; }
     
     .day-cell {
       background: #ffffff;
-      min-height: 70px;
-      font-size: 0.85rem;
+      min-height: 60px;
+      font-size: 0.8rem;
       cursor: pointer;
       position: relative;
       color: #3e3332;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
     .day-cell:hover { background: #faf5ee; }
     .day-cell.selected { background: #fdf8f3; }
-    .day-number { padding: 4px 6px; font-weight: 600; }
+    .day-number { padding: 2px 4px; font-weight: 600; font-size: 0.75rem; }
     .day-cell.today .day-number { color: #0055ff; font-weight: bold; }
     
-    /* イベントバー表示スタイル */
-    .events-container { display: flex; flex-direction: column; gap: 3px; flex-grow: 1; padding-bottom: 4px; }
-    .event-bar-wrapper { height: 20px; position: relative; width: 100%; }
+    /* イベントバー表示スタイル（スマホ崩れ防止調整） */
+    .events-container { display: flex; flex-direction: column; gap: 2px; flex-grow: 1; padding-bottom: 2px; width: 100%; }
+    .event-bar-wrapper { height: 18px; position: relative; width: 100%; }
     .event-bar {
-      height: 20px;
-      line-height: 20px;
-      color: white;
-      font-size: 0.72rem;
-      padding: 0 6px;
+      height: 18px;
+      line-height: 18px;
+      color: #ffffff !important; /* スマホでの白化防止 */
+      font-size: 0.65rem;
+      padding: 0 4px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       position: absolute;
       top: 0;
       z-index: 2;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-      font-weight: 500;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      font-weight: 600;
+      -webkit-text-fill-color: #ffffff; /* WebKit向け白文字保持 */
     }
-    .event-bar.is-start { border-top-left-radius: 4px; border-bottom-left-radius: 4px; }
-    .event-bar.is-end { border-top-right-radius: 4px; border-bottom-right-radius: 4px; }
+    .event-bar.is-start { border-top-left-radius: 3px; border-bottom-left-radius: 3px; }
+    .event-bar.is-end { border-top-right-radius: 3px; border-bottom-right-radius: 3px; }
 
     /* カテゴリーカラー */
-    .cat-shinkansen { background-color: #0055ff; }
-    .cat-airplane { background-color: #00aaff; }
-    .cat-hiace { background-color: #d97706; }    /* ハイエース: ディープイエロー/ゴールド */
-    .cat-office { background-color: #333333; }
-    .cat-holiday { background-color: #ff2200; }
-    .cat-meeting { background-color: #ff8800; }
-    .cat-trip { background-color: #00aa44; }
-    .cat-private { background-color: #aa00cc; }
-    .cat-other { background-color: #885522; }
+    .cat-shinkansen { background-color: #0055ff !important; }
+    .cat-airplane { background-color: #00aaff !important; }
+    .cat-hiace { background-color: #d97706 !important; }
+    .cat-office { background-color: #333333 !important; }
+    .cat-holiday { background-color: #ff2200 !important; }
+    .cat-meeting { background-color: #ff8800 !important; }
+    .cat-trip { background-color: #00aa44 !important; }
+    .cat-private { background-color: #aa00cc !important; }
+    .cat-other { background-color: #885522 !important; }
 
     /* 予定一覧 */
-    .list-title { font-size: 1rem; font-weight: 600; margin-bottom: 14px; color: #543c29; display: flex; justify-content: space-between; align-items: center; }
+    .list-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 12px; color: #543c29; display: flex; justify-content: space-between; align-items: center; }
     .schedule-item {
       background: #faf8f5;
-      padding: 14px;
+      padding: 12px;
       border-radius: 8px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       border: 1px solid #e5dfd5;
-      border-left: 6px solid #8e857e;
+      border-left: 5px solid #8e857e;
     }
     .schedule-info { flex-grow: 1; }
-    .badge { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 0.75rem; margin-right: 6px; font-weight: 600; color: white; }
-    .schedule-time { font-size: 0.85rem; color: #555; font-weight: 600; }
-    .schedule-title { font-size: 1rem; font-weight: 600; margin: 5px 0; color: #2c2221; }
-    .schedule-memo { font-size: 0.85rem; color: #555; white-space: pre-wrap; margin-top: 4px; line-height: 1.4; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; margin-right: 6px; font-weight: 600; color: white; }
+    .schedule-time { font-size: 0.8rem; color: #555; font-weight: 600; }
+    .schedule-title { font-size: 0.95rem; font-weight: 600; margin: 4px 0; color: #2c2221; }
+    .schedule-memo { font-size: 0.82rem; color: #555; white-space: pre-wrap; margin-top: 4px; line-height: 1.4; }
     .action-btns { display: flex; gap: 6px; }
-    .btn-edit { background: #557799; color: white; border: none; padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; cursor: pointer; }
-    .btn-del { background: #cc3333; color: white; border: none; padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; cursor: pointer; }
+    .btn-edit { background: #557799; color: white; border: none; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; }
+    .btn-del { background: #cc3333; color: white; border: none; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; }
 
     /* PC表示時の拡大設定 */
     @media (min-width: 768px) {
-      .day-cell { min-height: 105px; }
-      .event-bar { font-size: 0.78rem; height: 22px; line-height: 22px; }
+      .day-cell { min-height: 100px; }
+      .event-bar { font-size: 0.78rem; height: 22px; line-height: 22px; padding: 0 6px; }
       .event-bar-wrapper { height: 22px; }
+      .day-number { font-size: 0.85rem; padding: 4px 6px; }
     }
   </style>
 </head>
@@ -197,7 +218,12 @@
       </div>
     </div>
 
-    <div class="form-row">
+    <!-- 終日設定チェックボックス -->
+    <label class="all-day-box">
+      <input type="checkbox" id="isAllDay" onchange="toggleAllDay()"> 終日
+    </label>
+
+    <div class="form-row" id="timeRow">
       <div class="form-group">
         <label>開始時間</label>
         <input type="time" id="startTime">
@@ -253,7 +279,7 @@
   <div class="card">
     <div class="list-title">
       <span id="selected-date-display">予定一覧</span>
-      <button onclick="showAllSchedules()" style="font-size:0.8rem; padding: 5px 12px; cursor:pointer; background:#f2ece4; border:1px solid #dcd5c9; border-radius:4px; color:#543c29; font-weight:600;">全表示</button>
+      <button onclick="showAllSchedules()" style="font-size:0.78rem; padding: 4px 10px; cursor:pointer; background:#f2ece4; border:1px solid #dcd5c9; border-radius:4px; color:#543c29; font-weight:600;">全表示</button>
     </div>
     <div id="schedule-list"></div>
   </div>
@@ -293,6 +319,20 @@
       loadSchedules(selectedDateStr);
     });
 
+    function toggleAllDay() {
+      const isChecked = document.getElementById("isAllDay").checked;
+      const startTimeInput = document.getElementById("startTime");
+      const endTimeInput = document.getElementById("endTime");
+      
+      startTimeInput.disabled = isChecked;
+      endTimeInput.disabled = isChecked;
+      
+      if (isChecked) {
+        startTimeInput.value = "";
+        endTimeInput.value = "";
+      }
+    }
+
     function syncEndDate() {
       const start = document.getElementById("startDate").value;
       const end = document.getElementById("endDate").value;
@@ -305,8 +345,9 @@
       const editId = document.getElementById("editId").value;
       const startDate = document.getElementById("startDate").value;
       const endDate = document.getElementById("endDate").value || startDate;
-      const startTime = document.getElementById("startTime").value;
-      const endTime = document.getElementById("endTime").value;
+      const isAllDay = document.getElementById("isAllDay").checked;
+      const startTime = isAllDay ? "" : document.getElementById("startTime").value;
+      const endTime = isAllDay ? "" : document.getElementById("endTime").value;
       const title = document.getElementById("title").value;
       const category = document.getElementById("category").value;
       const memo = document.getElementById("memo").value;
@@ -326,12 +367,12 @@
       if (editId) {
         schedules = schedules.map(item => {
           if (item.id === Number(editId)) {
-            return { id: item.id, startDate, endDate, startTime, endTime, title, category, memo };
+            return { id: item.id, startDate, endDate, isAllDay, startTime, endTime, title, category, memo };
           }
           return item;
         });
       } else {
-        const newSchedule = { id: Date.now(), startDate, endDate, startTime, endTime, title, category, memo };
+        const newSchedule = { id: Date.now(), startDate, endDate, isAllDay, startTime, endTime, title, category, memo };
         schedules.push(newSchedule);
       }
 
@@ -353,6 +394,11 @@
       document.getElementById("editId").value = item.id;
       document.getElementById("startDate").value = item.startDate;
       document.getElementById("endDate").value = item.endDate || item.startDate;
+      
+      const isAllDay = !!item.isAllDay;
+      document.getElementById("isAllDay").checked = isAllDay;
+      toggleAllDay();
+
       document.getElementById("startTime").value = item.startTime || "";
       document.getElementById("endTime").value = item.endTime || "";
       document.getElementById("category").value = item.category || "shinkansen";
@@ -369,6 +415,8 @@
       document.getElementById("editId").value = "";
       document.getElementById("title").value = "";
       document.getElementById("memo").value = "";
+      document.getElementById("isAllDay").checked = false;
+      toggleAllDay();
       document.getElementById("startTime").value = "";
       document.getElementById("endTime").value = "";
       document.getElementById("btnSubmit").innerText = "予定を追加する";
@@ -419,7 +467,7 @@
         daySlots[`${year}-${monthFormatted}-${dayFormatted}`] = [];
       }
 
-      // 当月にかかるスケジュールを抽出・ソート
+      // 当月にかかるスケジュールを抽出
       const activeSchedules = schedules.filter(s => {
         const start = s.startDate;
         const end = s.endDate || s.startDate;
@@ -496,7 +544,6 @@
             if (dateStr === targetEvent.startDate) bar.classList.add("is-start");
             if (dateStr === targetEnd) bar.classList.add("is-end");
 
-            // 正確な幅計算（開始日または週初め・月初めからの計算）
             const isStart = dateStr === targetEvent.startDate || dayOfWeek === 0 || d === 1;
 
             if (isStart) {
@@ -507,16 +554,12 @@
                 if (currFormatted > targetEnd) break;
                 
                 spanDays++;
-                
-                // 土曜日の終わり、または月の末日に達したらその週の計算を終了
                 if (curr.getDay() === 6 || curr.getDate() === lastDate) break;
-                
                 curr.setDate(curr.getDate() + 1);
               }
-              bar.style.width = `calc(${spanDays * 100}% + ${(spanDays - 1) * 2}px)`;
+              bar.style.width = `calc(${spanDays * 100}% + ${(spanDays - 1) * 1}px)`;
               bar.innerText = targetEvent.title;
             } else {
-              // 継続日は非表示にしてスペースのみ確保
               bar.style.opacity = "0";
               bar.style.pointerEvents = "none";
             }
@@ -560,7 +603,7 @@
       }
 
       if (schedules.length === 0) {
-        listContainer.innerHTML = '<p style="text-align:center; color:#888; font-size:0.9rem; margin:15px 0;">予定はありません</p>';
+        listContainer.innerHTML = '<p style="text-align:center; color:#888; font-size:0.85rem; margin:15px 0;">予定はありません</p>';
         return;
       }
 
@@ -569,8 +612,8 @@
         div.className = "schedule-item";
         div.style.borderLeftColor = categoryColors[item.category] || "#8e857e";
 
-        let timeRangeText = "";
-        if (item.startTime) {
+        let timeRangeText = "☀️ 終日";
+        if (!item.isAllDay && item.startTime) {
           timeRangeText = `⏰ ${item.startTime}` + (item.endTime ? `〜${item.endTime}` : "");
         }
 
