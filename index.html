@@ -10,15 +10,14 @@
       max-width: 600px;
       margin: 0 auto;
       padding: 15px;
-      background-color: #f7f5f0; /* 温かみのあるサンドベージュ */
+      background-color: #f7f5f0;
       color: #4a3e3d;
     }
     
-    /* タイトルヘッダー（木調グラデーション） */
     .header-banner {
       background: linear-gradient(135deg, #8c6d53 0%, #6e5038 100%);
       color: #fff;
-      padding: 20px;
+      padding: 18px;
       border-radius: 12px;
       text-align: center;
       box-shadow: 0 4px 10px rgba(110, 80, 56, 0.2);
@@ -26,7 +25,6 @@
     }
     .header-banner h1 { margin: 0; font-size: 1.3rem; letter-spacing: 0.05em; font-weight: 500; }
     
-    /* カードデザイン */
     .card {
       background: #ffffff;
       padding: 18px;
@@ -42,7 +40,7 @@
     label { display: block; margin-bottom: 4px; font-weight: 600; font-size: 0.82rem; color: #6e5038; }
     input, select, textarea {
       width: 100%;
-      padding: 9px 12px;
+      padding: 9px 10px;
       border: 1px solid #d4cbbe;
       border-radius: 6px;
       font-size: 0.9rem;
@@ -55,9 +53,9 @@
       background-color: #fff;
     }
     
-    /* 木調ボタン */
+    .btn-box { display: flex; gap: 10px; margin-top: 5px; }
     button.btn-add {
-      width: 100%;
+      flex: 1;
       padding: 12px;
       background: linear-gradient(135deg, #8c6d53 0%, #6e5038 100%);
       color: white;
@@ -66,12 +64,19 @@
       font-size: 0.95rem;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 5px;
-      transition: opacity 0.2s;
     }
-    button.btn-add:hover { opacity: 0.9; }
+    button.btn-cancel {
+      padding: 12px;
+      background: #8c827a;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: none;
+    }
 
-    /* カレンダー スタイル */
+    /* カレンダー */
     .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .calendar-header h2 { font-size: 1.05rem; margin: 0; color: #5c4331; font-weight: 600; }
     .calendar-header button {
@@ -102,14 +107,14 @@
     .dot-container { display: flex; justify-content: center; gap: 2px; margin-top: 4px; flex-wrap: wrap; }
     .dot { width: 5px; height: 5px; border-radius: 50%; }
 
-    /* ナチュラル・インテリア風 カテゴリーカラー */
-    .cat-work { background-color: #5a738e; color: white; }    /* 仕事: アッシュブルー */
-    .cat-meeting { background-color: #b87355; color: white; } /* 会議: テラコッタ */
-    .cat-trip { background-color: #6b8e78; color: white; }    /* 出張: セージグリーン */
-    .cat-private { background-color: #c49a45; color: white; } /* プライベート: マスタード */
-    .cat-other { background-color: #8c827a; color: white; }   /* その他: ウォームグレー */
+    /* カテゴリーカラー */
+    .cat-work { background-color: #5a738e; color: white; }
+    .cat-meeting { background-color: #b87355; color: white; }
+    .cat-trip { background-color: #6b8e78; color: white; }
+    .cat-private { background-color: #c49a45; color: white; }
+    .cat-other { background-color: #8c827a; color: white; }
 
-    /* 予定一覧リスト */
+    /* 予定一覧 */
     .list-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 12px; color: #5c4331; display: flex; justify-content: space-between; align-items: center; }
     .schedule-item {
       background: #faf9f6;
@@ -127,6 +132,8 @@
     .schedule-time { font-size: 0.82rem; color: #7a6b5d; font-weight: 600; }
     .schedule-title { font-size: 0.95rem; font-weight: 600; margin: 4px 0; color: #3d3130; }
     .schedule-memo { font-size: 0.82rem; color: #6e6156; white-space: pre-wrap; margin-top: 2px; }
+    .action-btns { display: flex; gap: 6px; }
+    .btn-edit { background: #5a738e; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; }
     .btn-del { background: #b85555; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; }
   </style>
 </head>
@@ -138,6 +145,8 @@
 
   <!-- 予定入力フォーム -->
   <div class="card">
+    <input type="hidden" id="editId" value="">
+    
     <div class="form-row">
       <div class="form-group">
         <label>開始日</label>
@@ -151,19 +160,24 @@
 
     <div class="form-row">
       <div class="form-group">
-        <label>時間</label>
-        <input type="time" id="time">
+        <label>開始時間</label>
+        <input type="time" id="startTime">
       </div>
       <div class="form-group">
-        <label>カテゴリー</label>
-        <select id="category">
-          <option value="work">仕事</option>
-          <option value="meeting">会議</option>
-          <option value="trip">出張・施工</option>
-          <option value="private">プライベート</option>
-          <option value="other">その他</option>
-        </select>
+        <label>終了時間</label>
+        <input type="time" id="endTime">
       </div>
+    </div>
+
+    <div class="form-group">
+      <label>カテゴリー</label>
+      <select id="category">
+        <option value="work">仕事</option>
+        <option value="meeting">会議</option>
+        <option value="trip">出張・施工</option>
+        <option value="private">プライベート</option>
+        <option value="other">その他</option>
+      </select>
     </div>
     
     <div class="form-group">
@@ -175,7 +189,11 @@
       <label>メモ</label>
       <textarea id="memo" rows="2" placeholder="場所や持参物など"></textarea>
     </div>
-    <button class="btn-add" onclick="addSchedule()">予定を追加する</button>
+
+    <div class="btn-box">
+      <button class="btn-add" id="btnSubmit" onclick="addOrUpdateSchedule()">予定を追加する</button>
+      <button class="btn-cancel" id="btnCancel" onclick="resetForm()">キャンセル</button>
+    </div>
   </div>
 
   <!-- 月間カレンダー -->
@@ -188,7 +206,7 @@
     <div class="calendar-grid" id="calendar-grid"></div>
   </div>
 
-  <!-- 選択した日の予定一覧 -->
+  <!-- 予定一覧 -->
   <div class="card">
     <div class="list-title">
       <span id="selected-date-display">予定一覧</span>
@@ -211,7 +229,6 @@
       loadSchedules(selectedDateStr);
     });
 
-    // 開始日を変えたら終了日も自動で合わせる
     function syncEndDate() {
       const start = document.getElementById("startDate").value;
       const end = document.getElementById("endDate").value;
@@ -220,10 +237,13 @@
       }
     }
 
-    function addSchedule() {
+    // 追加・更新の共通処理
+    function addOrUpdateSchedule() {
+      const editId = document.getElementById("editId").value;
       const startDate = document.getElementById("startDate").value;
       const endDate = document.getElementById("endDate").value || startDate;
-      const time = document.getElementById("time").value;
+      const startTime = document.getElementById("startTime").value;
+      const endTime = document.getElementById("endTime").value;
       const title = document.getElementById("title").value;
       const category = document.getElementById("category").value;
       const memo = document.getElementById("memo").value;
@@ -238,21 +258,64 @@
         return;
       }
 
-      const newSchedule = { id: Date.now(), startDate, endDate, time, title, category, memo };
-      const schedules = getSchedules();
-      schedules.push(newSchedule);
-      
+      let schedules = getSchedules();
+
+      if (editId) {
+        // 編集モード（上書き更新）
+        schedules = schedules.map(item => {
+          if (item.id === Number(editId)) {
+            return { id: item.id, startDate, endDate, startTime, endTime, title, category, memo };
+          }
+          return item;
+        });
+      } else {
+        // 新規登録モード
+        const newSchedule = { id: Date.now(), startDate, endDate, startTime, endTime, title, category, memo };
+        schedules.push(newSchedule);
+      }
+
       // ソート
-      schedules.sort((a, b) => (a.startDate + (a.time || "00:00")).localeCompare(b.startDate + (b.time || "00:00")));
+      schedules.sort((a, b) => (a.startDate + (a.startTime || "00:00")).localeCompare(b.startDate + (b.startTime || "00:00")));
 
       localStorage.setItem("my_schedules", JSON.stringify(schedules));
 
-      document.getElementById("title").value = "";
-      document.getElementById("memo").value = "";
-
+      resetForm();
       selectedDateStr = startDate;
       renderCalendar();
       loadSchedules(selectedDateStr);
+    }
+
+    // 編集ボタンを押したときのデータ読み込み
+    function editSchedule(id) {
+      const schedules = getSchedules();
+      const item = schedules.find(s => s.id === id);
+      if (!item) return;
+
+      document.getElementById("editId").value = item.id;
+      document.getElementById("startDate").value = item.startDate;
+      document.getElementById("endDate").value = item.endDate || item.startDate;
+      document.getElementById("startTime").value = item.startTime || "";
+      document.getElementById("endTime").value = item.endTime || "";
+      document.getElementById("category").value = item.category || "work";
+      document.getElementById("title").value = item.title;
+      document.getElementById("memo").value = item.memo || "";
+
+      document.getElementById("btnSubmit").innerText = "予定を更新する";
+      document.getElementById("btnCancel").style.display = "block";
+
+      // 画面上部にスクロール
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // フォームのリセット
+    function resetForm() {
+      document.getElementById("editId").value = "";
+      document.getElementById("title").value = "";
+      document.getElementById("memo").value = "";
+      document.getElementById("startTime").value = "";
+      document.getElementById("endTime").value = "";
+      document.getElementById("btnSubmit").innerText = "予定を追加する";
+      document.getElementById("btnCancel").style.display = "none";
     }
 
     function getSchedules() {
@@ -299,7 +362,6 @@
 
         cell.innerHTML = `<div>${d}</div>`;
 
-        // 期間内に含まれる予定を取得
         const daySchedules = schedules.filter(s => dateStr >= s.startDate && dateStr <= (s.endDate || s.startDate));
         
         if (daySchedules.length > 0) {
@@ -355,7 +417,12 @@
         div.className = "schedule-item";
         div.style.borderLeftColor = categoryColors[item.category] || "#8c827a";
 
-        const timeText = item.time ? `⏰ ${item.time}` : "";
+        // 時間の表示組み立て（例：10:00〜12:00）
+        let timeRangeText = "";
+        if (item.startTime) {
+          timeRangeText = `⏰ ${item.startTime}` + (item.endTime ? `〜${item.endTime}` : "");
+        }
+
         const dateRangeText = (item.endDate && item.endDate !== item.startDate) 
           ? `${item.startDate} 〜 ${item.endDate}` 
           : item.startDate;
@@ -364,11 +431,14 @@
 
         div.innerHTML = `
           <div class="schedule-info">
-            <div>${catBadge} <span class="schedule-time">${dateRangeText} ${timeText}</span></div>
+            <div>${catBadge} <span class="schedule-time">${dateRangeText} ${timeRangeText}</span></div>
             <div class="schedule-title">${item.title}</div>
             ${item.memo ? `<div class="schedule-memo">${item.memo}</div>` : ''}
           </div>
-          <button class="btn-del" onclick="deleteSchedule(${item.id})">削除</button>
+          <div class="action-btns">
+            <button class="btn-edit" onclick="editSchedule(${item.id})">編集</button>
+            <button class="btn-del" onclick="deleteSchedule(${item.id})">削除</button>
+          </div>
         `;
         listContainer.appendChild(div);
       });
@@ -381,6 +451,7 @@
     }
 
     function deleteSchedule(id) {
+      if (!confirm("本当に削除しますか？")) return;
       let schedules = getSchedules();
       schedules = schedules.filter(item => item.id !== id);
       localStorage.setItem("my_schedules", JSON.stringify(schedules));
