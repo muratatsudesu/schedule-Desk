@@ -7,7 +7,7 @@
   <style>
     * { box-sizing: border-box; font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif; }
     body {
-      max-width: 600px;
+      max-width: 900px; /* PC用に全体幅を広げました */
       margin: 0 auto;
       padding: 16px;
       background-color: #f6f4f0;
@@ -15,7 +15,7 @@
       letter-spacing: 0.02em;
     }
     
-    /* 洗練されたヘッダー */
+    /* ヘッダー */
     .header-banner {
       background: linear-gradient(135deg, #7a5c43 0%, #543c29 100%);
       color: #faf8f5;
@@ -25,9 +25,9 @@
       box-shadow: 0 4px 15px rgba(84, 60, 41, 0.15);
       margin-bottom: 20px;
     }
-    .header-banner h1 { margin: 0; font-size: 1.3rem; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; }
+    .header-banner h1 { margin: 0; font-size: 1.4rem; letter-spacing: 0.18em; font-weight: 600; text-transform: uppercase; }
     
-    /* 洗練されたカードデザイン */
+    /* カードデザイン */
     .card {
       background: #ffffff;
       padding: 20px;
@@ -40,13 +40,13 @@
     .form-group { margin-bottom: 14px; }
     .form-row { display: flex; gap: 12px; }
     .form-row > div { flex: 1; }
-    label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.8rem; color: #6e5544; }
+    label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.85rem; color: #543c29; }
     input, select, textarea {
       width: 100%;
       padding: 10px 12px;
       border: 1px solid #dcd5c9;
       border-radius: 6px;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       background-color: #faf8f5;
       color: #3e3332;
       transition: all 0.2s ease;
@@ -66,7 +66,7 @@
       color: #faf8f5;
       border: none;
       border-radius: 6px;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 600;
       letter-spacing: 0.05em;
       cursor: pointer;
@@ -85,48 +85,50 @@
 
     /* カレンダー */
     .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-    .calendar-header h2 { font-size: 1rem; margin: 0; color: #543c29; font-weight: 600; letter-spacing: 0.05em; }
+    .calendar-header h2 { font-size: 1.15rem; margin: 0; color: #543c29; font-weight: 600; letter-spacing: 0.05em; }
     .calendar-header button {
       background: #f2ece4;
       border: 1px solid #dcd5c9;
       color: #543c29;
-      padding: 6px 12px;
+      padding: 8px 16px;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 600;
     }
-    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
-    .day-header { font-weight: 600; font-size: 0.72rem; color: #a09285; padding: 4px 0; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
+    .day-header { font-weight: 600; font-size: 0.8rem; color: #7a6b5d; padding: 6px 0; }
     .day-cell {
       background: #faf8f5;
       border-radius: 6px;
-      padding: 6px 2px;
-      min-height: 50px;
-      font-size: 0.85rem;
+      padding: 6px 4px;
+      min-height: 55px; /* スマホ時の基本高さ */
+      font-size: 0.9rem;
       cursor: pointer;
       position: relative;
       border: 1px solid #eee8df;
       color: #3e3332;
     }
     .day-cell:hover { background: #f2ece4; }
-    .day-cell.selected { border: 1.5px solid #7a5c43; background: #ebdcd0; font-weight: bold; }
-    .day-cell.today { color: #7a5c43; font-weight: bold; }
-    .dot-container { display: flex; justify-content: center; gap: 3px; margin-top: 4px; flex-wrap: wrap; }
-    .dot { width: 5px; height: 5px; border-radius: 50%; }
+    .day-cell.selected { border: 2px solid #7a5c43; background: #ebdcd0; font-weight: bold; }
+    .day-cell.today { color: #0055ff; font-weight: bold; }
+    
+    /* カレンダー内の目立つドット */
+    .dot-container { display: flex; justify-content: center; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.15); }
 
-    /* カテゴリーカラー設定 */
-    .cat-shinkansen { background-color: #2b4c7e; color: white; } /* 新幹線: ダークネイビー */
-    .cat-airplane { background-color: #4a86a8; color: white; }   /* 飛行機: スカイブルー */
-    .cat-office { background-color: #6c757d; color: white; }     /* 事務所: ウォームグレー */
-    .cat-holiday { background-color: #d97770; color: white; }    /* 休み: ソフトレッド/ピンク */
-    .cat-meeting { background-color: #b86b4b; color: white; }    /* 会議: テラコッタ */
-    .cat-trip { background-color: #5a7d65; color: white; }       /* 出張・施工: ディープグリーン */
-    .cat-private { background-color: #c0933e; color: white; }    /* プライベート: アンティークゴールド */
-    .cat-other { background-color: #8e857e; color: white; }      /* その他: グレー */
+    /* 視認性の高いはっきりしたカテゴリーカラー */
+    .cat-shinkansen { background-color: #0055ff; color: white; } /* 新幹線: ブルー */
+    .cat-airplane { background-color: #00aaff; color: white; }   /* 飛行機: スカイブルー */
+    .cat-office { background-color: #333333; color: white; }     /* 事務所: ダークグレー */
+    .cat-holiday { background-color: #ff2200; color: white; }    /* 休み: レッド */
+    .cat-meeting { background-color: #ff8800; color: white; }    /* 会議: オレンジ */
+    .cat-trip { background-color: #00aa44; color: white; }       /* 出張・施工: グリーン */
+    .cat-private { background-color: #aa00cc; color: white; }    /* プライベート: パープル */
+    .cat-other { background-color: #885522; color: white; }      /* その他: ブラウン */
 
     /* 予定一覧 */
-    .list-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 14px; color: #543c29; display: flex; justify-content: space-between; align-items: center; }
+    .list-title { font-size: 1rem; font-weight: 600; margin-bottom: 14px; color: #543c29; display: flex; justify-content: space-between; align-items: center; }
     .schedule-item {
       background: #faf8f5;
       padding: 14px;
@@ -136,16 +138,23 @@
       justify-content: space-between;
       align-items: flex-start;
       border: 1px solid #e5dfd5;
-      border-left: 5px solid #8e857e;
+      border-left: 6px solid #8e857e;
     }
     .schedule-info { flex-grow: 1; }
-    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; margin-right: 6px; font-weight: 600; }
-    .schedule-time { font-size: 0.8rem; color: #7e7167; font-weight: 600; }
-    .schedule-title { font-size: 0.95rem; font-weight: 600; margin: 4px 0; color: #2c2221; }
-    .schedule-memo { font-size: 0.82rem; color: #6e635a; white-space: pre-wrap; margin-top: 4px; line-height: 1.4; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 0.75rem; margin-right: 6px; font-weight: 600; }
+    .schedule-time { font-size: 0.85rem; color: #555; font-weight: 600; }
+    .schedule-title { font-size: 1rem; font-weight: 600; margin: 5px 0; color: #2c2221; }
+    .schedule-memo { font-size: 0.85rem; color: #555; white-space: pre-wrap; margin-top: 4px; line-height: 1.4; }
     .action-btns { display: flex; gap: 6px; }
-    .btn-edit { background: #6e8396; color: white; border: none; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; }
-    .btn-del { background: #a85252; color: white; border: none; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; }
+    .btn-edit { background: #557799; color: white; border: none; padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; cursor: pointer; }
+    .btn-del { background: #cc3333; color: white; border: none; padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; cursor: pointer; }
+
+    /* PC・タブレット向けの特大表示設定 */
+    @media (min-width: 768px) {
+      .day-cell { min-height: 80px; font-size: 1rem; }
+      .dot { width: 10px; height: 10px; }
+      .calendar-header h2 { font-size: 1.3rem; }
+    }
   </style>
 </head>
 <body>
@@ -224,7 +233,7 @@
   <div class="card">
     <div class="list-title">
       <span id="selected-date-display">予定一覧</span>
-      <button onclick="showAllSchedules()" style="font-size:0.75rem; padding: 4px 10px; cursor:pointer; background:#f2ece4; border:1px solid #dcd5c9; border-radius:4px; color:#543c29; font-weight:600;">全表示</button>
+      <button onclick="showAllSchedules()" style="font-size:0.8rem; padding: 5px 12px; cursor:pointer; background:#f2ece4; border:1px solid #dcd5c9; border-radius:4px; color:#543c29; font-weight:600;">全表示</button>
     </div>
     <div id="schedule-list"></div>
   </div>
@@ -245,14 +254,14 @@
     };
 
     const categoryColors = { 
-      shinkansen: "#2b4c7e", 
-      airplane: "#4a86a8", 
-      office: "#6c757d", 
-      holiday: "#d97770", 
-      meeting: "#b86b4b", 
-      trip: "#5a7d65", 
-      private: "#c0933e", 
-      other: "#8e857e" 
+      shinkansen: "#0055ff", 
+      airplane: "#00aaff", 
+      office: "#333333", 
+      holiday: "#ff2200", 
+      meeting: "#ff8800", 
+      trip: "#00aa44", 
+      private: "#aa00cc", 
+      other: "#885522" 
     };
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -396,7 +405,7 @@
           daySchedules.slice(0, 3).forEach(s => {
             const dot = document.createElement("span");
             dot.className = "dot";
-            dot.style.backgroundColor = categoryColors[s.category] || "#8e857e";
+            dot.style.backgroundColor = categoryColors[s.category] || "#885522";
             dotBox.appendChild(dot);
           });
           cell.appendChild(dotBox);
@@ -434,7 +443,7 @@
       }
 
       if (schedules.length === 0) {
-        listContainer.innerHTML = '<p style="text-align:center; color:#a09285; font-size:0.85rem; margin:12px 0;">予定はありません</p>';
+        listContainer.innerHTML = '<p style="text-align:center; color:#888; font-size:0.9rem; margin:15px 0;">予定はありません</p>';
         return;
       }
 
