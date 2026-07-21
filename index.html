@@ -138,6 +138,7 @@
     /* カテゴリーカラー */
     .cat-shinkansen { background-color: #0055ff; }
     .cat-airplane { background-color: #00aaff; }
+    .cat-hiace { background-color: #d97706; }    /* ハイエース: ディープイエロー/ゴールド */
     .cat-office { background-color: #333333; }
     .cat-holiday { background-color: #ff2200; }
     .cat-meeting { background-color: #ff8800; }
@@ -212,6 +213,7 @@
       <select id="category">
         <option value="shinkansen">新幹線</option>
         <option value="airplane">飛行機</option>
+        <option value="hiace">ハイエース</option>
         <option value="office">事務所</option>
         <option value="holiday">休み</option>
         <option value="meeting">会議</option>
@@ -263,6 +265,7 @@
     const categoryNames = { 
       shinkansen: "新幹線", 
       airplane: "飛行機", 
+      hiace: "ハイエース",
       office: "事務所", 
       holiday: "休み", 
       meeting: "会議", 
@@ -274,6 +277,7 @@
     const categoryColors = { 
       shinkansen: "#0055ff", 
       airplane: "#00aaff", 
+      hiace: "#d97706",
       office: "#333333", 
       holiday: "#ff2200", 
       meeting: "#ff8800", 
@@ -487,28 +491,32 @@
             const bar = document.createElement("div");
             bar.className = `event-bar cat-${targetEvent.category}`;
             
-            const isStart = dateStr === targetEvent.startDate || dayOfWeek === 0 || d === 1;
-            const isEnd = dateStr === (targetEvent.endDate || targetEvent.startDate) || dayOfWeek === 6 || d === lastDate;
+            const targetEnd = targetEvent.endDate || targetEvent.startDate;
 
             if (dateStr === targetEvent.startDate) bar.classList.add("is-start");
-            if (dateStr === (targetEvent.endDate || targetEvent.startDate)) bar.classList.add("is-end");
+            if (dateStr === targetEnd) bar.classList.add("is-end");
 
-            // 幅計算（日曜日か月の最終日、またはイベント終了日までの日数）
-            let spanDays = 1;
+            // 正確な幅計算（開始日または週初め・月初めからの計算）
+            const isStart = dateStr === targetEvent.startDate || dayOfWeek === 0 || d === 1;
+
             if (isStart) {
+              let spanDays = 0;
               let curr = new Date(year, month, d);
               while (true) {
-                const nextStr = curr.toISOString().split('T')[0];
-                if (nextStr > (targetEvent.endDate || targetEvent.startDate) || curr.getDay() === 6 || curr.getDate() === lastDate) {
-                  break;
-                }
+                const currFormatted = `${curr.getFullYear()}-${String(curr.getMonth() + 1).padStart(2, '0')}-${String(curr.getDate()).padStart(2, '0')}`;
+                if (currFormatted > targetEnd) break;
+                
                 spanDays++;
+                
+                // 土曜日の終わり、または月の末日に達したらその週の計算を終了
+                if (curr.getDay() === 6 || curr.getDate() === lastDate) break;
+                
                 curr.setDate(curr.getDate() + 1);
               }
               bar.style.width = `calc(${spanDays * 100}% + ${(spanDays - 1) * 2}px)`;
               bar.innerText = targetEvent.title;
             } else {
-              // 続きの日は透明でスペースを確保
+              // 継続日は非表示にしてスペースのみ確保
               bar.style.opacity = "0";
               bar.style.pointerEvents = "none";
             }
