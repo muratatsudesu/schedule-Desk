@@ -126,14 +126,14 @@
       color: #3e3332;
       display: flex;
       flex-direction: column;
-      overflow: visible; /* 横幅超過を許可 */
+      overflow: visible;
     }
     .day-cell:hover { background: #faf5ee; }
     .day-cell.selected { background: #fdf8f3; }
     .day-number { padding: 2px 4px; font-weight: 600; font-size: 0.75rem; }
     .day-cell.today .day-number { color: #0055ff; font-weight: bold; }
     
-    /* イベントバー表示スタイル（多日跨ぎ崩れ防止策） */
+    /* イベントバー表示スタイル */
     .events-container { display: flex; flex-direction: column; gap: 2px; flex-grow: 1; padding-bottom: 2px; width: 100%; }
     .event-bar-wrapper { height: 18px; position: relative; width: 100%; }
     .event-bar {
@@ -159,6 +159,9 @@
     .cat-shinkansen { background-color: #0055ff !important; }
     .cat-airplane { background-color: #00aaff !important; }
     .cat-hiace { background-color: #d97706 !important; }
+    .cat-shipping { background-color: #8a4baf !important; }  /* 出荷: パープル */
+    .cat-receiving { background-color: #2b6cb0 !important; } /* 入荷: ディープブルー */
+    .cat-delivery { background-color: #2f855a !important; }  /* 現場搬入: ダークグリーン */
     .cat-office { background-color: #333333 !important; }
     .cat-holiday { background-color: #ff2200 !important; }
     .cat-meeting { background-color: #ff8800 !important; }
@@ -240,6 +243,9 @@
         <option value="shinkansen">新幹線</option>
         <option value="airplane">飛行機</option>
         <option value="hiace">ハイエース</option>
+        <option value="shipping">出荷</option>
+        <option value="receiving">入荷</option>
+        <option value="delivery">現場搬入</option>
         <option value="office">事務所</option>
         <option value="holiday">休み</option>
         <option value="meeting">会議</option>
@@ -251,12 +257,12 @@
     
     <div class="form-group">
       <label>タイトル</label>
-      <input type="text" id="title" placeholder="例：〇〇邸 納品・施工">
+      <input type="text" id="title" placeholder="例：〇〇邸 搬入作業">
     </div>
 
     <div class="form-group">
       <label>メモ</label>
-      <textarea id="memo" rows="2" placeholder="場所や座席番号、持参物など"></textarea>
+      <textarea id="memo" rows="2" placeholder="トラックサイズ、搬入経路、担当者など"></textarea>
     </div>
 
     <div class="btn-box">
@@ -292,6 +298,9 @@
       shinkansen: "新幹線", 
       airplane: "飛行機", 
       hiace: "ハイエース",
+      shipping: "出荷",
+      receiving: "入荷",
+      delivery: "現場搬入",
       office: "事務所", 
       holiday: "休み", 
       meeting: "会議", 
@@ -304,6 +313,9 @@
       shinkansen: "#0055ff", 
       airplane: "#00aaff", 
       hiace: "#d97706",
+      shipping: "#8a4baf",
+      receiving: "#2b6cb0",
+      delivery: "#2f855a",
       office: "#333333", 
       holiday: "#ff2200", 
       meeting: "#ff8800", 
@@ -552,7 +564,6 @@
                 curr.setDate(curr.getDate() + 1);
               }
 
-              // 枠線ギャップ(1px)を補正して綺麗に跨ぐ計算
               bar.style.width = `calc(${spanDays * 100}% + ${(spanDays - 1) * 2}px)`;
               bar.innerText = targetEvent.title;
               wrapper.appendChild(bar);
