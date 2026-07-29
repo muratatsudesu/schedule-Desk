@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S-SCHEDULE</title>
+  <title>Q.T.S Scheduler</title>
 
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
 
   <style>
     * {
@@ -1225,15 +1226,47 @@
       .event-bar[draggable="true"] { cursor: default; }
     }
 
+
+    .header-subtitle { margin: 5px 0 0; color: #ead8b1; font-size: .72rem; letter-spacing: .22em; }
+    .dashboard-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+    .dashboard-tile { padding:16px; border:1px solid rgba(116,78,43,.3); border-radius:12px; background:linear-gradient(145deg,rgba(255,253,246,.96),rgba(236,220,193,.82)); box-shadow:inset 0 1px rgba(255,255,255,.75),0 5px 12px rgba(68,43,24,.10); }
+    .dashboard-label { color:#76583d; font-size:.78rem; font-weight:700; }
+    .dashboard-number { margin-top:5px; color:#4c3422; font-size:1.65rem; font-weight:800; }
+    .dashboard-mini { margin-top:6px; color:#725f50; font-size:.75rem; line-height:1.5; }
+    .priority-badge,.tag-chip,.attachment-chip { display:inline-flex;align-items:center;gap:4px;margin:3px 4px 3px 0;padding:3px 8px;border-radius:999px;font-size:.72rem;font-weight:700; }
+    .priority-high { color:#8a231e;background:#f9dfd8;border:1px solid #e7a89c; }
+    .priority-medium { color:#805915;background:#faedc9;border:1px solid #dfc576; }
+    .priority-low { color:#315d43;background:#dfeee3;border:1px solid #a8cfb4; }
+    .tag-chip { color:#5b422f;background:#eee2d1;border:1px solid #cfb898; }
+    .attachment-chip { color:#3f5360;background:#e4edf0;border:1px solid #b6cbd3;text-decoration:none; }
+    .attachment-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:9px;margin-top:9px; }
+    .attachment-card { position:relative;padding:8px;background:#faf6ed;border:1px solid #d8c6aa;border-radius:9px;overflow:hidden; }
+    .attachment-card img { width:100%;height:78px;object-fit:cover;border-radius:6px;display:block; }
+    .attachment-name { margin-top:5px;font-size:.7rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+    .attachment-remove { position:absolute;top:4px;right:4px;width:24px;height:24px;padding:0;border-radius:50%;border:0;background:rgba(83,45,27,.88);color:#fff;cursor:pointer; }
+    .upload-note { padding:9px 11px;border-radius:8px;background:#f7f0e2;border:1px dashed #c7ab81;color:#735a3f;font-size:.78rem; }
+    .csv-grid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px; }
+    @media(max-width:760px){.dashboard-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.csv-grid{grid-template-columns:1fr}}
+
   </style>
 </head>
 
 <body>
   <header class="header-banner">
-    <h1>Q.T.S-SCHEDULE</h1>
+    <h1>Q.T.S Scheduler</h1><p class="header-subtitle">WORK &amp; PROJECT PLANNER</p>
   </header>
 
   <div id="statusMessage" class="status-message" aria-live="polite"></div>
+
+  <section class="card">
+    <h2 class="card-title">📊 ダッシュボード</h2>
+    <div class="dashboard-grid">
+      <div class="dashboard-tile"><div class="dashboard-label">今日の予定</div><div class="dashboard-number" id="dashToday">0</div><div class="dashboard-mini" id="dashTodayDetail">未完了 0件</div></div>
+      <div class="dashboard-tile"><div class="dashboard-label">今週の予定</div><div class="dashboard-number" id="dashWeek">0</div><div class="dashboard-mini" id="dashWeekDetail">高優先度 0件</div></div>
+      <div class="dashboard-tile"><div class="dashboard-label">担当者別</div><div class="dashboard-number" id="dashPeople">0</div><div class="dashboard-mini" id="dashPeopleDetail">村口 0・金子 0・寺門 0</div></div>
+      <div class="dashboard-tile"><div class="dashboard-label">完了率</div><div class="dashboard-number" id="dashCompletion">0%</div><div class="dashboard-mini" id="dashCompletionDetail">完了 0 / 全体 0</div></div>
+    </div>
+  </section>
 
   <section class="card">
     <div class="filter-grid">
@@ -1370,6 +1403,18 @@
       </div>
     </div>
 
+    <div class="form-row">
+      <div class="form-group">
+        <label for="priority">優先度</label>
+        <select id="priority"><option value="medium">中</option><option value="high">高</option><option value="low">低</option></select>
+      </div>
+      <div class="form-group">
+        <label for="tags">タグ</label>
+        <input type="text" id="tags" maxlength="150" placeholder="例：見積, 現場, 至急">
+        <div class="helper-text">カンマ区切りで入力します。</div>
+      </div>
+    </div>
+
     <div class="form-group">
       <label for="title">タイトル</label>
       <input
@@ -1388,6 +1433,13 @@
         maxlength="1000"
         placeholder="場所や持ち物など"
       ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="attachmentFiles">添付ファイル</label>
+      <input type="file" id="attachmentFiles" multiple accept="image/*,.pdf,.doc,.docx,.xls,.xlsx">
+      <div class="upload-note">写真・PDF・Word・Excelを添付できます。1ファイル20MBまで。</div>
+      <div id="attachmentPreview" class="attachment-grid"></div>
     </div>
 
     <div class="btn-box">
@@ -1459,12 +1511,28 @@
             🎨 カテゴリー管理
           </button>
           <div class="future-setting">バックアップ・復元（今後追加予定）</div>
-          <div class="future-setting">CSV出力（今後追加予定）</div>
+          <button type="button" class="btn-secondary" id="btnOpenCsv">📤 CSV出力</button>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn-primary" data-close-modal="settingsModal">閉じる</button>
       </div>
+    </div>
+  </div>
+
+
+  <div id="csvModal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-header"><h2>📤 CSV出力</h2><button type="button" class="modal-close" data-close-modal="csvModal">×</button></div>
+      <div class="modal-body">
+        <div class="csv-grid">
+          <div><label for="csvStart">開始日</label><input type="date" id="csvStart"></div>
+          <div><label for="csvEnd">終了日</label><input type="date" id="csvEnd"></div>
+          <div><label for="csvAssignee">担当者</label><select id="csvAssignee"><option value="all">すべて</option><option>村口</option><option>金子</option><option>寺門</option><option value="none">担当者なし</option></select></div>
+        </div>
+        <div class="form-group" style="margin-top:12px"><label for="csvCategory">カテゴリー</label><select id="csvCategory"><option value="all">すべて</option></select></div>
+      </div>
+      <div class="modal-footer"><button type="button" class="btn-primary" id="btnExportCsv">CSVをダウンロード</button><button type="button" class="btn-secondary" data-close-modal="csvModal">閉じる</button></div>
     </div>
   </div>
 
@@ -1551,6 +1619,7 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+    const storage = firebase.storage();
 
     const defaultCategories = [
       { legacyKey: "shinkansen", name: "新幹線", icon: "🚄", color: "#0055ff", order: 10 },
@@ -1581,6 +1650,8 @@
     let draggedSchedule = null;
     let dragJustFinished = false;
     let touchDragState = null;
+    let pendingAttachmentFiles = [];
+    let currentAttachments = [];
 
     document.addEventListener("DOMContentLoaded", initializeApp);
 
@@ -1595,6 +1666,7 @@
       document.getElementById("recurrenceType").addEventListener("change", toggleRecurrenceOptions);
       document.getElementById("btnSubmit").addEventListener("click", addOrUpdateSchedule);
       document.getElementById("btnCancel").addEventListener("click", resetScheduleForm);
+      document.getElementById("attachmentFiles").addEventListener("change", handleAttachmentSelection);
       document.getElementById("btnPrevMonth").addEventListener("click", () => changeMonth(-1));
       document.getElementById("btnNextMonth").addEventListener("click", () => changeMonth(1));
       document.getElementById("btnShowAll").addEventListener("click", showAllSchedules);
@@ -1628,6 +1700,9 @@
         openModal("settingsModal");
       });
 
+      document.getElementById("btnOpenCsv").addEventListener("click", () => { closeModal("settingsModal"); prepareCsvModal(); openModal("csvModal"); });
+      document.getElementById("btnExportCsv").addEventListener("click", exportCsv);
+
       document.getElementById("btnOpenCategoryManager").addEventListener("click", () => {
         closeModal("settingsModal");
         resetCategoryForm();
@@ -1657,6 +1732,7 @@
           closeModal("detailModal");
           closeModal("categoryModal");
           closeModal("settingsModal");
+          closeModal("csvModal");
         }
       });
 
@@ -1740,6 +1816,7 @@
     }
 
     function renderAll() {
+      renderDashboard();
       renderTodaySchedules();
       renderCalendar();
       loadSchedules(selectedDateStr);
@@ -1760,6 +1837,14 @@
         option.textContent = `${category.icon || "📌"} ${category.name || "名称未設定"}`;
         select.appendChild(option);
       });
+
+      const csvSelect = document.getElementById("csvCategory");
+      if (csvSelect) {
+        const oldCsv = csvSelect.value;
+        csvSelect.innerHTML = '<option value="all">すべて</option>';
+        categories.forEach(category => { const option=document.createElement("option"); option.value=category.id; option.textContent=`${category.icon||"📌"} ${category.name||"名称未設定"}`; csvSelect.appendChild(option); });
+        if ([...csvSelect.options].some(option => option.value === oldCsv)) csvSelect.value=oldCsv;
+      }
 
       if (categories.some(category => category.id === previousValue)) {
         select.value = previousValue;
@@ -1940,6 +2025,8 @@
       const isCompleted = document.getElementById("isCompleted").checked;
       const recurrenceType = document.getElementById("recurrenceType").value;
       const recurrenceUntil = document.getElementById("recurrenceUntil").value || null;
+      const priority = document.getElementById("priority").value;
+      const tags = parseTags(document.getElementById("tags").value);
       const recurrenceWeekdays = Array.from(document.querySelectorAll('input[name="repeatWeekday"]:checked')).map(input => Number(input.value));
 
       if (!startDate || !title) {
@@ -1980,6 +2067,9 @@
         endTime,
         title,
         memo,
+        priority,
+        tags,
+        attachments: currentAttachments,
         assignees,
         isCompleted,
         recurrenceType,
@@ -2002,6 +2092,8 @@
 
       try {
         submitButton.disabled = true;
+        submitButton.textContent = pendingAttachmentFiles.length ? "ファイルをアップロード中…" : "保存中…";
+        let savedDocumentId = editId || null;
 
         if (editId) {
           const original = schedules.find(schedule => schedule.id === editId);
@@ -2022,12 +2114,10 @@
               recurrenceUntil: previousDay,
               updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             });
-            await db.collection("schedules").add({
-              ...data,
-              startDate,
-              endDate,
-              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            const newDoc = await db.collection("schedules").add({
+              ...data, startDate, endDate, createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
+            savedDocumentId = newDoc.id;
             showStatusMessage("この予定以降を更新しました。", "success");
           } else {
             const preserve = original ? {
@@ -2038,11 +2128,17 @@
             showStatusMessage("予定を更新しました。", "success");
           }
         } else {
-          await db.collection("schedules").add({
-            ...data,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          const newDoc = await db.collection("schedules").add({
+            ...data, createdAt: firebase.firestore.FieldValue.serverTimestamp()
           });
+          savedDocumentId = newDoc.id;
           showStatusMessage("予定を追加しました。", "success");
+        }
+
+        if (savedDocumentId && pendingAttachmentFiles.length) {
+          const uploaded = await uploadAttachments(savedDocumentId, pendingAttachmentFiles);
+          currentAttachments = [...currentAttachments, ...uploaded];
+          await db.collection("schedules").doc(savedDocumentId).update({ attachments: currentAttachments, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
         }
 
         localStorage.setItem("qtsLastCategoryId", selectedCategory.id);
@@ -2059,6 +2155,7 @@
         showStatusMessage("予定を保存できませんでした。", "error");
       } finally {
         submitButton.disabled = false;
+        if (!document.getElementById("editId").value) submitButton.textContent = "予定を追加する";
       }
     }
 
@@ -2084,6 +2181,12 @@
       document.getElementById("endTime").value = item.endTime || "";
       document.getElementById("title").value = item.title || "";
       document.getElementById("memo").value = item.memo || "";
+      document.getElementById("priority").value = item.priority || "medium";
+      document.getElementById("tags").value = Array.isArray(item.tags) ? item.tags.join(", ") : "";
+      currentAttachments = Array.isArray(original.attachments) ? [...original.attachments] : [];
+      pendingAttachmentFiles = [];
+      document.getElementById("attachmentFiles").value = "";
+      renderAttachmentPreview();
       document.getElementById("isCompleted").checked = Boolean(item.isCompleted);
       setSelectedAssignees(getScheduleAssignees(item));
       document.getElementById("recurrenceType").value = scope === "single" ? "none" : (original.recurrenceType || "none");
@@ -2111,6 +2214,9 @@
       document.getElementById("endTime").value = item.endTime || "";
       document.getElementById("title").value = item.title || "";
       document.getElementById("memo").value = item.memo || "";
+      document.getElementById("priority").value = item.priority || "medium";
+      document.getElementById("tags").value = Array.isArray(item.tags) ? item.tags.join(", ") : "";
+      currentAttachments = []; pendingAttachmentFiles = []; document.getElementById("attachmentFiles").value = ""; renderAttachmentPreview();
       document.getElementById("isCompleted").checked = false;
       setSelectedAssignees(getScheduleAssignees(item));
       document.getElementById("recurrenceType").value = "none";
@@ -2706,6 +2812,11 @@
       assignee.className = "assignee-text";
       assignee.textContent = `担当：${getAssigneeText(item)}`;
       info.appendChild(assignee);
+      const meta = document.createElement("div"); meta.style.marginTop="5px";
+      meta.appendChild(createPriorityBadge(item.priority));
+      (item.tags || []).forEach(tag => { const chip=document.createElement("span"); chip.className="tag-chip"; chip.textContent=`#${tag}`; meta.appendChild(chip); });
+      if ((item.attachments || []).length) { const chip=document.createElement("span"); chip.className="attachment-chip"; chip.textContent=`📎 ${item.attachments.length}件`; meta.appendChild(chip); }
+      info.appendChild(meta);
 
       if (item.memo) {
         const memo = document.createElement("div");
@@ -2803,6 +2914,9 @@
         assignee.className = "assignee-text";
         assignee.textContent = `担当：${getAssigneeText(item)}`;
         detail.appendChild(assignee);
+        const meta=document.createElement("div"); meta.style.marginTop="6px"; meta.appendChild(createPriorityBadge(item.priority));
+        (item.tags||[]).forEach(tag=>{const chip=document.createElement("span");chip.className="tag-chip";chip.textContent=`#${tag}`;meta.appendChild(chip);}); detail.appendChild(meta);
+        if ((item.attachments||[]).length) detail.appendChild(createAttachmentLinks(item.attachments));
 
         if (item.isCompleted) {
           const mark = document.createElement("span");
@@ -2925,6 +3039,18 @@
       return [];
     }
 
+    function parseTags(value) { return [...new Set(String(value||"").split(/[、,]/).map(v=>v.trim().replace(/^#/,"")).filter(Boolean))].slice(0,12); }
+    function getPriorityLabel(value) { return value === "high" ? "高" : value === "low" ? "低" : "中"; }
+    function createPriorityBadge(value) { const span=document.createElement("span"); const key=["high","medium","low"].includes(value)?value:"medium"; span.className=`priority-badge priority-${key}`; span.textContent=`★ 優先度 ${getPriorityLabel(key)}`; return span; }
+    function handleAttachmentSelection(event) { const selected=Array.from(event.target.files||[]); const tooLarge=selected.filter(file=>file.size>20*1024*1024); if(tooLarge.length) alert("20MBを超えるファイルは除外しました。"); pendingAttachmentFiles=selected.filter(file=>file.size<=20*1024*1024); renderAttachmentPreview(); }
+    function renderAttachmentPreview() { const box=document.getElementById("attachmentPreview"); if(!box)return; box.innerHTML=""; currentAttachments.forEach((file,index)=>{ const card=document.createElement("div");card.className="attachment-card"; if(file.contentType?.startsWith("image/")&&file.url){const img=document.createElement("img");img.src=file.url;img.alt=file.name||"添付画像";card.appendChild(img);} const name=document.createElement("div");name.className="attachment-name";name.textContent=file.name||"添付ファイル"; const remove=document.createElement("button");remove.className="attachment-remove";remove.type="button";remove.textContent="×";remove.addEventListener("click",()=>{currentAttachments.splice(index,1);renderAttachmentPreview();});card.append(name,remove);box.appendChild(card);}); pendingAttachmentFiles.forEach((file,index)=>{const card=document.createElement("div");card.className="attachment-card";const name=document.createElement("div");name.className="attachment-name";name.textContent=`アップロード待ち：${file.name}`;const remove=document.createElement("button");remove.className="attachment-remove";remove.type="button";remove.textContent="×";remove.addEventListener("click",()=>{pendingAttachmentFiles.splice(index,1);renderAttachmentPreview();});card.append(name,remove);box.appendChild(card);}); }
+    async function uploadAttachments(documentId, files) { const results=[]; for(const file of files){const safe=file.name.replace(/[^a-zA-Z0-9._\-ぁ-んァ-ヶ一-龠]/g,"_");const path=`schedule-attachments/${documentId}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${safe}`;const ref=storage.ref().child(path);await ref.put(file,{contentType:file.type||"application/octet-stream"});const url=await ref.getDownloadURL();results.push({name:file.name,url,path,size:file.size,contentType:file.type||"application/octet-stream"});}return results; }
+    function createAttachmentLinks(files) { const wrap=document.createElement("div");wrap.className="attachment-grid";(files||[]).forEach(file=>{const card=document.createElement("a");card.className="attachment-card";card.href=file.url;card.target="_blank";card.rel="noopener";if(file.contentType?.startsWith("image/")){const img=document.createElement("img");img.src=file.url;img.alt=file.name||"添付画像";card.appendChild(img);}const name=document.createElement("div");name.className="attachment-name";name.textContent=file.name||"添付ファイル";card.appendChild(name);wrap.appendChild(card);});return wrap; }
+    function renderDashboard() { const today=getLocalDateString(new Date());const day=createDateFromString(today);const weekEnd=getLocalDateString(new Date(day.getFullYear(),day.getMonth(),day.getDate()+6));const todayItems=getOccurrencesForRange(today,today);const weekItems=getOccurrencesForRange(today,weekEnd);document.getElementById("dashToday").textContent=todayItems.length;document.getElementById("dashTodayDetail").textContent=`未完了 ${todayItems.filter(x=>!x.isCompleted).length}件`;document.getElementById("dashWeek").textContent=weekItems.length;document.getElementById("dashWeekDetail").textContent=`高優先度 ${weekItems.filter(x=>x.priority==="high").length}件`;const counts=Object.fromEntries(fixedAssignees.map(n=>[n,weekItems.filter(x=>getScheduleAssignees(x).includes(n)).length]));document.getElementById("dashPeople").textContent=Object.values(counts).reduce((a,b)=>a+b,0);document.getElementById("dashPeopleDetail").textContent=`村口 ${counts["村口"]}・金子 ${counts["金子"]}・寺門 ${counts["寺門"]}`;const all=getOccurrencesForRange(today,weekEnd);const completed=all.filter(x=>x.isCompleted).length;const rate=all.length?Math.round(completed/all.length*100):0;document.getElementById("dashCompletion").textContent=`${rate}%`;document.getElementById("dashCompletionDetail").textContent=`完了 ${completed} / 全体 ${all.length}`; }
+    function prepareCsvModal(){const now=new Date();document.getElementById("csvStart").value=getLocalDateString(new Date(now.getFullYear(),now.getMonth(),1));document.getElementById("csvEnd").value=getLocalDateString(new Date(now.getFullYear(),now.getMonth()+1,0));}
+    function csvEscape(value){const text=String(value??"");return /[",\n]/.test(text)?`"${text.replace(/"/g,'""')}"`:text;}
+    function exportCsv(){const start=document.getElementById("csvStart").value;const end=document.getElementById("csvEnd").value;if(!start||!end||end<start){alert("正しい期間を指定してください。");return;}const assignee=document.getElementById("csvAssignee").value;const category=document.getElementById("csvCategory").value;let rows=getOccurrencesForRange(start,end).filter(item=>{const names=getScheduleAssignees(item);if(assignee==="none"&&names.length)return false;if(assignee!=="all"&&assignee!=="none"&&!names.includes(assignee))return false;if(category!=="all"&&getCategoryForSchedule(item).id!==category)return false;return true;}).sort(compareSchedules);const header=["開始日","終了日","開始時間","終了時間","終日","カテゴリー","タイトル","担当者","優先度","タグ","状態","メモ","添付数"];const lines=[header,...rows.map(item=>[item.startDate,item.endDate,item.startTime,item.endTime,item.isAllDay?"はい":"いいえ",getCategoryForSchedule(item).name,item.title,getAssigneeText(item),getPriorityLabel(item.priority),(item.tags||[]).join(" / "),item.isCompleted?"完了":"未完了",item.memo,(item.attachments||[]).length])].map(row=>row.map(csvEscape).join(","));const blob=new Blob(["\ufeff"+lines.join("\r\n")],{type:"text/csv;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`QTS_Scheduler_${start}_${end}.csv`;a.click();URL.revokeObjectURL(url);showStatusMessage(`${rows.length}件をCSV出力しました。`,"success");}
+
     function getAssigneeText(schedule) {
       const names = getScheduleAssignees(schedule);
       return names.length ? names.join("・") : "なし";
@@ -2956,7 +3082,10 @@
         schedule.endTime,
         getAssigneeText(schedule),
         schedule.isCompleted ? "完了" : "未完了",
-        getRecurrenceLabel(schedule)
+        getRecurrenceLabel(schedule),
+        getPriorityLabel(schedule.priority),
+        ...(schedule.tags || []),
+        ...(schedule.attachments || []).map(file => file.name)
       ].filter(Boolean).join(" "));
 
       return haystack.includes(searchKeyword);
