@@ -3,14 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Q.T.S-SCHEDULE</title>
-  
-  <!-- Firebase SDK の読み込み -->
+
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <style>
-    * { box-sizing: border-box; font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif; }
+    * {
+      box-sizing: border-box;
+      font-family:
+        "Helvetica Neue",
+        Arial,
+        "Hiragino Kaku Gothic ProN",
+        "Hiragino Sans",
+        Meiryo,
+        sans-serif;
+    }
+
     body {
       max-width: 960px;
       margin: 0 auto;
@@ -19,225 +30,740 @@
       color: #3e3332;
       letter-spacing: 0.02em;
     }
-    
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
     /* ヘッダー */
     .header-banner {
-      background: linear-gradient(135deg, #7a5c43 0%, #543c29 100%);
-      color: #faf8f5;
-      padding: 16px 12px;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(84, 60, 41, 0.15);
       margin-bottom: 16px;
+      padding: 16px 12px;
+      color: #faf8f5;
+      text-align: center;
+      background: linear-gradient(135deg, #7a5c43 0%, #543c29 100%);
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(84, 60, 41, 0.15);
     }
-    .header-banner h1 { margin: 0; font-size: 1.3rem; letter-spacing: 0.15em; font-weight: 600; text-transform: uppercase; }
-    
-    /* カードデザイン */
+
+    .header-banner h1 {
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    /* カード */
     .card {
-      background: #ffffff;
+      margin-bottom: 16px;
       padding: 16px;
+      background: #ffffff;
+      border: 1px solid #e5dfd5;
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(62, 51, 50, 0.04);
-      border: 1px solid #e5dfd5;
-      margin-bottom: 16px;
     }
-    
-    .form-group { margin-bottom: 12px; }
-    .form-row { display: flex; gap: 10px; }
-    .form-row > div { flex: 1; }
-    label { display: block; margin-bottom: 4px; font-weight: 600; font-size: 0.82rem; color: #543c29; }
-    input, select, textarea {
+
+    /* 入力フォーム */
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .form-row > div {
+      flex: 1;
+      min-width: 0;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 4px;
+      color: #543c29;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    input,
+    select,
+    textarea {
       width: 100%;
       padding: 9px 10px;
-      border: 1px solid #dcd5c9;
-      border-radius: 6px;
+      color: #3e3332;
       font-size: 0.9rem;
       background-color: #faf8f5;
-      color: #3e3332;
+      border: 1px solid #dcd5c9;
+      border-radius: 6px;
       transition: all 0.2s ease;
     }
-    input:disabled { background-color: #eee; color: #aaa; }
-    input:focus, select:focus, textarea:focus {
+
+    textarea {
+      resize: vertical;
+    }
+
+    input:disabled {
+      color: #aaa;
+      background-color: #eee;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
       outline: none;
-      border-color: #7a5c43;
       background-color: #ffffff;
+      border-color: #7a5c43;
       box-shadow: 0 0 0 2px rgba(122, 92, 67, 0.1);
     }
-    
-    /* 終日チェックボックス */
+
+    /* 終日チェック */
     .all-day-box {
       display: flex;
       align-items: center;
       gap: 6px;
       margin-bottom: 8px;
+      color: #543c29;
       font-size: 0.85rem;
       font-weight: 600;
-      color: #543c29;
       cursor: pointer;
     }
-    .all-day-box input[type="checkbox"] { width: auto; margin: 0; cursor: pointer; }
 
-    .btn-box { display: flex; gap: 10px; margin-top: 8px; }
+    .all-day-box input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    /* ボタン */
+    .btn-box {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
     button.btn-add {
       flex: 1;
       padding: 12px;
-      background: linear-gradient(135deg, #7a5c43 0%, #543c29 100%);
       color: #faf8f5;
-      border: none;
-      border-radius: 6px;
       font-size: 0.95rem;
       font-weight: 600;
       letter-spacing: 0.05em;
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(84, 60, 41, 0.2);
-    }
-    button.btn-cancel {
-      padding: 12px 16px;
-      background: #8e857e;
-      color: white;
+      background: linear-gradient(135deg, #7a5c43 0%, #543c29 100%);
       border: none;
       border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(84, 60, 41, 0.2);
+    }
+
+    button.btn-add:hover {
+      opacity: 0.9;
+    }
+
+    button.btn-add:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    button.btn-cancel {
+      display: none;
+      padding: 12px 16px;
+      color: white;
       font-size: 0.85rem;
       cursor: pointer;
-      display: none;
+      background: #8e857e;
+      border: none;
+      border-radius: 6px;
     }
 
     /* カレンダー */
-    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .calendar-header h2 { font-size: 1.1rem; margin: 0; color: #543c29; font-weight: 600; }
-    .calendar-header button {
-      background: #f2ece4;
-      border: 1px solid #dcd5c9;
+    .calendar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .calendar-header h2 {
+      margin: 0;
       color: #543c29;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .calendar-header button {
       padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
+      color: #543c29;
       font-size: 0.8rem;
       font-weight: 600;
-    }
-    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: #e5dfd5; border: 1px solid #e5dfd5; border-radius: 6px; overflow: visible; }
-    .day-header { background: #faf8f5; font-weight: 600; font-size: 0.75rem; color: #7a6b5d; padding: 6px 0; text-align: center; }
-    
-    .day-cell {
-      background: #ffffff;
-      min-height: 60px;
-      font-size: 0.8rem;
+      white-space: nowrap;
       cursor: pointer;
+      background: #f2ece4;
+      border: 1px solid #dcd5c9;
+      border-radius: 4px;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 1px;
+      overflow: visible;
+      background: #e5dfd5;
+      border: 1px solid #e5dfd5;
+      border-radius: 6px;
+    }
+
+    .day-header {
+      padding: 6px 0;
+      color: #7a6b5d;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-align: center;
+      background: #faf8f5;
+    }
+
+    .day-header.sunday {
+      color: #d23b32;
+    }
+
+    .day-header.saturday {
+      color: #3366bb;
+    }
+
+    .day-cell {
       position: relative;
-      color: #3e3332;
       display: flex;
       flex-direction: column;
+      min-width: 0;
+      min-height: 68px;
       overflow: visible;
+      color: #3e3332;
+      font-size: 0.8rem;
+      cursor: pointer;
+      background: #ffffff;
     }
-    .day-cell:hover { background: #faf5ee; }
-    .day-cell.selected { background: #fdf8f3; }
-    .day-number { padding: 2px 4px; font-weight: 600; font-size: 0.75rem; }
-    .day-cell.today .day-number { color: #0055ff; font-weight: bold; }
-    
-    /* イベントバー表示スタイル */
-    .events-container { display: flex; flex-direction: column; gap: 2px; flex-grow: 1; padding-bottom: 2px; width: 100%; }
-    .event-bar-wrapper { height: 18px; position: relative; width: 100%; }
+
+    .day-cell:hover {
+      background: #faf5ee;
+    }
+
+    .day-cell.selected {
+      background: #fdf0e5;
+      box-shadow: inset 0 0 0 2px #b88962;
+    }
+
+    .day-cell.empty {
+      cursor: default;
+      background: #f7f5f0;
+    }
+
+    .day-number {
+      padding: 3px 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .day-number.sunday {
+      color: #d23b32;
+    }
+
+    .day-number.saturday {
+      color: #3366bb;
+    }
+
+    .day-cell.today .day-number {
+      color: #0055ff;
+      font-weight: bold;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+    }
+
+    /* カレンダー内イベントバー */
+    .events-container {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+      gap: 2px;
+      width: 100%;
+      padding-bottom: 2px;
+    }
+
+    .event-bar-wrapper {
+      position: relative;
+      width: 100%;
+      height: 20px;
+    }
+
     .event-bar {
-      height: 18px;
-      line-height: 18px;
-      color: #ffffff !important;
-      font-size: 0.65rem;
-      padding: 0 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       position: absolute;
       top: 0;
       left: 0;
       z-index: 5;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      height: 20px;
+      padding: 0 4px;
+      overflow: hidden;
+      color: #ffffff !important;
+      font-size: 0.62rem;
       font-weight: 600;
-      -webkit-text-fill-color: #ffffff;
+      line-height: 20px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       border-radius: 2px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      -webkit-text-fill-color: #ffffff;
     }
 
     /* カテゴリーカラー */
-    .cat-shinkansen { background-color: #0055ff !important; }
-    .cat-airplane { background-color: #00aaff !important; }
-    .cat-hiace { background-color: #d97706 !important; }
-    .cat-shipping { background-color: #8a4baf !important; }  /* 出荷 */
-    .cat-receiving { background-color: #2b6cb0 !important; } /* 入荷 */
-    .cat-delivery { background-color: #2f855a !important; }  /* 現場搬入 */
-    .cat-office { background-color: #333333 !important; }
-    .cat-holiday { background-color: #ff2200 !important; }
-    .cat-meeting { background-color: #ff8800 !important; }
-    .cat-trip { background-color: #00aa44 !important; }
-    .cat-private { background-color: #aa00cc !important; }
-    .cat-other { background-color: #885522 !important; }
+    .cat-shinkansen {
+      background-color: #0055ff !important;
+    }
+
+    .cat-airplane {
+      background-color: #00aaff !important;
+    }
+
+    .cat-hiace {
+      background-color: #d97706 !important;
+    }
+
+    .cat-shipping {
+      background-color: #8a4baf !important;
+    }
+
+    .cat-receiving {
+      background-color: #2b6cb0 !important;
+    }
+
+    .cat-delivery {
+      background-color: #2f855a !important;
+    }
+
+    .cat-office {
+      background-color: #333333 !important;
+    }
+
+    .cat-holiday {
+      background-color: #ff2200 !important;
+    }
+
+    .cat-meeting {
+      background-color: #ff8800 !important;
+    }
+
+    .cat-trip {
+      background-color: #00aa44 !important;
+    }
+
+    .cat-outing {
+      background-color: #008b8b !important;
+    }
+
+    .cat-private {
+      background-color: #aa00cc !important;
+    }
+
+    .cat-other {
+      background-color: #885522 !important;
+    }
 
     /* 予定一覧 */
-    .list-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 12px; color: #543c29; display: flex; justify-content: space-between; align-items: center; }
-    .schedule-item {
-      background: #faf8f5;
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 8px;
+    .list-title {
       display: flex;
+      align-items: center;
       justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: #543c29;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .btn-show-all {
+      padding: 4px 10px;
+      color: #543c29;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: #f2ece4;
+      border: 1px solid #dcd5c9;
+      border-radius: 4px;
+    }
+
+    .schedule-item {
+      display: flex;
       align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      padding: 12px;
+      background: #faf8f5;
       border: 1px solid #e5dfd5;
       border-left: 5px solid #8e857e;
+      border-radius: 8px;
     }
-    .schedule-info { flex-grow: 1; }
-    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; margin-right: 6px; font-weight: 600; color: white; }
-    .schedule-time { font-size: 0.8rem; color: #555; font-weight: 600; }
-    .schedule-title { font-size: 0.95rem; font-weight: 600; margin: 4px 0; color: #2c2221; }
-    .schedule-memo { font-size: 0.82rem; color: #555; white-space: pre-wrap; margin-top: 4px; line-height: 1.4; }
-    .action-btns { display: flex; gap: 6px; }
-    .btn-edit { background: #557799; color: white; border: none; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; }
-    .btn-del { background: #cc3333; color: white; border: none; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; }
+
+    .schedule-info {
+      flex-grow: 1;
+      min-width: 0;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-right: 6px;
+      padding: 2px 8px;
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 600;
+      border-radius: 4px;
+    }
+
+    .schedule-time {
+      color: #555;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .schedule-title {
+      margin: 4px 0;
+      overflow-wrap: anywhere;
+      color: #2c2221;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .schedule-memo {
+      margin-top: 4px;
+      overflow-wrap: anywhere;
+      color: #555;
+      font-size: 0.82rem;
+      line-height: 1.4;
+      white-space: pre-wrap;
+    }
+
+    .action-btns {
+      display: flex;
+      flex-shrink: 0;
+      gap: 6px;
+    }
+
+    .btn-edit,
+    .btn-del {
+      padding: 5px 10px;
+      color: white;
+      font-size: 0.75rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .btn-edit {
+      background: #557799;
+    }
+
+    .btn-del {
+      background: #cc3333;
+    }
+
+    .empty-message {
+      margin: 15px 0;
+      color: #888;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    /* 詳細モーダル */
+    .detail-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      padding: 18px;
+      overflow-y: auto;
+      background: rgba(35, 29, 26, 0.58);
+    }
+
+    .detail-modal.open {
+      display: block;
+    }
+
+    .detail-modal-content {
+      width: 100%;
+      max-width: 700px;
+      margin: 25px auto;
+      overflow: hidden;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+    }
+
+    .detail-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 15px 18px;
+      color: #faf8f5;
+      background: linear-gradient(135deg, #7a5c43 0%, #543c29 100%);
+    }
+
+    .detail-modal-header h2 {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .detail-modal-close {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      color: white;
+      font-size: 1.7rem;
+      line-height: 1;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.16);
+      border: none;
+      border-radius: 50%;
+    }
+
+    .detail-modal-body {
+      padding: 16px;
+    }
+
+    .detail-schedule-item {
+      margin-bottom: 12px;
+      padding: 14px;
+      background: #faf8f5;
+      border: 1px solid #e5dfd5;
+      border-left: 6px solid #8e857e;
+      border-radius: 8px;
+    }
+
+    .detail-schedule-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .detail-category-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 7px;
+    }
+
+    .detail-time {
+      color: #555;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .detail-title {
+      overflow-wrap: anywhere;
+      color: #2c2221;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .detail-date-range {
+      margin-top: 6px;
+      color: #6e625c;
+      font-size: 0.78rem;
+    }
+
+    .detail-memo {
+      margin-top: 9px;
+      padding-top: 9px;
+      overflow-wrap: anywhere;
+      color: #555;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      border-top: 1px solid #e5dfd5;
+    }
+
+    .detail-action-btns {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .detail-action-btns button {
+      min-width: 70px;
+    }
+
+    .detail-footer {
+      padding: 0 16px 16px;
+    }
+
+    .detail-close-btn {
+      width: 100%;
+      padding: 11px;
+      color: white;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: #7a5c43;
+      border: none;
+      border-radius: 6px;
+    }
+
+    /* 読み込み・エラー表示 */
+    .status-message {
+      display: none;
+      margin-bottom: 12px;
+      padding: 10px;
+      font-size: 0.85rem;
+      border-radius: 6px;
+    }
+
+    .status-message.error {
+      display: block;
+      color: #8a1f1f;
+      background: #fdeaea;
+      border: 1px solid #efb4b4;
+    }
+
+    .status-message.success {
+      display: block;
+      color: #225d31;
+      background: #eaf7ed;
+      border: 1px solid #b5dfbd;
+    }
 
     @media (min-width: 768px) {
-      .day-cell { min-height: 100px; }
-      .event-bar { font-size: 0.78rem; height: 22px; line-height: 22px; padding: 0 6px; }
-      .event-bar-wrapper { height: 22px; }
-      .day-number { font-size: 0.85rem; padding: 4px 6px; }
+      .day-cell {
+        min-height: 105px;
+      }
+
+      .event-bar {
+        height: 23px;
+        padding: 0 6px;
+        font-size: 0.75rem;
+        line-height: 23px;
+      }
+
+      .event-bar-wrapper {
+        height: 23px;
+      }
+
+      .day-number {
+        padding: 4px 6px;
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 8px;
+      }
+
+      .card {
+        padding: 11px;
+      }
+
+      .form-row {
+        gap: 7px;
+      }
+
+      .calendar-header button {
+        padding: 6px 8px;
+        font-size: 0.72rem;
+      }
+
+      .calendar-header h2 {
+        font-size: 0.95rem;
+      }
+
+      .day-cell {
+        min-height: 62px;
+      }
+
+      .day-number {
+        font-size: 0.7rem;
+      }
+
+      .event-bar {
+        padding: 0 2px;
+        font-size: 0.55rem;
+      }
+
+      .schedule-item {
+        flex-direction: column;
+      }
+
+      .action-btns {
+        align-self: flex-end;
+      }
+
+      .detail-modal {
+        padding: 8px;
+      }
+
+      .detail-modal-content {
+        margin: 8px auto;
+      }
+
+      .detail-modal-header {
+        padding: 13px;
+      }
+
+      .detail-modal-body {
+        padding: 12px;
+      }
     }
   </style>
 </head>
-<body>
 
+<body>
   <div class="header-banner">
     <h1>Q.T.S-SCHEDULE</h1>
   </div>
 
+  <div id="statusMessage" class="status-message"></div>
+
   <!-- 予定入力フォーム -->
   <div class="card">
     <input type="hidden" id="editId" value="">
-    
+
     <div class="form-row">
       <div class="form-group">
-        <label>開始日</label>
-        <input type="date" id="startDate" onchange="syncEndDate()">
+        <label for="startDate">開始日</label>
+        <input type="date" id="startDate">
       </div>
+
       <div class="form-group">
-        <label>終了日</label>
+        <label for="endDate">終了日</label>
         <input type="date" id="endDate">
       </div>
     </div>
 
     <label class="all-day-box">
-      <input type="checkbox" id="isAllDay" onchange="toggleAllDay()"> 終日
+      <input type="checkbox" id="isAllDay">
+      終日
     </label>
 
     <div class="form-row" id="timeRow">
       <div class="form-group">
-        <label>開始時間</label>
+        <label for="startTime">開始時間</label>
         <input type="time" id="startTime">
       </div>
+
       <div class="form-group">
-        <label>終了時間</label>
+        <label for="endTime">終了時間</label>
         <input type="time" id="endTime">
       </div>
     </div>
 
     <div class="form-group">
-      <label>カテゴリー</label>
+      <label for="category">カテゴリー</label>
+
       <select id="category">
         <option value="shinkansen">新幹線</option>
         <option value="airplane">飛行機</option>
@@ -248,35 +774,66 @@
         <option value="office">事務所</option>
         <option value="holiday">休み</option>
         <option value="meeting">会議</option>
-        <option value="trip">出張・施工</option>
+        <option value="trip">出張</option>
+        <option value="outing">外出</option>
         <option value="private">プライベート</option>
         <option value="other">その他</option>
       </select>
     </div>
-    
+
     <div class="form-group">
-      <label>タイトル</label>
-      <input type="text" id="title" placeholder="例：〇〇邸 搬入作業">
+      <label for="title">タイトル</label>
+      <input
+        type="text"
+        id="title"
+        maxlength="100"
+        placeholder="例：〇〇邸 搬入作業"
+      >
     </div>
 
     <div class="form-group">
-      <label>メモ</label>
-      <textarea id="memo" rows="2" placeholder="場所や持ち物など"></textarea>
+      <label for="memo">メモ</label>
+      <textarea
+        id="memo"
+        rows="3"
+        maxlength="1000"
+        placeholder="場所や持ち物など"
+      ></textarea>
     </div>
 
     <div class="btn-box">
-      <button class="btn-add" id="btnSubmit" onclick="addOrUpdateSchedule()">予定を追加する</button>
-      <button class="btn-cancel" id="btnCancel" onclick="resetForm()">キャンセル</button>
+      <button
+        type="button"
+        class="btn-add"
+        id="btnSubmit"
+      >
+        予定を追加する
+      </button>
+
+      <button
+        type="button"
+        class="btn-cancel"
+        id="btnCancel"
+      >
+        キャンセル
+      </button>
     </div>
   </div>
 
   <!-- 月間カレンダー -->
   <div class="card">
     <div class="calendar-header">
-      <button onclick="changeMonth(-1)">◀ 前月</button>
+      <button type="button" id="btnPrevMonth">
+        ◀ 前月
+      </button>
+
       <h2 id="calendar-month-year"></h2>
-      <button onclick="changeMonth(1)">次月 ▶</button>
+
+      <button type="button" id="btnNextMonth">
+        次月 ▶
+      </button>
     </div>
+
     <div class="calendar-grid" id="calendar-grid"></div>
   </div>
 
@@ -284,121 +841,465 @@
   <div class="card">
     <div class="list-title">
       <span id="selected-date-display">予定一覧</span>
-      <button onclick="showAllSchedules()" style="font-size:0.78rem; padding: 4px 10px; cursor:pointer; background:#f2ece4; border:1px solid #dcd5c9; border-radius:4px; color:#543c29; font-weight:600;">全表示</button>
+
+      <button
+        type="button"
+        class="btn-show-all"
+        id="btnShowAll"
+      >
+        全表示
+      </button>
     </div>
+
     <div id="schedule-list"></div>
   </div>
 
+  <!-- 選択日の詳細モーダル -->
+  <div
+    id="detailModal"
+    class="detail-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="detailDateTitle"
+  >
+    <div class="detail-modal-content">
+      <div class="detail-modal-header">
+        <h2 id="detailDateTitle">スケジュール詳細</h2>
+
+        <button
+          type="button"
+          class="detail-modal-close"
+          id="btnModalClose"
+          aria-label="詳細画面を閉じる"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="detail-modal-body">
+        <div id="detailScheduleList"></div>
+      </div>
+
+      <div class="detail-footer">
+        <button
+          type="button"
+          class="detail-close-btn"
+          id="btnModalFooterClose"
+        >
+          閉じる
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // ▼▼▼ Firebaseの設定（ご自身のFirebase設定情報に置き換えてください）▼▼▼
-   const firebaseConfig = {
-  apiKey: "AIzaSyCL6VijHRZryh7DdxNVcBdDXhRJtx2JU-4",
-  authDomain: "qts-schedule.firebaseapp.com",
-  projectId: "qts-schedule",
-  storageBucket: "qts-schedule.firebasestorage.app",
-  messagingSenderId: "641800381769",
-  appId: "1:641800381769:web:0fa2527128e11b605b6698"
-};
-    // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+    /*
+     * Firebase設定
+     * 現在使用中のFirebaseプロジェクト情報を引き継いでいます。
+     */
+    const firebaseConfig = {
+      apiKey: "AIzaSyCL6VijHRZryh7DdxNVcBdDXhRJtx2JU-4",
+      authDomain: "qts-schedule.firebaseapp.com",
+      projectId: "qts-schedule",
+      storageBucket: "qts-schedule.firebasestorage.app",
+      messagingSenderId: "641800381769",
+      appId: "1:641800381769:web:0fa2527128e11b605b6698"
+    };
 
     firebase.initializeApp(firebaseConfig);
+
     const db = firebase.firestore();
 
     let schedules = [];
     let currentDisplayDate = new Date();
-    let selectedDateStr = new Date().toISOString().split('T')[0];
+    let selectedDateStr = getLocalDateString(new Date());
+    let detailSelectedDate = null;
 
-    const categoryNames = { 
-      shinkansen: "新幹線", airplane: "飛行機", hiace: "ハイエース",
-      shipping: "出荷", receiving: "入荷", delivery: "現場搬入",
-      office: "事務所", holiday: "休み", meeting: "会議", 
-      trip: "出張・施工", private: "プライベート", other: "その他" 
+    const categoryNames = {
+      shinkansen: "新幹線",
+      airplane: "飛行機",
+      hiace: "ハイエース",
+      shipping: "出荷",
+      receiving: "入荷",
+      delivery: "現場搬入",
+      office: "事務所",
+      holiday: "休み",
+      meeting: "会議",
+      trip: "出張",
+      outing: "外出",
+      private: "プライベート",
+      other: "その他"
     };
 
-    const categoryColors = { 
-      shinkansen: "#0055ff", airplane: "#00aaff", hiace: "#d97706",
-      shipping: "#8a4baf", receiving: "#2b6cb0", delivery: "#2f855a",
-      office: "#333333", holiday: "#ff2200", meeting: "#ff8800", 
-      trip: "#00aa44", private: "#aa00cc", other: "#885522" 
+    const categoryColors = {
+      shinkansen: "#0055ff",
+      airplane: "#00aaff",
+      hiace: "#d97706",
+      shipping: "#8a4baf",
+      receiving: "#2b6cb0",
+      delivery: "#2f855a",
+      office: "#333333",
+      holiday: "#ff2200",
+      meeting: "#ff8800",
+      trip: "#00aa44",
+      outing: "#008b8b",
+      private: "#aa00cc",
+      other: "#885522"
     };
 
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", initializeApp);
+
+    function initializeApp() {
       document.getElementById("startDate").value = selectedDateStr;
       document.getElementById("endDate").value = selectedDateStr;
 
-      // Firestoreからリアルタイム同期（PC・スマホ双方で即時反映）
-      db.collection("schedules").onSnapshot(snapshot => {
-        schedules = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        schedules.sort((a, b) => (a.startDate + (a.startTime || "00:00")).localeCompare(b.startDate + (b.startTime || "00:00")));
-        renderCalendar();
-        loadSchedules(selectedDateStr);
+      document
+        .getElementById("startDate")
+        .addEventListener("change", syncEndDate);
+
+      document
+        .getElementById("isAllDay")
+        .addEventListener("change", toggleAllDay);
+
+      document
+        .getElementById("btnSubmit")
+        .addEventListener("click", addOrUpdateSchedule);
+
+      document
+        .getElementById("btnCancel")
+        .addEventListener("click", resetForm);
+
+      document
+        .getElementById("btnPrevMonth")
+        .addEventListener("click", () => changeMonth(-1));
+
+      document
+        .getElementById("btnNextMonth")
+        .addEventListener("click", () => changeMonth(1));
+
+      document
+        .getElementById("btnShowAll")
+        .addEventListener("click", showAllSchedules);
+
+      document
+        .getElementById("btnModalClose")
+        .addEventListener("click", closeDetailModal);
+
+      document
+        .getElementById("btnModalFooterClose")
+        .addEventListener("click", closeDetailModal);
+
+      document
+        .getElementById("detailModal")
+        .addEventListener("click", event => {
+          if (event.target.id === "detailModal") {
+            closeDetailModal();
+          }
+        });
+
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+          closeDetailModal();
+        }
       });
-    });
+
+      toggleAllDay();
+      renderCalendar();
+
+      /*
+       * Firestoreからリアルタイム同期
+       * PCやスマートフォンで変更すると、自動的に再表示されます。
+       */
+      db.collection("schedules").onSnapshot(
+        snapshot => {
+          schedules = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }));
+
+          schedules.sort(compareSchedules);
+
+          renderCalendar();
+          loadSchedules(selectedDateStr);
+
+          if (detailSelectedDate) {
+            renderDetailSchedules(detailSelectedDate);
+          }
+
+          clearStatusMessage();
+        },
+        error => {
+          console.error("Firestore読み込みエラー:", error);
+
+          showStatusMessage(
+            "予定の読み込みに失敗しました。Firebaseの設定や通信状態を確認してください。",
+            "error"
+          );
+        }
+      );
+    }
+
+    /*
+     * ローカル時間を基準に YYYY-MM-DD を作成します。
+     * toISOString()による日付のずれを防止します。
+     */
+    function getLocalDateString(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+
+      return `${year}-${month}-${day}`;
+    }
+
+    function formatJapaneseDate(dateStr) {
+      if (!dateStr) {
+        return "";
+      }
+
+      const parts = dateStr.split("-");
+
+      if (parts.length !== 3) {
+        return dateStr;
+      }
+
+      const year = Number(parts[0]);
+      const month = Number(parts[1]);
+      const day = Number(parts[2]);
+
+      const date = new Date(year, month - 1, day);
+      const weekdays = [
+        "日",
+        "月",
+        "火",
+        "水",
+        "木",
+        "金",
+        "土"
+      ];
+
+      return `${year}年${month}月${day}日（${weekdays[date.getDay()]}）`;
+    }
+
+    function compareSchedules(a, b) {
+      const dateCompare = (a.startDate || "").localeCompare(
+        b.startDate || ""
+      );
+
+      if (dateCompare !== 0) {
+        return dateCompare;
+      }
+
+      if (a.isAllDay && !b.isAllDay) {
+        return -1;
+      }
+
+      if (!a.isAllDay && b.isAllDay) {
+        return 1;
+      }
+
+      return (a.startTime || "00:00").localeCompare(
+        b.startTime || "00:00"
+      );
+    }
 
     function toggleAllDay() {
-      const isChecked = document.getElementById("isAllDay").checked;
-      const startTimeInput = document.getElementById("startTime");
-      const endTimeInput = document.getElementById("endTime");
+      const isChecked =
+        document.getElementById("isAllDay").checked;
+
+      const startTimeInput =
+        document.getElementById("startTime");
+
+      const endTimeInput =
+        document.getElementById("endTime");
+
       startTimeInput.disabled = isChecked;
       endTimeInput.disabled = isChecked;
-      if (isChecked) { startTimeInput.value = ""; endTimeInput.value = ""; }
+
+      if (isChecked) {
+        startTimeInput.value = "";
+        endTimeInput.value = "";
+      }
     }
 
     function syncEndDate() {
-      const start = document.getElementById("startDate").value;
-      const end = document.getElementById("endDate").value;
-      if (!end || end < start) { document.getElementById("endDate").value = start; }
+      const start =
+        document.getElementById("startDate").value;
+
+      const end =
+        document.getElementById("endDate").value;
+
+      if (!end || end < start) {
+        document.getElementById("endDate").value = start;
+      }
     }
 
     async function addOrUpdateSchedule() {
-      const editId = document.getElementById("editId").value;
-      const startDate = document.getElementById("startDate").value;
-      const endDate = document.getElementById("endDate").value || startDate;
-      const isAllDay = document.getElementById("isAllDay").checked;
-      const startTime = isAllDay ? "" : document.getElementById("startTime").value;
-      const endTime = isAllDay ? "" : document.getElementById("endTime").value;
-      const title = document.getElementById("title").value;
-      const category = document.getElementById("category").value;
-      const memo = document.getElementById("memo").value;
+      const submitButton =
+        document.getElementById("btnSubmit");
+
+      const editId =
+        document.getElementById("editId").value;
+
+      const startDate =
+        document.getElementById("startDate").value;
+
+      const endDate =
+        document.getElementById("endDate").value || startDate;
+
+      const isAllDay =
+        document.getElementById("isAllDay").checked;
+
+      const startTime = isAllDay
+        ? ""
+        : document.getElementById("startTime").value;
+
+      const endTime = isAllDay
+        ? ""
+        : document.getElementById("endTime").value;
+
+      const title =
+        document.getElementById("title").value.trim();
+
+      const category =
+        document.getElementById("category").value;
+
+      const memo =
+        document.getElementById("memo").value.trim();
 
       if (!startDate || !title) {
-        alert("開始日とタイトルを入力してください");
+        alert("開始日とタイトルを入力してください。");
         return;
       }
 
-      const data = { startDate, endDate, isAllDay, startTime, endTime, title, category, memo };
-
-      if (editId) {
-        await db.collection("schedules").doc(editId).update(data);
-      } else {
-        await db.collection("schedules").add(data);
+      if (endDate < startDate) {
+        alert("終了日は開始日以降の日付を選択してください。");
+        return;
       }
 
-      resetForm();
-      selectedDateStr = startDate;
+      if (
+        startDate === endDate &&
+        startTime &&
+        endTime &&
+        endTime < startTime
+      ) {
+        alert("終了時間は開始時間以降に設定してください。");
+        return;
+      }
+
+      const data = {
+        startDate,
+        endDate,
+        isAllDay,
+        startTime,
+        endTime,
+        title,
+        category,
+        memo
+      };
+
+      try {
+        submitButton.disabled = true;
+
+        if (editId) {
+          await db
+            .collection("schedules")
+            .doc(editId)
+            .update(data);
+
+          showStatusMessage(
+            "予定を更新しました。",
+            "success"
+          );
+        } else {
+          await db
+            .collection("schedules")
+            .add(data);
+
+          showStatusMessage(
+            "予定を追加しました。",
+            "success"
+          );
+        }
+
+        selectedDateStr = startDate;
+
+        const selectedDate = createDateFromString(startDate);
+
+        if (selectedDate) {
+          currentDisplayDate = new Date(
+            selectedDate.getFullYear(),
+            selectedDate.getMonth(),
+            1
+          );
+        }
+
+        resetForm();
+        renderCalendar();
+        loadSchedules(selectedDateStr);
+      } catch (error) {
+        console.error("予定の保存エラー:", error);
+
+        showStatusMessage(
+          "予定を保存できませんでした。Firebaseの設定や通信状態を確認してください。",
+          "error"
+        );
+      } finally {
+        submitButton.disabled = false;
+      }
     }
 
     function editSchedule(id) {
-      const item = schedules.find(s => s.id === id);
-      if (!item) return;
+      const item = schedules.find(schedule => schedule.id === id);
 
-      document.getElementById("editId").value = item.id;
-      document.getElementById("startDate").value = item.startDate;
-      document.getElementById("endDate").value = item.endDate || item.startDate;
-      
-      const isAllDay = !!item.isAllDay;
-      document.getElementById("isAllDay").checked = isAllDay;
+      if (!item) {
+        return;
+      }
+
+      closeDetailModal();
+
+      document.getElementById("editId").value =
+        item.id;
+
+      document.getElementById("startDate").value =
+        item.startDate;
+
+      document.getElementById("endDate").value =
+        item.endDate || item.startDate;
+
+      const isAllDay = Boolean(item.isAllDay);
+
+      document.getElementById("isAllDay").checked =
+        isAllDay;
+
       toggleAllDay();
 
-      document.getElementById("startTime").value = item.startTime || "";
-      document.getElementById("endTime").value = item.endTime || "";
-      document.getElementById("category").value = item.category || "shinkansen";
-      document.getElementById("title").value = item.title;
-      document.getElementById("memo").value = item.memo || "";
+      document.getElementById("startTime").value =
+        item.startTime || "";
 
-      document.getElementById("btnSubmit").innerText = "予定を更新する";
-      document.getElementById("btnCancel").style.display = "block";
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.getElementById("endTime").value =
+        item.endTime || "";
+
+      document.getElementById("category").value =
+        categoryNames[item.category]
+          ? item.category
+          : "other";
+
+      document.getElementById("title").value =
+        item.title || "";
+
+      document.getElementById("memo").value =
+        item.memo || "";
+
+      document.getElementById("btnSubmit").innerText =
+        "予定を更新する";
+
+      document.getElementById("btnCancel").style.display =
+        "block";
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
     }
 
     function resetForm() {
@@ -406,67 +1307,134 @@
       document.getElementById("title").value = "";
       document.getElementById("memo").value = "";
       document.getElementById("isAllDay").checked = false;
-      toggleAllDay();
       document.getElementById("startTime").value = "";
       document.getElementById("endTime").value = "";
-      document.getElementById("btnSubmit").innerText = "予定を追加する";
-      document.getElementById("btnCancel").style.display = "none";
+      document.getElementById("btnSubmit").innerText =
+        "予定を追加する";
+
+      document.getElementById("btnCancel").style.display =
+        "none";
+
+      toggleAllDay();
+
+      if (selectedDateStr) {
+        document.getElementById("startDate").value =
+          selectedDateStr;
+
+        document.getElementById("endDate").value =
+          selectedDateStr;
+      }
     }
 
     function renderCalendar() {
-      const grid = document.getElementById("calendar-grid");
+      const grid =
+        document.getElementById("calendar-grid");
+
       grid.innerHTML = "";
 
-      const year = currentDisplayDate.getFullYear();
-      const month = currentDisplayDate.getMonth();
-      document.getElementById("calendar-month-year").innerText = `${year}年 ${month + 1}月`;
+      const year =
+        currentDisplayDate.getFullYear();
 
-      const days = ["日", "月", "火", "水", "木", "金", "土"];
-      days.forEach(d => {
-        const h = document.createElement("div");
-        h.className = "day-header";
-        h.innerText = d;
-        grid.appendChild(h);
+      const month =
+        currentDisplayDate.getMonth();
+
+      document.getElementById(
+        "calendar-month-year"
+      ).innerText = `${year}年 ${month + 1}月`;
+
+      const days = [
+        "日",
+        "月",
+        "火",
+        "水",
+        "木",
+        "金",
+        "土"
+      ];
+
+      days.forEach((day, index) => {
+        const header =
+          document.createElement("div");
+
+        header.className = "day-header";
+        header.innerText = day;
+
+        if (index === 0) {
+          header.classList.add("sunday");
+        }
+
+        if (index === 6) {
+          header.classList.add("saturday");
+        }
+
+        grid.appendChild(header);
       });
 
-      const firstDay = new Date(year, month, 1).getDay();
-      const lastDate = new Date(year, month + 1, 0).getDate();
+      const firstDay =
+        new Date(year, month, 1).getDay();
+
+      const lastDate =
+        new Date(year, month + 1, 0).getDate();
 
       for (let i = 0; i < firstDay; i++) {
-        const emptyCell = document.createElement("div");
-        emptyCell.className = "day-cell";
-        emptyCell.style.background = "#f7f5f0";
+        const emptyCell =
+          document.createElement("div");
+
+        emptyCell.className = "day-cell empty";
         grid.appendChild(emptyCell);
       }
 
-      const todayStr = new Date().toISOString().split('T')[0];
+      const todayStr =
+        getLocalDateString(new Date());
 
       const daySlots = {};
-      for (let d = 1; d <= lastDate; d++) {
-        const mStr = String(month + 1).padStart(2, '0');
-        const dStr = String(d).padStart(2, '0');
-        daySlots[`${year}-${mStr}-${dStr}`] = [];
+
+      for (let day = 1; day <= lastDate; day++) {
+        const dateStr =
+          createCalendarDateString(year, month, day);
+
+        daySlots[dateStr] = [];
       }
 
-      const activeSchedules = schedules.filter(s => {
-        const start = s.startDate;
-        const end = s.endDate || s.startDate;
-        const monthStart = `${year}-${String(month + 1).padStart(2, '0')}-01`;
-        const monthEnd = `${year}-${String(month + 1).padStart(2, '0')}-${String(lastDate).padStart(2, '0')}`;
+      const monthStart =
+        createCalendarDateString(year, month, 1);
+
+      const monthEnd =
+        createCalendarDateString(year, month, lastDate);
+
+      const activeSchedules = schedules.filter(schedule => {
+        const start = schedule.startDate;
+        const end =
+          schedule.endDate || schedule.startDate;
+
         return start <= monthEnd && end >= monthStart;
       });
 
       const scheduleSlots = {};
-      activeSchedules.forEach(s => {
+
+      activeSchedules.forEach(schedule => {
         let slot = 0;
         let available = false;
+
         while (!available) {
           available = true;
-          for (let d = 1; d <= lastDate; d++) {
-            const mStr = String(month + 1).padStart(2, '0');
-            const dStr = String(d).padStart(2, '0');
-            const dateStr = `${year}-${mStr}-${dStr}`;
-            if (dateStr >= s.startDate && dateStr <= (s.endDate || s.startDate)) {
+
+          for (let day = 1; day <= lastDate; day++) {
+            const dateStr =
+              createCalendarDateString(
+                year,
+                month,
+                day
+              );
+
+            const end =
+              schedule.endDate ||
+              schedule.startDate;
+
+            if (
+              dateStr >= schedule.startDate &&
+              dateStr <= end
+            ) {
               if (daySlots[dateStr][slot]) {
                 available = false;
                 slot++;
@@ -475,149 +1443,728 @@
             }
           }
         }
-        scheduleSlots[s.id] = slot;
-        for (let d = 1; d <= lastDate; d++) {
-          const mStr = String(month + 1).padStart(2, '0');
-          const dStr = String(d).padStart(2, '0');
-          const dateStr = `${year}-${mStr}-${dStr}`;
-          if (dateStr >= s.startDate && dateStr <= (s.endDate || s.startDate)) {
-            daySlots[dateStr][slot] = s.id;
+
+        scheduleSlots[schedule.id] = slot;
+
+        for (let day = 1; day <= lastDate; day++) {
+          const dateStr =
+            createCalendarDateString(
+              year,
+              month,
+              day
+            );
+
+          const end =
+            schedule.endDate ||
+            schedule.startDate;
+
+          if (
+            dateStr >= schedule.startDate &&
+            dateStr <= end
+          ) {
+            daySlots[dateStr][slot] =
+              schedule.id;
           }
         }
       });
 
-      for (let d = 1; d <= lastDate; d++) {
-        const cell = document.createElement("div");
-        const monthFormatted = String(month + 1).padStart(2, '0');
-        const dayFormatted = String(d).padStart(2, '0');
-        const dateStr = `${year}-${monthFormatted}-${dayFormatted}`;
-        const dayOfWeek = new Date(year, month, d).getDay();
+      for (let day = 1; day <= lastDate; day++) {
+        const cell =
+          document.createElement("div");
+
+        const dateStr =
+          createCalendarDateString(
+            year,
+            month,
+            day
+          );
+
+        const dayOfWeek =
+          new Date(year, month, day).getDay();
 
         cell.className = "day-cell";
-        if (dateStr === todayStr) cell.classList.add("today");
-        if (dateStr === selectedDateStr) cell.classList.add("selected");
 
-        const dayNum = document.createElement("div");
-        dayNum.className = "day-number";
-        dayNum.innerText = d;
-        cell.appendChild(dayNum);
+        if (dateStr === todayStr) {
+          cell.classList.add("today");
+        }
 
-        const eventsContainer = document.createElement("div");
-        eventsContainer.className = "events-container";
+        if (dateStr === selectedDateStr) {
+          cell.classList.add("selected");
+        }
 
-        const dayEvents = activeSchedules.filter(s => dateStr >= s.startDate && dateStr <= (s.endDate || s.startDate));
-        const maxSlot = Math.max(-1, ...dayEvents.map(s => scheduleSlots[s.id]));
+        const dayNumber =
+          document.createElement("div");
 
-        for (let i = 0; i <= maxSlot; i++) {
-          const wrapper = document.createElement("div");
-          wrapper.className = "event-bar-wrapper";
+        dayNumber.className = "day-number";
+        dayNumber.innerText = day;
 
-          const targetEvent = dayEvents.find(s => scheduleSlots[s.id] === i);
+        if (dayOfWeek === 0) {
+          dayNumber.classList.add("sunday");
+        }
+
+        if (dayOfWeek === 6) {
+          dayNumber.classList.add("saturday");
+        }
+
+        cell.appendChild(dayNumber);
+
+        const eventsContainer =
+          document.createElement("div");
+
+        eventsContainer.className =
+          "events-container";
+
+        const dayEvents =
+          activeSchedules.filter(schedule => {
+            const end =
+              schedule.endDate ||
+              schedule.startDate;
+
+            return (
+              dateStr >= schedule.startDate &&
+              dateStr <= end
+            );
+          });
+
+        const maxSlot = Math.max(
+          -1,
+          ...dayEvents.map(
+            schedule =>
+              scheduleSlots[schedule.id]
+          )
+        );
+
+        for (let slot = 0; slot <= maxSlot; slot++) {
+          const wrapper =
+            document.createElement("div");
+
+          wrapper.className =
+            "event-bar-wrapper";
+
+          const targetEvent =
+            dayEvents.find(
+              schedule =>
+                scheduleSlots[schedule.id] === slot
+            );
+
           if (targetEvent) {
-            const targetEnd = targetEvent.endDate || targetEvent.startDate;
-            const isStart = dateStr === targetEvent.startDate || dayOfWeek === 0 || d === 1;
+            const targetEnd =
+              targetEvent.endDate ||
+              targetEvent.startDate;
 
-            if (isStart) {
-              const bar = document.createElement("div");
-              bar.className = `event-bar cat-${targetEvent.category}`;
+            /*
+             * 予定バーは、予定開始日・日曜日・月初日に
+             * 新しいバーとして描画します。
+             */
+            const isSegmentStart =
+              dateStr === targetEvent.startDate ||
+              dayOfWeek === 0 ||
+              day === 1;
+
+            if (isSegmentStart) {
+              const bar =
+                document.createElement("div");
+
+              const category =
+                categoryNames[targetEvent.category]
+                  ? targetEvent.category
+                  : "other";
+
+              bar.className =
+                `event-bar cat-${category}`;
 
               let spanDays = 0;
-              let curr = new Date(year, month, d);
+              const current =
+                new Date(year, month, day);
+
               while (true) {
-                const currFormatted = `${curr.getFullYear()}-${String(curr.getMonth() + 1).padStart(2, '0')}-${String(curr.getDate()).padStart(2, '0')}`;
-                if (currFormatted > targetEnd) break;
-                
+                const currentFormatted =
+                  getLocalDateString(current);
+
+                if (currentFormatted > targetEnd) {
+                  break;
+                }
+
                 spanDays++;
-                if (curr.getDay() === 6 || curr.getDate() === lastDate) break;
-                curr.setDate(curr.getDate() + 1);
+
+                if (
+                  current.getDay() === 6 ||
+                  current.getMonth() !== month ||
+                  current.getDate() === lastDate
+                ) {
+                  break;
+                }
+
+                current.setDate(
+                  current.getDate() + 1
+                );
               }
 
-              bar.style.width = `calc(${spanDays * 100}% + ${(spanDays - 1) * 2}px)`;
-              bar.innerText = targetEvent.title;
+              bar.style.width =
+                `calc(${spanDays * 100}% + ${(spanDays - 1) * 2}px)`;
+
+              /*
+               * カラーバーに時間を表示します。
+               * 終日の予定はタイトルのみ表示します。
+               */
+              const barText =
+                createEventBarText(targetEvent);
+
+              bar.innerText = barText;
+              bar.title = createEventTooltip(targetEvent);
+
               wrapper.appendChild(bar);
             }
           }
+
           eventsContainer.appendChild(wrapper);
         }
 
         cell.appendChild(eventsContainer);
 
-        cell.onclick = () => {
-          selectedDateStr = dateStr;
-          document.getElementById("startDate").value = dateStr;
-          document.getElementById("endDate").value = dateStr;
-          renderCalendar();
-          loadSchedules(dateStr);
-        };
+        cell.addEventListener("click", () => {
+          selectCalendarDate(dateStr);
+        });
 
         grid.appendChild(cell);
       }
     }
 
+    function createCalendarDateString(
+      year,
+      zeroBasedMonth,
+      day
+    ) {
+      const month =
+        String(zeroBasedMonth + 1).padStart(2, "0");
+
+      const formattedDay =
+        String(day).padStart(2, "0");
+
+      return `${year}-${month}-${formattedDay}`;
+    }
+
+    function createEventBarText(schedule) {
+      const title =
+        schedule.title || "無題";
+
+      if (
+        schedule.isAllDay ||
+        !schedule.startTime
+      ) {
+        return title;
+      }
+
+      return `${schedule.startTime} ${title}`;
+    }
+
+    function createEventTooltip(schedule) {
+      const category =
+        categoryNames[schedule.category] ||
+        "その他";
+
+      const time =
+        getScheduleTimeText(schedule);
+
+      return `${category} / ${time} / ${schedule.title || "無題"}`;
+    }
+
+    function selectCalendarDate(dateStr) {
+      selectedDateStr = dateStr;
+
+      document.getElementById("startDate").value =
+        dateStr;
+
+      document.getElementById("endDate").value =
+        dateStr;
+
+      renderCalendar();
+      loadSchedules(dateStr);
+      openDetailModal(dateStr);
+    }
+
     function changeMonth(delta) {
-      currentDisplayDate.setMonth(currentDisplayDate.getMonth() + delta);
+      currentDisplayDate.setDate(1);
+
+      currentDisplayDate.setMonth(
+        currentDisplayDate.getMonth() + delta
+      );
+
       renderCalendar();
     }
 
     function loadSchedules(filterDate = null) {
-      const listContainer = document.getElementById("schedule-list");
+      const listContainer =
+        document.getElementById("schedule-list");
+
+      const displayTitle =
+        document.getElementById(
+          "selected-date-display"
+        );
+
       listContainer.innerHTML = "";
 
-      const displayTitle = document.getElementById("selected-date-display");
-      let listData = schedules;
+      let listData = [...schedules];
 
       if (filterDate) {
-        listData = schedules.filter(s => filterDate >= s.startDate && filterDate <= (s.endDate || s.startDate));
-        displayTitle.innerText = `📅 ${filterDate} の予定`;
+        listData = schedules.filter(schedule => {
+          const end =
+            schedule.endDate ||
+            schedule.startDate;
+
+          return (
+            filterDate >= schedule.startDate &&
+            filterDate <= end
+          );
+        });
+
+        displayTitle.innerText =
+          `📅 ${formatJapaneseDate(filterDate)}の予定`;
       } else {
-        displayTitle.innerText = `📅 すべての予定`;
+        displayTitle.innerText =
+          "📅 すべての予定";
       }
 
+      listData.sort(compareSchedules);
+
       if (listData.length === 0) {
-        listContainer.innerHTML = '<p style="text-align:center; color:#888; font-size:0.85rem; margin:15px 0;">予定はありません</p>';
+        const emptyMessage =
+          document.createElement("p");
+
+        emptyMessage.className =
+          "empty-message";
+
+        emptyMessage.innerText =
+          "予定はありません";
+
+        listContainer.appendChild(emptyMessage);
         return;
       }
 
       listData.forEach(item => {
-        const div = document.createElement("div");
-        div.className = "schedule-item";
-        div.style.borderLeftColor = categoryColors[item.category] || "#8e857e";
-
-        let timeRangeText = "☀️ 終日";
-        if (!item.isAllDay && item.startTime) {
-          timeRangeText = `⏰ ${item.startTime}` + (item.endTime ? `〜${item.endTime}` : "");
-        }
-
-        const dateRangeText = (item.endDate && item.endDate !== item.startDate) 
-          ? `${item.startDate} 〜 ${item.endDate}` 
-          : item.startDate;
-
-        const catBadge = `<span class="badge cat-${item.category}" style="background-color:${categoryColors[item.category]}">${categoryNames[item.category] || "その他"}</span>`;
-
-        div.innerHTML = `
-          <div class="schedule-info">
-            <div>${catBadge} <span class="schedule-time">${dateRangeText} ${timeRangeText}</span></div>
-            <div class="schedule-title">${item.title}</div>
-            ${item.memo ? `<div class="schedule-memo">${item.memo}</div>` : ''}
-          </div>
-          <div class="action-btns">
-            <button class="btn-edit" onclick="editSchedule('${item.id}')">編集</button>
-            <button class="btn-del" onclick="deleteSchedule('${item.id}')">削除</button>
-          </div>
-        `;
-        listContainer.appendChild(div);
+        listContainer.appendChild(
+          createScheduleListItem(item)
+        );
       });
+    }
+
+    function createScheduleListItem(item) {
+      const scheduleItem =
+        document.createElement("div");
+
+      scheduleItem.className =
+        "schedule-item";
+
+      scheduleItem.style.borderLeftColor =
+        categoryColors[item.category] ||
+        categoryColors.other;
+
+      const scheduleInfo =
+        document.createElement("div");
+
+      scheduleInfo.className =
+        "schedule-info";
+
+      const upperRow =
+        document.createElement("div");
+
+      const badge =
+        document.createElement("span");
+
+      badge.className =
+        `badge cat-${getValidCategory(item.category)}`;
+
+      badge.innerText =
+        categoryNames[item.category] ||
+        "その他";
+
+      const scheduleTime =
+        document.createElement("span");
+
+      scheduleTime.className =
+        "schedule-time";
+
+      const dateRangeText =
+        getScheduleDateRangeText(item);
+
+      scheduleTime.innerText =
+        `${dateRangeText} ${getScheduleTimeText(item)}`;
+
+      upperRow.appendChild(badge);
+      upperRow.appendChild(scheduleTime);
+
+      const scheduleTitle =
+        document.createElement("div");
+
+      scheduleTitle.className =
+        "schedule-title";
+
+      scheduleTitle.innerText =
+        item.title || "無題";
+
+      scheduleInfo.appendChild(upperRow);
+      scheduleInfo.appendChild(scheduleTitle);
+
+      if (item.memo) {
+        const scheduleMemo =
+          document.createElement("div");
+
+        scheduleMemo.className =
+          "schedule-memo";
+
+        scheduleMemo.innerText = item.memo;
+
+        scheduleInfo.appendChild(scheduleMemo);
+      }
+
+      const actionButtons =
+        document.createElement("div");
+
+      actionButtons.className =
+        "action-btns";
+
+      const editButton =
+        document.createElement("button");
+
+      editButton.type = "button";
+      editButton.className = "btn-edit";
+      editButton.innerText = "編集";
+
+      editButton.addEventListener("click", () => {
+        editSchedule(item.id);
+      });
+
+      const deleteButton =
+        document.createElement("button");
+
+      deleteButton.type = "button";
+      deleteButton.className = "btn-del";
+      deleteButton.innerText = "削除";
+
+      deleteButton.addEventListener("click", () => {
+        deleteSchedule(item.id);
+      });
+
+      actionButtons.appendChild(editButton);
+      actionButtons.appendChild(deleteButton);
+
+      scheduleItem.appendChild(scheduleInfo);
+      scheduleItem.appendChild(actionButtons);
+
+      return scheduleItem;
     }
 
     function showAllSchedules() {
       selectedDateStr = null;
+
       renderCalendar();
       loadSchedules(null);
     }
 
+    function openDetailModal(dateStr) {
+      detailSelectedDate = dateStr;
+
+      document.getElementById(
+        "detailDateTitle"
+      ).innerText =
+        `📅 ${formatJapaneseDate(dateStr)}のスケジュール`;
+
+      renderDetailSchedules(dateStr);
+
+      document
+        .getElementById("detailModal")
+        .classList.add("open");
+
+      document.body.classList.add(
+        "modal-open"
+      );
+
+      document
+        .getElementById("btnModalClose")
+        .focus();
+    }
+
+    function renderDetailSchedules(dateStr) {
+      const list =
+        document.getElementById(
+          "detailScheduleList"
+        );
+
+      list.innerHTML = "";
+
+      const daySchedules =
+        schedules.filter(schedule => {
+          const end =
+            schedule.endDate ||
+            schedule.startDate;
+
+          return (
+            dateStr >= schedule.startDate &&
+            dateStr <= end
+          );
+        });
+
+      daySchedules.sort(compareSchedules);
+
+      if (daySchedules.length === 0) {
+        const emptyMessage =
+          document.createElement("p");
+
+        emptyMessage.className =
+          "empty-message";
+
+        emptyMessage.innerText =
+          "この日の予定はありません";
+
+        list.appendChild(emptyMessage);
+        return;
+      }
+
+      daySchedules.forEach(item => {
+        list.appendChild(
+          createDetailScheduleItem(item)
+        );
+      });
+    }
+
+    function createDetailScheduleItem(item) {
+      const detailItem =
+        document.createElement("div");
+
+      detailItem.className =
+        "detail-schedule-item";
+
+      detailItem.style.borderLeftColor =
+        categoryColors[item.category] ||
+        categoryColors.other;
+
+      const categoryRow =
+        document.createElement("div");
+
+      categoryRow.className =
+        "detail-category-row";
+
+      const badge =
+        document.createElement("span");
+
+      badge.className =
+        `badge cat-${getValidCategory(item.category)}`;
+
+      badge.innerText =
+        categoryNames[item.category] ||
+        "その他";
+
+      const time =
+        document.createElement("span");
+
+      time.className = "detail-time";
+      time.innerText =
+        getScheduleTimeText(item);
+
+      categoryRow.appendChild(badge);
+      categoryRow.appendChild(time);
+
+      const title =
+        document.createElement("div");
+
+      title.className = "detail-title";
+      title.innerText =
+        item.title || "無題";
+
+      const dateRange =
+        document.createElement("div");
+
+      dateRange.className =
+        "detail-date-range";
+
+      dateRange.innerText =
+        `期間：${getScheduleDateRangeText(item)}`;
+
+      detailItem.appendChild(categoryRow);
+      detailItem.appendChild(title);
+      detailItem.appendChild(dateRange);
+
+      if (item.memo) {
+        const memo =
+          document.createElement("div");
+
+        memo.className = "detail-memo";
+        memo.innerText = item.memo;
+
+        detailItem.appendChild(memo);
+      }
+
+      const actionButtons =
+        document.createElement("div");
+
+      actionButtons.className =
+        "detail-action-btns";
+
+      const editButton =
+        document.createElement("button");
+
+      editButton.type = "button";
+      editButton.className = "btn-edit";
+      editButton.innerText = "編集";
+
+      editButton.addEventListener("click", () => {
+        editSchedule(item.id);
+      });
+
+      const deleteButton =
+        document.createElement("button");
+
+      deleteButton.type = "button";
+      deleteButton.className = "btn-del";
+      deleteButton.innerText = "削除";
+
+      deleteButton.addEventListener("click", () => {
+        deleteSchedule(item.id);
+      });
+
+      actionButtons.appendChild(editButton);
+      actionButtons.appendChild(deleteButton);
+
+      detailItem.appendChild(actionButtons);
+
+      return detailItem;
+    }
+
+    function closeDetailModal() {
+      const modal =
+        document.getElementById("detailModal");
+
+      if (!modal.classList.contains("open")) {
+        return;
+      }
+
+      modal.classList.remove("open");
+      document.body.classList.remove(
+        "modal-open"
+      );
+
+      detailSelectedDate = null;
+    }
+
     async function deleteSchedule(id) {
-      if (!confirm("本当に削除しますか？")) return;
-      await db.collection("schedules").doc(id).delete();
+      const item =
+        schedules.find(schedule => schedule.id === id);
+
+      const title =
+        item?.title || "この予定";
+
+      const confirmed =
+        confirm(`「${title}」を削除しますか？`);
+
+      if (!confirmed) {
+        return;
+      }
+
+      try {
+        await db
+          .collection("schedules")
+          .doc(id)
+          .delete();
+
+        showStatusMessage(
+          "予定を削除しました。",
+          "success"
+        );
+      } catch (error) {
+        console.error("予定の削除エラー:", error);
+
+        showStatusMessage(
+          "予定を削除できませんでした。Firebaseの設定や通信状態を確認してください。",
+          "error"
+        );
+      }
+    }
+
+    function getScheduleTimeText(schedule) {
+      if (
+        schedule.isAllDay ||
+        !schedule.startTime
+      ) {
+        return "☀️ 終日";
+      }
+
+      if (schedule.endTime) {
+        return `⏰ ${schedule.startTime}〜${schedule.endTime}`;
+      }
+
+      return `⏰ ${schedule.startTime}`;
+    }
+
+    function getScheduleDateRangeText(schedule) {
+      const start =
+        schedule.startDate || "";
+
+      const end =
+        schedule.endDate || start;
+
+      if (end && end !== start) {
+        return `${start} 〜 ${end}`;
+      }
+
+      return start;
+    }
+
+    function getValidCategory(category) {
+      return categoryNames[category]
+        ? category
+        : "other";
+    }
+
+    function createDateFromString(dateStr) {
+      if (!dateStr) {
+        return null;
+      }
+
+      const parts =
+        dateStr.split("-").map(Number);
+
+      if (parts.length !== 3) {
+        return null;
+      }
+
+      return new Date(
+        parts[0],
+        parts[1] - 1,
+        parts[2]
+      );
+    }
+
+    function showStatusMessage(
+      message,
+      type = "success"
+    ) {
+      const status =
+        document.getElementById(
+          "statusMessage"
+        );
+
+      status.className =
+        `status-message ${type}`;
+
+      status.innerText = message;
+
+      window.setTimeout(() => {
+        if (status.innerText === message) {
+          clearStatusMessage();
+        }
+      }, 4000);
+    }
+
+    function clearStatusMessage() {
+      const status =
+        document.getElementById(
+          "statusMessage"
+        );
+
+      status.className =
+        "status-message";
+
+      status.innerText = "";
     }
   </script>
 </body>
