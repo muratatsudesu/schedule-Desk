@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.5.2</title>
+  <title>Q.T.S Scheduler — Ver.5.3</title>
 
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -1272,7 +1272,7 @@
     .attachment-card.photo-open-button { border: 0; padding: 0; text-align: left; cursor: zoom-in; font: inherit; }
 
 
-    /* ===== Ver.5.2 visual refresh ===== */
+    /* ===== Ver.5.3 visual refresh ===== */
     :root {
       --brown-dark: #3f291c;
       --brown: #765037;
@@ -1470,6 +1470,15 @@
       font-weight: 700;
     }
 
+
+    .drop-action-card { text-align:center; }
+    .drop-action-card .drop-action-icon { font-size:2rem; margin-bottom:6px; }
+    .drop-action-card .drop-action-title { font-weight:800; color:var(--brown-dark); margin-bottom:6px; }
+    .drop-action-card .drop-action-text { color:#6f6258; line-height:1.7; }
+    .drop-action-buttons { display:grid; grid-template-columns:1fr 1fr; gap:10px; width:100%; }
+    .drop-action-buttons button { min-height:46px; }
+    .drop-action-cancel { margin-top:8px; width:100%; }
+
     @media (max-width: 640px) {
       body { padding: 8px; }
       .header-banner { min-height: 102px; padding: 20px 12px 18px; border-radius: 14px; }
@@ -1483,7 +1492,7 @@
 
 <body>
   <header class="header-banner">
-    <h1>Q.T.S Scheduler</h1><p class="header-subtitle">WORK &amp; PROJECT PLANNER</p><div class="version-badge" id="headerVersion">Ver.5.2</div>
+    <h1>Q.T.S Scheduler</h1><p class="header-subtitle">WORK &amp; PROJECT PLANNER</p><div class="version-badge" id="headerVersion">Ver.5.3</div>
   </header>
 
   <div id="statusMessage" class="status-message" aria-live="polite"></div>
@@ -1601,38 +1610,6 @@
       </label>
     </div>
 
-    <div class="recurrence-panel">
-      <div class="form-group" style="margin-bottom:0;">
-        <label for="recurrenceType">繰り返し</label>
-        <select id="recurrenceType">
-          <option value="none">繰り返しなし</option>
-          <option value="daily">毎日</option>
-          <option value="weekly">毎週</option>
-          <option value="monthly">毎月</option>
-          <option value="yearly">毎年</option>
-        </select>
-      </div>
-      <div id="recurrenceOptions" class="recurrence-options" hidden>
-        <div id="weeklyOptions" hidden>
-          <label>曜日（複数選択可）</label>
-          <div class="weekday-picker">
-            <label><input type="checkbox" name="repeatWeekday" value="0">日</label>
-            <label><input type="checkbox" name="repeatWeekday" value="1">月</label>
-            <label><input type="checkbox" name="repeatWeekday" value="2">火</label>
-            <label><input type="checkbox" name="repeatWeekday" value="3">水</label>
-            <label><input type="checkbox" name="repeatWeekday" value="4">木</label>
-            <label><input type="checkbox" name="repeatWeekday" value="5">金</label>
-            <label><input type="checkbox" name="repeatWeekday" value="6">土</label>
-          </div>
-        </div>
-        <div>
-          <label for="recurrenceUntil">繰り返し終了日</label>
-          <input type="date" id="recurrenceUntil">
-          <div class="helper-text">空欄の場合は終了日なしです。</div>
-        </div>
-      </div>
-    </div>
-
     <div class="form-row">
       <div class="form-group">
         <label for="priority">優先度</label>
@@ -1694,7 +1671,7 @@
     </div>
 
     <div class="calendar-drag-guide">
-      🪵 予定を別の日へドラッグすると日付を変更できます。スマートフォンでは予定を約0.5秒長押ししてから移動してください。
+      🪵 予定を別の日へドラッグすると「移動」または「コピー」を選べます。スマートフォンでは予定を約0.5秒長押ししてから移動してください。
     </div>
     <div class="calendar-grid" id="calendarGrid"></div>
   </section>
@@ -1728,6 +1705,29 @@
   </div>
 
 
+
+  <!-- ドラッグ時の操作選択 -->
+  <div id="dropActionModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="dropActionTitle">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="dropActionTitle">予定の操作</h2>
+        <button type="button" class="modal-close" id="btnDropCancelTop">×</button>
+      </div>
+      <div class="modal-body drop-action-card">
+        <div class="drop-action-icon">📅</div>
+        <div class="drop-action-title" id="dropActionScheduleTitle">予定</div>
+        <div class="drop-action-text" id="dropActionText">移動しますか？コピーしますか？</div>
+      </div>
+      <div class="modal-footer" style="display:block;">
+        <div class="drop-action-buttons">
+          <button type="button" class="btn-primary" id="btnDropMove">↪ 移動</button>
+          <button type="button" class="btn-secondary" id="btnDropCopy">⧉ コピー</button>
+        </div>
+        <button type="button" class="btn-secondary drop-action-cancel" id="btnDropCancel">キャンセル</button>
+      </div>
+    </div>
+  </div>
+
   <!-- 設定 -->
   <div id="settingsModal" class="modal" role="dialog" aria-modal="true">
     <div class="modal-content">
@@ -1744,8 +1744,9 @@
           <button type="button" class="btn-secondary" id="btnOpenCsv">📤 CSV出力</button>
         </div>
         <div class="app-info-panel">
-          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.5.2</span><br>
+          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.5.3</span><br>
           無料プラン対応・写真圧縮保存版<br>
+          Ver.5.3：繰り返し機能を廃止・ドラッグコピー対応<br>
           更新日：2026年7月29日
         </div>
       </div>
@@ -1850,7 +1851,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "5.2";
+    const APP_VERSION = "5.3";
     const APP_BUILD_DATE = "2026-07-29";
 
     const firebaseConfig = {
@@ -1896,6 +1897,7 @@
     let touchDragState = null;
     let pendingAttachmentFiles = [];
     let currentAttachments = [];
+    let dropActionResolver = null;
 
     document.addEventListener("DOMContentLoaded", () => {
       document.documentElement.dataset.appVersion = APP_VERSION;
@@ -1912,9 +1914,8 @@
       document.getElementById("todayTitle").textContent =
         `今日の予定：${formatJapaneseDate(getLocalDateString(new Date()))}`;
 
-      document.getElementById("startDate").addEventListener("change", () => { syncEndDate(); toggleRecurrenceOptions(); });
+      document.getElementById("startDate").addEventListener("change", syncEndDate);
       document.getElementById("isAllDay").addEventListener("change", toggleAllDay);
-      document.getElementById("recurrenceType").addEventListener("change", toggleRecurrenceOptions);
       document.getElementById("btnSubmit").addEventListener("click", addOrUpdateSchedule);
       document.getElementById("btnCancel").addEventListener("click", resetScheduleForm);
       document.getElementById("attachmentFiles").addEventListener("change", handleAttachmentSelection);
@@ -1970,10 +1971,16 @@
         button.addEventListener("click", () => closeModal(button.dataset.closeModal));
       });
 
+      document.getElementById("btnDropMove").addEventListener("click", () => resolveDropAction("move"));
+      document.getElementById("btnDropCopy").addEventListener("click", () => resolveDropAction("copy"));
+      document.getElementById("btnDropCancel").addEventListener("click", () => resolveDropAction(null));
+      document.getElementById("btnDropCancelTop").addEventListener("click", () => resolveDropAction(null));
+
       document.querySelectorAll(".modal").forEach(modal => {
         modal.addEventListener("click", event => {
           if (event.target === modal) {
-            closeModal(modal.id);
+            if (modal.id === "dropActionModal") resolveDropAction(null);
+            else closeModal(modal.id);
           }
         });
       });
@@ -1984,6 +1991,7 @@
           closeModal("categoryModal");
           closeModal("settingsModal");
           closeModal("csvModal");
+          resolveDropAction(null);
         }
       });
 
@@ -2274,11 +2282,11 @@
       const selectedCategory = categories.find(category => category.id === categoryId);
       const assignees = getSelectedAssignees();
       const isCompleted = document.getElementById("isCompleted").checked;
-      const recurrenceType = document.getElementById("recurrenceType").value;
-      const recurrenceUntil = document.getElementById("recurrenceUntil").value || null;
+      const recurrenceType = "none";
+      const recurrenceUntil = null;
       const priority = document.getElementById("priority").value;
       const tags = parseTags(document.getElementById("tags").value);
-      const recurrenceWeekdays = Array.from(document.querySelectorAll('input[name="repeatWeekday"]:checked')).map(input => Number(input.value));
+      const recurrenceWeekdays = [];
 
       if (!startDate || !title) {
         alert("開始日とタイトルを入力してください。");
@@ -2297,16 +2305,6 @@
 
       if (startDate === endDate && startTime && endTime && endTime < startTime) {
         alert("終了時間は開始時間以降にしてください。");
-        return;
-      }
-
-      if (recurrenceUntil && recurrenceUntil < startDate) {
-        alert("繰り返し終了日は開始日以降にしてください。");
-        return;
-      }
-
-      if (recurrenceType === "weekly" && recurrenceWeekdays.length === 0) {
-        alert("毎週の繰り返しでは曜日を1つ以上選択してください。");
         return;
       }
 
@@ -2434,10 +2432,6 @@
       renderAttachmentPreview();
       document.getElementById("isCompleted").checked = Boolean(item.isCompleted);
       setSelectedAssignees(getScheduleAssignees(item));
-      document.getElementById("recurrenceType").value = scope === "single" ? "none" : (original.recurrenceType || "none");
-      document.getElementById("recurrenceUntil").value = scope === "single" ? "" : (original.recurrenceUntil || "");
-      setWeekdays(scope === "single" ? [] : (original.recurrenceWeekdays || []));
-      toggleRecurrenceOptions();
       const category = getCategoryForSchedule(item);
       if (category?.id && categories.some(entry => entry.id === category.id)) document.getElementById("category").value = category.id;
       document.getElementById("btnSubmit").textContent = scope === "single" ? "この予定だけ更新" : scope === "future" ? "この予定以降を更新" : "予定を更新する";
@@ -2464,9 +2458,6 @@
       currentAttachments = []; pendingAttachmentFiles = []; document.getElementById("attachmentFiles").value = ""; renderAttachmentPreview();
       document.getElementById("isCompleted").checked = false;
       setSelectedAssignees(getScheduleAssignees(item));
-      document.getElementById("recurrenceType").value = "none";
-      document.getElementById("recurrenceUntil").value = "";
-      setWeekdays([]); toggleRecurrenceOptions();
       const category = getCategoryForSchedule(item); if (category?.id) document.getElementById("category").value = category.id;
       document.getElementById("btnSubmit").textContent = "コピーした予定を追加";
       document.getElementById("btnCancel").hidden = false;
@@ -2480,9 +2471,7 @@
       document.getElementById("editScope").value = "series";
       document.getElementById("title").value = ""; document.getElementById("memo").value = "";
       document.getElementById("isAllDay").checked = false; document.getElementById("isCompleted").checked = false;
-      document.getElementById("startTime").value = ""; document.getElementById("endTime").value = "";
-      document.getElementById("recurrenceType").value = "none"; document.getElementById("recurrenceUntil").value = "";
-      setWeekdays([]); toggleRecurrenceOptions(); setSelectedAssignees([]);
+      document.getElementById("startTime").value = ""; document.getElementById("endTime").value = ""; setSelectedAssignees([]);
       document.getElementById("btnSubmit").textContent = "予定を追加する"; document.getElementById("btnCancel").hidden = true; toggleAllDay();
       const remembered = localStorage.getItem("qtsLastCategoryId");
       if (remembered && categories.some(category => category.id === remembered)) document.getElementById("category").value = remembered;
@@ -2862,36 +2851,16 @@
     async function moveScheduleByDrop(item, targetDate) {
       const originalStart = item.startDate;
       if (!originalStart || originalStart === targetDate) return;
-      const delta = daysBetween(originalStart, targetDate);
+
       const duration = Math.max(0, daysBetween(item.startDate, item.endDate || item.startDate));
       const newEnd = addDaysString(targetDate, duration);
-      const original = schedules.find(schedule => schedule.id === (item._seriesId || item.id)) || item;
-
-      let scope = "single";
-      if (isRecurringSchedule(original) && item._occurrenceDate) {
-        const answer = prompt(
-          `「${item.title || "無題"}」を${formatJapaneseDate(targetDate)}へ移動します。\n\n1：この予定だけ移動\n2：この予定以降をまとめて移動\n3：シリーズ全体を移動`,
-          "1"
-        );
-        if (answer === null) return;
-        scope = answer === "2" ? "future" : answer === "3" ? "series" : "single";
-      } else if (!confirm(`「${item.title || "無題"}」を${formatJapaneseDate(targetDate)}へ移動しますか？`)) {
-        return;
-      }
+      const original = schedules.find(schedule => schedule.id === item.id) || item;
+      const action = await chooseDropAction(item, targetDate);
+      if (!action) return;
 
       try {
-        if (!isRecurringSchedule(original)) {
+        if (action === "move") {
           await db.collection("schedules").doc(original.id).update({
-            startDate: targetDate,
-            endDate: newEnd,
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
-          showStatusMessage("予定を移動しました。", "success");
-        } else if (scope === "single") {
-          const occurrenceDate = item._occurrenceDate;
-          const excluded = Array.from(new Set([...(original.excludedDates || []), occurrenceDate]));
-          const standalone = stripInternalScheduleFields({
-            ...item,
             startDate: targetDate,
             endDate: newEnd,
             recurrenceType: "none",
@@ -2899,54 +2868,29 @@
             recurrenceWeekdays: [],
             recurrenceExceptions: {},
             excludedDates: [],
-            isCompleted: Boolean(item.isCompleted)
-          });
-          const batch = db.batch();
-          batch.update(db.collection("schedules").doc(original.id), {
-            excludedDates: excluded,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
           });
-          batch.set(db.collection("schedules").doc(), {
-            ...standalone,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
-          await batch.commit();
-          showStatusMessage("この予定だけ移動しました。", "success");
-        } else if (scope === "future") {
-          const occurrenceDate = item._occurrenceDate;
-          const clone = stripInternalScheduleFields({
+          showStatusMessage("予定を移動しました。", "success");
+        } else {
+          const copy = stripInternalScheduleFields({
             ...original,
             startDate: targetDate,
             endDate: newEnd,
-            recurrenceUntil: original.recurrenceUntil ? addDaysString(original.recurrenceUntil, delta) : null,
-            recurrenceWeekdays: shiftWeekdays(original.recurrenceWeekdays, delta),
+            isCompleted: false,
+            completedAt: null,
+            attachments: [],
+            recurrenceType: "none",
+            recurrenceUntil: null,
+            recurrenceWeekdays: [],
             recurrenceExceptions: {},
             excludedDates: []
           });
-          const batch = db.batch();
-          batch.update(db.collection("schedules").doc(original.id), {
-            recurrenceUntil: addDaysString(occurrenceDate, -1),
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
-          batch.set(db.collection("schedules").doc(), {
-            ...clone,
+          await db.collection("schedules").add({
+            ...copy,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
           });
-          await batch.commit();
-          showStatusMessage("この予定以降を移動しました。", "success");
-        } else {
-          await db.collection("schedules").doc(original.id).update({
-            startDate: addDaysString(original.startDate, delta),
-            endDate: addDaysString(original.endDate || original.startDate, delta),
-            recurrenceUntil: original.recurrenceUntil ? addDaysString(original.recurrenceUntil, delta) : null,
-            recurrenceWeekdays: shiftWeekdays(original.recurrenceWeekdays, delta),
-            recurrenceExceptions: shiftRecurrenceExceptions(original.recurrenceExceptions, delta),
-            excludedDates: (original.excludedDates || []).map(date => addDaysString(date, delta)),
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
-          showStatusMessage("シリーズ全体を移動しました。", "success");
+          showStatusMessage("予定をコピーしました（写真はコピーしていません）。", "success");
         }
 
         selectedDateStr = targetDate;
@@ -2954,8 +2898,28 @@
         if (moved) currentDisplayDate = new Date(moved.getFullYear(), moved.getMonth(), 1);
       } catch (error) {
         console.error(error);
-        showStatusMessage("予定を移動できませんでした。", "error");
+        showStatusMessage(action === "copy" ? "予定をコピーできませんでした。" : "予定を移動できませんでした。", "error");
       }
+    }
+
+    function chooseDropAction(item, targetDate) {
+      return new Promise(resolve => {
+        dropActionResolver = resolve;
+        document.getElementById("dropActionScheduleTitle").textContent = item.title || "無題";
+        document.getElementById("dropActionText").textContent = `${formatJapaneseDate(targetDate)}へ、移動しますか？コピーしますか？`;
+        openModal("dropActionModal");
+      });
+    }
+
+    function resolveDropAction(action) {
+      if (!dropActionResolver) {
+        closeModal("dropActionModal");
+        return;
+      }
+      const resolver = dropActionResolver;
+      dropActionResolver = null;
+      closeModal("dropActionModal");
+      resolver(action);
     }
 
     function stripInternalScheduleFields(schedule) {
@@ -3036,9 +3000,6 @@
       time.textContent = `${getScheduleDateRangeText(item)} ${getScheduleTimeText(item)}`;
 
       top.append(badge, time);
-      if (item._isRecurring || isRecurringSchedule(item)) {
-        const repeat = document.createElement("span"); repeat.className = "repeat-badge"; repeat.textContent = `🔄 ${getRecurrenceLabel(item)}`; top.appendChild(repeat);
-      }
 
       if (item.isCompleted) {
         const mark = document.createElement("span");
@@ -3494,7 +3455,6 @@
         schedule.endTime,
         getAssigneeText(schedule),
         schedule.isCompleted ? "完了" : "未完了",
-        getRecurrenceLabel(schedule),
         getPriorityLabel(schedule.priority),
         ...(schedule.tags || []),
         ...(schedule.attachments || []).map(file => file.name || "写真")
@@ -3512,7 +3472,8 @@
 
 
     function isRecurringSchedule(schedule) {
-      return Boolean(schedule && schedule.recurrenceType && schedule.recurrenceType !== "none");
+      // Ver.5.3: 繰り返し機能は廃止。旧データも通常予定として扱います。
+      return false;
     }
 
     function toggleRecurrenceOptions() {
@@ -3560,32 +3521,11 @@
     }
 
     function getOccurrencesForRange(rangeStart, rangeEnd) {
-      const result=[];
-      schedules.forEach(schedule => {
-        if(!schedule.startDate) return;
-        if(!isRecurringSchedule(schedule)) {
-          const end=schedule.endDate||schedule.startDate;
-          if(schedule.startDate<=rangeEnd && end>=rangeStart) result.push(schedule);
-          return;
-        }
-        const seriesEnd=schedule.recurrenceUntil && schedule.recurrenceUntil<rangeEnd ? schedule.recurrenceUntil : rangeEnd;
-        let cursor=createDateFromString(rangeStart>schedule.startDate?rangeStart:schedule.startDate);
-        const endDate=createDateFromString(seriesEnd); if(!cursor||!endDate||cursor>endDate) return;
-        const duration=Math.max(0,daysBetween(schedule.startDate,schedule.endDate||schedule.startDate));
-        const excluded=new Set(schedule.excludedDates||[]);
-        const exceptions=schedule.recurrenceExceptions||{};
-        let guard=0;
-        while(cursor<=endDate && guard<3700) {
-          const occurrenceDate=getLocalDateString(cursor);
-          if(occurrenceMatches(schedule,cursor) && !excluded.has(occurrenceDate)) {
-            const override=exceptions[occurrenceDate]||{};
-            const occurrence={...schedule,...override,id:schedule.id,_seriesId:schedule.id,_occurrenceDate:occurrenceDate,_isRecurring:true,_recurrenceType:schedule.recurrenceType,startDate:override.startDate||occurrenceDate,endDate:override.endDate||addDaysString(occurrenceDate,duration)};
-            result.push(occurrence);
-          }
-          cursor.setDate(cursor.getDate()+1); guard++;
-        }
+      return schedules.filter(schedule => {
+        if (!schedule.startDate) return false;
+        const end = schedule.endDate || schedule.startDate;
+        return schedule.startDate <= rangeEnd && end >= rangeStart;
       });
-      return result;
     }
 
     function scheduleOccursOn(schedule, dateStr) {
