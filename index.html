@@ -649,6 +649,131 @@
       line-height: 1.4;
     }
 
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(160px, 220px) auto;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .checkbox-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 11px;
+      background: #faf8f5;
+      border: 1px solid #dcd5c9;
+      border-radius: 999px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-chip input {
+      width: auto;
+      margin: 0;
+    }
+
+    .completion-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 12px;
+      color: #225d31;
+      font-weight: 700;
+      background: #eef8f0;
+      border: 1px solid #b5dfbd;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+
+    .completion-box input {
+      width: auto;
+      margin: 0;
+    }
+
+    .completed-item {
+      opacity: 0.48;
+    }
+
+    .completed-item .schedule-title,
+    .completed-item .today-title,
+    .completed-item .detail-title {
+      text-decoration: line-through;
+    }
+
+    .completed-mark {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 2px 7px;
+      color: #225d31;
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: #eaf7ed;
+      border: 1px solid #b5dfbd;
+      border-radius: 999px;
+    }
+
+    .assignee-text {
+      margin-top: 6px;
+      color: #655b55;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .btn-copy {
+      padding: 5px 10px;
+      color: #fff;
+      font-size: 0.75rem;
+      background: #7a5c43;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .btn-complete {
+      padding: 5px 10px;
+      color: #225d31;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: #eaf7ed;
+      border: 1px solid #b5dfbd;
+      border-radius: 4px;
+    }
+
+    .settings-menu {
+      display: grid;
+      gap: 10px;
+    }
+
+    .settings-menu button {
+      width: 100%;
+      text-align: left;
+    }
+
+    .future-setting {
+      padding: 12px;
+      color: #8a817b;
+      background: #f5f3ef;
+      border: 1px dashed #ccc3b8;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 650px) {
+      .filter-grid {
+        display: block;
+      }
+
+      .filter-grid > * {
+        margin-bottom: 9px;
+      }
+    }
+
     @media (min-width: 768px) {
       .day-cell {
         min-height: 108px;
@@ -734,25 +859,41 @@
   <div id="statusMessage" class="status-message" aria-live="polite"></div>
 
   <section class="card">
-    <div class="top-toolbar">
+    <div class="filter-grid">
       <div class="search-wrap">
         <label for="searchInput">予定を検索</label>
         <span class="search-icon">🔍</span>
         <input
           type="search"
           id="searchInput"
-          placeholder="タイトル・メモ・カテゴリー名で検索"
+          placeholder="タイトル・メモ・カテゴリー名・担当者で検索"
         >
       </div>
 
-      <div class="toolbar-buttons">
-        <button type="button" class="btn-secondary" id="btnClearSearch">
-          検索解除
-        </button>
-        <button type="button" class="btn-primary" id="btnOpenCategoryManager">
-          ⚙ カテゴリー管理
-        </button>
+      <div>
+        <label for="assigneeFilter">担当者で絞り込み</label>
+        <select id="assigneeFilter">
+          <option value="all">すべて</option>
+          <option value="村口">村口</option>
+          <option value="金子">金子</option>
+          <option value="寺門">寺門</option>
+          <option value="none">担当者なし</option>
+        </select>
       </div>
+
+      <label class="completion-box">
+        <input type="checkbox" id="showCompleted" checked>
+        完了済みも表示
+      </label>
+    </div>
+
+    <div class="toolbar-buttons" style="margin-top:10px;">
+      <button type="button" class="btn-secondary" id="btnClearSearch">
+        絞り込み解除
+      </button>
+      <button type="button" class="btn-primary" id="btnOpenSettings">
+        ⚙ 設定
+      </button>
     </div>
   </section>
 
@@ -799,6 +940,23 @@
       <div class="helper-text">
         カテゴリーの追加・名称・色・アイコンは「カテゴリー管理」から変更できます。
       </div>
+    </div>
+
+    <div class="form-group">
+      <label>担当者（複数選択可）</label>
+      <div class="checkbox-group" id="assigneeCheckboxes">
+        <label class="checkbox-chip"><input type="checkbox" name="assignee" value="村口"> 村口</label>
+        <label class="checkbox-chip"><input type="checkbox" name="assignee" value="金子"> 金子</label>
+        <label class="checkbox-chip"><input type="checkbox" name="assignee" value="寺門"> 寺門</label>
+      </div>
+      <div class="helper-text">誰も選択しない場合は「担当者なし」で登録されます。</div>
+    </div>
+
+    <div class="form-group">
+      <label class="completion-box">
+        <input type="checkbox" id="isCompleted">
+        この予定を完了済みにする
+      </label>
     </div>
 
     <div class="form-group">
@@ -869,6 +1027,29 @@
         <button type="button" class="btn-primary" data-close-modal="detailModal">
           閉じる
         </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 設定 -->
+  <div id="settingsModal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>⚙ 設定</h2>
+        <button type="button" class="modal-close" data-close-modal="settingsModal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="settings-menu">
+          <button type="button" class="btn-primary" id="btnOpenCategoryManager">
+            🎨 カテゴリー管理
+          </button>
+          <div class="future-setting">バックアップ・復元（今後追加予定）</div>
+          <div class="future-setting">CSV出力（今後追加予定）</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-primary" data-close-modal="settingsModal">閉じる</button>
       </div>
     </div>
   </div>
@@ -977,8 +1158,11 @@
     let categories = [];
     let currentDisplayDate = new Date();
     let selectedDateStr = getLocalDateString(new Date());
+    const fixedAssignees = ["村口", "金子", "寺門"];
     let detailSelectedDate = null;
     let searchKeyword = "";
+    let assigneeFilter = "all";
+    let showCompleted = true;
     let categoriesInitialized = false;
 
     document.addEventListener("DOMContentLoaded", initializeApp);
@@ -1002,13 +1186,32 @@
         renderAll();
       });
 
-      document.getElementById("btnClearSearch").addEventListener("click", () => {
-        document.getElementById("searchInput").value = "";
-        searchKeyword = "";
+      document.getElementById("assigneeFilter").addEventListener("change", event => {
+        assigneeFilter = event.target.value;
         renderAll();
       });
 
+      document.getElementById("showCompleted").addEventListener("change", event => {
+        showCompleted = event.target.checked;
+        renderAll();
+      });
+
+      document.getElementById("btnClearSearch").addEventListener("click", () => {
+        document.getElementById("searchInput").value = "";
+        document.getElementById("assigneeFilter").value = "all";
+        document.getElementById("showCompleted").checked = true;
+        searchKeyword = "";
+        assigneeFilter = "all";
+        showCompleted = true;
+        renderAll();
+      });
+
+      document.getElementById("btnOpenSettings").addEventListener("click", () => {
+        openModal("settingsModal");
+      });
+
       document.getElementById("btnOpenCategoryManager").addEventListener("click", () => {
+        closeModal("settingsModal");
         resetCategoryForm();
         openModal("categoryModal");
       });
@@ -1035,6 +1238,7 @@
         if (event.key === "Escape") {
           closeModal("detailModal");
           closeModal("categoryModal");
+          closeModal("settingsModal");
         }
       });
 
@@ -1141,6 +1345,11 @@
 
       if (categories.some(category => category.id === previousValue)) {
         select.value = previousValue;
+      } else {
+        const remembered = localStorage.getItem("qtsLastCategoryId");
+        if (remembered && categories.some(category => category.id === remembered)) {
+          select.value = remembered;
+        }
       }
     }
 
@@ -1309,6 +1518,8 @@
       const memo = document.getElementById("memo").value.trim();
       const categoryId = document.getElementById("category").value;
       const selectedCategory = categories.find(category => category.id === categoryId);
+      const assignees = getSelectedAssignees();
+      const isCompleted = document.getElementById("isCompleted").checked;
 
       if (!startDate || !title) {
         alert("開始日とタイトルを入力してください。");
@@ -1338,6 +1549,11 @@
         endTime,
         title,
         memo,
+        assignees,
+        isCompleted,
+        completedAt: isCompleted
+          ? firebase.firestore.FieldValue.serverTimestamp()
+          : null,
         categoryId: selectedCategory.id,
         categoryName: selectedCategory.name,
         categoryColor: sanitizeColor(selectedCategory.color),
@@ -1362,6 +1578,7 @@
           showStatusMessage("予定を追加しました。", "success");
         }
 
+        localStorage.setItem("qtsLastCategoryId", selectedCategory.id);
         selectedDateStr = startDate;
         const date = createDateFromString(startDate);
 
@@ -1393,6 +1610,8 @@
       document.getElementById("endTime").value = item.endTime || "";
       document.getElementById("title").value = item.title || "";
       document.getElementById("memo").value = item.memo || "";
+      document.getElementById("isCompleted").checked = Boolean(item.isCompleted);
+      setSelectedAssignees(getScheduleAssignees(item));
 
       const category = getCategoryForSchedule(item);
       if (category?.id && categories.some(entry => entry.id === category.id)) {
@@ -1404,20 +1623,74 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
+    function copySchedule(id) {
+      const item = schedules.find(schedule => schedule.id === id);
+      if (!item) return;
+
+      closeModal("detailModal");
+      document.getElementById("editId").value = "";
+      document.getElementById("startDate").value = item.startDate || getLocalDateString(new Date());
+      document.getElementById("endDate").value = item.endDate || item.startDate || getLocalDateString(new Date());
+      document.getElementById("isAllDay").checked = Boolean(item.isAllDay);
+      toggleAllDay();
+      document.getElementById("startTime").value = item.startTime || "";
+      document.getElementById("endTime").value = item.endTime || "";
+      document.getElementById("title").value = item.title || "";
+      document.getElementById("memo").value = item.memo || "";
+      document.getElementById("isCompleted").checked = false;
+      setSelectedAssignees(getScheduleAssignees(item));
+
+      const category = getCategoryForSchedule(item);
+      if (category?.id) document.getElementById("category").value = category.id;
+
+      document.getElementById("btnSubmit").textContent = "コピーした予定を追加";
+      document.getElementById("btnCancel").hidden = false;
+      showStatusMessage("予定をコピーしました。日付などを確認して追加してください。", "success");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
     function resetScheduleForm() {
       document.getElementById("editId").value = "";
       document.getElementById("title").value = "";
       document.getElementById("memo").value = "";
       document.getElementById("isAllDay").checked = false;
+      document.getElementById("isCompleted").checked = false;
       document.getElementById("startTime").value = "";
       document.getElementById("endTime").value = "";
+      setSelectedAssignees([]);
       document.getElementById("btnSubmit").textContent = "予定を追加する";
       document.getElementById("btnCancel").hidden = true;
       toggleAllDay();
 
+      const remembered = localStorage.getItem("qtsLastCategoryId");
+      if (remembered && categories.some(category => category.id === remembered)) {
+        document.getElementById("category").value = remembered;
+      }
+
       const baseDate = selectedDateStr || getLocalDateString(new Date());
       document.getElementById("startDate").value = baseDate;
       document.getElementById("endDate").value = baseDate;
+    }
+
+    async function toggleScheduleCompleted(id) {
+      const item = schedules.find(schedule => schedule.id === id);
+      if (!item) return;
+
+      const next = !Boolean(item.isCompleted);
+
+      try {
+        await db.collection("schedules").doc(id).update({
+          isCompleted: next,
+          completedAt: next
+            ? firebase.firestore.FieldValue.serverTimestamp()
+            : null,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        showStatusMessage(next ? "予定を完了にしました。" : "予定を未完了に戻しました。", "success");
+      } catch (error) {
+        console.error(error);
+        showStatusMessage("完了状態を変更できませんでした。", "error");
+      }
     }
 
     async function deleteSchedule(id) {
@@ -1438,7 +1711,7 @@
       const today = getLocalDateString(new Date());
       const items = schedules
         .filter(schedule => scheduleOccursOn(schedule, today))
-        .filter(matchesSearch)
+        .filter(matchesCurrentFilters)
         .sort(compareSchedules);
 
       container.innerHTML = "";
@@ -1454,6 +1727,7 @@
         const category = getCategoryForSchedule(item);
         const row = document.createElement("div");
         row.className = "today-item";
+        if (item.isCompleted) row.classList.add("completed-item");
         row.style.borderLeftColor = category.color;
         row.addEventListener("click", () => openDetailModal(today));
 
@@ -1463,7 +1737,7 @@
 
         const title = document.createElement("div");
         title.className = "today-title";
-        title.textContent = `${category.icon} ${item.title || "無題"}`;
+        title.textContent = `${category.icon} ${item.title || "無題"}${item.isCompleted ? " ✓" : ""}`;
 
         row.append(time, title);
         container.appendChild(row);
@@ -1505,7 +1779,7 @@
           const end = schedule.endDate || schedule.startDate;
           return schedule.startDate <= monthEnd && end >= monthStart;
         })
-        .filter(matchesSearch);
+        .filter(matchesCurrentFilters);
 
       const daySlots = {};
       for (let day = 1; day <= lastDate; day++) {
@@ -1599,6 +1873,7 @@
               }
 
               bar.className = "event-bar";
+              if (target.isCompleted) bar.style.opacity = "0.45";
               bar.style.backgroundColor = category.color;
               bar.style.color = getContrastTextColor(category.color);
               bar.style.width = `calc(${spanDays * 100}% + ${(spanDays - 1) * 2}px)`;
@@ -1622,7 +1897,7 @@
       const title = document.getElementById("selectedDateDisplay");
       container.innerHTML = "";
 
-      let data = schedules.filter(matchesSearch);
+      let data = schedules.filter(matchesCurrentFilters);
 
       if (filterDate) {
         data = data.filter(schedule => scheduleOccursOn(schedule, filterDate));
@@ -1631,8 +1906,8 @@
         title.textContent = "📅 すべての予定";
       }
 
-      if (searchKeyword) {
-        title.textContent += "（検索中）";
+      if (searchKeyword || assigneeFilter !== "all" || !showCompleted) {
+        title.textContent += "（絞り込み中）";
       }
 
       data.sort(compareSchedules);
@@ -1649,6 +1924,7 @@
       const category = getCategoryForSchedule(item);
       const element = document.createElement("div");
       element.className = "schedule-item";
+      if (item.isCompleted) element.classList.add("completed-item");
       element.style.borderLeftColor = category.color;
 
       const info = document.createElement("div");
@@ -1668,11 +1944,23 @@
 
       top.append(badge, time);
 
+      if (item.isCompleted) {
+        const mark = document.createElement("span");
+        mark.className = "completed-mark";
+        mark.textContent = "✓ 完了";
+        top.appendChild(mark);
+      }
+
       const itemTitle = document.createElement("div");
       itemTitle.className = "schedule-title";
       itemTitle.textContent = item.title || "無題";
 
       info.append(top, itemTitle);
+
+      const assignee = document.createElement("div");
+      assignee.className = "assignee-text";
+      assignee.textContent = `担当：${getAssigneeText(item)}`;
+      info.appendChild(assignee);
 
       if (item.memo) {
         const memo = document.createElement("div");
@@ -1683,6 +1971,18 @@
 
       const actions = document.createElement("div");
       actions.className = "action-btns";
+
+      const complete = document.createElement("button");
+      complete.type = "button";
+      complete.className = "btn-complete";
+      complete.textContent = item.isCompleted ? "未完了へ" : "完了";
+      complete.addEventListener("click", () => toggleScheduleCompleted(item.id));
+
+      const copy = document.createElement("button");
+      copy.type = "button";
+      copy.className = "btn-copy";
+      copy.textContent = "コピー";
+      copy.addEventListener("click", () => copySchedule(item.id));
 
       const edit = document.createElement("button");
       edit.type = "button";
@@ -1696,7 +1996,7 @@
       remove.textContent = "削除";
       remove.addEventListener("click", () => deleteSchedule(item.id));
 
-      actions.append(edit, remove);
+      actions.append(complete, copy, edit, remove);
       element.append(info, actions);
       return element;
     }
@@ -1713,7 +2013,7 @@
       const container = document.getElementById("detailScheduleList");
       const items = schedules
         .filter(schedule => scheduleOccursOn(schedule, dateStr))
-        .filter(matchesSearch)
+        .filter(matchesCurrentFilters)
         .sort(compareSchedules);
 
       container.innerHTML = "";
@@ -1727,6 +2027,7 @@
         const category = getCategoryForSchedule(item);
         const detail = document.createElement("div");
         detail.className = "detail-item";
+        if (item.isCompleted) detail.classList.add("completed-item");
         detail.style.borderLeftColor = category.color;
 
         const top = document.createElement("div");
@@ -1754,6 +2055,18 @@
 
         detail.append(top, title, date);
 
+        const assignee = document.createElement("div");
+        assignee.className = "assignee-text";
+        assignee.textContent = `担当：${getAssigneeText(item)}`;
+        detail.appendChild(assignee);
+
+        if (item.isCompleted) {
+          const mark = document.createElement("span");
+          mark.className = "completed-mark";
+          mark.textContent = "✓ 完了";
+          detail.appendChild(mark);
+        }
+
         if (item.memo) {
           const memo = document.createElement("div");
           memo.className = "detail-memo";
@@ -1764,6 +2077,18 @@
         const actions = document.createElement("div");
         actions.className = "inline-buttons";
         actions.style.marginTop = "12px";
+
+        const complete = document.createElement("button");
+        complete.type = "button";
+        complete.className = "btn-complete";
+        complete.textContent = item.isCompleted ? "未完了へ" : "完了";
+        complete.addEventListener("click", () => toggleScheduleCompleted(item.id));
+
+        const copy = document.createElement("button");
+        copy.type = "button";
+        copy.className = "btn-copy";
+        copy.textContent = "コピー";
+        copy.addEventListener("click", () => copySchedule(item.id));
 
         const edit = document.createElement("button");
         edit.type = "button";
@@ -1777,7 +2102,7 @@
         remove.textContent = "削除";
         remove.addEventListener("click", () => deleteSchedule(item.id));
 
-        actions.append(edit, remove);
+        actions.append(complete, copy, edit, remove);
         detail.appendChild(actions);
         container.appendChild(detail);
       });
@@ -1830,6 +2155,48 @@
       };
     }
 
+
+    function getSelectedAssignees() {
+      return Array.from(document.querySelectorAll('input[name="assignee"]:checked'))
+        .map(input => input.value)
+        .filter(name => fixedAssignees.includes(name));
+    }
+
+    function setSelectedAssignees(names) {
+      const selected = Array.isArray(names) ? names : [];
+      document.querySelectorAll('input[name="assignee"]').forEach(input => {
+        input.checked = selected.includes(input.value);
+      });
+    }
+
+    function getScheduleAssignees(schedule) {
+      if (Array.isArray(schedule.assignees)) {
+        return schedule.assignees.filter(name => fixedAssignees.includes(name));
+      }
+
+      if (typeof schedule.assignee === "string" && fixedAssignees.includes(schedule.assignee)) {
+        return [schedule.assignee];
+      }
+
+      return [];
+    }
+
+    function getAssigneeText(schedule) {
+      const names = getScheduleAssignees(schedule);
+      return names.length ? names.join("・") : "なし";
+    }
+
+    function matchesCurrentFilters(schedule) {
+      if (!matchesSearch(schedule)) return false;
+      if (!showCompleted && schedule.isCompleted) return false;
+
+      const names = getScheduleAssignees(schedule);
+      if (assigneeFilter === "none") return names.length === 0;
+      if (assigneeFilter !== "all" && !names.includes(assigneeFilter)) return false;
+
+      return true;
+    }
+
     function matchesSearch(schedule) {
       if (!searchKeyword) return true;
 
@@ -1842,7 +2209,9 @@
         schedule.startDate,
         schedule.endDate,
         schedule.startTime,
-        schedule.endTime
+        schedule.endTime,
+        getAssigneeText(schedule),
+        schedule.isCompleted ? "完了" : "未完了"
       ].filter(Boolean).join(" "));
 
       return haystack.includes(searchKeyword);
