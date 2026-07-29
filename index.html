@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler</title>
+  <title>Q.T.S Scheduler — Ver.5.2</title>
 
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -1271,12 +1271,219 @@
     }
     .attachment-card.photo-open-button { border: 0; padding: 0; text-align: left; cursor: zoom-in; font: inherit; }
 
+
+    /* ===== Ver.5.2 visual refresh ===== */
+    :root {
+      --brown-dark: #3f291c;
+      --brown: #765037;
+      --brown-mid: #956b48;
+      --brown-light: #f1e7d8;
+      --brass: #b78b43;
+      --brass-light: #e8d4a8;
+      --border: #ddd0bc;
+      --paper: rgba(255, 253, 248, .96);
+      --background: #eee7dc;
+      --text: #382d27;
+      --muted: #786b61;
+      --shadow: 0 10px 28px rgba(65, 40, 22, .10);
+    }
+
+    body {
+      max-width: 1120px;
+      padding: 16px;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(255,255,255,.75), transparent 34%),
+        repeating-linear-gradient(90deg, rgba(118,80,55,.025) 0 1px, transparent 1px 16px),
+        linear-gradient(180deg, #f4efe7 0%, #e9e0d4 100%);
+      min-height: 100vh;
+    }
+
+    .header-banner {
+      position: relative;
+      overflow: hidden;
+      min-height: 112px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 18px;
+      padding: 22px 130px 20px;
+      border: 1px solid rgba(232,212,168,.45);
+      border-radius: 18px;
+      background:
+        linear-gradient(115deg, rgba(255,255,255,.08), transparent 35%),
+        repeating-linear-gradient(5deg, rgba(255,255,255,.025) 0 2px, transparent 2px 10px),
+        linear-gradient(135deg, #805a3c 0%, #4a301f 58%, #342116 100%);
+      box-shadow: 0 14px 34px rgba(58,35,19,.24), inset 0 1px 0 rgba(255,255,255,.18);
+    }
+
+    .header-banner::before,
+    .header-banner::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border: 1px solid rgba(232,212,168,.12);
+      border-radius: 50%;
+    }
+    .header-banner::before { left: -90px; top: -100px; }
+    .header-banner::after { right: -100px; bottom: -115px; }
+
+    .header-banner h1 {
+      position: relative;
+      z-index: 1;
+      font-family: Georgia, "Times New Roman", "Yu Mincho", serif;
+      font-size: clamp(1.45rem, 3vw, 2rem);
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-shadow: 0 2px 8px rgba(0,0,0,.28);
+    }
+
+    .header-subtitle {
+      position: relative;
+      z-index: 1;
+      margin: 7px 0 0;
+      color: #ead9bc;
+      font-size: .72rem;
+      letter-spacing: .24em;
+    }
+
+    .version-badge {
+      position: absolute;
+      z-index: 2;
+      top: 14px;
+      right: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 11px;
+      color: #fff8e8;
+      background: rgba(37,23,14,.50);
+      border: 1px solid rgba(232,212,168,.55);
+      border-radius: 999px;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      backdrop-filter: blur(6px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
+    }
+
+    .version-badge::before {
+      content: "●";
+      color: #d6b56d;
+      font-size: .62rem;
+    }
+
+    .card {
+      border-color: rgba(174,145,109,.42);
+      border-radius: 16px;
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.75);
+      backdrop-filter: blur(3px);
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 9px;
+      border-bottom: 1px solid rgba(183,139,67,.25);
+      font-family: Georgia, "Yu Mincho", serif;
+      letter-spacing: .04em;
+    }
+
+    .dashboard-tile {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(183,139,67,.25) !important;
+      border-radius: 14px !important;
+      background: linear-gradient(145deg, #fffdf8, #f4ecdf) !important;
+      box-shadow: 0 6px 18px rgba(76,49,29,.07);
+    }
+
+    .dashboard-tile::after {
+      content: "";
+      position: absolute;
+      width: 64px;
+      height: 64px;
+      right: -24px;
+      bottom: -28px;
+      border-radius: 50%;
+      background: rgba(183,139,67,.08);
+    }
+
+    .dashboard-number { color: var(--brown-dark) !important; }
+    .dashboard-label { color: var(--brown-mid) !important; }
+
+    input, select, textarea {
+      border-radius: 9px;
+      border-color: #d6c7b2;
+      background: rgba(255,253,248,.92);
+      transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--brass);
+      box-shadow: 0 0 0 3px rgba(183,139,67,.14);
+    }
+
+    button { transition: transform .14s ease, box-shadow .14s ease, filter .14s ease; }
+    button:hover { transform: translateY(-1px); filter: brightness(1.02); }
+    button:active { transform: translateY(0); }
+    .btn-primary {
+      background: linear-gradient(180deg, #815b3e, #5a3925) !important;
+      border-color: #4b2e1d !important;
+      box-shadow: 0 4px 10px rgba(70,42,24,.18), inset 0 1px 0 rgba(255,255,255,.18);
+    }
+    .btn-secondary {
+      background: linear-gradient(180deg, #fffdf8, #eee3d2) !important;
+      border-color: #cab898 !important;
+      color: #4a3425 !important;
+    }
+
+    .modal-content {
+      border: 1px solid rgba(183,139,67,.45);
+      border-radius: 17px !important;
+      box-shadow: 0 24px 70px rgba(35,22,14,.32) !important;
+    }
+    .modal-header {
+      background: linear-gradient(135deg, #765037, #432a1b) !important;
+      border-radius: 16px 16px 0 0;
+    }
+
+    .app-info-panel {
+      margin-top: 14px;
+      padding: 13px 14px;
+      color: var(--muted);
+      background: linear-gradient(145deg, #faf5ec, #f1e7d8);
+      border: 1px solid #dfcfb4;
+      border-radius: 11px;
+      font-size: .8rem;
+      line-height: 1.65;
+    }
+    .app-info-panel strong { color: var(--brown-dark); }
+    .app-info-version {
+      display: inline-block;
+      margin-left: 5px;
+      padding: 2px 8px;
+      color: #fff8e8;
+      background: #6c4931;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 8px; }
+      .header-banner { min-height: 102px; padding: 20px 12px 18px; border-radius: 14px; }
+      .header-banner h1 { letter-spacing: .11em; }
+      .version-badge { top: 8px; right: 8px; padding: 5px 8px; font-size: .64rem; }
+      .card { padding: 13px; border-radius: 13px; }
+    }
+
   </style>
 </head>
 
 <body>
   <header class="header-banner">
-    <h1>Q.T.S Scheduler</h1><p class="header-subtitle">WORK &amp; PROJECT PLANNER</p>
+    <h1>Q.T.S Scheduler</h1><p class="header-subtitle">WORK &amp; PROJECT PLANNER</p><div class="version-badge" id="headerVersion">Ver.5.2</div>
   </header>
 
   <div id="statusMessage" class="status-message" aria-live="polite"></div>
@@ -1536,6 +1743,11 @@
           <div class="future-setting">バックアップ・復元（今後追加予定）</div>
           <button type="button" class="btn-secondary" id="btnOpenCsv">📤 CSV出力</button>
         </div>
+        <div class="app-info-panel">
+          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.5.2</span><br>
+          無料プラン対応・写真圧縮保存版<br>
+          更新日：2026年7月29日
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn-primary" data-close-modal="settingsModal">閉じる</button>
@@ -1638,6 +1850,9 @@
   </div>
 
   <script>
+    const APP_VERSION = "5.2";
+    const APP_BUILD_DATE = "2026-07-29";
+
     const firebaseConfig = {
       apiKey: "AIzaSyCL6VijHRZryh7DdxNVcBdDXhRJtx2JU-4",
       authDomain: "qts-schedule.firebaseapp.com",
@@ -1682,7 +1897,14 @@
     let pendingAttachmentFiles = [];
     let currentAttachments = [];
 
-    document.addEventListener("DOMContentLoaded", initializeApp);
+    document.addEventListener("DOMContentLoaded", () => {
+      document.documentElement.dataset.appVersion = APP_VERSION;
+      const headerVersion = document.getElementById("headerVersion");
+      const settingsVersion = document.getElementById("settingsVersion");
+      if (headerVersion) headerVersion.textContent = `Ver.${APP_VERSION}`;
+      if (settingsVersion) settingsVersion.textContent = `Ver.${APP_VERSION}`;
+      initializeApp();
+    });
 
     function initializeApp() {
       document.getElementById("startDate").value = selectedDateStr;
