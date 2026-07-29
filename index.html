@@ -7,7 +7,6 @@
 
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
 
   <style>
     * {
@@ -1436,9 +1435,9 @@
     </div>
 
     <div class="form-group">
-      <label for="attachmentFiles">添付ファイル</label>
-      <input type="file" id="attachmentFiles" multiple accept="image/*,.pdf,.doc,.docx,.xls,.xlsx">
-      <div class="upload-note">写真・PDF・Word・Excelを添付できます。1ファイル20MBまで。</div>
+      <label for="attachmentFiles">写真</label>
+      <input type="file" id="attachmentFiles" multiple accept="image/jpeg,image/png,image/webp" capture="environment">
+      <div class="upload-note">写真を最大3枚まで保存できます。選択した写真は自動で縮小・圧縮し、無料のFirestoreへ保存します。</div>
       <div id="attachmentPreview" class="attachment-grid"></div>
     </div>
 
@@ -1619,7 +1618,6 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-    const storage = firebase.storage();
 
     const defaultCategories = [
       { legacyKey: "shinkansen", name: "新幹線", icon: "🚄", color: "#0055ff", order: 10 },
@@ -2069,7 +2067,7 @@
         memo,
         priority,
         tags,
-        attachments: currentAttachments,
+        attachments: [...currentAttachments, ...pendingAttachmentFiles],
         assignees,
         isCompleted,
         recurrenceType,
@@ -2092,7 +2090,7 @@
 
       try {
         submitButton.disabled = true;
-        submitButton.textContent = pendingAttachmentFiles.length ? "ファイルをアップロード中…" : "保存中…";
+        submitButton.textContent = "保存中…";
         let savedDocumentId = editId || null;
 
         if (editId) {
@@ -2133,12 +2131,6 @@
           });
           savedDocumentId = newDoc.id;
           showStatusMessage("予定を追加しました。", "success");
-        }
-
-        if (savedDocumentId && pendingAttachmentFiles.length) {
-          const uploaded = await uploadAttachments(savedDocumentId, pendingAttachmentFiles);
-          currentAttachments = [...currentAttachments, ...uploaded];
-          await db.collection("schedules").doc(savedDocumentId).update({ attachments: currentAttachments, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
         }
 
         localStorage.setItem("qtsLastCategoryId", selectedCategory.id);
@@ -2815,7 +2807,7 @@
       const meta = document.createElement("div"); meta.style.marginTop="5px";
       meta.appendChild(createPriorityBadge(item.priority));
       (item.tags || []).forEach(tag => { const chip=document.createElement("span"); chip.className="tag-chip"; chip.textContent=`#${tag}`; meta.appendChild(chip); });
-      if ((item.attachments || []).length) { const chip=document.createElement("span"); chip.className="attachment-chip"; chip.textContent=`📎 ${item.attachments.length}件`; meta.appendChild(chip); }
+      if ((item.attachments || []).length) { const chip=document.createElement("span"); chip.className="attachment-chip"; chip.textContent=`📷 ${item.attachments.length}枚`; meta.appendChild(chip); }
       info.appendChild(meta);
 
       if (item.memo) {
@@ -3042,14 +3034,182 @@
     function parseTags(value) { return [...new Set(String(value||"").split(/[、,]/).map(v=>v.trim().replace(/^#/,"")).filter(Boolean))].slice(0,12); }
     function getPriorityLabel(value) { return value === "high" ? "高" : value === "low" ? "低" : "中"; }
     function createPriorityBadge(value) { const span=document.createElement("span"); const key=["high","medium","low"].includes(value)?value:"medium"; span.className=`priority-badge priority-${key}`; span.textContent=`★ 優先度 ${getPriorityLabel(key)}`; return span; }
-    function handleAttachmentSelection(event) { const selected=Array.from(event.target.files||[]); const tooLarge=selected.filter(file=>file.size>20*1024*1024); if(tooLarge.length) alert("20MBを超えるファイルは除外しました。"); pendingAttachmentFiles=selected.filter(file=>file.size<=20*1024*1024); renderAttachmentPreview(); }
-    function renderAttachmentPreview() { const box=document.getElementById("attachmentPreview"); if(!box)return; box.innerHTML=""; currentAttachments.forEach((file,index)=>{ const card=document.createElement("div");card.className="attachment-card"; if(file.contentType?.startsWith("image/")&&file.url){const img=document.createElement("img");img.src=file.url;img.alt=file.name||"添付画像";card.appendChild(img);} const name=document.createElement("div");name.className="attachment-name";name.textContent=file.name||"添付ファイル"; const remove=document.createElement("button");remove.className="attachment-remove";remove.type="button";remove.textContent="×";remove.addEventListener("click",()=>{currentAttachments.splice(index,1);renderAttachmentPreview();});card.append(name,remove);box.appendChild(card);}); pendingAttachmentFiles.forEach((file,index)=>{const card=document.createElement("div");card.className="attachment-card";const name=document.createElement("div");name.className="attachment-name";name.textContent=`アップロード待ち：${file.name}`;const remove=document.createElement("button");remove.className="attachment-remove";remove.type="button";remove.textContent="×";remove.addEventListener("click",()=>{pendingAttachmentFiles.splice(index,1);renderAttachmentPreview();});card.append(name,remove);box.appendChild(card);}); }
-    async function uploadAttachments(documentId, files) { const results=[]; for(const file of files){const safe=file.name.replace(/[^a-zA-Z0-9._\-ぁ-んァ-ヶ一-龠]/g,"_");const path=`schedule-attachments/${documentId}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${safe}`;const ref=storage.ref().child(path);await ref.put(file,{contentType:file.type||"application/octet-stream"});const url=await ref.getDownloadURL();results.push({name:file.name,url,path,size:file.size,contentType:file.type||"application/octet-stream"});}return results; }
-    function createAttachmentLinks(files) { const wrap=document.createElement("div");wrap.className="attachment-grid";(files||[]).forEach(file=>{const card=document.createElement("a");card.className="attachment-card";card.href=file.url;card.target="_blank";card.rel="noopener";if(file.contentType?.startsWith("image/")){const img=document.createElement("img");img.src=file.url;img.alt=file.name||"添付画像";card.appendChild(img);}const name=document.createElement("div");name.className="attachment-name";name.textContent=file.name||"添付ファイル";card.appendChild(name);wrap.appendChild(card);});return wrap; }
+    async function handleAttachmentSelection(event) {
+      const input = event.target;
+      const selected = Array.from(input.files || []);
+      const existingCount = currentAttachments.length + pendingAttachmentFiles.length;
+      const available = Math.max(0, 3 - existingCount);
+
+      if (!available) {
+        alert("写真は最大3枚までです。既存の写真を削除してから追加してください。");
+        input.value = "";
+        return;
+      }
+
+      const imageFiles = selected.filter(file => file.type.startsWith("image/"));
+      if (imageFiles.length !== selected.length) {
+        alert("写真（JPEG・PNG・WebP）のみ選択できます。");
+      }
+
+      const targets = imageFiles.slice(0, available);
+      if (imageFiles.length > available) {
+        alert(`追加できる写真はあと${available}枚です。先頭から${available}枚を処理します。`);
+      }
+
+      const submitButton = document.getElementById("btnSubmit");
+      const originalText = submitButton.textContent;
+      try {
+        input.disabled = true;
+        submitButton.disabled = true;
+        submitButton.textContent = "写真を圧縮中…";
+        for (let index = 0; index < targets.length; index += 1) {
+          submitButton.textContent = `写真を圧縮中… ${index + 1}/${targets.length}`;
+          const compressed = await compressPhotoForFirestore(targets[index]);
+          pendingAttachmentFiles.push(compressed);
+          renderAttachmentPreview();
+        }
+        showStatusMessage(`${targets.length}枚の写真を保存準備しました。予定を保存してください。`, "success");
+      } catch (error) {
+        console.error(error);
+        showStatusMessage("写真を処理できませんでした。別の写真をお試しください。", "error");
+      } finally {
+        input.value = "";
+        input.disabled = false;
+        submitButton.disabled = false;
+        submitButton.textContent = document.getElementById("editId").value ? "予定を更新する" : originalText;
+      }
+    }
+
+    function loadImageFromFile(file) {
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const image = new Image();
+        image.onload = () => {
+          URL.revokeObjectURL(url);
+          resolve(image);
+        };
+        image.onerror = () => {
+          URL.revokeObjectURL(url);
+          reject(new Error("画像を読み込めませんでした。"));
+        };
+        image.src = url;
+      });
+    }
+
+    async function compressPhotoForFirestore(file) {
+      const image = await loadImageFromFile(file);
+      const maxDimension = 1280;
+      const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
+      const width = Math.max(1, Math.round(image.naturalWidth * scale));
+      const height = Math.max(1, Math.round(image.naturalHeight * scale));
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const context = canvas.getContext("2d", { alpha: false });
+      context.fillStyle = "#ffffff";
+      context.fillRect(0, 0, width, height);
+      context.drawImage(image, 0, 0, width, height);
+
+      const targetBytes = 160 * 1024;
+      let quality = 0.78;
+      let dataUrl = canvas.toDataURL("image/jpeg", quality);
+      while (estimateDataUrlBytes(dataUrl) > targetBytes && quality > 0.38) {
+        quality -= 0.08;
+        dataUrl = canvas.toDataURL("image/jpeg", quality);
+      }
+
+      const finalBytes = estimateDataUrlBytes(dataUrl);
+      if (finalBytes > 240 * 1024) {
+        throw new Error("圧縮後の写真サイズが大きすぎます。");
+      }
+
+      const baseName = String(file.name || "photo").replace(/\.[^.]+$/, "");
+      return {
+        name: `${baseName}.jpg`,
+        dataUrl,
+        size: finalBytes,
+        contentType: "image/jpeg",
+        width,
+        height,
+        storedIn: "firestore"
+      };
+    }
+
+    function estimateDataUrlBytes(dataUrl) {
+      const base64 = String(dataUrl || "").split(",")[1] || "";
+      return Math.ceil(base64.length * 3 / 4);
+    }
+
+    function getAttachmentImageSource(file) {
+      return file?.dataUrl || file?.url || "";
+    }
+
+    function renderAttachmentPreview() {
+      const box = document.getElementById("attachmentPreview");
+      if (!box) return;
+      box.innerHTML = "";
+      const allPhotos = [
+        ...currentAttachments.map((file, index) => ({ file, index, pending: false })),
+        ...pendingAttachmentFiles.map((file, index) => ({ file, index, pending: true }))
+      ];
+
+      allPhotos.forEach(({ file, index, pending }) => {
+        const card = document.createElement("div");
+        card.className = "attachment-card";
+        const source = getAttachmentImageSource(file);
+        if (source) {
+          const img = document.createElement("img");
+          img.src = source;
+          img.alt = file.name || "予定写真";
+          img.addEventListener("click", () => window.open(source, "_blank", "noopener"));
+          img.style.cursor = "zoom-in";
+          card.appendChild(img);
+        }
+        const name = document.createElement("div");
+        name.className = "attachment-name";
+        name.textContent = `${pending ? "保存待ち：" : ""}${file.name || "写真"}`;
+        const remove = document.createElement("button");
+        remove.className = "attachment-remove";
+        remove.type = "button";
+        remove.textContent = "×";
+        remove.title = "写真を削除";
+        remove.addEventListener("click", () => {
+          if (pending) pendingAttachmentFiles.splice(index, 1);
+          else currentAttachments.splice(index, 1);
+          renderAttachmentPreview();
+        });
+        card.append(name, remove);
+        box.appendChild(card);
+      });
+    }
+
+    function createAttachmentLinks(files) {
+      const wrap = document.createElement("div");
+      wrap.className = "attachment-grid";
+      (files || []).forEach(file => {
+        const source = getAttachmentImageSource(file);
+        if (!source) return;
+        const card = document.createElement("a");
+        card.className = "attachment-card";
+        card.href = source;
+        card.target = "_blank";
+        card.rel = "noopener";
+        const img = document.createElement("img");
+        img.src = source;
+        img.alt = file.name || "予定写真";
+        card.appendChild(img);
+        const name = document.createElement("div");
+        name.className = "attachment-name";
+        name.textContent = file.name || "写真";
+        card.appendChild(name);
+        wrap.appendChild(card);
+      });
+      return wrap;
+    }
     function renderDashboard() { const today=getLocalDateString(new Date());const day=createDateFromString(today);const weekEnd=getLocalDateString(new Date(day.getFullYear(),day.getMonth(),day.getDate()+6));const todayItems=getOccurrencesForRange(today,today);const weekItems=getOccurrencesForRange(today,weekEnd);document.getElementById("dashToday").textContent=todayItems.length;document.getElementById("dashTodayDetail").textContent=`未完了 ${todayItems.filter(x=>!x.isCompleted).length}件`;document.getElementById("dashWeek").textContent=weekItems.length;document.getElementById("dashWeekDetail").textContent=`高優先度 ${weekItems.filter(x=>x.priority==="high").length}件`;const counts=Object.fromEntries(fixedAssignees.map(n=>[n,weekItems.filter(x=>getScheduleAssignees(x).includes(n)).length]));document.getElementById("dashPeople").textContent=Object.values(counts).reduce((a,b)=>a+b,0);document.getElementById("dashPeopleDetail").textContent=`村口 ${counts["村口"]}・金子 ${counts["金子"]}・寺門 ${counts["寺門"]}`;const all=getOccurrencesForRange(today,weekEnd);const completed=all.filter(x=>x.isCompleted).length;const rate=all.length?Math.round(completed/all.length*100):0;document.getElementById("dashCompletion").textContent=`${rate}%`;document.getElementById("dashCompletionDetail").textContent=`完了 ${completed} / 全体 ${all.length}`; }
     function prepareCsvModal(){const now=new Date();document.getElementById("csvStart").value=getLocalDateString(new Date(now.getFullYear(),now.getMonth(),1));document.getElementById("csvEnd").value=getLocalDateString(new Date(now.getFullYear(),now.getMonth()+1,0));}
     function csvEscape(value){const text=String(value??"");return /[",\n]/.test(text)?`"${text.replace(/"/g,'""')}"`:text;}
-    function exportCsv(){const start=document.getElementById("csvStart").value;const end=document.getElementById("csvEnd").value;if(!start||!end||end<start){alert("正しい期間を指定してください。");return;}const assignee=document.getElementById("csvAssignee").value;const category=document.getElementById("csvCategory").value;let rows=getOccurrencesForRange(start,end).filter(item=>{const names=getScheduleAssignees(item);if(assignee==="none"&&names.length)return false;if(assignee!=="all"&&assignee!=="none"&&!names.includes(assignee))return false;if(category!=="all"&&getCategoryForSchedule(item).id!==category)return false;return true;}).sort(compareSchedules);const header=["開始日","終了日","開始時間","終了時間","終日","カテゴリー","タイトル","担当者","優先度","タグ","状態","メモ","添付数"];const lines=[header,...rows.map(item=>[item.startDate,item.endDate,item.startTime,item.endTime,item.isAllDay?"はい":"いいえ",getCategoryForSchedule(item).name,item.title,getAssigneeText(item),getPriorityLabel(item.priority),(item.tags||[]).join(" / "),item.isCompleted?"完了":"未完了",item.memo,(item.attachments||[]).length])].map(row=>row.map(csvEscape).join(","));const blob=new Blob(["\ufeff"+lines.join("\r\n")],{type:"text/csv;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`QTS_Scheduler_${start}_${end}.csv`;a.click();URL.revokeObjectURL(url);showStatusMessage(`${rows.length}件をCSV出力しました。`,"success");}
+    function exportCsv(){const start=document.getElementById("csvStart").value;const end=document.getElementById("csvEnd").value;if(!start||!end||end<start){alert("正しい期間を指定してください。");return;}const assignee=document.getElementById("csvAssignee").value;const category=document.getElementById("csvCategory").value;let rows=getOccurrencesForRange(start,end).filter(item=>{const names=getScheduleAssignees(item);if(assignee==="none"&&names.length)return false;if(assignee!=="all"&&assignee!=="none"&&!names.includes(assignee))return false;if(category!=="all"&&getCategoryForSchedule(item).id!==category)return false;return true;}).sort(compareSchedules);const header=["開始日","終了日","開始時間","終了時間","終日","カテゴリー","タイトル","担当者","優先度","タグ","状態","メモ","写真数"];const lines=[header,...rows.map(item=>[item.startDate,item.endDate,item.startTime,item.endTime,item.isAllDay?"はい":"いいえ",getCategoryForSchedule(item).name,item.title,getAssigneeText(item),getPriorityLabel(item.priority),(item.tags||[]).join(" / "),item.isCompleted?"完了":"未完了",item.memo,(item.attachments||[]).length])].map(row=>row.map(csvEscape).join(","));const blob=new Blob(["\ufeff"+lines.join("\r\n")],{type:"text/csv;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`QTS_Scheduler_${start}_${end}.csv`;a.click();URL.revokeObjectURL(url);showStatusMessage(`${rows.length}件をCSV出力しました。`,"success");}
 
     function getAssigneeText(schedule) {
       const names = getScheduleAssignees(schedule);
@@ -3085,7 +3245,7 @@
         getRecurrenceLabel(schedule),
         getPriorityLabel(schedule.priority),
         ...(schedule.tags || []),
-        ...(schedule.attachments || []).map(file => file.name)
+        ...(schedule.attachments || []).map(file => file.name || "写真")
       ].filter(Boolean).join(" "));
 
       return haystack.includes(searchKeyword);
