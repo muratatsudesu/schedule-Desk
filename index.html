@@ -1172,6 +1172,59 @@
       }
     }
 
+  
+
+    /* 第4段階：ドラッグ＆ドロップ */
+    .calendar-drag-guide {
+      margin: 0 0 12px;
+      padding: 10px 13px;
+      color: #5e4632;
+      font-size: .86rem;
+      background: rgba(255, 249, 236, .82);
+      border: 1px solid rgba(126, 88, 52, .28);
+      border-radius: 10px;
+      box-shadow: inset 0 1px rgba(255,255,255,.75);
+    }
+
+    .event-bar[draggable="true"] { cursor: grab; touch-action: none; }
+    .event-bar[draggable="true"]:active { cursor: grabbing; }
+    .event-bar.dragging {
+      opacity: .38 !important;
+      transform: scale(.98);
+      box-shadow: none;
+    }
+    .day-cell.drop-target {
+      outline: 3px solid rgba(123, 79, 42, .7);
+      outline-offset: -3px;
+      background: rgba(218, 181, 126, .24) !important;
+    }
+    .day-cell.drop-invalid {
+      outline: 3px solid rgba(164, 67, 52, .55);
+      outline-offset: -3px;
+    }
+    .touch-drag-ghost {
+      position: fixed;
+      z-index: 99999;
+      max-width: 240px;
+      padding: 8px 12px;
+      overflow: hidden;
+      color: #fff;
+      font-size: .82rem;
+      font-weight: 700;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      pointer-events: none;
+      border-radius: 8px;
+      box-shadow: 0 10px 28px rgba(45, 28, 15, .32);
+      transform: translate(-50%, -130%);
+    }
+    body.calendar-drag-active { user-select: none; }
+
+    @media (max-width: 767px) {
+      .calendar-drag-guide { font-size: .78rem; }
+      .event-bar[draggable="true"] { cursor: default; }
+    }
+
   </style>
 </head>
 
@@ -1358,6 +1411,9 @@
       </button>
     </div>
 
+    <div class="calendar-drag-guide">
+      🪵 予定を別の日へドラッグすると日付を変更できます。スマートフォンでは予定を約0.5秒長押ししてから移動してください。
+    </div>
     <div class="calendar-grid" id="calendarGrid"></div>
   </section>
 
@@ -1522,6 +1578,9 @@
     let assigneeFilter = "all";
     let showCompleted = true;
     let categoriesInitialized = false;
+    let draggedSchedule = null;
+    let dragJustFinished = false;
+    let touchDragState = null;
 
     document.addEventListener("DOMContentLoaded", initializeApp);
 
@@ -2216,12 +2275,12 @@
           if (available) break;
         }
 
-        scheduleSlots[schedule.id] = slot;
+        scheduleSlots[getOccurrenceKey(schedule)] = slot;
 
         for (let day = 1; day <= lastDate; day++) {
           const dateStr = createCalendarDateString(year, month, day);
           if (scheduleOccursOn(schedule, dateStr)) {
-            daySlots[dateStr][slot] = schedule.id;
+            daySlots[dateStr][slot] = getOccurrenceKey(schedule);
           }
         }
       });
@@ -2231,6 +2290,7 @@
         const dayOfWeek = new Date(year, month, day).getDay();
         const cell = document.createElement("div");
         cell.className = "day-cell";
+        cell.dataset.date = dateStr;
 
         if (dateStr === today) cell.classList.add("today");
         if (dateStr === selectedDateStr) cell.classList.add("selected");
@@ -2246,13 +2306,13 @@
         events.className = "events-container";
 
         const dayEvents = activeSchedules.filter(schedule => scheduleOccursOn(schedule, dateStr));
-        const maxSlot = Math.max(-1, ...dayEvents.map(schedule => scheduleSlots[schedule.id]));
+        const maxSlot = Math.max(-1, ...dayEvents.map(schedule => scheduleSlots[getOccurrenceKey(schedule)]));
 
         for (let slot = 0; slot <= maxSlot; slot++) {
           const wrapper = document.createElement("div");
           wrapper.className = "event-bar-wrapper";
 
-          const target = dayEvents.find(schedule => scheduleSlots[schedule.id] === slot);
+          const target = dayEvents.find(schedule => scheduleSlots[getOccurrenceKey(schedule)] === slot);
 
           if (target) {
             const isSegmentStart =
@@ -2288,7 +2348,13 @@
               bar.style.color = getContrastTextColor(category.color);
               bar.style.width = `calc(${spanDays * 100}% + ${(spanDays - 1) * 2}px)`;
               bar.textContent = createEventBarText(target, category);
-              bar.title = `${category.icon} ${category.name} / ${getScheduleTimeText(target)} / ${target.title || "無題"}`;
+              bar.title = `${category.icon} ${category.name} / ${getScheduleTimeText(target)} / ${target.title || "無題"} / ドラッグで移動`;
+              bar.draggable = true;
+              bar.dataset.scheduleKey = getOccurrenceKey(target);
+              bar.addEventListener("click", event => event.stopPropagation());
+              bar.addEventListener("dragstart", event => beginNativeDrag(event, target));
+              bar.addEventListener("dragend", endNativeDrag);
+              installTouchDrag(bar, target);
               wrapper.appendChild(bar);
             }
           }
@@ -2297,9 +2363,274 @@
         }
 
         cell.appendChild(events);
-        cell.addEventListener("click", () => selectCalendarDate(dateStr));
+        cell.addEventListener("dragover", event => handleCalendarDragOver(event, cell));
+        cell.addEventListener("dragleave", event => handleCalendarDragLeave(event, cell));
+        cell.addEventListener("drop", event => handleCalendarDrop(event, dateStr, cell));
+        cell.addEventListener("click", () => {
+          if (dragJustFinished) return;
+          selectCalendarDate(dateStr);
+        });
         grid.appendChild(cell);
       }
+    }
+
+
+    function getOccurrenceKey(schedule) {
+      return `${schedule._seriesId || schedule.id}::${schedule._occurrenceDate || schedule.startDate || ""}`;
+    }
+
+    function beginNativeDrag(event, schedule) {
+      draggedSchedule = schedule;
+      dragJustFinished = false;
+      event.currentTarget.classList.add("dragging");
+      document.body.classList.add("calendar-drag-active");
+      if (event.dataTransfer) {
+        event.dataTransfer.effectAllowed = "move";
+        event.dataTransfer.setData("text/plain", getOccurrenceKey(schedule));
+      }
+    }
+
+    function endNativeDrag(event) {
+      event.currentTarget?.classList.remove("dragging");
+      clearDropTargets();
+      document.body.classList.remove("calendar-drag-active");
+      draggedSchedule = null;
+      markDragFinished();
+    }
+
+    function handleCalendarDragOver(event, cell) {
+      if (!draggedSchedule) return;
+      event.preventDefault();
+      if (event.dataTransfer) event.dataTransfer.dropEffect = "move";
+      clearDropTargets();
+      cell.classList.add("drop-target");
+    }
+
+    function handleCalendarDragLeave(event, cell) {
+      if (!cell.contains(event.relatedTarget)) cell.classList.remove("drop-target");
+    }
+
+    async function handleCalendarDrop(event, dateStr, cell) {
+      event.preventDefault();
+      event.stopPropagation();
+      const schedule = draggedSchedule;
+      clearDropTargets();
+      if (!schedule) return;
+      await moveScheduleByDrop(schedule, dateStr);
+      markDragFinished();
+    }
+
+    function clearDropTargets() {
+      document.querySelectorAll(".day-cell.drop-target,.day-cell.drop-invalid").forEach(cell => {
+        cell.classList.remove("drop-target", "drop-invalid");
+      });
+    }
+
+    function markDragFinished() {
+      dragJustFinished = true;
+      window.setTimeout(() => { dragJustFinished = false; }, 300);
+    }
+
+    function installTouchDrag(bar, schedule) {
+      let timer = null;
+      let startX = 0;
+      let startY = 0;
+
+      bar.addEventListener("pointerdown", event => {
+        if (event.pointerType === "mouse") return;
+        startX = event.clientX;
+        startY = event.clientY;
+        timer = window.setTimeout(() => startTouchDrag(event, bar, schedule), 480);
+      });
+
+      bar.addEventListener("pointermove", event => {
+        if (touchDragState) {
+          event.preventDefault();
+          updateTouchDrag(event);
+          return;
+        }
+        if (timer && Math.hypot(event.clientX - startX, event.clientY - startY) > 10) {
+          clearTimeout(timer);
+          timer = null;
+        }
+      });
+
+      const cancel = event => {
+        if (timer) clearTimeout(timer);
+        timer = null;
+        if (touchDragState) finishTouchDrag(event);
+      };
+      bar.addEventListener("pointerup", cancel);
+      bar.addEventListener("pointercancel", cancel);
+    }
+
+    function startTouchDrag(event, bar, schedule) {
+      draggedSchedule = schedule;
+      dragJustFinished = false;
+      bar.setPointerCapture?.(event.pointerId);
+      bar.classList.add("dragging");
+      document.body.classList.add("calendar-drag-active");
+      const ghost = document.createElement("div");
+      ghost.className = "touch-drag-ghost";
+      ghost.textContent = bar.textContent;
+      ghost.style.backgroundColor = getCategoryForSchedule(schedule).color;
+      document.body.appendChild(ghost);
+      touchDragState = { bar, schedule, ghost, targetDate: null };
+      if (navigator.vibrate) navigator.vibrate(25);
+      updateTouchDrag(event);
+    }
+
+    function updateTouchDrag(event) {
+      if (!touchDragState) return;
+      touchDragState.ghost.style.left = `${event.clientX}px`;
+      touchDragState.ghost.style.top = `${event.clientY}px`;
+      clearDropTargets();
+      const element = document.elementFromPoint(event.clientX, event.clientY);
+      const cell = element?.closest?.(".day-cell[data-date]");
+      if (cell) {
+        cell.classList.add("drop-target");
+        touchDragState.targetDate = cell.dataset.date;
+      } else {
+        touchDragState.targetDate = null;
+      }
+    }
+
+    async function finishTouchDrag(event) {
+      if (!touchDragState) return;
+      const state = touchDragState;
+      touchDragState = null;
+      state.bar.classList.remove("dragging");
+      state.ghost.remove();
+      clearDropTargets();
+      document.body.classList.remove("calendar-drag-active");
+      draggedSchedule = null;
+      markDragFinished();
+      if (state.targetDate) await moveScheduleByDrop(state.schedule, state.targetDate);
+    }
+
+    async function moveScheduleByDrop(item, targetDate) {
+      const originalStart = item.startDate;
+      if (!originalStart || originalStart === targetDate) return;
+      const delta = daysBetween(originalStart, targetDate);
+      const duration = Math.max(0, daysBetween(item.startDate, item.endDate || item.startDate));
+      const newEnd = addDaysString(targetDate, duration);
+      const original = schedules.find(schedule => schedule.id === (item._seriesId || item.id)) || item;
+
+      let scope = "single";
+      if (isRecurringSchedule(original) && item._occurrenceDate) {
+        const answer = prompt(
+          `「${item.title || "無題"}」を${formatJapaneseDate(targetDate)}へ移動します。\n\n1：この予定だけ移動\n2：この予定以降をまとめて移動\n3：シリーズ全体を移動`,
+          "1"
+        );
+        if (answer === null) return;
+        scope = answer === "2" ? "future" : answer === "3" ? "series" : "single";
+      } else if (!confirm(`「${item.title || "無題"}」を${formatJapaneseDate(targetDate)}へ移動しますか？`)) {
+        return;
+      }
+
+      try {
+        if (!isRecurringSchedule(original)) {
+          await db.collection("schedules").doc(original.id).update({
+            startDate: targetDate,
+            endDate: newEnd,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          showStatusMessage("予定を移動しました。", "success");
+        } else if (scope === "single") {
+          const occurrenceDate = item._occurrenceDate;
+          const excluded = Array.from(new Set([...(original.excludedDates || []), occurrenceDate]));
+          const standalone = stripInternalScheduleFields({
+            ...item,
+            startDate: targetDate,
+            endDate: newEnd,
+            recurrenceType: "none",
+            recurrenceUntil: null,
+            recurrenceWeekdays: [],
+            recurrenceExceptions: {},
+            excludedDates: [],
+            isCompleted: Boolean(item.isCompleted)
+          });
+          const batch = db.batch();
+          batch.update(db.collection("schedules").doc(original.id), {
+            excludedDates: excluded,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          batch.set(db.collection("schedules").doc(), {
+            ...standalone,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          await batch.commit();
+          showStatusMessage("この予定だけ移動しました。", "success");
+        } else if (scope === "future") {
+          const occurrenceDate = item._occurrenceDate;
+          const clone = stripInternalScheduleFields({
+            ...original,
+            startDate: targetDate,
+            endDate: newEnd,
+            recurrenceUntil: original.recurrenceUntil ? addDaysString(original.recurrenceUntil, delta) : null,
+            recurrenceWeekdays: shiftWeekdays(original.recurrenceWeekdays, delta),
+            recurrenceExceptions: {},
+            excludedDates: []
+          });
+          const batch = db.batch();
+          batch.update(db.collection("schedules").doc(original.id), {
+            recurrenceUntil: addDaysString(occurrenceDate, -1),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          batch.set(db.collection("schedules").doc(), {
+            ...clone,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          await batch.commit();
+          showStatusMessage("この予定以降を移動しました。", "success");
+        } else {
+          await db.collection("schedules").doc(original.id).update({
+            startDate: addDaysString(original.startDate, delta),
+            endDate: addDaysString(original.endDate || original.startDate, delta),
+            recurrenceUntil: original.recurrenceUntil ? addDaysString(original.recurrenceUntil, delta) : null,
+            recurrenceWeekdays: shiftWeekdays(original.recurrenceWeekdays, delta),
+            recurrenceExceptions: shiftRecurrenceExceptions(original.recurrenceExceptions, delta),
+            excludedDates: (original.excludedDates || []).map(date => addDaysString(date, delta)),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          showStatusMessage("シリーズ全体を移動しました。", "success");
+        }
+
+        selectedDateStr = targetDate;
+        const moved = createDateFromString(targetDate);
+        if (moved) currentDisplayDate = new Date(moved.getFullYear(), moved.getMonth(), 1);
+      } catch (error) {
+        console.error(error);
+        showStatusMessage("予定を移動できませんでした。", "error");
+      }
+    }
+
+    function stripInternalScheduleFields(schedule) {
+      const copy = { ...schedule };
+      ["id", "_seriesId", "_occurrenceDate", "_isRecurring", "_recurrenceType", "createdAt", "updatedAt"].forEach(key => delete copy[key]);
+      return copy;
+    }
+
+    function shiftWeekdays(days, delta) {
+      if (!Array.isArray(days)) return [];
+      const shift = ((delta % 7) + 7) % 7;
+      return days.map(day => (Number(day) + shift) % 7);
+    }
+
+    function shiftRecurrenceExceptions(exceptions, delta) {
+      const shifted = {};
+      Object.entries(exceptions || {}).forEach(([date, value]) => {
+        const nextDate = addDaysString(date, delta);
+        shifted[nextDate] = {
+          ...value,
+          startDate: value?.startDate ? addDaysString(value.startDate, delta) : undefined,
+          endDate: value?.endDate ? addDaysString(value.endDate, delta) : undefined
+        };
+        Object.keys(shifted[nextDate]).forEach(key => shifted[nextDate][key] === undefined && delete shifted[nextDate][key]);
+      });
+      return shifted;
     }
 
     function loadSchedules(filterDate = null) {
