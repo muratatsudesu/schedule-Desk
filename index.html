@@ -856,6 +856,322 @@
         grid-template-columns: 1fr;
       }
     }
+
+
+    /* ===== 木質感デザイン・ブラッシュアップ ===== */
+    :root {
+      --brown-deep: #3f2a1c;
+      --brown-dark: #5a3d28;
+      --brown: #805c3b;
+      --brown-mid: #a77b50;
+      --brown-light: #e7d5bb;
+      --wood-pale: #f3e8d7;
+      --paper: #fffdf8;
+      --paper-deep: #f7f0e5;
+      --background: #d8c2a5;
+      --border: #cdb28e;
+      --text: #382b24;
+      --muted: #78685c;
+      --shadow: rgba(65, 42, 24, 0.18);
+    }
+
+    html {
+      min-height: 100%;
+      background-color: #c9ad88;
+    }
+
+    body {
+      position: relative;
+      min-height: 100vh;
+      max-width: 1120px;
+      padding: 18px;
+      background-color: transparent;
+      background-image:
+        repeating-linear-gradient(
+          4deg,
+          rgba(255,255,255,0.05) 0,
+          rgba(255,255,255,0.05) 2px,
+          transparent 2px,
+          transparent 11px
+        ),
+        repeating-linear-gradient(
+          93deg,
+          rgba(80,48,24,0.035) 0,
+          rgba(80,48,24,0.035) 1px,
+          transparent 1px,
+          transparent 23px
+        ),
+        linear-gradient(135deg, #dfc8a9 0%, #c7a77f 52%, #d5b995 100%);
+      color: var(--text);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.72;
+      background-image:
+        radial-gradient(ellipse at 18% 12%, rgba(255,255,255,0.24), transparent 34%),
+        radial-gradient(ellipse at 82% 80%, rgba(83,50,25,0.10), transparent 42%);
+    }
+
+    .header-banner {
+      position: relative;
+      overflow: hidden;
+      padding: 22px 16px;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,0.07), transparent 22%, rgba(0,0,0,0.06) 55%, transparent 78%),
+        repeating-linear-gradient(3deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 12px),
+        linear-gradient(135deg, #8d6540 0%, #5a3b25 52%, #3f291c 100%);
+      border: 1px solid rgba(69, 42, 24, 0.62);
+      border-radius: 16px;
+      box-shadow: 0 10px 26px rgba(58, 35, 20, 0.28), inset 0 1px rgba(255,255,255,0.18);
+    }
+
+    .header-banner::after {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      pointer-events: none;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 11px;
+    }
+
+    .header-banner h1 {
+      position: relative;
+      z-index: 1;
+      font-family: Georgia, "Yu Mincho", "Hiragino Mincho ProN", serif;
+      font-size: clamp(1.25rem, 3vw, 1.7rem);
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-shadow: 0 2px 3px rgba(0,0,0,0.28);
+    }
+
+    .card {
+      position: relative;
+      margin-bottom: 18px;
+      padding: 18px;
+      background:
+        linear-gradient(rgba(255,253,248,0.96), rgba(249,242,232,0.97)),
+        repeating-linear-gradient(0deg, transparent 0 24px, rgba(109,79,47,0.025) 24px 25px);
+      border: 1px solid rgba(137, 101, 62, 0.34);
+      border-radius: 14px;
+      box-shadow: 0 6px 18px var(--shadow), inset 0 1px rgba(255,255,255,0.92);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 22px;
+      right: 22px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #b98b58, transparent);
+      opacity: 0.65;
+      border-radius: 999px;
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 9px;
+      color: var(--brown-deep);
+      font-family: Georgia, "Yu Mincho", "Hiragino Mincho ProN", serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid rgba(150, 110, 70, 0.24);
+    }
+
+    label {
+      color: #59402e;
+      letter-spacing: 0.025em;
+    }
+
+    input,
+    select,
+    textarea {
+      color: var(--text);
+      background: rgba(255, 253, 247, 0.88);
+      border: 1px solid #ccb18e;
+      border-radius: 9px;
+      box-shadow: inset 0 1px 3px rgba(74, 47, 27, 0.06);
+    }
+
+    input:hover,
+    select:hover,
+    textarea:hover {
+      border-color: #b58d61;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      background: #fffefb;
+      border-color: #8a603d;
+      box-shadow: 0 0 0 3px rgba(139, 96, 61, 0.13), inset 0 1px 2px rgba(74,47,27,0.04);
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger,
+    .btn-small,
+    .btn-copy,
+    .btn-edit,
+    .btn-del,
+    .btn-complete {
+      border-radius: 9px;
+      box-shadow: 0 2px 5px rgba(62, 40, 24, 0.14);
+      transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
+    }
+
+    .btn-primary {
+      background:
+        repeating-linear-gradient(4deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 9px),
+        linear-gradient(135deg, #966c45 0%, #68452d 55%, #4a3020 100%);
+      border: 1px solid #543722;
+    }
+
+    .btn-secondary {
+      color: #543a27;
+      background: linear-gradient(180deg, #f3e6d3, #dfc8aa);
+      border: 1px solid #c2a17c;
+    }
+
+    button:hover:not(:disabled) {
+      filter: brightness(1.04);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 9px rgba(62,40,24,0.19);
+    }
+
+    button:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: 0 1px 3px rgba(62,40,24,0.16);
+    }
+
+    .calendar-header,
+    .weekdays {
+      color: #fffaf1;
+      background:
+        repeating-linear-gradient(2deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 10px),
+        linear-gradient(135deg, #795236, #503522);
+      border-color: #4d321f;
+    }
+
+    .calendar-grid {
+      background: #bda17e;
+      border-color: #a98a65;
+      box-shadow: inset 0 1px 4px rgba(69,42,24,0.12);
+    }
+
+    .calendar-cell,
+    .day-cell {
+      background: linear-gradient(145deg, #fffdf8, #f6eddf);
+      border-color: rgba(150,117,79,0.28);
+    }
+
+    .calendar-cell:hover,
+    .day-cell:hover {
+      background: linear-gradient(145deg, #fffefb, #efdfc9);
+    }
+
+    .today,
+    .today-cell {
+      background: linear-gradient(145deg, #fff8de, #f0dcae) !important;
+      box-shadow: inset 0 0 0 2px rgba(145, 95, 45, 0.42);
+    }
+
+    .schedule-item,
+    .today-item,
+    .detail-item,
+    .category-item {
+      background: linear-gradient(135deg, rgba(255,254,250,0.96), rgba(244,234,219,0.94));
+      border-color: rgba(137,103,68,0.28);
+      border-radius: 10px;
+      box-shadow: 0 2px 7px rgba(72,48,30,0.08);
+    }
+
+    .checkbox-chip {
+      background: linear-gradient(180deg, #fffdf8, #eee0cc);
+      border-color: #c6a784;
+      box-shadow: 0 1px 3px rgba(78,51,30,0.08);
+    }
+
+    .completion-box {
+      color: #48603d;
+      background: linear-gradient(180deg, #f2f4e8, #e1ead5);
+      border-color: #aab98d;
+    }
+
+    .modal {
+      background: rgba(45, 29, 19, 0.58);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+      background:
+        linear-gradient(rgba(255,253,248,0.98), rgba(244,234,219,0.98)),
+        repeating-linear-gradient(0deg, transparent 0 25px, rgba(100,70,40,0.025) 25px 26px);
+      border: 1px solid #b28e65;
+      border-radius: 16px;
+      box-shadow: 0 18px 48px rgba(42,26,15,0.36);
+    }
+
+    .modal-header {
+      color: #fffaf2;
+      background:
+        repeating-linear-gradient(3deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 10px),
+        linear-gradient(135deg, #7c5538, #4a3020);
+      border-radius: 15px 15px 0 0;
+    }
+
+    .modal-footer {
+      background: rgba(224, 206, 181, 0.42);
+      border-top-color: rgba(144,108,70,0.28);
+    }
+
+    .badge,
+    .event-bar {
+      box-shadow: inset 0 1px rgba(255,255,255,0.24), 0 1px 3px rgba(54,35,21,0.18);
+    }
+
+    .future-setting {
+      background: linear-gradient(180deg, #f4eadb, #e9d9c2);
+      border-color: #c8aa84;
+    }
+
+    ::-webkit-scrollbar {
+      width: 11px;
+      height: 11px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #e1ceb3;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(#9e7550, #69472f);
+      border: 2px solid #e1ceb3;
+      border-radius: 999px;
+    }
+
+    @media (max-width: 650px) {
+      body {
+        padding: 9px;
+      }
+
+      .card {
+        padding: 14px;
+        border-radius: 12px;
+      }
+
+      .header-banner {
+        border-radius: 12px;
+      }
+    }
+
   </style>
 </head>
 
