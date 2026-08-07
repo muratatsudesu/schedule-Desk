@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.1.1</title>
+  <title>Q.T.S Scheduler — Ver.6.2</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=601">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=601">
@@ -1781,7 +1781,7 @@
     }
 
 
-    /* ===== Ver.6.1.1 Project detail ===== */
+    /* ===== Ver.6.2 Project detail ===== */
     .annual-project-card { cursor: pointer; transition: transform .16s ease, box-shadow .16s ease; }
     .annual-project-card:hover, .annual-project-card:focus {
       transform: translateY(-2px);
@@ -1818,12 +1818,174 @@
     .project-doc-placeholder span { color:#84919d; font-size:.72rem; font-weight:600; }
     @media(max-width:700px){ .project-detail-grid{grid-template-columns:1fr;} }
 
+
+    /* ===== Ver.6.2 Stakeholders / project contacts ===== */
+    .project-stakeholder-section {
+      margin-bottom: 14px;
+      padding: 15px;
+      background: linear-gradient(145deg, #f7fafb, #eef5f3);
+      border: 1px solid #cfddd9;
+      border-radius: 14px;
+    }
+    .project-section-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .project-section-heading h4 {
+      margin: 0;
+      color: #153b5d;
+      font-size: 1rem;
+    }
+    .project-section-heading p {
+      margin: 3px 0 0;
+      color: #72818e;
+      font-size: .75rem;
+    }
+    .stakeholder-grid,
+    .stakeholder-edit-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 10px;
+    }
+    .stakeholder-card {
+      display: flex;
+      gap: 11px;
+      min-height: 126px;
+      padding: 12px;
+      background: #fff;
+      border: 1px solid #d4e0e5;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(10,45,75,.06);
+    }
+    .stakeholder-icon {
+      display: grid;
+      place-items: center;
+      flex: 0 0 39px;
+      height: 39px;
+      font-size: 1.25rem;
+      background: #e8f5f0;
+      border-radius: 10px;
+    }
+    .stakeholder-content {
+      min-width: 0;
+      flex: 1;
+    }
+    .stakeholder-content h5 {
+      margin: 0 0 5px;
+      color: #557083;
+      font-size: .74rem;
+    }
+    .stakeholder-company {
+      color: #102f4a;
+      font-weight: 820;
+      overflow-wrap: anywhere;
+    }
+    .stakeholder-person {
+      margin-top: 3px;
+      color: #566b7c;
+      font-size: .8rem;
+    }
+    .stakeholder-phone {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 7px;
+      padding: 5px 8px;
+      color: #176c55;
+      font-size: .8rem;
+      font-weight: 750;
+      text-decoration: none;
+      background: #e5f6ef;
+      border-radius: 999px;
+    }
+    .stakeholder-phone::before { content: "☎ "; }
+    .stakeholder-note {
+      margin-top: 6px;
+      color: #71808c;
+      font-size: .72rem;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .stakeholder-edit-card {
+      min-width: 0;
+      margin: 0;
+      padding: 12px;
+      background: #fff;
+      border: 1px solid #d5e0e6;
+      border-radius: 12px;
+    }
+    .stakeholder-edit-card legend {
+      padding: 0 5px;
+      color: #173b5c;
+      font-weight: 800;
+    }
+    .stakeholder-edit-card label {
+      display: block;
+      margin-bottom: 8px;
+      color: #53697a;
+      font-size: .74rem;
+      font-weight: 700;
+    }
+    .stakeholder-edit-card input,
+    .stakeholder-edit-card textarea {
+      width: 100%;
+      margin-top: 4px;
+    }
+    .project-contact-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .project-contacts-status {
+      margin-bottom: 10px;
+      padding: 9px 11px;
+      border-radius: 9px;
+      font-size: .78rem;
+    }
+    .project-contacts-status.info {
+      color: #315b75;
+      background: #e8f1f6;
+    }
+    .project-contacts-status.success {
+      color: #176349;
+      background: #e3f5ed;
+    }
+    .project-contacts-status.error {
+      color: #9a3030;
+      background: #fde9e9;
+    }
+    @media (max-width: 700px) {
+      .stakeholder-grid,
+      .stakeholder-edit-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .stakeholder-card {
+        min-height: 116px;
+        padding: 10px;
+      }
+      .stakeholder-icon {
+        display: none;
+      }
+      .project-section-heading {
+        align-items: flex-start;
+      }
+    }
+    @media (max-width: 420px) {
+      .stakeholder-grid,
+      .stakeholder-edit-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
   </style>
 </head>
 
 <body>
   <header class="header-banner">
-    <h1>Q.T.S Scheduler</h1><p class="header-subtitle">WORK &amp; PROJECT PLANNER</p><div class="version-badge" id="headerVersion">Ver.6.1.1</div>
+    <h1>Q.T.S Scheduler</h1><p class="header-subtitle">WORK &amp; PROJECT PLANNER</p><div class="version-badge" id="headerVersion">Ver.6.2</div>
   </header>
 
   <nav class="main-navigation" aria-label="メイン画面">
@@ -2294,12 +2456,14 @@
   </main>
 
 
+
   <div id="projectDetailModal" class="modal">
     <div class="modal-content project-detail-modal-content">
       <div class="modal-header">
         <h3>📂 案件詳細</h3>
         <button type="button" class="modal-close" data-close-modal="projectDetailModal">×</button>
       </div>
+
       <div class="project-detail-hero">
         <div class="project-detail-no" id="projectDetailNo">-</div>
         <div>
@@ -2307,19 +2471,154 @@
           <div class="project-detail-meta" id="projectDetailMeta"></div>
         </div>
       </div>
+
+      <section class="project-stakeholder-section">
+        <div class="project-section-heading">
+          <div>
+            <h4>👥 関係者・協力会社</h4>
+            <p>案件を開いたら、連絡先をすぐ確認できます。</p>
+          </div>
+          <button type="button" class="btn-secondary btn-small" id="projectContactsEditBtn">✏️ 編集</button>
+        </div>
+
+        <div id="projectContactsStatus" class="project-contacts-status" hidden></div>
+
+        <div id="projectContactsView" class="stakeholder-grid">
+          <article class="stakeholder-card">
+            <div class="stakeholder-icon">👤</div>
+            <div class="stakeholder-content">
+              <h5>お客様</h5>
+              <div class="stakeholder-company" id="customerViewCompany">未登録</div>
+              <div class="stakeholder-person" id="customerViewPerson"></div>
+              <a class="stakeholder-phone" id="customerViewPhone" hidden></a>
+              <div class="stakeholder-note" id="customerViewNote"></div>
+            </div>
+          </article>
+
+          <article class="stakeholder-card">
+            <div class="stakeholder-icon">🏭</div>
+            <div class="stakeholder-content">
+              <h5>工場</h5>
+              <div class="stakeholder-company" id="factoryViewCompany">未登録</div>
+              <div class="stakeholder-person" id="factoryViewPerson"></div>
+              <a class="stakeholder-phone" id="factoryViewPhone" hidden></a>
+              <div class="stakeholder-note" id="factoryViewNote"></div>
+            </div>
+          </article>
+
+          <article class="stakeholder-card">
+            <div class="stakeholder-icon">🚚</div>
+            <div class="stakeholder-content">
+              <h5>搬入業者</h5>
+              <div class="stakeholder-company" id="carrierViewCompany">未登録</div>
+              <div class="stakeholder-person" id="carrierViewPerson"></div>
+              <a class="stakeholder-phone" id="carrierViewPhone" hidden></a>
+              <div class="stakeholder-note" id="carrierViewNote"></div>
+            </div>
+          </article>
+
+          <article class="stakeholder-card">
+            <div class="stakeholder-icon">🔨</div>
+            <div class="stakeholder-content">
+              <h5>大工</h5>
+              <div class="stakeholder-company" id="carpenterViewCompany">未登録</div>
+              <div class="stakeholder-person" id="carpenterViewPerson"></div>
+              <a class="stakeholder-phone" id="carpenterViewPhone" hidden></a>
+              <div class="stakeholder-note" id="carpenterViewNote"></div>
+            </div>
+          </article>
+        </div>
+
+        <form id="projectContactsForm" class="project-contacts-form" hidden>
+          <div class="stakeholder-edit-grid">
+
+            <fieldset class="stakeholder-edit-card">
+              <legend>👤 お客様</legend>
+              <label>会社名・名称
+                <input type="text" id="customerCompany" maxlength="80" placeholder="例：〇〇株式会社">
+              </label>
+              <label>担当者
+                <input type="text" id="customerPerson" maxlength="50" placeholder="例：山田様">
+              </label>
+              <label>電話番号
+                <input type="tel" id="customerPhone" maxlength="30" placeholder="例：090-1234-5678">
+              </label>
+              <label>メモ
+                <textarea id="customerNote" rows="2" maxlength="300" placeholder="補足事項"></textarea>
+              </label>
+            </fieldset>
+
+            <fieldset class="stakeholder-edit-card">
+              <legend>🏭 工場</legend>
+              <label>会社名・名称
+                <input type="text" id="factoryCompany" maxlength="80">
+              </label>
+              <label>担当者
+                <input type="text" id="factoryPerson" maxlength="50">
+              </label>
+              <label>電話番号
+                <input type="tel" id="factoryPhone" maxlength="30">
+              </label>
+              <label>メモ
+                <textarea id="factoryNote" rows="2" maxlength="300"></textarea>
+              </label>
+            </fieldset>
+
+            <fieldset class="stakeholder-edit-card">
+              <legend>🚚 搬入業者</legend>
+              <label>会社名・名称
+                <input type="text" id="carrierCompany" maxlength="80">
+              </label>
+              <label>担当者
+                <input type="text" id="carrierPerson" maxlength="50">
+              </label>
+              <label>電話番号
+                <input type="tel" id="carrierPhone" maxlength="30">
+              </label>
+              <label>メモ
+                <textarea id="carrierNote" rows="2" maxlength="300"></textarea>
+              </label>
+            </fieldset>
+
+            <fieldset class="stakeholder-edit-card">
+              <legend>🔨 大工</legend>
+              <label>会社名・氏名
+                <input type="text" id="carpenterCompany" maxlength="80">
+              </label>
+              <label>担当者・補足
+                <input type="text" id="carpenterPerson" maxlength="50">
+              </label>
+              <label>電話番号
+                <input type="tel" id="carpenterPhone" maxlength="30">
+              </label>
+              <label>メモ
+                <textarea id="carpenterNote" rows="2" maxlength="300"></textarea>
+              </label>
+            </fieldset>
+          </div>
+
+          <div class="project-contact-actions">
+            <button type="submit" class="btn-primary" id="projectContactsSaveBtn">💾 保存</button>
+            <button type="button" class="btn-secondary" id="projectContactsCancelBtn">キャンセル</button>
+          </div>
+        </form>
+      </section>
+
       <div class="project-detail-grid">
         <section class="project-detail-box">
           <h4>📅 関連する予定</h4>
           <div id="projectRelatedSchedules" class="project-related-list"></div>
         </section>
+
         <section class="project-detail-box">
           <h4>📎 関連資料</h4>
           <p class="small-note">図面・見積書・写真を案件単位でまとめるための入口です。</p>
-          <div class="project-doc-placeholder">📐 図面 <span>次の段階で連携</span></div>
-          <div class="project-doc-placeholder">📄 見積書 <span>次の段階で連携</span></div>
-          <div class="project-doc-placeholder">📷 写真 <span>次の段階で連携</span></div>
+          <div class="project-doc-placeholder">📐 図面 <span>今後連携</span></div>
+          <div class="project-doc-placeholder">📄 見積書 <span>今後連携</span></div>
+          <div class="project-doc-placeholder">📷 写真 <span>今後連携</span></div>
         </section>
       </div>
+
       <div class="modal-actions">
         <button type="button" class="btn-primary" id="projectGoSchedule">📅 スケジュールで確認</button>
         <button type="button" class="btn-secondary" data-close-modal="projectDetailModal">閉じる</button>
@@ -2386,9 +2685,9 @@
           <button type="button" class="btn-secondary" id="btnOpenCsv">📤 CSV出力</button>
         </div>
         <div class="app-info-panel">
-          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.1.1</span><br>
+          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.2</span><br>
           無料プラン対応・写真圧縮保存版<br>
-          Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
+          Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月3日
         </div>
       </div>
@@ -2493,8 +2792,8 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.1.1";
-    const APP_BUILD_DATE = "2026-07-29";
+    const APP_VERSION = "6.2";
+    const APP_BUILD_DATE = "2026-08-07";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCL6VijHRZryh7DdxNVcBdDXhRJtx2JU-4",
@@ -2615,6 +2914,16 @@
         }
         window.scrollTo({top:0, behavior:"smooth"});
       });
+
+      document.getElementById("projectContactsEditBtn").addEventListener("click", () => {
+        setProjectContactsEditMode(true);
+      });
+      document.getElementById("projectContactsCancelBtn").addEventListener("click", () => {
+        fillProjectContactForm(activeProjectContactData || {});
+        setProjectContactsEditMode(false);
+      });
+      document.getElementById("projectContactsForm").addEventListener("submit", saveProjectContacts);
+
       document.getElementById("annualZoomIn").addEventListener("click", () => changeAnnualZoom(0.15));
       document.getElementById("annualZoomOut").addEventListener("click", () => changeAnnualZoom(-0.15));
       document.getElementById("annualZoomReset").addEventListener("click", resetAnnualZoom);
@@ -4331,6 +4640,8 @@
 
 
     let annualZoom = 1;
+    let activeProjectCard = null;
+    let activeProjectContactData = null;
 
     function switchMainView(viewName) {
       const isAnnual = viewName === "annual";
@@ -4348,7 +4659,9 @@
     }
 
 
-    function openProjectDetail(card) {
+    async function openProjectDetail(card) {
+      activeProjectCard = card;
+
       const no = card.dataset.projectNo || "-";
       const name = card.dataset.projectName || "";
       const owner = card.dataset.projectOwner || "";
@@ -4395,7 +4708,184 @@
         });
       }
 
+      activeProjectContactData = {};
+      renderProjectContacts({});
+      fillProjectContactForm({});
+      setProjectContactsEditMode(false);
+      showProjectContactsStatus("関係者情報を読み込んでいます…", "info");
       openModal("projectDetailModal");
+
+      await loadProjectContacts(card);
+    }
+
+    function getProjectContactDocId(card) {
+      const no = String(card?.dataset?.projectNo || "").trim();
+      if (no) return `project_${no}`;
+      const name = String(card?.dataset?.projectName || "project")
+        .normalize("NFKC")
+        .replace(/[^\w\u3040-\u30ff\u3400-\u9fff-]+/g, "_")
+        .slice(0, 80);
+      return `project_${name || "unknown"}`;
+    }
+
+    function emptyStakeholderData() {
+      return { company: "", person: "", phone: "", note: "" };
+    }
+
+    function normalizeProjectContactData(raw = {}) {
+      const normalizeParty = value => ({
+        company: String(value?.company || ""),
+        person: String(value?.person || ""),
+        phone: String(value?.phone || ""),
+        note: String(value?.note || "")
+      });
+      return {
+        customer: normalizeParty(raw.customer),
+        factory: normalizeParty(raw.factory),
+        carrier: normalizeParty(raw.carrier),
+        carpenter: normalizeParty(raw.carpenter)
+      };
+    }
+
+    async function loadProjectContacts(card) {
+      try {
+        const docId = getProjectContactDocId(card);
+        const snap = await db.collection("projectContacts").doc(docId).get();
+        if (activeProjectCard !== card) return;
+
+        activeProjectContactData = snap.exists
+          ? normalizeProjectContactData(snap.data())
+          : normalizeProjectContactData({});
+
+        renderProjectContacts(activeProjectContactData);
+        fillProjectContactForm(activeProjectContactData);
+        hideProjectContactsStatus();
+      } catch (error) {
+        console.error("project contacts load error", error);
+        if (activeProjectCard !== card) return;
+        activeProjectContactData = normalizeProjectContactData({});
+        renderProjectContacts(activeProjectContactData);
+        fillProjectContactForm(activeProjectContactData);
+        showProjectContactsStatus(
+          "関係者情報を読み込めませんでした。Firestoreの権限設定をご確認ください。",
+          "error"
+        );
+      }
+    }
+
+    function setProjectContactsEditMode(editing) {
+      document.getElementById("projectContactsView").hidden = editing;
+      document.getElementById("projectContactsForm").hidden = !editing;
+      document.getElementById("projectContactsEditBtn").textContent =
+        editing ? "編集中" : "✏️ 編集";
+      document.getElementById("projectContactsEditBtn").disabled = editing;
+    }
+
+    function renderProjectContacts(data) {
+      const normalized = normalizeProjectContactData(data);
+      renderStakeholder("customer", normalized.customer);
+      renderStakeholder("factory", normalized.factory);
+      renderStakeholder("carrier", normalized.carrier);
+      renderStakeholder("carpenter", normalized.carpenter);
+    }
+
+    function renderStakeholder(prefix, party) {
+      const companyEl = document.getElementById(`${prefix}ViewCompany`);
+      const personEl = document.getElementById(`${prefix}ViewPerson`);
+      const phoneEl = document.getElementById(`${prefix}ViewPhone`);
+      const noteEl = document.getElementById(`${prefix}ViewNote`);
+
+      companyEl.textContent = party.company || "未登録";
+      personEl.textContent = party.person ? `担当：${party.person}` : "";
+      noteEl.textContent = party.note || "";
+
+      if (party.phone) {
+        phoneEl.hidden = false;
+        phoneEl.textContent = party.phone;
+        phoneEl.href = `tel:${party.phone.replace(/[^\d+]/g, "")}`;
+      } else {
+        phoneEl.hidden = true;
+        phoneEl.textContent = "";
+        phoneEl.removeAttribute("href");
+      }
+    }
+
+    function fillProjectContactForm(data) {
+      const normalized = normalizeProjectContactData(data);
+      ["customer", "factory", "carrier", "carpenter"].forEach(prefix => {
+        document.getElementById(`${prefix}Company`).value = normalized[prefix].company;
+        document.getElementById(`${prefix}Person`).value = normalized[prefix].person;
+        document.getElementById(`${prefix}Phone`).value = normalized[prefix].phone;
+        document.getElementById(`${prefix}Note`).value = normalized[prefix].note;
+      });
+    }
+
+    function collectProjectContactForm() {
+      const collect = prefix => ({
+        company: document.getElementById(`${prefix}Company`).value.trim(),
+        person: document.getElementById(`${prefix}Person`).value.trim(),
+        phone: document.getElementById(`${prefix}Phone`).value.trim(),
+        note: document.getElementById(`${prefix}Note`).value.trim()
+      });
+      return {
+        customer: collect("customer"),
+        factory: collect("factory"),
+        carrier: collect("carrier"),
+        carpenter: collect("carpenter")
+      };
+    }
+
+    async function saveProjectContacts(event) {
+      event.preventDefault();
+      if (!activeProjectCard) return;
+
+      const saveBtn = document.getElementById("projectContactsSaveBtn");
+      saveBtn.disabled = true;
+      saveBtn.textContent = "保存中…";
+      showProjectContactsStatus("関係者情報を保存しています…", "info");
+
+      try {
+        const contacts = collectProjectContactForm();
+        const docId = getProjectContactDocId(activeProjectCard);
+
+        await db.collection("projectContacts").doc(docId).set({
+          projectNo: activeProjectCard.dataset.projectNo || "",
+          projectName: activeProjectCard.dataset.projectName || "",
+          contacts,
+          ...contacts,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          appVersion: APP_VERSION
+        }, { merge: true });
+
+        activeProjectContactData = normalizeProjectContactData(contacts);
+        renderProjectContacts(activeProjectContactData);
+        setProjectContactsEditMode(false);
+        showProjectContactsStatus("保存しました。年間予定表を更新しても、この関係者情報は残ります。", "success");
+        setTimeout(hideProjectContactsStatus, 2800);
+      } catch (error) {
+        console.error("project contacts save error", error);
+        showProjectContactsStatus(
+          "保存できませんでした。Firestoreの接続または権限設定をご確認ください。",
+          "error"
+        );
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "💾 保存";
+      }
+    }
+
+    function showProjectContactsStatus(message, type = "info") {
+      const el = document.getElementById("projectContactsStatus");
+      el.textContent = message;
+      el.className = `project-contacts-status ${type}`;
+      el.hidden = false;
+    }
+
+    function hideProjectContactsStatus() {
+      const el = document.getElementById("projectContactsStatus");
+      el.hidden = true;
+      el.textContent = "";
+      el.className = "project-contacts-status";
     }
 
     function filterAnnualProjects() {
