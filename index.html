@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.1</title>
+  <title>Q.T.S Scheduler — Ver.6.1.1</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=601">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=601">
@@ -1781,7 +1781,7 @@
     }
 
 
-    /* ===== Ver.6.1 Project detail ===== */
+    /* ===== Ver.6.1.1 Project detail ===== */
     .annual-project-card { cursor: pointer; transition: transform .16s ease, box-shadow .16s ease; }
     .annual-project-card:hover, .annual-project-card:focus {
       transform: translateY(-2px);
@@ -1823,7 +1823,7 @@
 
 <body>
   <header class="header-banner">
-    <h1>Q.T.S Scheduler</h1><p class="header-subtitle">WORK &amp; PROJECT PLANNER</p><div class="version-badge" id="headerVersion">Ver.6.1</div>
+    <h1>Q.T.S Scheduler</h1><p class="header-subtitle">WORK &amp; PROJECT PLANNER</p><div class="version-badge" id="headerVersion">Ver.6.1.1</div>
   </header>
 
   <nav class="main-navigation" aria-label="メイン画面">
@@ -2386,9 +2386,9 @@
           <button type="button" class="btn-secondary" id="btnOpenCsv">📤 CSV出力</button>
         </div>
         <div class="app-info-panel">
-          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.1</span><br>
+          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.1.1</span><br>
           無料プラン対応・写真圧縮保存版<br>
-          Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
+          Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月3日
         </div>
       </div>
@@ -2493,7 +2493,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.1";
+    const APP_VERSION = "6.1.1";
     const APP_BUILD_DATE = "2026-07-29";
 
     const firebaseConfig = {
@@ -4360,23 +4360,41 @@
       document.getElementById("projectDetailMeta").textContent =
         `担当：${owner}　｜　${year}　｜　${timing}`;
 
+      const n = normalizeText(name);
       const related = schedules.filter(s => {
         const title = normalizeText(s.title || "");
         const memo = normalizeText(s.memo || "");
-        const n = normalizeText(name);
-        return title.includes(n) || memo.includes(n) || n.includes(title);
+        if (!n) return false;
+        return (title && (title.includes(n) || n.includes(title))) ||
+               (memo && memo.includes(n));
       });
 
       const box = document.getElementById("projectRelatedSchedules");
+      box.innerHTML = "";
+
       if (!related.length) {
-        box.innerHTML = '<p class="small-note">現在、案件名が一致する予定はありません。</p>';
+        const empty = document.createElement("p");
+        empty.className = "small-note";
+        empty.textContent = "現在、案件名が一致する予定はありません。";
+        box.appendChild(empty);
       } else {
-        box.innerHTML = related.slice(0, 12).map(s => `
-          <div class="project-related-item">
-            <strong>${escapeHtml(s.title || name)}</strong><br>
-            <span>${escapeHtml(s.date || "")}${s.startTime ? "　" + escapeHtml(s.startTime) : ""}</span>
-          </div>`).join("");
+        related.slice(0, 12).forEach(s => {
+          const item = document.createElement("div");
+          item.className = "project-related-item";
+
+          const strong = document.createElement("strong");
+          strong.textContent = s.title || name;
+
+          const br = document.createElement("br");
+          const span = document.createElement("span");
+          const dateText = s.startDate || s.date || "";
+          span.textContent = `${dateText}${s.startTime ? "　" + s.startTime : ""}`;
+
+          item.append(strong, br, span);
+          box.appendChild(item);
+        });
       }
+
       openModal("projectDetailModal");
     }
 
