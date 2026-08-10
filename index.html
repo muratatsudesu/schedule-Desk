@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.5</title>
+  <title>Q.T.S Scheduler — Ver.6.5.1</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=601">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=601">
@@ -2192,6 +2192,31 @@
     .time-helper-note{font-size:.68rem;line-height:1.5;color:#846f5e;margin-top:5px}
     @media (pointer:coarse), (max-width:700px){.desktop-time-helper{display:none}}
 
+
+    /* ===== Ver.6.5.1 Monday-first calendar / weekend shading ===== */
+    .calendar-weekdays > *:nth-child(6),
+    .calendar-header > *:nth-child(6),
+    .calendar-grid .weekday-header:nth-child(6) {
+      background: rgba(92, 150, 205, .12);
+    }
+    .calendar-weekdays > *:nth-child(7),
+    .calendar-header > *:nth-child(7),
+    .calendar-grid .weekday-header:nth-child(7) {
+      background: rgba(205, 105, 105, .11);
+    }
+    .calendar-day.weekend-sat {
+      background: rgba(92, 150, 205, .075);
+    }
+    .calendar-day.weekend-sun {
+      background: rgba(205, 105, 105, .07);
+    }
+    .calendar-day.weekend-sat:hover {
+      background: rgba(92, 150, 205, .11);
+    }
+    .calendar-day.weekend-sun:hover {
+      background: rgba(205, 105, 105, .10);
+    }
+
   </style>
 </head>
 
@@ -2202,7 +2227,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.5 — ログイン</p>
+          <p>Ver.6.5.1 — ログイン</p>
         </div>
       </div>
 
@@ -3101,7 +3126,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.5";
+    const APP_VERSION = "6.5.1";
     const APP_BUILD_DATE = "2026-08-10";
 
     const firebaseConfig = {
@@ -4262,7 +4287,7 @@
       const month = currentDisplayDate.getMonth();
       document.getElementById("calendarMonthYear").textContent = `${year}年 ${month + 1}月`;
 
-      ["日", "月", "火", "水", "木", "金", "土"].forEach((day, index) => {
+      ["月", "火", "水", "木", "金", "土", "日"].forEach((day, index) => {
         const header = document.createElement("div");
         header.className = "day-header";
         if (index === 0) header.classList.add("sunday");
@@ -4328,6 +4353,9 @@
         const cell = document.createElement("div");
         cell.className = "day-cell";
         cell.dataset.date = dateStr;
+        const weekday = date.getDay();
+        if (weekday === 6) cell.classList.add("weekend-sat");
+        if (weekday === 0) cell.classList.add("weekend-sun");
 
         if (dateStr === today) cell.classList.add("today");
         if (dateStr === selectedDateStr) cell.classList.add("selected");
@@ -5692,7 +5720,7 @@
     function formatJapaneseDate(dateStr) {
       const date = createDateFromString(dateStr);
       if (!date) return dateStr || "";
-      const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
+      const weekdays = ["月", "火", "水", "木", "金", "土", "日"];
       return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日（${weekdays[date.getDay()]}）`;
     }
 

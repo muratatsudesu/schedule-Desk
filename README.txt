@@ -1,4 +1,3 @@
-Q.T.S Scheduler Ver.6.5
-PC用時刻クイック入力を追加。
-スマホは従来方式のまま。
-Firebase追加設定・Firestoreルール変更なし。
+Q.T.S Scheduler Ver.6.5.1
+月間カレンダーを月曜始まりへ変更し、土日セルを淡色表示。
+Ver.6.5のPC時刻クイック入力など既存機能は維持。
