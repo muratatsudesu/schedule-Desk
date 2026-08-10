@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.5.1</title>
+  <title>Q.T.S Scheduler — Ver.6.5.2</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=601">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=601">
@@ -2217,6 +2217,13 @@
       background: rgba(205, 105, 105, .10);
     }
 
+
+    /* Ver.6.5.2 weekend tint refinement */
+    .day-header.saturday { background: rgba(92,150,205,.12); color:#356ca3; }
+    .day-header.sunday { background: rgba(205,105,105,.11); color:#c33; }
+    .day-cell.weekend-sat { background: rgba(92,150,205,.075) !important; }
+    .day-cell.weekend-sun { background: rgba(205,105,105,.07) !important; }
+
   </style>
 </head>
 
@@ -2227,7 +2234,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.5.1 — ログイン</p>
+          <p>Ver.6.5.2 — ログイン</p>
         </div>
       </div>
 
@@ -3126,7 +3133,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.5.1";
+    const APP_VERSION = "6.5.2";
     const APP_BUILD_DATE = "2026-08-10";
 
     const firebaseConfig = {
@@ -4290,16 +4297,17 @@
       ["月", "火", "水", "木", "金", "土", "日"].forEach((day, index) => {
         const header = document.createElement("div");
         header.className = "day-header";
-        if (index === 0) header.classList.add("sunday");
-        if (index === 6) header.classList.add("saturday");
+        if (index === 5) header.classList.add("saturday");
+        if (index === 6) header.classList.add("sunday");
         header.textContent = day;
         grid.appendChild(header);
       });
 
       const firstDay = new Date(year, month, 1).getDay();
+      const firstDayOffset = (firstDay + 6) % 7;
       const lastDate = new Date(year, month + 1, 0).getDate();
 
-      for (let i = 0; i < firstDay; i++) {
+      for (let i = 0; i < firstDayOffset; i++) {
         const empty = document.createElement("div");
         empty.className = "day-cell empty";
         grid.appendChild(empty);
@@ -4353,9 +4361,8 @@
         const cell = document.createElement("div");
         cell.className = "day-cell";
         cell.dataset.date = dateStr;
-        const weekday = date.getDay();
-        if (weekday === 6) cell.classList.add("weekend-sat");
-        if (weekday === 0) cell.classList.add("weekend-sun");
+        if (dayOfWeek === 6) cell.classList.add("weekend-sat");
+        if (dayOfWeek === 0) cell.classList.add("weekend-sun");
 
         if (dateStr === today) cell.classList.add("today");
         if (dateStr === selectedDateStr) cell.classList.add("selected");
@@ -4382,7 +4389,7 @@
           if (target) {
             const isSegmentStart =
               dateStr === target.startDate ||
-              dayOfWeek === 0 ||
+              dayOfWeek === 1 ||
               day === 1;
 
             if (isSegmentStart) {
@@ -4399,7 +4406,7 @@
                 spanDays++;
 
                 if (
-                  cursor.getDay() === 6 ||
+                  cursor.getDay() === 0 ||
                   cursor.getMonth() !== month ||
                   cursor.getDate() === lastDate
                 ) break;
