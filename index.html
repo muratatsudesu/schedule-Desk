@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.4</title>
+  <title>Q.T.S Scheduler — Ver.6.4.1</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=601">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=601">
@@ -2183,7 +2183,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.4 — ログイン</p>
+          <p>Ver.6.4.1 — ログイン</p>
         </div>
       </div>
 
@@ -3055,7 +3055,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.4";
+    const APP_VERSION = "6.4.1";
     const APP_BUILD_DATE = "2026-08-10";
 
     const firebaseConfig = {
@@ -3096,6 +3096,8 @@
     let currentUserProfile = null;
     let unsubscribeSharedSchedules = null;
     let unsubscribePrivateSchedules = null;
+    let teamUsers = [];
+    let unsubscribeUsers = null;
     let unsubscribeCategories = null;
     let teamWeekStart = getMonday(new Date());
     let currentDisplayDate = new Date();
@@ -3373,15 +3375,18 @@
 
       subscribeCategories();
       subscribeSchedules();
+      subscribeTeamUsers();
     }
 
     function stopDataSubscriptions() {
       if (typeof unsubscribeCategories === "function") unsubscribeCategories();
       if (typeof unsubscribeSharedSchedules === "function") unsubscribeSharedSchedules();
       if (typeof unsubscribePrivateSchedules === "function") unsubscribePrivateSchedules();
+      if (typeof unsubscribeUsers === "function") unsubscribeUsers();
       unsubscribeCategories = null;
       unsubscribeSharedSchedules = null;
       unsubscribePrivateSchedules = null;
+      unsubscribeUsers = null;
     }
 
     function showAuthError(message) {
@@ -3425,6 +3430,49 @@
         return getPrivateScheduleCollection().doc(schedule.id);
       }
       return db.collection("schedules").doc(schedule.id);
+    }
+
+
+    function subscribeTeamUsers() {
+      if (!currentUser) return;
+      // 現在のFirestoreルールでは自分のusersドキュメントのみ読めるため、
+      // 管理者・一般ユーザーともに、まず固定メンバーを必ず表示します。
+      // 将来users一覧の読み取り権限を管理者向けに広げた場合は、自動取得したメンバーを優先します。
+      teamUsers = fixedAssignees.map(name => ({ displayName: name }));
+
+      try {
+        unsubscribeUsers = db.collection("users").onSnapshot(
+          snapshot => {
+            const fetched = snapshot.docs
+              .map(doc => doc.data())
+              .filter(data => data && data.displayName)
+              .map(data => ({ displayName: data.displayName, role: data.role || "user" }));
+
+            const merged = new Map();
+            fixedAssignees.forEach(name => merged.set(name, { displayName: name }));
+            fetched.forEach(user => merged.set(user.displayName, user));
+            teamUsers = Array.from(merged.values());
+            renderTeamWeekBoard();
+          },
+          error => {
+            // セキュリティルール上users一覧を読めない場合も、固定メンバーで正常動作させます。
+            console.warn("users collection list unavailable; fallback to fixedAssignees", error);
+            teamUsers = fixedAssignees.map(name => ({ displayName: name }));
+            renderTeamWeekBoard();
+          }
+        );
+      } catch (error) {
+        console.warn("users subscription failed; fallback to fixedAssignees", error);
+        teamUsers = fixedAssignees.map(name => ({ displayName: name }));
+      }
+    }
+
+    function getTeamMemberNames() {
+      const names = (teamUsers || [])
+        .map(user => String(user?.displayName || "").trim())
+        .filter(Boolean);
+      const merged = Array.from(new Set([...fixedAssignees, ...names]));
+      return merged;
     }
 
     function subscribeCategories() {
@@ -3541,11 +3589,13 @@
       const add=(text,cls)=>{const e=document.createElement("div");e.className="team-cell "+cls;e.textContent=text;grid.appendChild(e);return e;};
       add("担当者","team-head");
       days.forEach((d,i)=>add(`${d.getMonth()+1}/${d.getDate()}（${names[i]}）`,"team-head"));
-      fixedAssignees.forEach(person=>{
+      getTeamMemberNames().forEach(person=>{
         add(person,"team-person");
         days.forEach(day=>{
           const cell=add("",""); const ds=ymd(day);
-          const items=expandSchedulesForRange(sharedSchedules,ds,ds).filter(x=>getScheduleAssignees(x).includes(person)).sort(compareSchedules);
+          const items=expandSchedulesForRange(sharedSchedules,ds,ds)
+            .filter(x => getScheduleAssignees(x).includes(person))
+            .sort(compareSchedules);
           if(!items.length){cell.textContent="—";cell.style.color="#9aa7af";}
           items.forEach(item=>{
             const e=document.createElement("div");e.className="team-event";
