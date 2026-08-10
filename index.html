@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.4.1</title>
+  <title>Q.T.S Scheduler — Ver.6.4.2</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=601">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=601">
@@ -2183,7 +2183,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.4.1 — ログイン</p>
+          <p>Ver.6.4.2 — ログイン</p>
         </div>
       </div>
 
@@ -2410,7 +2410,7 @@
   <section class="card" id="teamWeekBoard">
     <div class="team-board-toolbar">
       <button type="button" class="btn-secondary btn-small" id="teamPrevWeek">← 前週</button>
-      <div class="team-board-title" id="teamWeekTitle">共有週間ボード</div>
+      <div><div class="team-board-title" id="teamWeekTitle">共有週間ボード</div><div style="font-size:.68rem;color:#7a6a5d;text-align:center;">村口・金子・寺門 3名表示 <span id="teamSharedCount"></span></div></div>
       <button type="button" class="btn-secondary btn-small" id="teamNextWeek">次週 →</button>
     </div>
     <div class="team-board-wrap"><div class="team-board-grid" id="teamBoardGrid"></div></div>
@@ -3055,7 +3055,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.4.1";
+    const APP_VERSION = "6.4.2";
     const APP_BUILD_DATE = "2026-08-10";
 
     const firebaseConfig = {
@@ -3375,7 +3375,6 @@
 
       subscribeCategories();
       subscribeSchedules();
-      subscribeTeamUsers();
     }
 
     function stopDataSubscriptions() {
@@ -3580,28 +3579,74 @@
     }
 
     function renderTeamWeekBoard(){
-      const grid=document.getElementById("teamBoardGrid");
-      if(!grid || assigneeFilter!=="all") return;
-      const days=Array.from({length:7},(_,i)=>{const d=new Date(teamWeekStart);d.setDate(d.getDate()+i);return d;});
-      const last=days[6], names=["月","火","水","木","金","土","日"];
-      document.getElementById("teamWeekTitle").textContent=`${teamWeekStart.getFullYear()}年${teamWeekStart.getMonth()+1}月${teamWeekStart.getDate()}日 ～ ${last.getMonth()+1}月${last.getDate()}日`;
-      grid.innerHTML="";
-      const add=(text,cls)=>{const e=document.createElement("div");e.className="team-cell "+cls;e.textContent=text;grid.appendChild(e);return e;};
-      add("担当者","team-head");
-      days.forEach((d,i)=>add(`${d.getMonth()+1}/${d.getDate()}（${names[i]}）`,"team-head"));
-      getTeamMemberNames().forEach(person=>{
-        add(person,"team-person");
-        days.forEach(day=>{
-          const cell=add("",""); const ds=ymd(day);
-          const items=expandSchedulesForRange(sharedSchedules,ds,ds)
-            .filter(x => getScheduleAssignees(x).includes(person))
-            .sort(compareSchedules);
-          if(!items.length){cell.textContent="—";cell.style.color="#9aa7af";}
-          items.forEach(item=>{
-            const e=document.createElement("div");e.className="team-event";
-            const cat=getCategoryById(item.categoryId), time=item.isAllDay?"終日":(item.startTime||"");
-            e.textContent=`${time} ${cat?.icon||""} ${item.title||"無題"}`;
-            e.addEventListener("click",()=>editSchedule(item)); cell.appendChild(e);
+      const grid = document.getElementById("teamBoardGrid");
+      if (!grid || assigneeFilter !== "all") return;
+
+      // Ver.6.4.2:
+      // 共有画面はログインユーザー取得結果に左右されず、
+      // Q.T.Sの3名を必ず固定レーンとして描画する。
+      const members = ["村口", "金子", "寺門"];
+      const days = Array.from({length:7}, (_,i) => {
+        const d = new Date(teamWeekStart);
+        d.setDate(d.getDate()+i);
+        return d;
+      });
+      const last = days[6];
+      const weekNames = ["月","火","水","木","金","土","日"];
+
+      document.getElementById("teamWeekTitle").textContent =
+        `${teamWeekStart.getFullYear()}年${teamWeekStart.getMonth()+1}月${teamWeekStart.getDate()}日 ～ ${last.getMonth()+1}月${last.getDate()}日`;
+
+      grid.innerHTML = "";
+      const countEl = document.getElementById("teamSharedCount");
+      if (countEl) countEl.textContent = `・共有予定 ${sharedSchedules.length}件`;
+
+      const addCell = (text, cls="") => {
+        const el = document.createElement("div");
+        el.className = `team-cell ${cls}`;
+        el.textContent = text;
+        grid.appendChild(el);
+        return el;
+      };
+
+      addCell("担当者", "team-head");
+      days.forEach((d,i) => {
+        addCell(`${d.getMonth()+1}/${d.getDate()}（${weekNames[i]}）`, "team-head");
+      });
+
+      // sharedSchedulesそのものを基準にし、各日へ展開して担当者を判定する。
+      members.forEach(person => {
+        addCell(person, "team-person");
+
+        days.forEach(day => {
+          const cell = addCell("");
+          const dateStr = ymd(day);
+
+          const dayItems = [];
+          const occurrences = expandSchedulesForRange(sharedSchedules, dateStr, dateStr);
+          occurrences.forEach(item => {
+            if (getScheduleAssignees(item).includes(person)) {
+              dayItems.push(item);
+            }
+          });
+
+          dayItems.sort(compareSchedules);
+
+          if (!dayItems.length) {
+            cell.textContent = "—";
+            cell.style.color = "#9aa7af";
+            return;
+          }
+
+          dayItems.forEach(item => {
+            const ev = document.createElement("div");
+            ev.className = "team-event";
+            const cat = getCategoryById(item.categoryId);
+            const time = item.isAllDay ? "終日" : (item.startTime || "");
+            ev.textContent = `${time}${time ? " " : ""}${cat?.icon || ""} ${item.title || "無題"}`;
+            ev.title = `${person}｜${item.title || "無題"}`;
+            ev.addEventListener("click", () => editSchedule(item));
+            cell.appendChild(ev);
           });
         });
       });
