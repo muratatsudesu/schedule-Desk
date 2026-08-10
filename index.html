@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.4.3</title>
+  <title>Q.T.S Scheduler — Ver.6.4.4</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=601">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=601">
@@ -2189,7 +2189,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.4.3 — ログイン</p>
+          <p>Ver.6.4.4 — ログイン</p>
         </div>
       </div>
 
@@ -2216,7 +2216,7 @@
   </div>
 
   <header class="header-banner">
-    <h1>Q.T.S Scheduler</h1><p class="header-subtitle">WORK &amp; PROJECT PLANNER</p><div class="version-badge" id="headerVersion">Ver.6.2</div>
+    <h1>Q.T.S Scheduler</h1><p class="header-subtitle">WORK &amp; PROJECT PLANNER</p><div class="version-badge" id="headerVersion">Ver.6.4.4</div>
   </header>
 
   <div id="userSessionBar" class="user-session-bar" hidden>
@@ -3061,7 +3061,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.4.3";
+    const APP_VERSION = "6.4.4";
     const APP_BUILD_DATE = "2026-08-10";
 
     const firebaseConfig = {
@@ -3605,7 +3605,6 @@
 
       grid.innerHTML = "";
       const countEl = document.getElementById("teamSharedCount");
-      if (countEl) countEl.textContent = `・共有予定 ${sharedSchedules.length}件・${renderedMemberRows}名描画`;
 
       const addCell = (text, cls="") => {
         const el = document.createElement("div");
@@ -3658,6 +3657,10 @@
           });
         });
       });
+
+      if (countEl) {
+        countEl.textContent = `・共有予定 ${sharedSchedules.length}件・${renderedMemberRows}名描画`;
+      }
     }
 
     function getLegacyUnassignedSchedules(){return sharedSchedules.filter(s=>getScheduleAssignees(s).length===0);}
