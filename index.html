@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.5.3</title>
+  <title>Q.T.S Scheduler — Ver.6.5.4</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=601">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=601">
@@ -2264,6 +2264,13 @@
       background: #fbf7f0 !important;
     }
 
+
+    /* ===== Ver.6.5.4 日本の祝日：日曜と同色 ===== */
+    .day-cell.holiday-jp { background: #fff8f9 !important; }
+    .day-cell.holiday-jp:hover { background: #fdf0f2 !important; }
+    .day-cell.holiday-jp .day-number,
+    .day-cell.holiday-jp .date-number { color: #d0525f !important; }
+
   </style>
 </head>
 
@@ -2274,7 +2281,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.5.3 — ログイン</p>
+          <p>Ver.6.5.4 — ログイン</p>
         </div>
       </div>
 
@@ -3173,7 +3180,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.5.3";
+    const APP_VERSION = "6.5.4";
     const APP_BUILD_DATE = "2026-08-10";
 
     const firebaseConfig = {
@@ -4326,12 +4333,70 @@
       });
     }
 
+
+    // ===== Ver.6.5.4 日本の祝日判定 =====
+    function nthMonday(year, monthIndex, nth) {
+      const first = new Date(year, monthIndex, 1);
+      return 1 + ((8 - first.getDay()) % 7) + (nth - 1) * 7;
+    }
+    function vernalEquinoxDay(year) {
+      return Math.floor(20.8431 + 0.242194 * (year - 1980) - Math.floor((year - 1980) / 4));
+    }
+    function autumnEquinoxDay(year) {
+      return Math.floor(23.2488 + 0.242194 * (year - 1980) - Math.floor((year - 1980) / 4));
+    }
+    function japaneseHolidaySet(year) {
+      const set = new Set();
+      const add = (m,d) => set.add(createCalendarDateString(year, m - 1, d));
+
+      add(1,1);
+      add(1,nthMonday(year,0,2));
+      add(2,11);
+      if (year >= 2020) add(2,23);
+      add(3,vernalEquinoxDay(year));
+      add(4,29);
+      add(5,3); add(5,4); add(5,5);
+      add(7,nthMonday(year,6,3));
+      add(8,11);
+      add(9,nthMonday(year,8,3));
+      add(9,autumnEquinoxDay(year));
+      add(10,nthMonday(year,9,2));
+      add(11,3); add(11,23);
+
+      // 国民の休日
+      for (let d = new Date(year,0,2); d.getFullYear() === year; d.setDate(d.getDate()+1)) {
+        const key = createCalendarDateString(d.getFullYear(), d.getMonth(), d.getDate());
+        if (set.has(key)) continue;
+        const prev = new Date(d); prev.setDate(prev.getDate()-1);
+        const next = new Date(d); next.setDate(next.getDate()+1);
+        const pk = createCalendarDateString(prev.getFullYear(),prev.getMonth(),prev.getDate());
+        const nk = createCalendarDateString(next.getFullYear(),next.getMonth(),next.getDate());
+        if (set.has(pk) && set.has(nk)) set.add(key);
+      }
+
+      // 振替休日
+      Array.from(set).sort().forEach(key => {
+        const [y,m,d] = key.split("-").map(Number);
+        const original = new Date(y,m-1,d);
+        if (original.getDay() !== 0) return;
+        const sub = new Date(original);
+        let subKey;
+        do {
+          sub.setDate(sub.getDate()+1);
+          subKey = createCalendarDateString(sub.getFullYear(),sub.getMonth(),sub.getDate());
+        } while (set.has(subKey));
+        if (sub.getFullYear() === year) set.add(subKey);
+      });
+      return set;
+    }
+
     function renderCalendar() {
       const grid = document.getElementById("calendarGrid");
       grid.innerHTML = "";
 
       const year = currentDisplayDate.getFullYear();
       const month = currentDisplayDate.getMonth();
+      const jpHolidays = japaneseHolidaySet(year);
       document.getElementById("calendarMonthYear").textContent = `${year}年 ${month + 1}月`;
 
       ["月", "火", "水", "木", "金", "土", "日"].forEach((day, index) => {
@@ -4403,6 +4468,7 @@
         cell.dataset.date = dateStr;
         if (dayOfWeek === 6) cell.classList.add("weekend-sat");
         if (dayOfWeek === 0) cell.classList.add("weekend-sun");
+        if (jpHolidays.has(dateStr)) cell.classList.add("holiday-jp");
 
         if (dateStr === today) cell.classList.add("today");
         if (dateStr === selectedDateStr) cell.classList.add("selected");
