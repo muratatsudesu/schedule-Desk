@@ -1,3 +1,3 @@
-Q.T.S Scheduler Ver.6.4.4
-共有週間ボードのJavaScript描画エラー修正版。
-3名の描画完了後に件数表示を更新するよう修正しました。
+Q.T.S Scheduler Ver.6.4.5
+共有週間ボードの根本原因修正版。
+存在しない日付展開関数の呼び出しを削除し、既存のscheduleOccursOn()へ統一。

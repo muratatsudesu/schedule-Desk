@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.4.4</title>
+  <title>Q.T.S Scheduler — Ver.6.4.5</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=601">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=601">
@@ -2189,7 +2189,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.4.4 — ログイン</p>
+          <p>Ver.6.4.5 — ログイン</p>
         </div>
       </div>
 
@@ -3061,7 +3061,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.4.4";
+    const APP_VERSION = "6.4.5";
     const APP_BUILD_DATE = "2026-08-10";
 
     const firebaseConfig = {
@@ -3629,15 +3629,10 @@
           const cell = addCell("");
           const dateStr = ymd(day);
 
-          const dayItems = [];
-          const occurrences = expandSchedulesForRange(sharedSchedules, dateStr, dateStr);
-          occurrences.forEach(item => {
-            if (getScheduleAssignees(item).includes(person)) {
-              dayItems.push(item);
-            }
-          });
-
-          dayItems.sort(compareSchedules);
+          const dayItems = sharedSchedules
+            .filter(item => scheduleOccursOn(item, dateStr))
+            .filter(item => getScheduleAssignees(item).includes(person))
+            .sort(compareSchedules);
 
           if (!dayItems.length) {
             cell.textContent = "—";

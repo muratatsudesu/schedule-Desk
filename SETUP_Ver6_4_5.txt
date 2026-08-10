@@ -1,0 +1,18 @@
+Q.T.S Scheduler Ver.6.4.5
+
+原因を特定して修正しました。
+
+Ver.6.4.2以降の共有週間ボードで、存在しない
+expandSchedulesForRange()
+という関数を呼んでいたため、村口の最初の日付セルを作った直後に
+JavaScript処理が停止していました。
+
+Ver.6.4.5では、もともとQ.T.S Scheduler本体で使用している
+scheduleOccursOn()
+へ統一しています。
+
+これにより:
+- 村口 / 金子 / 寺門の3行を最後まで描画
+- 各日の共有予定を担当者別に表示
+- 複数日予定にも既存ロジックで対応
+- Firebase / Firestore設定変更なし
