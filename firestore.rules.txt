@@ -1,0 +1,49 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // 会社内で共有する予定
+    match /schedules/{scheduleId} {
+      allow read, create, update, delete: if signedIn();
+    }
+
+    // 共有カテゴリー
+    match /categories/{categoryId} {
+      allow read, create, update, delete: if signedIn();
+    }
+
+    // 案件詳細の関係者情報
+    match /projectContacts/{projectId} {
+      allow read, create, update, delete: if signedIn();
+    }
+
+    // ログイン本人のプロフィール
+    match /users/{userId} {
+      allow read, create, update: if signedIn() && request.auth.uid == userId;
+      allow delete: if false;
+
+      // 完全非公開の予定。
+      // 本人以外は get/list とも許可されないため、存在自体を取得できません。
+      match /privateSchedules/{scheduleId} {
+        allow read, delete: if signedIn()
+                            && request.auth.uid == userId;
+
+        allow create: if signedIn()
+                      && request.auth.uid == userId
+                      && request.resource.data.visibility == "private"
+                      && request.resource.data.ownerUid == request.auth.uid;
+
+        allow update: if signedIn()
+                      && request.auth.uid == userId
+                      && resource.data.ownerUid == request.auth.uid
+                      && request.resource.data.ownerUid == request.auth.uid
+                      && request.resource.data.visibility == "private";
+      }
+    }
+  }
+}

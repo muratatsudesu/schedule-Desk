@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.2</title>
+  <title>Q.T.S Scheduler — Ver.6.3</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=601">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=601">
@@ -12,6 +12,7 @@
 
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 
   <style>
     * {
@@ -1781,7 +1782,7 @@
     }
 
 
-    /* ===== Ver.6.2 Project detail ===== */
+    /* ===== Ver.6.3 Project detail ===== */
     .annual-project-card { cursor: pointer; transition: transform .16s ease, box-shadow .16s ease; }
     .annual-project-card:hover, .annual-project-card:focus {
       transform: translateY(-2px);
@@ -1819,7 +1820,7 @@
     @media(max-width:700px){ .project-detail-grid{grid-template-columns:1fr;} }
 
 
-    /* ===== Ver.6.2 Stakeholders / project contacts ===== */
+    /* ===== Ver.6.3 Stakeholders / project contacts ===== */
     .project-stakeholder-section {
       margin-bottom: 14px;
       padding: 15px;
@@ -1980,13 +1981,243 @@
       }
     }
 
+
+    /* ===== Ver.6.3 Authentication & truly private schedules ===== */
+    body.auth-locked > :not(#authGate) {
+      visibility: hidden;
+    }
+
+    #authGate {
+      position: fixed;
+      inset: 0;
+      z-index: 5000;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      background:
+        radial-gradient(circle at 18% 15%, rgba(46,154,120,.24), transparent 28%),
+        linear-gradient(135deg, #071f3a 0%, #0d2f57 68%, #0b2747 100%);
+    }
+    #authGate[hidden] { display: none !important; }
+
+    .auth-card {
+      width: min(94vw, 470px);
+      padding: 24px;
+      background: #fff;
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 20px;
+      box-shadow: 0 24px 70px rgba(0,0,0,.32);
+    }
+    .auth-brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 18px;
+    }
+    .auth-mark {
+      display: grid;
+      place-items: center;
+      width: 58px;
+      height: 58px;
+      color: #fff;
+      font-weight: 900;
+      letter-spacing: .05em;
+      background: linear-gradient(135deg, #0d2f57, #2e9a78);
+      border-radius: 16px;
+    }
+    .auth-brand h2 {
+      margin: 0;
+      color: #0d2f57;
+      font-size: 1.16rem;
+    }
+    .auth-brand p {
+      margin: 4px 0 0;
+      color: #71818e;
+      font-size: .75rem;
+    }
+    .auth-field {
+      margin-bottom: 11px;
+    }
+    .auth-field label {
+      display: block;
+      margin-bottom: 5px;
+      color: #486173;
+      font-size: .76rem;
+      font-weight: 750;
+    }
+    .auth-field input, .auth-field select {
+      width: 100%;
+    }
+    .auth-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .auth-error {
+      margin-top: 10px;
+      padding: 9px 11px;
+      color: #972f2f;
+      font-size: .75rem;
+      line-height: 1.55;
+      background: #fdeaea;
+      border: 1px solid #efc8c8;
+      border-radius: 9px;
+    }
+    .auth-help {
+      margin-top: 12px;
+      color: #7b8993;
+      font-size: .69rem;
+      line-height: 1.55;
+    }
+
+    .user-session-bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin: -4px 0 14px;
+      padding: 9px 12px;
+      color: #395266;
+      font-size: .75rem;
+      background: #edf4f7;
+      border: 1px solid #ccdbe4;
+      border-radius: 11px;
+    }
+    .user-session-left {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      align-items: center;
+    }
+    .user-name-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 9px;
+      color: #fff;
+      font-weight: 800;
+      background: #0d2f57;
+      border-radius: 999px;
+    }
+    .user-session-email {
+      color: #71818e;
+    }
+
+    .private-option {
+      margin: 12px 0;
+      padding: 12px 13px;
+      background: linear-gradient(145deg, #f6f1fa, #fbf8fd);
+      border: 1px solid #ddcde7;
+      border-radius: 12px;
+    }
+    .private-option label {
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+      color: #59356b;
+      font-weight: 850;
+      cursor: pointer;
+    }
+    .private-option input {
+      width: auto;
+      margin-top: 3px;
+    }
+    .private-option-note {
+      margin: 5px 0 0 27px;
+      color: #826f8d;
+      font-size: .72rem;
+      line-height: 1.55;
+    }
+    .privacy-owner {
+      margin-top: 7px;
+      padding: 7px 9px;
+      color: #654276;
+      font-size: .72rem;
+      background: #f4eaf8;
+      border-radius: 8px;
+    }
+    .private-lock-mark {
+      margin-right: 3px;
+    }
+
+    .profile-setup {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #dae3e8;
+    }
+    .profile-setup[hidden] { display: none !important; }
+
+    @media (max-width: 600px) {
+      .user-session-bar {
+        align-items: flex-start;
+      }
+      .user-session-email {
+        display: none;
+      }
+    }
+
   </style>
 </head>
 
-<body>
+<body class="auth-locked">
+  <div id="authGate">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="auth-mark">QTS</div>
+        <div>
+          <h2>Q.T.S Scheduler</h2>
+          <p>Ver.6.3 — ログイン</p>
+        </div>
+      </div>
+
+      <div id="authLoginForm">
+        <div class="auth-field">
+          <label for="authEmail">メールアドレス</label>
+          <input type="email" id="authEmail" autocomplete="username" placeholder="登録したメールアドレス">
+        </div>
+        <div class="auth-field">
+          <label for="authPassword">パスワード</label>
+          <input type="password" id="authPassword" autocomplete="current-password" placeholder="パスワード">
+        </div>
+        <div class="auth-actions">
+          <button type="button" class="btn-primary" id="authLoginBtn">ログイン</button>
+        </div>
+        <div id="authError" class="auth-error" hidden></div>
+        <div class="auth-help">
+          アカウントはFirebase側で登録した利用者だけが使用できます。
+          プライベート予定はログイン本人専用の領域へ保存されます。
+        </div>
+      </div>
+
+      <div id="profileSetup" class="profile-setup" hidden>
+        <div class="auth-field">
+          <label for="profileNameSelect">初回のみ：利用者名を選択</label>
+          <select id="profileNameSelect">
+            <option value="">選択してください</option>
+            <option value="村口">村口</option>
+            <option value="金子">金子</option>
+            <option value="寺門">寺門</option>
+          </select>
+        </div>
+        <button type="button" class="btn-primary" id="profileSaveBtn">利用者名を登録</button>
+        <div class="auth-help">登録後はこのFirebaseアカウントに利用者名が紐づきます。</div>
+      </div>
+    </div>
+  </div>
+
   <header class="header-banner">
     <h1>Q.T.S Scheduler</h1><p class="header-subtitle">WORK &amp; PROJECT PLANNER</p><div class="version-badge" id="headerVersion">Ver.6.2</div>
   </header>
+
+  <div id="userSessionBar" class="user-session-bar" hidden>
+    <div class="user-session-left">
+      <span>ログイン中：</span>
+      <span class="user-name-badge">👤 <span id="sessionUserName">-</span></span>
+      <span class="user-session-email" id="sessionUserEmail"></span>
+    </div>
+    <button type="button" class="btn-secondary btn-small" id="authLogoutBtn">ログアウト</button>
+  </div>
 
   <nav class="main-navigation" aria-label="メイン画面">
     <button type="button" class="main-nav-button active" id="navSchedule">📅 スケジュール</button>
@@ -2101,6 +2332,17 @@
         <label class="checkbox-chip"><input type="checkbox" name="assignee" value="寺門"> 寺門</label>
       </div>
       <div class="helper-text">誰も選択しない場合は「担当者なし」で登録されます。</div>
+    </div>
+
+    <div class="private-option">
+      <label>
+        <input type="checkbox" id="isPrivateSchedule">
+        <span>🔒 プライベート予定にする</span>
+      </label>
+      <div class="private-option-note">
+        ONにすると、この予定は入力した本人以外には存在自体が表示されません。
+      </div>
+      <div id="privateOwnerInfo" class="privacy-owner" hidden></div>
     </div>
 
     <div class="form-group">
@@ -2681,6 +2923,7 @@
             🎨 カテゴリー管理
           </button>
           <button type="button" class="btn-secondary" id="btnGoAnnual">📋 年間予定表を開く</button>
+          <div class="future-setting">🔐 Ver.6.3：Firebase Authentication ログイン対応</div>
           <div class="future-setting">バックアップ・復元（今後追加予定）</div>
           <button type="button" class="btn-secondary" id="btnOpenCsv">📤 CSV出力</button>
         </div>
@@ -2688,7 +2931,7 @@
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.2</span><br>
           無料プラン対応・写真圧縮保存版<br>
           Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
-          更新日：2026年8月3日
+          更新日：2026年8月10日
         </div>
       </div>
       <div class="modal-footer">
@@ -2792,8 +3035,8 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.2";
-    const APP_BUILD_DATE = "2026-08-07";
+    const APP_VERSION = "6.3";
+    const APP_BUILD_DATE = "2026-08-10";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCL6VijHRZryh7DdxNVcBdDXhRJtx2JU-4",
@@ -2806,6 +3049,8 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+    const auth = firebase.auth();
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.error);
 
     const defaultCategories = [
       { legacyKey: "shinkansen", name: "新幹線", icon: "🚄", color: "#0055ff", order: 10 },
@@ -2824,7 +3069,14 @@
     ];
 
     let schedules = [];
+    let sharedSchedules = [];
+    let privateSchedules = [];
     let categories = [];
+    let currentUser = null;
+    let currentUserProfile = null;
+    let unsubscribeSharedSchedules = null;
+    let unsubscribePrivateSchedules = null;
+    let unsubscribeCategories = null;
     let currentDisplayDate = new Date();
     let selectedDateStr = getLocalDateString(new Date());
     const fixedAssignees = ["村口", "金子", "寺門"];
@@ -2847,6 +3099,7 @@
       if (headerVersion) headerVersion.textContent = `Ver.${APP_VERSION}`;
       if (settingsVersion) settingsVersion.textContent = `Ver.${APP_VERSION}`;
       initializeApp();
+      initializeAuthentication();
     });
 
     function initializeApp() {
@@ -2976,18 +3229,199 @@
         }
       });
 
+      document.getElementById("authLoginBtn").addEventListener("click", signInUser);
+      document.getElementById("authPassword").addEventListener("keydown", event => {
+        if (event.key === "Enter") signInUser();
+      });
+      document.getElementById("authLogoutBtn").addEventListener("click", () => auth.signOut());
+      document.getElementById("profileSaveBtn").addEventListener("click", saveInitialProfile);
+      document.getElementById("isPrivateSchedule").addEventListener("change", updatePrivateOwnerInfo);
+
       toggleAllDay();
       updateCategoryPreview();
-      subscribeCategories();
-      subscribeSchedules();
-
       if (localStorage.getItem("qtsMainView") === "annual") {
         switchMainView("annual");
       }
     }
 
+
+    function initializeAuthentication() {
+      auth.onAuthStateChanged(async user => {
+        stopDataSubscriptions();
+        currentUser = user || null;
+        currentUserProfile = null;
+
+        if (!user) {
+          sharedSchedules = [];
+          privateSchedules = [];
+          schedules = [];
+          document.body.classList.add("auth-locked");
+          document.getElementById("authGate").hidden = false;
+          document.getElementById("authLoginForm").hidden = false;
+          document.getElementById("profileSetup").hidden = true;
+          document.getElementById("userSessionBar").hidden = true;
+          renderAll();
+          return;
+        }
+
+        document.getElementById("sessionUserEmail").textContent = user.email || "";
+        try {
+          const profileSnap = await db.collection("users").doc(user.uid).get();
+          if (!profileSnap.exists || !profileSnap.data()?.displayName) {
+            document.body.classList.add("auth-locked");
+            document.getElementById("authGate").hidden = false;
+            document.getElementById("authLoginForm").hidden = true;
+            document.getElementById("profileSetup").hidden = false;
+            return;
+          }
+
+          currentUserProfile = profileSnap.data();
+          completeSignedInStartup();
+        } catch (error) {
+          console.error(error);
+          showAuthError("利用者情報を読み込めませんでした。Firestoreのルールをご確認ください。");
+          document.body.classList.add("auth-locked");
+          document.getElementById("authGate").hidden = false;
+        }
+      });
+    }
+
+    async function signInUser() {
+      const email = document.getElementById("authEmail").value.trim();
+      const password = document.getElementById("authPassword").value;
+      const button = document.getElementById("authLoginBtn");
+
+      if (!email || !password) {
+        showAuthError("メールアドレスとパスワードを入力してください。");
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "ログイン中…";
+      hideAuthError();
+
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        document.getElementById("authPassword").value = "";
+      } catch (error) {
+        console.error(error);
+        const code = String(error?.code || "");
+        if (code.includes("operation-not-allowed")) {
+          showAuthError("Firebase Authenticationの「メール/パスワード」がまだ有効になっていません。");
+        } else if (code.includes("invalid-credential") || code.includes("wrong-password") || code.includes("user-not-found")) {
+          showAuthError("メールアドレスまたはパスワードが違います。");
+        } else {
+          showAuthError("ログインできませんでした。Firebase設定をご確認ください。");
+        }
+      } finally {
+        button.disabled = false;
+        button.textContent = "ログイン";
+      }
+    }
+
+    async function saveInitialProfile() {
+      if (!currentUser) return;
+      const displayName = document.getElementById("profileNameSelect").value;
+      if (!fixedAssignees.includes(displayName)) {
+        showAuthError("利用者名を選択してください。");
+        return;
+      }
+
+      const button = document.getElementById("profileSaveBtn");
+      button.disabled = true;
+      button.textContent = "登録中…";
+
+      try {
+        const profile = {
+          displayName,
+          email: currentUser.email || "",
+          uid: currentUser.uid,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        await db.collection("users").doc(currentUser.uid).set(profile, { merge: true });
+        currentUserProfile = profile;
+        completeSignedInStartup();
+      } catch (error) {
+        console.error(error);
+        showAuthError("利用者名を登録できませんでした。Firestoreのルールをご確認ください。");
+      } finally {
+        button.disabled = false;
+        button.textContent = "利用者名を登録";
+      }
+    }
+
+    function completeSignedInStartup() {
+      if (!currentUser || !currentUserProfile?.displayName) return;
+
+      document.getElementById("sessionUserName").textContent = currentUserProfile.displayName;
+      document.getElementById("sessionUserEmail").textContent = currentUser.email || "";
+      document.getElementById("userSessionBar").hidden = false;
+      document.getElementById("authGate").hidden = true;
+      document.getElementById("profileSetup").hidden = true;
+      document.body.classList.remove("auth-locked");
+      hideAuthError();
+      updatePrivateOwnerInfo();
+
+      subscribeCategories();
+      subscribeSchedules();
+    }
+
+    function stopDataSubscriptions() {
+      if (typeof unsubscribeCategories === "function") unsubscribeCategories();
+      if (typeof unsubscribeSharedSchedules === "function") unsubscribeSharedSchedules();
+      if (typeof unsubscribePrivateSchedules === "function") unsubscribePrivateSchedules();
+      unsubscribeCategories = null;
+      unsubscribeSharedSchedules = null;
+      unsubscribePrivateSchedules = null;
+    }
+
+    function showAuthError(message) {
+      const el = document.getElementById("authError");
+      el.textContent = message;
+      el.hidden = false;
+    }
+
+    function hideAuthError() {
+      const el = document.getElementById("authError");
+      el.hidden = true;
+      el.textContent = "";
+    }
+
+    function updatePrivateOwnerInfo() {
+      const box = document.getElementById("privateOwnerInfo");
+      if (!box) return;
+      if (document.getElementById("isPrivateSchedule").checked && currentUserProfile?.displayName) {
+        box.hidden = false;
+        box.textContent = `🔐 ${currentUserProfile.displayName}さん本人だけが閲覧できます。`;
+      } else {
+        box.hidden = true;
+        box.textContent = "";
+      }
+    }
+
+    function mergeScheduleSources() {
+      schedules = [...sharedSchedules, ...privateSchedules].sort(compareSchedules);
+      renderAll();
+      clearStatusMessage();
+    }
+
+    function getPrivateScheduleCollection() {
+      if (!currentUser) throw new Error("ログインが必要です。");
+      return db.collection("users").doc(currentUser.uid).collection("privateSchedules");
+    }
+
+    function getScheduleReference(schedule) {
+      if (!schedule) throw new Error("予定が見つかりません。");
+      if (schedule._privacy === "private") {
+        return getPrivateScheduleCollection().doc(schedule.id);
+      }
+      return db.collection("schedules").doc(schedule.id);
+    }
+
     function subscribeCategories() {
-      db.collection("categories").onSnapshot(
+      if (!currentUser) return;
+      unsubscribeCategories = db.collection("categories").onSnapshot(
         async snapshot => {
           categories = snapshot.docs.map(doc => ({
             id: doc.id,
@@ -3041,20 +3475,37 @@
     }
 
     function subscribeSchedules() {
-      db.collection("schedules").onSnapshot(
-        snapshot => {
-          schedules = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          }));
+      if (!currentUser) return;
 
-          schedules.sort(compareSchedules);
-          renderAll();
-          clearStatusMessage();
+      unsubscribeSharedSchedules = db.collection("schedules").onSnapshot(
+        snapshot => {
+          sharedSchedules = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+            _privacy: "shared",
+            _ownerUid: doc.data().createdByUid || ""
+          }));
+          mergeScheduleSources();
         },
         error => {
           console.error(error);
-          showStatusMessage("予定の読み込みに失敗しました。", "error");
+          showStatusMessage("共有予定の読み込みに失敗しました。", "error");
+        }
+      );
+
+      unsubscribePrivateSchedules = getPrivateScheduleCollection().onSnapshot(
+        snapshot => {
+          privateSchedules = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+            _privacy: "private",
+            _ownerUid: currentUser.uid
+          }));
+          mergeScheduleSources();
+        },
+        error => {
+          console.error(error);
+          showStatusMessage("プライベート予定の読み込みに失敗しました。", "error");
         }
       );
     }
@@ -3271,6 +3722,7 @@
       const recurrenceUntil = null;
       const priority = document.getElementById("priority").value;
       const tags = parseTags(document.getElementById("tags").value);
+      const isPrivate = document.getElementById("isPrivateSchedule").checked;
       const recurrenceWeekdays = [];
 
       if (!startDate || !title) {
@@ -3319,54 +3771,78 @@
         categoryColor: sanitizeColor(selectedCategory.color),
         categoryIcon: selectedCategory.icon || "📌",
         category: selectedCategory.legacyKey || null,
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        visibility: isPrivate ? "private" : "shared",
+        ownerUid: isPrivate ? currentUser.uid : null,
+        ownerName: isPrivate ? (currentUserProfile?.displayName || "") : null,
+        createdByUid: currentUser.uid,
+        createdByName: currentUserProfile?.displayName || ""
       };
 
       const submitButton = document.getElementById("btnSubmit");
 
       try {
+        if (!currentUser) throw new Error("ログインが必要です。");
+
         submitButton.disabled = true;
         submitButton.textContent = "保存中…";
         let savedDocumentId = editId || null;
 
         if (editId) {
           const original = schedules.find(schedule => schedule.id === editId);
-          const occurrenceDate = document.getElementById("editOccurrenceDate").value;
-          const scope = document.getElementById("editScope").value;
+          if (!original) throw new Error("編集対象の予定が見つかりません。");
 
-          if (original && isRecurringSchedule(original) && occurrenceDate && scope === "single") {
-            const exceptions = { ...(original.recurrenceExceptions || {}) };
-            exceptions[occurrenceDate] = { ...data, startDate, endDate };
-            await db.collection("schedules").doc(editId).update({
-              recurrenceExceptions: exceptions,
+          const sourceIsPrivate = original._privacy === "private";
+          const targetIsPrivate = isPrivate;
+          const sourceRef = getScheduleReference(original);
+
+          if (sourceIsPrivate !== targetIsPrivate) {
+            const targetRef = targetIsPrivate
+              ? getPrivateScheduleCollection().doc(editId)
+              : db.collection("schedules").doc(editId);
+
+            const movedData = {
+              ...data,
+              visibility: targetIsPrivate ? "private" : "shared",
+              ownerUid: targetIsPrivate ? currentUser.uid : null,
+              ownerName: targetIsPrivate ? (currentUserProfile?.displayName || "") : null,
               updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            showStatusMessage("この予定だけ更新しました。", "success");
-          } else if (original && isRecurringSchedule(original) && occurrenceDate && scope === "future" && occurrenceDate !== original.startDate) {
-            const previousDay = addDaysString(occurrenceDate, -1);
-            await db.collection("schedules").doc(editId).update({
-              recurrenceUntil: previousDay,
-              updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            const newDoc = await db.collection("schedules").add({
-              ...data, startDate, endDate, createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            savedDocumentId = newDoc.id;
-            showStatusMessage("この予定以降を更新しました。", "success");
+            };
+
+            const batch = db.batch();
+            batch.set(targetRef, movedData, { merge: false });
+            batch.delete(sourceRef);
+            await batch.commit();
+
+            showStatusMessage(
+              targetIsPrivate
+                ? "🔒 プライベート予定として保存しました。"
+                : "共有予定へ変更しました。",
+              "success"
+            );
           } else {
-            const preserve = original ? {
-              recurrenceExceptions: original.recurrenceExceptions || {},
-              excludedDates: original.excludedDates || []
-            } : {};
-            await db.collection("schedules").doc(editId).update({ ...data, ...preserve });
-            showStatusMessage("予定を更新しました。", "success");
+            await sourceRef.update(data);
+            showStatusMessage(
+              targetIsPrivate ? "🔒 プライベート予定を更新しました。" : "予定を更新しました。",
+              "success"
+            );
           }
         } else {
-          const newDoc = await db.collection("schedules").add({
-            ...data, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          const targetCollection = isPrivate
+            ? getPrivateScheduleCollection()
+            : db.collection("schedules");
+
+          const newDoc = await targetCollection.add({
+            ...data,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
           });
           savedDocumentId = newDoc.id;
-          showStatusMessage("予定を追加しました。", "success");
+          showStatusMessage(
+            isPrivate
+              ? "🔒 プライベート予定を追加しました。本人以外には表示されません。"
+              : "予定を追加しました。",
+            "success"
+          );
         }
 
         localStorage.setItem("qtsLastCategoryId", selectedCategory.id);
@@ -3416,6 +3892,8 @@
       document.getElementById("attachmentFiles").value = "";
       renderAttachmentPreview();
       document.getElementById("isCompleted").checked = Boolean(item.isCompleted);
+      document.getElementById("isPrivateSchedule").checked = original._privacy === "private";
+      updatePrivateOwnerInfo();
       setSelectedAssignees(getScheduleAssignees(item));
       const category = getCategoryForSchedule(item);
       if (category?.id && categories.some(entry => entry.id === category.id)) document.getElementById("category").value = category.id;
@@ -3442,6 +3920,8 @@
       document.getElementById("tags").value = Array.isArray(item.tags) ? item.tags.join(", ") : "";
       currentAttachments = []; pendingAttachmentFiles = []; document.getElementById("attachmentFiles").value = ""; renderAttachmentPreview();
       document.getElementById("isCompleted").checked = false;
+      document.getElementById("isPrivateSchedule").checked = item._privacy === "private";
+      updatePrivateOwnerInfo();
       setSelectedAssignees(getScheduleAssignees(item));
       const category = getCategoryForSchedule(item); if (category?.id) document.getElementById("category").value = category.id;
       document.getElementById("btnSubmit").textContent = "コピーした予定を追加";
@@ -3456,6 +3936,7 @@
       document.getElementById("editScope").value = "series";
       document.getElementById("title").value = ""; document.getElementById("memo").value = "";
       document.getElementById("isAllDay").checked = false; document.getElementById("isCompleted").checked = false;
+      document.getElementById("isPrivateSchedule").checked = false; updatePrivateOwnerInfo();
       document.getElementById("startTime").value = ""; document.getElementById("endTime").value = ""; setSelectedAssignees([]);
       document.getElementById("btnSubmit").textContent = "予定を追加する"; document.getElementById("btnCancel").hidden = true; toggleAllDay();
       const remembered = localStorage.getItem("qtsLastCategoryId");
@@ -3473,9 +3954,9 @@
         if (isRecurringSchedule(original) && item._occurrenceDate) {
           const exceptions = { ...(original.recurrenceExceptions || {}) };
           exceptions[item._occurrenceDate] = { ...(exceptions[item._occurrenceDate] || {}), isCompleted: next };
-          await db.collection("schedules").doc(original.id).update({ recurrenceExceptions: exceptions, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+          await getScheduleReference(original).update({ recurrenceExceptions: exceptions, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
         } else {
-          await db.collection("schedules").doc(original.id).update({ isCompleted: next, completedAt: next ? firebase.firestore.FieldValue.serverTimestamp() : null, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+          await getScheduleReference(original).update({ isCompleted: next, completedAt: next ? firebase.firestore.FieldValue.serverTimestamp() : null, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
         }
         showStatusMessage(next ? "予定を完了にしました。" : "予定を未完了に戻しました。", "success");
       } catch (error) { console.error(error); showStatusMessage("完了状態を変更できませんでした。", "error"); }
@@ -3495,11 +3976,11 @@
       try {
         if (scope === "single") {
           const excluded = Array.from(new Set([...(original.excludedDates || []), item._occurrenceDate]));
-          await db.collection("schedules").doc(original.id).update({ excludedDates: excluded, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+          await getScheduleReference(original).update({ excludedDates: excluded, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
         } else if (scope === "future" && item._occurrenceDate !== original.startDate) {
-          await db.collection("schedules").doc(original.id).update({ recurrenceUntil: addDaysString(item._occurrenceDate, -1), updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+          await getScheduleReference(original).update({ recurrenceUntil: addDaysString(item._occurrenceDate, -1), updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
         } else {
-          await db.collection("schedules").doc(original.id).delete();
+          await getScheduleReference(original).delete();
         }
         showStatusMessage("予定を削除しました。", "success");
       } catch (error) { console.error(error); showStatusMessage("予定を削除できませんでした。", "error"); }
@@ -3535,7 +4016,7 @@
 
         const title = document.createElement("div");
         title.className = "today-title";
-        title.textContent = `${category.icon} ${item.title || "無題"}${item.isCompleted ? " ✓" : ""}`;
+        title.textContent = `${item._privacy === "private" ? "🔒 " : ""}${category.icon} ${item.title || "無題"}${item.isCompleted ? " ✓" : ""}`;
 
         row.append(time, title);
         container.appendChild(row);
@@ -3845,7 +4326,7 @@
 
       try {
         if (action === "move") {
-          await db.collection("schedules").doc(original.id).update({
+          await getScheduleReference(original).update({
             startDate: targetDate,
             endDate: newEnd,
             recurrenceType: "none",
@@ -3870,8 +4351,16 @@
             recurrenceExceptions: {},
             excludedDates: []
           });
-          await db.collection("schedules").add({
+          const copyCollection = original._privacy === "private"
+            ? getPrivateScheduleCollection()
+            : db.collection("schedules");
+          await copyCollection.add({
             ...copy,
+            visibility: original._privacy === "private" ? "private" : "shared",
+            ownerUid: original._privacy === "private" ? currentUser.uid : null,
+            ownerName: original._privacy === "private" ? (currentUserProfile?.displayName || "") : null,
+            createdByUid: currentUser.uid,
+            createdByName: currentUserProfile?.displayName || "",
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
           });
