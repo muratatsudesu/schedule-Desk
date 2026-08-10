@@ -1,0 +1,40 @@
+Q.T.S Scheduler Ver.6.3.1 設定手順
+
+Ver.6.3.1では、利用者本人が「村口 / 金子 / 寺門」から名前を選ぶ方式を廃止しました。
+AuthenticationのUIDとFirestoreのusers/{UID}を管理者が1対1で紐付けます。
+
+【今すぐVer.6.3.1へ更新する前に】
+現在の村口さんのusersドキュメントがすでに存在していれば、そのまま利用できます。
+roleフィールドだけ追加してください。
+
+■ 村口さん
+Firestore Database → データ → users → 村口さんのUIDのドキュメント
+次のフィールドを確認/追加します。
+
+displayName  文字列  村口
+role         文字列  admin
+email        文字列  登録したメールアドレス
+
+■ 金子さん・寺門さんを追加するとき
+1. Authentication → ユーザー → ユーザーを追加
+2. 各人のメールアドレスとQ.T.S専用パスワードを登録
+3. ユーザー一覧からUIDをコピー
+4. Firestore → users にUIDと同じドキュメントIDを作成
+
+金子さん:
+displayName = 金子
+role = user
+email = 金子さんのログインメール
+
+寺門さん:
+displayName = 寺門
+role = user
+email = 寺門さんのログインメール
+
+■ Firestoreルール
+ZIP内の firestore.rules.txt をルール画面へ貼り付けて公開します。
+Ver.6.3.1ではusersプロフィールをアプリから変更できません。
+
+■ プライベート予定
+Ver.6.3と同じく、本人専用の users/{UID}/privateSchedules に保存されます。
+他ユーザーには存在自体が表示されません。
