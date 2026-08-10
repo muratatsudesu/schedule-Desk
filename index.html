@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.4.2</title>
+  <title>Q.T.S Scheduler — Ver.6.4.3</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=601">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=601">
@@ -2163,15 +2163,21 @@
     #teamWeekBoard.active{display:block}
     .team-board-toolbar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:9px}
     .team-board-title{font-weight:900;color:var(--brown-dark)}
-    .team-board-wrap{overflow-x:auto}
-    .team-board-grid{display:grid;grid-template-columns:80px repeat(7,minmax(130px,1fr));min-width:990px;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:white}
-    .team-cell{min-height:88px;padding:6px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .team-board-wrap{overflow-x:auto;overflow-y:visible;max-height:none;height:auto;}
+    .team-board-grid{display:grid;grid-template-columns:80px repeat(7,minmax(130px,1fr));grid-auto-rows:minmax(88px,auto);min-width:990px;height:auto;max-height:none;overflow:visible;border:1px solid var(--border);border-radius:8px;background:white;}
+    .team-cell{min-height:88px;height:auto;padding:6px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);overflow:visible;box-sizing:border-box;}
     .team-head{min-height:auto;background:#f3f6f7;text-align:center;font-size:.72rem;font-weight:800}
     .team-person{font-weight:900;background:#f8fafb;color:var(--brown-dark)}
     .team-event{margin-bottom:5px;padding:5px 6px;border:1px solid #d7e0e5;border-radius:6px;background:#f7f9fa;font-size:.68rem;line-height:1.35;cursor:pointer}
     .team-time{font-weight:900}
     .admin-maintenance{margin-top:12px;padding:12px;border:1px solid var(--border);border-radius:8px;background:#f8fafb}
     .admin-maintenance h4{margin:0 0 6px}.admin-maintenance p{margin:0 0 8px;font-size:.74rem;line-height:1.5}
+
+
+    /* Ver.6.4.3: 共有週間ボードの縦クリップ修正 */
+    #teamWeekBoard.card{height:auto!important;max-height:none!important;overflow:visible!important;}
+    #teamWeekBoard .team-board-wrap{height:auto!important;max-height:none!important;overflow-x:auto!important;overflow-y:visible!important;}
+    #teamWeekBoard .team-board-grid{height:auto!important;max-height:none!important;overflow:visible!important;align-items:stretch;}
 
   </style>
 </head>
@@ -2183,7 +2189,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.4.2 — ログイン</p>
+          <p>Ver.6.4.3 — ログイン</p>
         </div>
       </div>
 
@@ -3055,7 +3061,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.4.2";
+    const APP_VERSION = "6.4.3";
     const APP_BUILD_DATE = "2026-08-10";
 
     const firebaseConfig = {
@@ -3599,7 +3605,7 @@
 
       grid.innerHTML = "";
       const countEl = document.getElementById("teamSharedCount");
-      if (countEl) countEl.textContent = `・共有予定 ${sharedSchedules.length}件`;
+      if (countEl) countEl.textContent = `・共有予定 ${sharedSchedules.length}件・${renderedMemberRows}名描画`;
 
       const addCell = (text, cls="") => {
         const el = document.createElement("div");
@@ -3615,7 +3621,9 @@
       });
 
       // sharedSchedulesそのものを基準にし、各日へ展開して担当者を判定する。
+      let renderedMemberRows = 0;
       members.forEach(person => {
+        renderedMemberRows += 1;
         addCell(person, "team-person");
 
         days.forEach(day => {
