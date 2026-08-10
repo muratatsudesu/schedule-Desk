@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.3 試作</title>
+  <title>Q.T.S Scheduler — Ver.6.2</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=601">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=601">
@@ -1781,7 +1781,7 @@
     }
 
 
-    /* ===== Ver.6.3 試作 Project detail ===== */
+    /* ===== Ver.6.2 Project detail ===== */
     .annual-project-card { cursor: pointer; transition: transform .16s ease, box-shadow .16s ease; }
     .annual-project-card:hover, .annual-project-card:focus {
       transform: translateY(-2px);
@@ -1819,7 +1819,7 @@
     @media(max-width:700px){ .project-detail-grid{grid-template-columns:1fr;} }
 
 
-    /* ===== Ver.6.3 試作 Stakeholders / project contacts ===== */
+    /* ===== Ver.6.2 Stakeholders / project contacts ===== */
     .project-stakeholder-section {
       margin-bottom: 14px;
       padding: 15px;
@@ -1980,258 +1980,13 @@
       }
     }
 
-
-    /* ===== Ver.6.3 Trial: personal workspace ===== */
-    .trial-login-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 3000;
-      display: grid;
-      place-items: center;
-      padding: 18px;
-      background:
-        radial-gradient(circle at 18% 15%, rgba(46,154,120,.20), transparent 26%),
-        linear-gradient(135deg, rgba(7,31,58,.98), rgba(13,47,87,.98));
-    }
-    .trial-login-overlay[hidden] { display: none !important; }
-    .trial-login-card {
-      width: min(92vw, 480px);
-      padding: 24px;
-      background: #fff;
-      border: 1px solid rgba(255,255,255,.35);
-      border-radius: 20px;
-      box-shadow: 0 24px 60px rgba(0,0,0,.28);
-    }
-    .trial-login-brand {
-      display:flex;
-      align-items:center;
-      gap:13px;
-      margin-bottom:18px;
-    }
-    .trial-login-mark {
-      display:grid;
-      place-items:center;
-      width:54px;
-      height:54px;
-      color:#fff;
-      font-weight:900;
-      background:linear-gradient(135deg,#0d2f57,#2e9a78);
-      border-radius:15px;
-    }
-    .trial-login-card h2 {
-      margin:0;
-      color:#0d2f57;
-      font-size:1.18rem;
-    }
-    .trial-login-card p {
-      margin:5px 0 0;
-      color:#6c7d8b;
-      font-size:.78rem;
-      line-height:1.6;
-    }
-    .trial-user-grid {
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:10px;
-      margin:18px 0 12px;
-    }
-    .trial-user-button {
-      padding:16px 8px;
-      color:#173a59;
-      font-weight:850;
-      background:#f4f8fa;
-      border:1px solid #cfdae2;
-      border-radius:13px;
-      cursor:pointer;
-    }
-    .trial-user-button:hover,
-    .trial-user-button:focus {
-      background:#e9f6f1;
-      border-color:#78bca6;
-      outline:none;
-    }
-    .trial-warning {
-      padding:10px 12px;
-      color:#755c25;
-      font-size:.72rem;
-      line-height:1.55;
-      background:#fff8e8;
-      border:1px solid #edd9a5;
-      border-radius:10px;
-    }
-
-    .personal-panel {
-      margin-bottom:16px;
-      padding:15px;
-      background:
-        radial-gradient(circle at 92% 18%, rgba(46,154,120,.16), transparent 28%),
-        linear-gradient(145deg,#ffffff,#edf4f7);
-      border:1px solid #cddae3;
-      border-radius:16px;
-      box-shadow:0 6px 18px rgba(13,47,87,.08);
-    }
-    .personal-topbar {
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      align-items:center;
-      margin-bottom:12px;
-    }
-    .personal-greeting {
-      color:#0d2f57;
-      font-size:1.05rem;
-      font-weight:850;
-    }
-    .personal-subtext {
-      margin-top:3px;
-      color:#71818e;
-      font-size:.74rem;
-    }
-    .personal-user-badge {
-      display:inline-flex;
-      align-items:center;
-      gap:7px;
-      padding:7px 10px;
-      color:#fff;
-      font-size:.75rem;
-      font-weight:800;
-      background:#0d2f57;
-      border-radius:999px;
-    }
-    .personal-actions {
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
-    .workspace-toggle {
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:6px;
-      flex:1 1 260px;
-      padding:5px;
-      background:#e8eef2;
-      border-radius:11px;
-    }
-    .workspace-toggle button {
-      padding:9px 10px;
-      color:#4c6477;
-      font-weight:800;
-      background:transparent;
-      border:0;
-      border-radius:8px;
-      cursor:pointer;
-    }
-    .workspace-toggle button.active {
-      color:#fff;
-      background:linear-gradient(135deg,#0d2f57,#1d527d);
-      box-shadow:0 3px 9px rgba(13,47,87,.2);
-    }
-    .personal-stats {
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:8px;
-      margin-top:12px;
-    }
-    .personal-stat {
-      padding:11px;
-      background:#fff;
-      border:1px solid #d6e0e6;
-      border-radius:11px;
-    }
-    .personal-stat-label {
-      color:#788792;
-      font-size:.68rem;
-    }
-    .personal-stat-value {
-      margin-top:3px;
-      color:#153b5c;
-      font-size:1.2rem;
-      font-weight:900;
-    }
-    .trial-chip {
-      display:inline-flex;
-      padding:3px 7px;
-      margin-left:5px;
-      color:#8a5a18;
-      font-size:.62rem;
-      font-weight:850;
-      background:#fff1cf;
-      border-radius:999px;
-      vertical-align:middle;
-    }
-    @media(max-width:700px) {
-      .trial-user-grid { grid-template-columns:1fr; }
-      .personal-topbar { align-items:flex-start; }
-      .personal-stats { grid-template-columns:1fr 1fr 1fr; }
-    }
-
   </style>
 </head>
 
-
 <body>
-  <div id="trialLoginOverlay" class="trial-login-overlay">
-    <div class="trial-login-card">
-      <div class="trial-login-brand">
-        <div class="trial-login-mark">QTS</div>
-        <div>
-          <h2>Q.T.S Scheduler <span class="trial-chip">Ver.6.3 試作</span></h2>
-          <p>この端末を使う人を選択してください。</p>
-        </div>
-      </div>
-
-      <div class="trial-user-grid">
-        <button type="button" class="trial-user-button" data-trial-user="村口">👤<br>村口</button>
-        <button type="button" class="trial-user-button" data-trial-user="金子">👤<br>金子</button>
-        <button type="button" class="trial-user-button" data-trial-user="寺門">👤<br>寺門</button>
-      </div>
-
-      <div class="trial-warning">
-        この画面は試作版の「利用者切替」です。パスワード認証ではありません。
-        本格的に複数人で利用する際は、Firebase Authenticationによるログインへ切り替えます。
-      </div>
-    </div>
-  </div>
-
   <header class="header-banner">
-    <h1>Q.T.S Scheduler</h1><p class="header-subtitle">WORK &amp; PROJECT PLANNER</p><div class="version-badge" id="headerVersion">Ver.6.3 試作</div>
+    <h1>Q.T.S Scheduler</h1><p class="header-subtitle">WORK &amp; PROJECT PLANNER</p><div class="version-badge" id="headerVersion">Ver.6.2</div>
   </header>
-
-
-  <section id="personalPanel" class="personal-panel" hidden>
-    <div class="personal-topbar">
-      <div>
-        <div class="personal-greeting" id="personalGreeting">こんにちは</div>
-        <div class="personal-subtext">自分の予定と全員共有を切り替えて確認できます。</div>
-      </div>
-      <div class="personal-user-badge">
-        <span id="currentTrialUser">-</span>
-        <button type="button" id="switchTrialUserBtn" style="border:0;background:transparent;color:#fff;cursor:pointer;padding:0;">切替</button>
-      </div>
-    </div>
-
-    <div class="personal-actions">
-      <div class="workspace-toggle" aria-label="表示範囲">
-        <button type="button" id="workspaceMineBtn" class="active">👤 自分専用</button>
-        <button type="button" id="workspaceSharedBtn">👥 全員共有</button>
-      </div>
-    </div>
-
-    <div class="personal-stats">
-      <div class="personal-stat">
-        <div class="personal-stat-label">今日の自分の予定</div>
-        <div class="personal-stat-value" id="personalTodayCount">0</div>
-      </div>
-      <div class="personal-stat">
-        <div class="personal-stat-label">今週の自分の予定</div>
-        <div class="personal-stat-value" id="personalWeekCount">0</div>
-      </div>
-      <div class="personal-stat">
-        <div class="personal-stat-label">担当案件</div>
-        <div class="personal-stat-value" id="personalProjectCount">0</div>
-      </div>
-    </div>
-  </section>
 
   <nav class="main-navigation" aria-label="メイン画面">
     <button type="button" class="main-nav-button active" id="navSchedule">📅 スケジュール</button>
@@ -2930,9 +2685,9 @@
           <button type="button" class="btn-secondary" id="btnOpenCsv">📤 CSV出力</button>
         </div>
         <div class="app-info-panel">
-          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.3 試作</span><br>
+          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.2</span><br>
           無料プラン対応・写真圧縮保存版<br>
-          Ver.6.3 試作：個人ホーム・利用者切替・共有表示を追加<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
+          Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月3日
         </div>
       </div>
@@ -3037,7 +2792,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.3-trial";
+    const APP_VERSION = "6.2";
     const APP_BUILD_DATE = "2026-08-07";
 
     const firebaseConfig = {
@@ -3224,17 +2979,6 @@
       toggleAllDay();
       updateCategoryPreview();
       subscribeCategories();
-
-      initializeTrialWorkspace();
-      document.querySelectorAll("[data-trial-user]").forEach(button => {
-        button.addEventListener("click", () => selectTrialUser(button.dataset.trialUser));
-      });
-      document.getElementById("switchTrialUserBtn").addEventListener("click", () => {
-        document.getElementById("trialLoginOverlay").hidden = false;
-      });
-      document.getElementById("workspaceMineBtn").addEventListener("click", () => setWorkspaceMode("mine"));
-      document.getElementById("workspaceSharedBtn").addEventListener("click", () => setWorkspaceMode("shared"));
-
       subscribeSchedules();
 
       if (localStorage.getItem("qtsMainView") === "annual") {
@@ -3317,12 +3061,8 @@
 
     function renderAll() {
       renderDashboard();
-      updatePersonalStats();
-      requestAnimationFrame(applyTrialVisibilityToRenderedSchedules);
       renderTodaySchedules();
       renderCalendar();
-      updatePersonalStats();
-      requestAnimationFrame(applyTrialVisibilityToRenderedSchedules);
       loadSchedules(selectedDateStr);
 
       if (detailSelectedDate) {
@@ -4900,152 +4640,8 @@
 
 
     let annualZoom = 1;
-    let currentTrialUser = "";
-    let workspaceMode = "mine";
     let activeProjectCard = null;
     let activeProjectContactData = null;
-
-
-    function initializeTrialWorkspace() {
-      const saved = localStorage.getItem("qtsTrialUser") || "";
-      const savedMode = localStorage.getItem("qtsWorkspaceMode") || "mine";
-      workspaceMode = savedMode === "shared" ? "shared" : "mine";
-
-      if (saved) {
-        selectTrialUser(saved, true);
-      } else {
-        document.getElementById("trialLoginOverlay").hidden = false;
-      }
-      updateWorkspaceButtons();
-    }
-
-    function selectTrialUser(userName, restoring = false) {
-      const allowed = ["村口", "金子", "寺門"];
-      if (!allowed.includes(userName)) return;
-
-      currentTrialUser = userName;
-      localStorage.setItem("qtsTrialUser", userName);
-      document.getElementById("trialLoginOverlay").hidden = true;
-      document.getElementById("personalPanel").hidden = false;
-      document.getElementById("currentTrialUser").textContent = userName;
-      document.getElementById("personalGreeting").textContent = `${userName}さんのホーム`;
-
-      if (!restoring) {
-        workspaceMode = "mine";
-        localStorage.setItem("qtsWorkspaceMode", workspaceMode);
-      }
-
-      updateWorkspaceButtons();
-      applyTrialWorkspaceFilter();
-      updatePersonalStats();
-    }
-
-    function setWorkspaceMode(mode) {
-      workspaceMode = mode === "shared" ? "shared" : "mine";
-      localStorage.setItem("qtsWorkspaceMode", workspaceMode);
-      updateWorkspaceButtons();
-      applyTrialWorkspaceFilter();
-      updatePersonalStats();
-    }
-
-    function updateWorkspaceButtons() {
-      const mine = document.getElementById("workspaceMineBtn");
-      const shared = document.getElementById("workspaceSharedBtn");
-      if (!mine || !shared) return;
-      mine.classList.toggle("active", workspaceMode === "mine");
-      shared.classList.toggle("active", workspaceMode === "shared");
-    }
-
-    function getScheduleOwnerName(schedule) {
-      return String(
-        schedule?.assignee ||
-        schedule?.person ||
-        schedule?.staff ||
-        schedule?.担当者 ||
-        ""
-      ).trim();
-    }
-
-    function scheduleBelongsToCurrentUser(schedule) {
-      if (!currentTrialUser) return true;
-      return normalizeText(getScheduleOwnerName(schedule)) === normalizeText(currentTrialUser);
-    }
-
-    function applyTrialWorkspaceFilter() {
-      // 既存検索欄を利用して「自分専用」表示を実現する試作。
-      // データそのものは削除せず、表示だけ切り替えます。
-      const search = document.getElementById("searchInput");
-      const assigneeSelect =
-        document.getElementById("filterAssignee") ||
-        document.getElementById("assigneeFilter") ||
-        document.getElementById("filterPerson");
-
-      if (workspaceMode === "mine" && currentTrialUser) {
-        if (assigneeSelect && [...assigneeSelect.options].some(o => o.value === currentTrialUser)) {
-          assigneeSelect.value = currentTrialUser;
-          assigneeSelect.dispatchEvent(new Event("change"));
-        }
-      } else if (assigneeSelect) {
-        assigneeSelect.value = "";
-        assigneeSelect.dispatchEvent(new Event("change"));
-      }
-
-      // フィルタUIがない実装でも、描画後にカードへvisibilityを適用
-      requestAnimationFrame(applyTrialVisibilityToRenderedSchedules);
-    }
-
-    function applyTrialVisibilityToRenderedSchedules() {
-      if (workspaceMode !== "mine" || !currentTrialUser) {
-        document.querySelectorAll("[data-assignee], [data-person]").forEach(el => {
-          el.style.removeProperty("display");
-        });
-        return;
-      }
-
-      document.querySelectorAll("[data-assignee], [data-person]").forEach(el => {
-        const owner = el.dataset.assignee || el.dataset.person || "";
-        if (owner) {
-          el.style.display =
-            normalizeText(owner) === normalizeText(currentTrialUser) ? "" : "none";
-        }
-      });
-    }
-
-    function updatePersonalStats() {
-      if (!currentTrialUser || !Array.isArray(schedules)) return;
-
-      const today = getLocalDateString(new Date());
-      const now = new Date();
-      const monday = new Date(now);
-      const day = (monday.getDay() + 6) % 7;
-      monday.setDate(monday.getDate() - day);
-      monday.setHours(0,0,0,0);
-      const sunday = new Date(monday);
-      sunday.setDate(sunday.getDate() + 7);
-
-      const mine = schedules.filter(scheduleBelongsToCurrentUser);
-
-      const todayCount = mine.filter(s => {
-        const d = s.startDate || s.date || "";
-        return d === today;
-      }).length;
-
-      const weekCount = mine.filter(s => {
-        const value = s.startDate || s.date || "";
-        if (!value) return false;
-        const d = new Date(value + "T00:00:00");
-        return d >= monday && d < sunday;
-      }).length;
-
-      document.getElementById("personalTodayCount").textContent = todayCount;
-      document.getElementById("personalWeekCount").textContent = weekCount;
-
-      const projectCards = Array.from(document.querySelectorAll(".annual-project-card"));
-      const projectCount = projectCards.filter(card =>
-        normalizeText(card.dataset.projectOwner || "") === normalizeText(currentTrialUser)
-      ).length;
-      document.getElementById("personalProjectCount").textContent = projectCount;
-    }
 
     function switchMainView(viewName) {
       const isAnnual = viewName === "annual";
@@ -5075,7 +4671,7 @@
       document.getElementById("projectDetailNo").textContent = no;
       document.getElementById("projectDetailName").textContent = name;
       document.getElementById("projectDetailMeta").textContent =
-        `担当：${owner}　｜　${year}　｜　${timing}${owner === currentTrialUser ? "　｜　★ 自分の担当" : ""}`;
+        `担当：${owner}　｜　${year}　｜　${timing}`;
 
       const n = normalizeText(name);
       const related = schedules.filter(s => {
@@ -5307,11 +4903,7 @@
           (yearFilter === "future" && isFuture) ||
           (yearFilter === "current" && !isFuture);
 
-        const matchesOwner =
-          workspaceMode !== "mine" ||
-          !currentTrialUser ||
-          normalizeText(card.dataset.projectOwner || "") === normalizeText(currentTrialUser);
-        const visible = matchesKeyword && matchesYear && matchesOwner;
+        const visible = matchesKeyword && matchesYear;
         card.hidden = !visible;
         if (visible) visibleCount++;
       });
