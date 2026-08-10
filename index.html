@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.5.2</title>
+  <title>Q.T.S Scheduler — Ver.6.5.3</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=601">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=601">
@@ -2224,6 +2224,46 @@
     .day-cell.weekend-sat { background: rgba(92,150,205,.075) !important; }
     .day-cell.weekend-sun { background: rgba(205,105,105,.07) !important; }
 
+
+    /* ===== Ver.6.5.3 weekend color refinement ===== */
+    .day-header.saturday {
+      background: #f3f8fc !important;
+      color: #3d78b2 !important;
+    }
+    .day-header.sunday {
+      background: #fdf5f6 !important;
+      color: #d0525f !important;
+    }
+
+    .day-cell.weekend-sat {
+      background: #f7fbfe !important;
+    }
+    .day-cell.weekend-sun {
+      background: #fff8f9 !important;
+    }
+
+    .day-cell.weekend-sat:hover {
+      background: #eef6fb !important;
+    }
+    .day-cell.weekend-sun:hover {
+      background: #fdf0f2 !important;
+    }
+
+    /* 月外の空白セルは通常背景に戻す */
+    .day-cell.empty {
+      background: #fbf7f0 !important;
+    }
+    .day-cell.empty.weekend-sat,
+    .day-cell.empty.weekend-sun {
+      background: #fbf7f0 !important;
+    }
+
+
+    .calendar-grid > .day-cell.empty:nth-child(7n+6),
+    .calendar-grid > .day-cell.empty:nth-child(7n+7) {
+      background: #fbf7f0 !important;
+    }
+
   </style>
 </head>
 
@@ -2234,7 +2274,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.5.2 — ログイン</p>
+          <p>Ver.6.5.3 — ログイン</p>
         </div>
       </div>
 
@@ -3133,7 +3173,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.5.2";
+    const APP_VERSION = "6.5.3";
     const APP_BUILD_DATE = "2026-08-10";
 
     const firebaseConfig = {
