@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.4.6</title>
+  <title>Q.T.S Scheduler — Ver.6.5</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=601">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=601">
@@ -2179,6 +2179,19 @@
     #teamWeekBoard .team-board-wrap{height:auto!important;max-height:none!important;overflow-x:auto!important;overflow-y:visible!important;}
     #teamWeekBoard .team-board-grid{height:auto!important;max-height:none!important;overflow:visible!important;align-items:stretch;}
 
+
+    /* ===== Ver.6.5 PC time quick input ===== */
+    .desktop-time-helper{margin:10px 0 14px;padding:12px;border:1px solid #d9c7b2;border-radius:11px;background:#fbf7f0}
+    .time-helper-group{margin-bottom:9px}
+    .time-helper-label{margin-bottom:6px;font-size:.76rem;font-weight:850;color:#65452f}
+    .time-chip-row{display:flex;flex-wrap:wrap;gap:6px}
+    .time-chip{appearance:none;border:1px solid #cbb292;background:#fffaf3;color:#5b3b28;padding:7px 10px;border-radius:8px;font-weight:800;font-size:.74rem;cursor:pointer;box-shadow:0 2px 5px rgba(86,55,32,.08)}
+    .time-chip:hover{background:#f4e6d4}
+    .time-chip:active{transform:translateY(1px)}
+    .duration-chip{background:#f4f8fb;border-color:#c6d7e3;color:#36546b}
+    .time-helper-note{font-size:.68rem;line-height:1.5;color:#846f5e;margin-top:5px}
+    @media (pointer:coarse), (max-width:700px){.desktop-time-helper{display:none}}
+
   </style>
 </head>
 
@@ -2189,7 +2202,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.4.6 — ログイン</p>
+          <p>Ver.6.5 — ログイン</p>
         </div>
       </div>
 
@@ -2325,6 +2338,33 @@
         <label for="endTime">終了時間</label>
         <input type="time" id="endTime">
       </div>
+    </div>
+
+    <div class="desktop-time-helper" id="desktopTimeHelper">
+      <div class="time-helper-group">
+        <div class="time-helper-label">🖥 開始時間クイック入力</div>
+        <div class="time-chip-row" id="startQuickTimes">
+          <button type="button" class="time-chip" data-time="08:00">8:00</button>
+          <button type="button" class="time-chip" data-time="09:00">9:00</button>
+          <button type="button" class="time-chip" data-time="10:00">10:00</button>
+          <button type="button" class="time-chip" data-time="11:00">11:00</button>
+          <button type="button" class="time-chip" data-time="13:00">13:00</button>
+          <button type="button" class="time-chip" data-time="14:00">14:00</button>
+          <button type="button" class="time-chip" data-time="15:00">15:00</button>
+          <button type="button" class="time-chip" data-time="16:00">16:00</button>
+        </div>
+      </div>
+      <div class="time-helper-group">
+        <div class="time-helper-label">⏱ 終了時間</div>
+        <div class="time-chip-row" id="endQuickDurations">
+          <button type="button" class="time-chip duration-chip" data-minutes="30">+30分</button>
+          <button type="button" class="time-chip duration-chip" data-minutes="60">+1時間</button>
+          <button type="button" class="time-chip duration-chip" data-minutes="90">+1.5時間</button>
+          <button type="button" class="time-chip duration-chip" data-minutes="120">+2時間</button>
+          <button type="button" class="time-chip duration-chip" data-minutes="180">+3時間</button>
+        </div>
+      </div>
+      <div class="time-helper-note">PCではボタン入力に加え、時刻欄へ直接入力もできます。スマホは従来の時刻入力をそのまま使います。</div>
     </div>
 
     <div class="form-group">
@@ -3061,7 +3101,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.4.6";
+    const APP_VERSION = "6.5";
     const APP_BUILD_DATE = "2026-08-10";
 
     const firebaseConfig = {
@@ -3138,6 +3178,16 @@
         `今日の予定：${formatJapaneseDate(getLocalDateString(new Date()))}`;
 
       document.getElementById("startDate").addEventListener("change", syncEndDate);
+      document.querySelectorAll("#startQuickTimes .time-chip").forEach(button => {
+        button.addEventListener("click", () => {
+          document.getElementById("startTime").value = button.dataset.time || "";
+        });
+      });
+      document.querySelectorAll("#endQuickDurations .duration-chip").forEach(button => {
+        button.addEventListener("click", () => {
+          setEndTimeByMinutes(Number(button.dataset.minutes || 0));
+        });
+      });
       document.getElementById("isAllDay").addEventListener("change", toggleAllDay);
       document.getElementById("btnSubmit").addEventListener("click", addOrUpdateSchedule);
       document.getElementById("btnCancel").addEventListener("click", resetScheduleForm);
@@ -5222,6 +5272,23 @@
       currentDisplayDate.setDate(1);
       currentDisplayDate.setMonth(currentDisplayDate.getMonth() + delta);
       renderCalendar();
+    }
+
+
+    function setEndTimeByMinutes(addMinutes) {
+      const startInput = document.getElementById("startTime");
+      const endInput = document.getElementById("endTime");
+      if (!startInput || !endInput || !startInput.value || !addMinutes) {
+        if (!startInput?.value) alert("先に開始時間を入力してください。");
+        return;
+      }
+      const [h,m] = startInput.value.split(":").map(Number);
+      const total = h * 60 + m + addMinutes;
+      if (total >= 24 * 60) {
+        endInput.value = "23:59";
+        return;
+      }
+      endInput.value = `${String(Math.floor(total/60)).padStart(2,"0")}:${String(total%60).padStart(2,"0")}`;
     }
 
     function toggleAllDay() {

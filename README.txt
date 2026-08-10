@@ -1,3 +1,4 @@
-Q.T.S Scheduler Ver.6.4.6
-共有週間ボードのカテゴリ取得エラー修正版。
-存在しないgetCategoryById()を削除し、既存categories配列から直接取得するよう修正。
+Q.T.S Scheduler Ver.6.5
+PC用時刻クイック入力を追加。
+スマホは従来方式のまま。
+Firebase追加設定・Firestoreルール変更なし。
