@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.3.3</title>
+  <title>Q.T.S Scheduler — Ver.6.4</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=601">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=601">
@@ -2157,6 +2157,22 @@
       }
     }
 
+
+    /* Ver.6.4 */
+    #teamWeekBoard{display:none;margin-bottom:18px}
+    #teamWeekBoard.active{display:block}
+    .team-board-toolbar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:9px}
+    .team-board-title{font-weight:900;color:var(--brown-dark)}
+    .team-board-wrap{overflow-x:auto}
+    .team-board-grid{display:grid;grid-template-columns:80px repeat(7,minmax(130px,1fr));min-width:990px;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:white}
+    .team-cell{min-height:88px;padding:6px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .team-head{min-height:auto;background:#f3f6f7;text-align:center;font-size:.72rem;font-weight:800}
+    .team-person{font-weight:900;background:#f8fafb;color:var(--brown-dark)}
+    .team-event{margin-bottom:5px;padding:5px 6px;border:1px solid #d7e0e5;border-radius:6px;background:#f7f9fa;font-size:.68rem;line-height:1.35;cursor:pointer}
+    .team-time{font-weight:900}
+    .admin-maintenance{margin-top:12px;padding:12px;border:1px solid var(--border);border-radius:8px;background:#f8fafb}
+    .admin-maintenance h4{margin:0 0 6px}.admin-maintenance p{margin:0 0 8px;font-size:.74rem;line-height:1.5}
+
   </style>
 </head>
 
@@ -2167,7 +2183,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.3.3 — ログイン</p>
+          <p>Ver.6.4 — ログイン</p>
         </div>
       </div>
 
@@ -2390,7 +2406,17 @@
     </div>
   </section>
 
-  <section class="card">
+  
+  <section class="card" id="teamWeekBoard">
+    <div class="team-board-toolbar">
+      <button type="button" class="btn-secondary btn-small" id="teamPrevWeek">← 前週</button>
+      <div class="team-board-title" id="teamWeekTitle">共有週間ボード</div>
+      <button type="button" class="btn-secondary btn-small" id="teamNextWeek">次週 →</button>
+    </div>
+    <div class="team-board-wrap"><div class="team-board-grid" id="teamBoardGrid"></div></div>
+  </section>
+
+<section class="card" id="mainCalendarSection">
     <div class="calendar-header">
       <button type="button" class="btn-secondary btn-small" id="btnPrevMonth">
         ◀ 前月
@@ -2912,6 +2938,11 @@
             🎨 カテゴリー管理
           </button>
           <button type="button" class="btn-secondary" id="btnGoAnnual">📋 年間予定表を開く</button>
+          <div class="admin-maintenance" id="adminMaintenance" hidden>
+            <h4>🛠 管理者：過去予定の整理</h4>
+            <p id="unassignedCountText">担当者なし予定を確認中…</p>
+            <button type="button" class="btn-secondary" id="btnAssignLegacyToMe">担当者なし予定を確認</button>
+          </div>
           <div class="future-setting">🔐 Ver.6.3.1：利用者名・権限を管理者固定</div>
           <div class="future-setting">バックアップ・復元（今後追加予定）</div>
           <button type="button" class="btn-secondary" id="btnOpenCsv">📤 CSV出力</button>
@@ -3024,7 +3055,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.3.3";
+    const APP_VERSION = "6.4";
     const APP_BUILD_DATE = "2026-08-10";
 
     const firebaseConfig = {
@@ -3066,6 +3097,7 @@
     let unsubscribeSharedSchedules = null;
     let unsubscribePrivateSchedules = null;
     let unsubscribeCategories = null;
+    let teamWeekStart = getMonday(new Date());
     let currentDisplayDate = new Date();
     let selectedDateStr = getLocalDateString(new Date());
     const fixedAssignees = ["村口", "金子", "寺門"];
@@ -3113,6 +3145,7 @@
 
       document.getElementById("assigneeFilter").addEventListener("change", event => {
         assigneeFilter = event.target.value;
+        if (assigneeFilter === "all") teamWeekStart = getMonday(new Date());
         renderAll();
       });
 
@@ -3225,6 +3258,9 @@
         if (event.key === "Enter") signInUser();
       });
       document.getElementById("authLogoutBtn").addEventListener("click", () => auth.signOut());
+      document.getElementById("teamPrevWeek").addEventListener("click",()=>{teamWeekStart.setDate(teamWeekStart.getDate()-7);renderTeamWeekBoard();});
+      document.getElementById("teamNextWeek").addEventListener("click",()=>{teamWeekStart.setDate(teamWeekStart.getDate()+7);renderTeamWeekBoard();});
+      document.getElementById("btnAssignLegacyToMe").addEventListener("click",assignLegacySchedulesToMe);
       document.getElementById("isPrivateSchedule").addEventListener("change", updatePrivateOwnerInfo);
 
       toggleAllDay();
@@ -3315,6 +3351,7 @@
       document.getElementById("sessionUserEmail").textContent = currentUser.email || "";
       const roleLabel = currentUserProfile.role === "admin" ? "管理者" : "一般";
       document.getElementById("sessionRoleBadge").textContent = roleLabel;
+      document.getElementById("adminMaintenance").hidden = currentUserProfile.role !== "admin";
 
       // Ver.6.3.2: ログイン直後は本人担当の共有予定＋本人のプライベート予定だけを表示。
       // 「👥 全員共有」に切り替えると、ログインメンバーの共有予定をすべて確認できます。
@@ -3481,11 +3518,76 @@
       );
     }
 
+
+    function getMonday(date){
+      const d=new Date(date); d.setHours(0,0,0,0);
+      const day=d.getDay(); d.setDate(d.getDate()+(day===0?-6:1-day)); return d;
+    }
+    function ymd(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
+
+    function updateSharedViewMode(){
+      const shared=assigneeFilter==="all";
+      document.getElementById("teamWeekBoard")?.classList.toggle("active",shared);
+      const cal=document.getElementById("mainCalendarSection"); if(cal) cal.style.display=shared?"none":"";
+    }
+
+    function renderTeamWeekBoard(){
+      const grid=document.getElementById("teamBoardGrid");
+      if(!grid || assigneeFilter!=="all") return;
+      const days=Array.from({length:7},(_,i)=>{const d=new Date(teamWeekStart);d.setDate(d.getDate()+i);return d;});
+      const last=days[6], names=["月","火","水","木","金","土","日"];
+      document.getElementById("teamWeekTitle").textContent=`${teamWeekStart.getFullYear()}年${teamWeekStart.getMonth()+1}月${teamWeekStart.getDate()}日 ～ ${last.getMonth()+1}月${last.getDate()}日`;
+      grid.innerHTML="";
+      const add=(text,cls)=>{const e=document.createElement("div");e.className="team-cell "+cls;e.textContent=text;grid.appendChild(e);return e;};
+      add("担当者","team-head");
+      days.forEach((d,i)=>add(`${d.getMonth()+1}/${d.getDate()}（${names[i]}）`,"team-head"));
+      fixedAssignees.forEach(person=>{
+        add(person,"team-person");
+        days.forEach(day=>{
+          const cell=add("",""); const ds=ymd(day);
+          const items=expandSchedulesForRange(sharedSchedules,ds,ds).filter(x=>getScheduleAssignees(x).includes(person)).sort(compareSchedules);
+          if(!items.length){cell.textContent="—";cell.style.color="#9aa7af";}
+          items.forEach(item=>{
+            const e=document.createElement("div");e.className="team-event";
+            const cat=getCategoryById(item.categoryId), time=item.isAllDay?"終日":(item.startTime||"");
+            e.textContent=`${time} ${cat?.icon||""} ${item.title||"無題"}`;
+            e.addEventListener("click",()=>editSchedule(item)); cell.appendChild(e);
+          });
+        });
+      });
+    }
+
+    function getLegacyUnassignedSchedules(){return sharedSchedules.filter(s=>getScheduleAssignees(s).length===0);}
+    function updateLegacyScheduleCount(){
+      const el=document.getElementById("unassignedCountText");
+      if(!el || currentUserProfile?.role!=="admin") return;
+      const n=getLegacyUnassignedSchedules().length;
+      el.textContent=`担当者なしの共有予定：${n}件。確認後、${currentUserProfile.displayName}さん担当へ一括設定できます。`;
+    }
+    async function assignLegacySchedulesToMe(){
+      if(currentUserProfile?.role!=="admin") return;
+      const targets=getLegacyUnassignedSchedules(), name=currentUserProfile.displayName;
+      if(!targets.length){alert("担当者なしの共有予定はありません。");return;}
+      if(!confirm(`担当者なしの共有予定が ${targets.length}件あります。\\n\\nすべて「担当者：${name}」に設定しますか？`))return;
+      if(!confirm(`最終確認：${targets.length}件の既存データを書き換えます。実行しますか？`))return;
+      try{
+        for(let i=0;i<targets.length;i+=400){
+          const batch=db.batch();
+          targets.slice(i,i+400).forEach(s=>batch.update(db.collection("schedules").doc(s.id),{assignees:[name],assignee:name,updatedAt:firebase.firestore.FieldValue.serverTimestamp()}));
+          await batch.commit();
+        }
+        showStatusMessage(`${targets.length}件を「${name}」担当に設定しました。`,"success");
+      }catch(err){console.error(err);showStatusMessage("過去予定の一括設定に失敗しました。","error");}
+    }
+
     function renderAll() {
       renderDashboard();
       renderTodaySchedules();
       renderCalendar();
       loadSchedules(selectedDateStr);
+      updateSharedViewMode();
+      renderTeamWeekBoard();
+      updateLegacyScheduleCount();
 
       if (detailSelectedDate) {
         renderDetailSchedules(detailSelectedDate);
