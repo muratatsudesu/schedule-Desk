@@ -1,6 +1,6 @@
 {
   "name": "Q.T.S Scheduler",
-  "short_name": "Q.T.S",
+  "short_name": "QTS",
   "description": "Q.T.S専用スケジュール・年間案件管理アプリ",
   "start_url": "./",
   "scope": "./",
@@ -32,5 +32,6 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ]
+  ],
+  "id": "./"
 }
