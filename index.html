@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.6.2</title>
+  <title>Q.T.S Scheduler — Ver.6.6.3</title>
   <link rel="icon" href="favicon.ico?v=655" sizes="any">
   <link rel="shortcut icon" href="favicon.ico?v=655" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=655">
@@ -314,12 +314,29 @@
     }
 
     .day-header {
+      position: relative;
       padding: 6px 0;
       color: #7a6b5d;
       font-size: 0.75rem;
       font-weight: 600;
       text-align: center;
       background: #faf8f5;
+    }
+
+    .day-header::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 1px;
+      pointer-events: none;
+      background: rgba(166, 132, 96, .72);
+    }
+
+    .day-header:nth-child(6)::after {
+      width: 2px;
+      background: rgba(146, 105, 66, .82);
     }
 
     .sunday {
@@ -339,6 +356,25 @@
       overflow: visible;
       cursor: pointer;
       background: #fff;
+    }
+
+    /* Ver.6.6.3: セルの境界線を前面に固定表示。
+       予定バーや土日/祝日の背景色が重なっても曜日の境目を見失わない。 */
+    .day-cell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+      border-right: 1px solid rgba(166, 132, 96, .72);
+      border-bottom: 1px solid rgba(166, 132, 96, .72);
+      box-sizing: border-box;
+    }
+
+    /* 土→日の境は少しだけ強くする。 */
+    .calendar-grid > .day-cell:nth-child(7n+6)::after {
+      border-right-width: 2px;
+      border-right-color: rgba(146, 105, 66, .82);
     }
 
     .day-cell:hover {
@@ -705,7 +741,12 @@
       margin: 0;
     }
 
+    /* Ver.6.6.3: 完了済み内容は薄くするが、操作ボタンは薄くしない。 */
     .completed-item {
+      opacity: 1;
+    }
+
+    .completed-item > *:not(.action-btns):not(.inline-buttons) {
       opacity: 0.48;
     }
 
@@ -745,12 +786,20 @@
 
     .btn-complete {
       padding: 5px 10px;
-      color: #225d31;
+      color: #fff;
       font-size: 0.75rem;
-      font-weight: 700;
-      background: #eaf7ed;
-      border: 1px solid #b5dfbd;
+      font-weight: 800;
+      background: #4f8f62;
+      border: 1px solid #3f7650;
       border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .btn-complete.btn-reopen {
+      color: #fff;
+      background: #d9822b;
+      border-color: #b9681d;
+      box-shadow: 0 2px 6px rgba(150, 85, 22, .24);
     }
 
     .settings-menu {
@@ -2274,7 +2323,8 @@
 
 
 
-    /* ===== Ver.6.6.2 往復追加・削除強化版 ===== */
+    /* ===== Ver.6.6.3 カレンダー境界線安定化＋完了/未完了視認性改善 ===== */
+    /* 経費メモ・往復追加・削除強化はVer.6.6.2の機能をそのまま維持。 */
     .btn-expense {
       padding: 5px 10px;
       color: #fff;
@@ -2502,7 +2552,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.6.2 — ログイン</p>
+          <p>Ver.6.6.3 — ログイン</p>
         </div>
       </div>
 
@@ -3273,7 +3323,7 @@
 
 
 
-  <!-- Ver.6.6.2 経費メモ -->
+  <!-- Ver.6.6.3 経費メモ -->
   <div id="expenseModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="expenseModalTitle">
     <div class="modal-content expense-modal-content">
       <div class="modal-header">
@@ -3282,7 +3332,7 @@
       </div>
       <div class="modal-body">
         <div class="expense-local-note">
-          🔐 Ver.6.6.2では経費メモと経路履歴を<strong>この端末のブラウザ内だけ</strong>に保存します。外部APIは使いません。経路候補の呼び出しに加えて、往復区間の追加・経費メモ本体の削除・不要な経路履歴の削除ができます。
+          🔐 Ver.6.6.3では経費メモと経路履歴を<strong>この端末のブラウザ内だけ</strong>に保存します。外部APIは使いません。経路候補の呼び出しに加えて、往復区間の追加・経費メモ本体の削除・不要な経路履歴の削除ができます。
         </div>
         <div class="expense-schedule-box">
           <div id="expenseScheduleTitle" class="expense-schedule-title">予定</div>
@@ -3352,7 +3402,7 @@
         </div>
         <div class="app-info-panel">
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.2</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.6.2：予定カード連動の経路履歴・候補表示版（端末内保存）<br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
           Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月24日
         </div>
@@ -5108,7 +5158,7 @@
     }
 
 
-    // ===== Ver.6.6.2 経費メモ＋往復・削除強化（安全・無料の端末内保存） =====
+    // ===== Ver.6.6.3 経費メモ＋往復・削除強化（安全・無料の端末内保存） =====
     function getExpenseStorageKey() {
       const uid = currentUser?.uid || "guest";
       return `qtsExpenseMemosV1:${uid}`;
@@ -5129,7 +5179,7 @@
       localStorage.setItem(getExpenseStorageKey(), JSON.stringify(store || {}));
     }
 
-    // ===== Ver.6.6.2 経路履歴・候補表示＋履歴削除（端末内保存） =====
+    // ===== Ver.6.6.3 経路履歴・候補表示＋履歴削除（端末内保存） =====
     function getExpenseRouteHistoryKey() {
       const uid = currentUser?.uid || "guest";
       return `qtsExpenseRouteHistoryV1:${uid}`;
@@ -5557,8 +5607,8 @@
 
       const complete = document.createElement("button");
       complete.type = "button";
-      complete.className = "btn-complete";
-      complete.textContent = item.isCompleted ? "未完了へ" : "完了";
+      complete.className = item.isCompleted ? "btn-complete btn-reopen" : "btn-complete";
+      complete.textContent = item.isCompleted ? "↩ 未完了に戻す" : "✓ 完了";
       complete.addEventListener("click", () => toggleScheduleCompleted(item));
 
       const copy = document.createElement("button");
@@ -5673,8 +5723,8 @@
 
         const complete = document.createElement("button");
         complete.type = "button";
-        complete.className = "btn-complete";
-        complete.textContent = item.isCompleted ? "未完了へ" : "完了";
+        complete.className = item.isCompleted ? "btn-complete btn-reopen" : "btn-complete";
+        complete.textContent = item.isCompleted ? "↩ 未完了に戻す" : "✓ 完了";
         complete.addEventListener("click", () => toggleScheduleCompleted(item));
 
         const copy = document.createElement("button");
