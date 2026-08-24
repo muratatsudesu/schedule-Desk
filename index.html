@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.6.1</title>
+  <title>Q.T.S Scheduler — Ver.6.6.2</title>
   <link rel="icon" href="favicon.ico?v=655" sizes="any">
   <link rel="shortcut icon" href="favicon.ico?v=655" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=655">
@@ -2274,7 +2274,7 @@
 
 
 
-    /* ===== Ver.6.6.1 経路履歴・候補表示版 ===== */
+    /* ===== Ver.6.6.2 往復追加・削除強化版 ===== */
     .btn-expense {
       padding: 5px 10px;
       color: #fff;
@@ -2389,7 +2389,7 @@
     }
     .expense-line {
       display: grid;
-      grid-template-columns: 112px 1fr 1fr 1.2fr 100px 34px;
+      grid-template-columns: 112px 1fr 1fr 1.2fr 100px 96px;
       gap: 7px;
       align-items: end;
       padding: 9px;
@@ -2404,6 +2404,24 @@
       font-size: .68rem;
       font-weight: 700;
     }
+    .expense-line-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 5px;
+    }
+    .expense-return-line {
+      min-width: 56px;
+      height: 36px;
+      padding: 0 7px;
+      color: #6a4b25;
+      background: #fff8e8;
+      border: 1px solid #ddc18e;
+      border-radius: 7px;
+      font-size: .70rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
     .expense-remove-line {
       width: 34px;
       height: 36px;
@@ -2414,6 +2432,27 @@
       border-radius: 7px;
       font-size: 1rem;
       font-weight: 800;
+    }
+    .expense-history-delete {
+      flex: 0 0 auto;
+      padding: 6px 8px;
+      color: #8a372f;
+      font-size: .68rem;
+      font-weight: 800;
+      background: #fff;
+      border: 1px solid #dfb3ae;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+    .expense-history-delete:disabled {
+      opacity: .45;
+      cursor: default;
+    }
+    .expense-delete-hint {
+      margin-right: auto;
+      color: #85756a;
+      font-size: .68rem;
+      line-height: 1.3;
     }
     .expense-toolbar { margin: 8px 0 13px; }
     .expense-checks {
@@ -2448,6 +2487,7 @@
       .expense-grid-two { grid-template-columns: 1fr; }
       .expense-line { grid-template-columns: 1fr 1fr; }
       .expense-line .expense-route-field { grid-column: 1 / -1; }
+      .expense-line-actions { grid-column: 1 / -1; justify-content: flex-end; }
       .expense-remove-line { justify-self: end; }
       .action-btns { flex-wrap: wrap; justify-content: flex-end; }
     }
@@ -2462,7 +2502,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.6.1 — ログイン</p>
+          <p>Ver.6.6.2 — ログイン</p>
         </div>
       </div>
 
@@ -3233,7 +3273,7 @@
 
 
 
-  <!-- Ver.6.6.1 経費メモ -->
+  <!-- Ver.6.6.2 経費メモ -->
   <div id="expenseModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="expenseModalTitle">
     <div class="modal-content expense-modal-content">
       <div class="modal-header">
@@ -3242,7 +3282,7 @@
       </div>
       <div class="modal-body">
         <div class="expense-local-note">
-          🔐 Ver.6.6.1では経費メモと経路履歴を<strong>この端末のブラウザ内だけ</strong>に保存します。外部の料金検索APIは使いません。一度保存した「乗車駅 / 乗IC → 降車駅 / 降IC・路線 / 高速区間・金額」は次回から候補として呼び出せます。
+          🔐 Ver.6.6.2では経費メモと経路履歴を<strong>この端末のブラウザ内だけ</strong>に保存します。外部APIは使いません。経路候補の呼び出しに加えて、往復区間の追加・経費メモ本体の削除・不要な経路履歴の削除ができます。
         </div>
         <div class="expense-schedule-box">
           <div id="expenseScheduleTitle" class="expense-schedule-title">予定</div>
@@ -3267,7 +3307,7 @@
         <div class="expense-toolbar">
           <button type="button" class="btn-secondary btn-small" id="expenseAddLineBtn">＋ 区間を追加</button>
         </div>
-        <div class="expense-history-hint">※ 過去に保存した経路と似た入力をすると、その区間の下に「履歴候補」が表示されます。</div>
+        <div class="expense-history-hint">※ 「↔往復」で逆区間を同額で追加できます。履歴候補は選択後に「履歴削除」で候補だけ削除できます（登録済みの経費メモには影響しません）。</div>
         <div class="expense-total-box">合計：<span id="expenseTotal">0</span>円</div>
 
         <div class="expense-checks">
@@ -3280,7 +3320,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn-del" id="expenseDeleteBtn" hidden>経費メモを削除</button>
+        <div class="expense-delete-hint" id="expenseDeleteHint" hidden>予定は残して、この経費メモだけ削除します。</div>
+        <button type="button" class="btn-del" id="expenseDeleteBtn" hidden>🗑 経費メモを削除</button>
         <button type="button" class="btn-primary" id="expenseSaveBtn">保存</button>
         <button type="button" class="btn-secondary" data-close-modal="expenseModal">キャンセル</button>
       </div>
@@ -3311,7 +3352,7 @@
         </div>
         <div class="app-info-panel">
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.2</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.6.1：予定カード連動の経路履歴・候補表示版（端末内保存）<br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.6.2：予定カード連動の経路履歴・候補表示版（端末内保存）<br>
           Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月24日
         </div>
@@ -5067,7 +5108,7 @@
     }
 
 
-    // ===== Ver.6.6.1 経費メモ（安全・無料の端末内保存） =====
+    // ===== Ver.6.6.2 経費メモ＋往復・削除強化（安全・無料の端末内保存） =====
     function getExpenseStorageKey() {
       const uid = currentUser?.uid || "guest";
       return `qtsExpenseMemosV1:${uid}`;
@@ -5088,7 +5129,7 @@
       localStorage.setItem(getExpenseStorageKey(), JSON.stringify(store || {}));
     }
 
-    // ===== Ver.6.6.1 経路履歴・候補表示（端末内保存） =====
+    // ===== Ver.6.6.2 経路履歴・候補表示＋履歴削除（端末内保存） =====
     function getExpenseRouteHistoryKey() {
       const uid = currentUser?.uid || "guest";
       return `qtsExpenseRouteHistoryV1:${uid}`;
@@ -5178,19 +5219,26 @@
       if (!row) return;
       const picker = row.querySelector(".expense-history-picker");
       const select = row.querySelector(".expense-history-select");
+      const deleteBtn = row.querySelector(".expense-history-delete");
       if (!picker || !select) return;
       const candidates = getExpenseRouteCandidates({
         mode: row.querySelector(".expense-mode")?.value || "train",
         from: row.querySelector(".expense-from")?.value || "",
         to: row.querySelector(".expense-to")?.value || ""
       });
+      const rememberedId = row.dataset.expenseHistoryId || "";
       select.innerHTML = '<option value="">過去の経路から選択</option>';
       candidates.forEach(item => {
         const option = document.createElement("option");
         option.value = item.id;
         option.textContent = expenseRouteHistoryLabel(item);
+        if (item.id === rememberedId) option.selected = true;
         select.appendChild(option);
       });
+      if (rememberedId && !candidates.some(item => item.id === rememberedId)) {
+        delete row.dataset.expenseHistoryId;
+      }
+      if (deleteBtn) deleteBtn.disabled = !(row.dataset.expenseHistoryId || select.value);
       picker.classList.toggle("visible", candidates.length > 0);
     }
 
@@ -5198,6 +5246,7 @@
       if (!row || !historyId) return;
       const item = loadExpenseRouteHistory().find(entry => entry.id === historyId);
       if (!item) return;
+      row.dataset.expenseHistoryId = historyId;
       row.querySelector(".expense-mode").value = item.mode || "train";
       row.querySelector(".expense-from").value = item.from || "";
       row.querySelector(".expense-to").value = item.to || "";
@@ -5205,6 +5254,30 @@
       row.querySelector(".expense-amount").value = item.amount || "";
       updateExpenseTotalPreview();
       refreshExpenseRouteCandidates(row);
+    }
+
+    function refreshAllExpenseRouteCandidates() {
+      document.querySelectorAll("#expenseLines .expense-line").forEach(refreshExpenseRouteCandidates);
+    }
+
+    function deleteExpenseRouteHistoryFromRow(row) {
+      if (!row) return;
+      const historyId = row.dataset.expenseHistoryId || row.querySelector(".expense-history-select")?.value || "";
+      if (!historyId) return;
+      const history = loadExpenseRouteHistory();
+      const item = history.find(entry => entry.id === historyId);
+      if (!item) {
+        delete row.dataset.expenseHistoryId;
+        refreshAllExpenseRouteCandidates();
+        return;
+      }
+      if (!confirm(`この経路履歴を候補から削除しますか？\n\n${expenseRouteHistoryLabel(item)}\n\n※登録済みの経費メモは削除されません。`)) return;
+      saveExpenseRouteHistory(history.filter(entry => entry.id !== historyId));
+      document.querySelectorAll("#expenseLines .expense-line").forEach(target => {
+        if (target.dataset.expenseHistoryId === historyId) delete target.dataset.expenseHistoryId;
+      });
+      refreshAllExpenseRouteCandidates();
+      showStatusMessage("経路履歴を削除しました。登録済みの経費メモは残っています。", "success");
     }
 
     function getExpenseScheduleKey(item) {
@@ -5249,9 +5322,9 @@
       ].map(([value,label]) => `<option value="${value}"${selected===value?" selected":""}>${label}</option>`).join("");
     }
 
-    function addExpenseLine(data = {}) {
+    function addExpenseLine(data = {}, insertAfterRow = null) {
       const container = document.getElementById("expenseLines");
-      if (!container) return;
+      if (!container) return null;
       const row = document.createElement("div");
       row.className = "expense-line";
       row.innerHTML = `
@@ -5260,29 +5333,74 @@
         <label class="expense-line-field"><span>降車駅 / 降IC</span><input class="expense-to" type="text" maxlength="60" placeholder="到着地"></label>
         <label class="expense-line-field expense-route-field"><span>路線 / 高速区間</span><input class="expense-route" type="text" maxlength="100" placeholder="例：有楽町線 / ETC"></label>
         <label class="expense-line-field"><span>金額</span><input class="expense-amount" type="number" min="0" step="1" inputmode="numeric" placeholder="0"></label>
-        <button type="button" class="expense-remove-line" title="この区間を削除">×</button>
-        <div class="expense-history-picker"><span>🕘 履歴候補</span><select class="expense-history-select"><option value="">過去の経路から選択</option></select></div>`;
+        <div class="expense-line-actions">
+          <button type="button" class="expense-return-line" title="この区間の逆方向を同額で追加">↔往復</button>
+          <button type="button" class="expense-remove-line" title="この区間を削除">×</button>
+        </div>
+        <div class="expense-history-picker">
+          <span>🕘 履歴候補</span>
+          <select class="expense-history-select"><option value="">過去の経路から選択</option></select>
+          <button type="button" class="expense-history-delete" disabled>履歴削除</button>
+        </div>`;
       row.querySelector(".expense-from").value = data.from || "";
       row.querySelector(".expense-to").value = data.to || "";
       row.querySelector(".expense-route").value = data.route || "";
       row.querySelector(".expense-amount").value = data.amount ?? "";
+
+      row.querySelector(".expense-return-line").addEventListener("click", () => {
+        const from = row.querySelector(".expense-from")?.value.trim() || "";
+        const to = row.querySelector(".expense-to")?.value.trim() || "";
+        if (!from && !to) {
+          alert("往復追加するには、乗車駅 / 乗IC または降車駅 / 降IC を入力してください。");
+          return;
+        }
+        const returnRow = addExpenseLine({
+          mode: row.querySelector(".expense-mode")?.value || "train",
+          from: to,
+          to: from,
+          route: row.querySelector(".expense-route")?.value.trim() || "",
+          amount: Math.max(0, Number(row.querySelector(".expense-amount")?.value || 0))
+        }, row);
+        returnRow?.querySelector(".expense-from")?.focus();
+        updateExpenseTotalPreview();
+      });
+
       row.querySelector(".expense-remove-line").addEventListener("click", () => {
         row.remove();
         if (!container.children.length) addExpenseLine();
         updateExpenseTotalPreview();
       });
       row.querySelector(".expense-history-select").addEventListener("change", event => {
-        if (event.target.value) applyExpenseRouteHistory(row, event.target.value);
+        const historyId = event.target.value || "";
+        if (historyId) {
+          row.dataset.expenseHistoryId = historyId;
+          applyExpenseRouteHistory(row, historyId);
+        } else {
+          delete row.dataset.expenseHistoryId;
+          refreshExpenseRouteCandidates(row);
+        }
       });
+      row.querySelector(".expense-history-delete").addEventListener("click", () => deleteExpenseRouteHistoryFromRow(row));
       [".expense-mode", ".expense-from", ".expense-to"].forEach(selector => {
         const el = row.querySelector(selector);
-        el?.addEventListener("input", () => refreshExpenseRouteCandidates(row));
-        el?.addEventListener("change", () => refreshExpenseRouteCandidates(row));
+        el?.addEventListener("input", () => {
+          delete row.dataset.expenseHistoryId;
+          refreshExpenseRouteCandidates(row);
+        });
+        el?.addEventListener("change", () => {
+          delete row.dataset.expenseHistoryId;
+          refreshExpenseRouteCandidates(row);
+        });
       });
       row.querySelectorAll("input,select").forEach(el => el.addEventListener("input", updateExpenseTotalPreview));
-      container.appendChild(row);
+      if (insertAfterRow?.parentNode === container) {
+        insertAfterRow.insertAdjacentElement("afterend", row);
+      } else {
+        container.appendChild(row);
+      }
       refreshExpenseRouteCandidates(row);
       updateExpenseTotalPreview();
+      return row;
     }
 
     function updateExpenseTotalPreview() {
@@ -5305,6 +5423,8 @@
       document.getElementById("expenseSettled").checked = Boolean(expense?.settled);
       document.getElementById("expenseNote").value = expense?.note || "";
       document.getElementById("expenseDeleteBtn").hidden = !expense;
+      const deleteHint = document.getElementById("expenseDeleteHint");
+      if (deleteHint) deleteHint.hidden = !expense;
       const lines = document.getElementById("expenseLines");
       lines.innerHTML = "";
       const savedLines = Array.isArray(expense?.lines) && expense.lines.length ? expense.lines : [{}];
@@ -5358,13 +5478,21 @@
 
     function deleteExpenseMemo() {
       if (!expenseEditingSchedule) return;
-      if (!confirm("この予定の経費メモを削除しますか？")) return;
       const key = getExpenseScheduleKey(expenseEditingSchedule);
       const store = loadExpenseStore();
+      if (!key || !store[key]) {
+        alert("削除できる経費メモが見つかりませんでした。画面を閉じてもう一度開いてください。");
+        return;
+      }
+      if (!confirm("この予定の経費メモだけを削除しますか？\n\n※予定そのものと経路履歴は残ります。")) return;
       delete store[key];
       saveExpenseStore(store);
+      document.getElementById("expenseDeleteBtn").hidden = true;
+      const deleteHint = document.getElementById("expenseDeleteHint");
+      if (deleteHint) deleteHint.hidden = true;
       closeModal("expenseModal");
-      showStatusMessage("経費メモを削除しました。", "success");
+      expenseEditingSchedule = null;
+      showStatusMessage("経費メモを削除しました。予定と経路履歴は残っています。", "success");
       refreshExpenseViews();
     }
 
