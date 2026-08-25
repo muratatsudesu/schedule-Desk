@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.8.1</title>
+  <title>Q.T.S Scheduler — Ver.6.8.2</title>
   <link rel="icon" href="favicon.ico?v=655" sizes="any">
   <link rel="shortcut icon" href="favicon.ico?v=655" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=655">
@@ -2447,6 +2447,11 @@
       border: 1px solid #e0d4c8;
       border-radius: 8px;
     }
+    /* Ver.6.8.2: 出張だけ各移動区間に「利用日」を持たせる。 */
+    .expense-lines.trip-mode .expense-line {
+      grid-template-columns: 112px 128px 1fr 1fr 1.2fr 100px 96px;
+    }
+    .expense-date-field[hidden] { display:none !important; }
     .expense-line-field span {
       display: block;
       margin-bottom: 4px;
@@ -2821,7 +2826,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.8.1 — ログイン</p>
+          <p>Ver.6.8.2 — ログイン</p>
         </div>
       </div>
 
@@ -3420,7 +3425,7 @@
         </div>
         <div class="expense-export-note">
           ※ 現在選択している月と「未精算 / 精算済み / すべて」を反映します。Excel出力しても自動で「精算済み」には変更しません。<br>
-          ※ 出張旅費は、交通区間・金額・外出先・メモに加えて、日当（1日2,000円・移動日含む）・宿泊費・業務費を会社様式へ反映します。時刻は現在未入力のため空欄です。
+          ※ 出張旅費は、各移動区間の利用日・交通区間・金額・外出先・メモに加えて、日当を1日ごとに2,000円ずつ会社様式へ反映します。宿泊費・業務費も反映します。時刻は現在未入力のため空欄です。
         </div>
       </div>
     </section>
@@ -3648,7 +3653,7 @@
 
 
 
-  <!-- Ver.6.8.1 経費メモ -->
+  <!-- Ver.6.8.2 経費メモ -->
   <div id="expenseModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="expenseModalTitle">
     <div class="modal-content expense-modal-content">
       <div class="modal-header">
@@ -3657,7 +3662,7 @@
       </div>
       <div class="modal-body">
         <div class="expense-local-note">
-          🔐 Ver.6.8.1では経費メモと経路履歴を<strong>この端末のブラウザ内だけ</strong>に保存します。外部APIは使いません。会社様式のExcel出力もブラウザ内で生成し、経費データを外部へ送信しません。
+          🔐 Ver.6.8.2では経費メモと経路履歴を<strong>この端末のブラウザ内だけ</strong>に保存します。外部APIは使いません。会社様式のExcel出力もブラウザ内で生成し、経費データを外部へ送信しません。
         </div>
         <div class="expense-schedule-box">
           <div id="expenseScheduleTitle" class="expense-schedule-title">予定</div>
@@ -3682,7 +3687,7 @@
         <div class="expense-toolbar">
           <button type="button" class="btn-secondary btn-small" id="expenseAddLineBtn">＋ 区間を追加</button>
         </div>
-        <div class="expense-history-hint">※ 「↔往復」で逆区間を同額で追加できます。履歴候補は選択後に「履歴削除」で候補だけ削除できます（登録済みの経費メモには影響しません）。</div>
+        <div class="expense-history-hint">※ 出張時は各区間に「利用日」を指定できます。「↔往復」は複数日出張なら復路を終了日に自動設定します。履歴候補は選択後に「履歴削除」で候補だけ削除できます（登録済みの経費メモには影響しません）。</div>
 
         <div id="expenseTripExtras" class="expense-trip-box" hidden>
           <div class="expense-section-label">出張手当・その他経費</div>
@@ -3760,7 +3765,7 @@
         <div class="app-info-panel">
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.2</span><br>
           無料プラン対応・写真圧縮保存版<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
-          Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
+          Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月24日
         </div>
       </div>
@@ -5535,7 +5540,7 @@
     }
 
 
-    // ===== Ver.6.8.1 経費メモ＋月次経費一覧（安全・無料の端末内保存） =====
+    // ===== Ver.6.8.2 経費メモ＋月次経費一覧（安全・無料の端末内保存） =====
     function getExpenseStorageKey() {
       const uid = currentUser?.uid || "guest";
       return `qtsExpenseMemosV1:${uid}`;
@@ -5783,6 +5788,7 @@
       row.className = "expense-line";
       row.innerHTML = `
         <label class="expense-line-field"><span>移動手段</span><select class="expense-mode">${expenseModeOptions(data.mode || "train")}</select></label>
+        <label class="expense-line-field expense-date-field"><span>利用日</span><input class="expense-line-date" type="date"></label>
         <label class="expense-line-field"><span>乗車駅 / 乗IC</span><input class="expense-from" type="text" maxlength="60" placeholder="出発地"></label>
         <label class="expense-line-field"><span>降車駅 / 降IC</span><input class="expense-to" type="text" maxlength="60" placeholder="到着地"></label>
         <label class="expense-line-field expense-route-field"><span>路線 / 高速区間</span><input class="expense-route" type="text" maxlength="100" placeholder="例：有楽町線 / ETC"></label>
@@ -5800,6 +5806,14 @@
       row.querySelector(".expense-to").value = data.to || "";
       row.querySelector(".expense-route").value = data.route || "";
       row.querySelector(".expense-amount").value = data.amount ?? "";
+      const lineDateInput = row.querySelector(".expense-line-date");
+      const scheduleStartDate = expenseEditingSchedule?.startDate || "";
+      const scheduleEndDate = expenseEditingSchedule?.endDate || scheduleStartDate;
+      if (lineDateInput) {
+        lineDateInput.value = data.date || scheduleStartDate;
+        if (scheduleStartDate) lineDateInput.min = scheduleStartDate;
+        if (scheduleEndDate) lineDateInput.max = scheduleEndDate;
+      }
 
       row.querySelector(".expense-return-line").addEventListener("click", () => {
         const from = row.querySelector(".expense-from")?.value.trim() || "";
@@ -5808,8 +5822,14 @@
           alert("往復追加するには、乗車駅 / 乗IC または降車駅 / 降IC を入力してください。");
           return;
         }
+        const currentLineDate = row.querySelector(".expense-line-date")?.value || scheduleStartDate;
+        const isTrip = (document.getElementById("expenseType")?.value || "normal") === "trip";
+        const returnDate = isTrip && scheduleEndDate && scheduleEndDate !== scheduleStartDate && currentLineDate === scheduleStartDate
+          ? scheduleEndDate
+          : currentLineDate;
         const returnRow = addExpenseLine({
           mode: row.querySelector(".expense-mode")?.value || "train",
+          date: returnDate,
           from: to,
           to: from,
           route: row.querySelector(".expense-route")?.value.trim() || "",
@@ -5857,6 +5877,37 @@
       return row;
     }
 
+    function getExpenseTripDateList(startDate, endDate) {
+      const start = createDateFromString(startDate || "");
+      const end = createDateFromString(endDate || startDate || "");
+      if (!start || !end) return startDate ? [startDate] : [];
+      const result = [];
+      const cursor = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+      const finish = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+      while (cursor <= finish && result.length < 366) {
+        result.push(getLocalDateString(cursor));
+        cursor.setDate(cursor.getDate() + 1);
+      }
+      return result.length ? result : [startDate].filter(Boolean);
+    }
+
+    // Ver.6.8.2: 6.8.1以前の出張明細には利用日が無いため、
+    // 「明細数＝出張日数」のときだけ順番に各日へ割り当てる。
+    // それ以外は開始日扱いにして、画面で利用日を直せるようにする。
+    function getExpenseLinesWithTripDates(expense, startDate, endDate) {
+      const lines = Array.isArray(expense?.lines) ? expense.lines.map(line => ({...line})) : [];
+      const dates = getExpenseTripDateList(startDate, endDate);
+      const valid = new Set(dates);
+      const hasAnyDate = lines.some(line => line.date);
+      if (!hasAnyDate && dates.length > 1 && lines.length === dates.length) {
+        return lines.map((line, index) => ({...line, date: dates[index] || startDate || ""}));
+      }
+      return lines.map(line => ({
+        ...line,
+        date: line.date && valid.has(line.date) ? line.date : (startDate || dates[0] || "")
+      }));
+    }
+
     function getEditingTripDays() {
       if (!expenseEditingSchedule) return 1;
       return getExpenseTripDaysFromDates(
@@ -5869,6 +5920,9 @@
       const isTrip = (document.getElementById("expenseType")?.value || "normal") === "trip";
       const box = document.getElementById("expenseTripExtras");
       if (box) box.hidden = !isTrip;
+      const linesBox = document.getElementById("expenseLines");
+      if (linesBox) linesBox.classList.toggle("trip-mode", isTrip);
+      document.querySelectorAll("#expenseLines .expense-date-field").forEach(field => field.hidden = !isTrip);
       const days = getEditingTripDays();
       const perDiem = days * EXPENSE_PER_DIEM_RATE;
       const text = document.getElementById("expensePerDiemText");
@@ -5911,8 +5965,13 @@
       if (deleteHint) deleteHint.hidden = !expense;
       const lines = document.getElementById("expenseLines");
       lines.innerHTML = "";
-      const savedLines = Array.isArray(expense?.lines) && expense.lines.length ? expense.lines : [{}];
+      const baseLines = Array.isArray(expense?.lines) && expense.lines.length ? expense.lines : [{}];
+      const isTripExpense = (document.getElementById("expenseType")?.value || "normal") === "trip";
+      const savedLines = isTripExpense
+        ? getExpenseLinesWithTripDates({ lines: baseLines }, item.startDate || "", item.endDate || item.startDate || "")
+        : baseLines;
       savedLines.forEach(line => addExpenseLine(line));
+      updateExpenseTripExtrasVisibility();
       updateExpenseTotalPreview();
       openModal("expenseModal");
     }
@@ -5920,6 +5979,7 @@
     function readExpenseLinesFromForm() {
       return Array.from(document.querySelectorAll("#expenseLines .expense-line")).map(row => ({
         mode: row.querySelector(".expense-mode")?.value || "train",
+        date: row.querySelector(".expense-line-date")?.value || "",
         from: row.querySelector(".expense-from")?.value.trim() || "",
         to: row.querySelector(".expense-to")?.value.trim() || "",
         route: row.querySelector(".expense-route")?.value.trim() || "",
@@ -6133,7 +6193,8 @@
         const routeText = [line.from, line.to].filter(Boolean).join(" → ") || "区間未入力";
         const routeName = line.route ? ` / ${line.route}` : "";
         const left = document.createElement("span");
-        left.textContent = `${getExpenseModeLabel(line.mode)}：${routeText}${routeName}`;
+        const lineDateText = (expense.type || "normal") === "trip" && line.date ? `${formatExpenseListDate(line.date)} ` : "";
+        left.textContent = `${lineDateText}${getExpenseModeLabel(line.mode)}：${routeText}${routeName}`;
         const amount = document.createElement("span");
         amount.className = "expense-month-line-amount";
         amount.textContent = `${formatExpenseMoney(line.amount)}円`;
@@ -6492,10 +6553,36 @@
       const select=document.getElementById("expenseTravelExportSelect"); const key=select?.value || "";
       const entry=getExpenseExportEntries("trip").find(e=>e.key===key);
       if (!entry) { alert("出力する出張経費を選択してください。"); return; }
-      const expense=entry.expense||{}; const lines=[...(expense.lines||[])];
-      if (lines.length>19) { alert(`出張交通明細が${lines.length}区間あります。会社様式は最大19区間のため、先頭19区間を出力します。`); lines.length=19; }
-      const start=entry.schedule?.startDate||expense.scheduleDate||entry.date; const end=entry.schedule?.endDate||expense.scheduleEndDate||start;
-      const startDate=createDateFromString(start), endDate=createDateFromString(end); const days=(startDate&&endDate)?Math.max(1,Math.round((endDate-startDate)/86400000)+1):1;
+      const expense=entry.expense||{};
+      const start=entry.schedule?.startDate||expense.scheduleDate||entry.date;
+      const end=entry.schedule?.endDate||expense.scheduleEndDate||start;
+      const tripDates=getExpenseTripDateList(start,end);
+      const datedLines=getExpenseLinesWithTripDates(expense,start,end);
+
+      // Excelは「1日の日当＝1行の先頭」にする。
+      // 同日に複数区間がある場合は日当を重複させない。
+      // 交通明細が無い日も日当だけの行を作る。
+      const exportRows=[];
+      tripDates.forEach(date => {
+        const dayLines=datedLines.filter(line => line.date===date);
+        const rowsForDay=dayLines.length ? dayLines : [{}];
+        rowsForDay.forEach((line,index) => exportRows.push({
+          date: index===0 ? date : "",
+          perDiem: index===0 ? EXPENSE_PER_DIEM_RATE : 0,
+          line
+        }));
+      });
+      // 万一、範囲外の日付を持つ旧データがあれば交通明細だけ末尾へ残す。
+      datedLines.filter(line => line.date && !tripDates.includes(line.date)).forEach(line => {
+        exportRows.push({date:line.date,perDiem:0,line});
+      });
+
+      if (exportRows.length>19) {
+        alert(`出張明細が${exportRows.length}行あります。会社様式は最大19行のため、先頭19行を出力します。`);
+        exportRows.length=19;
+      }
+      const startDate=createDateFromString(start), endDate=createDateFromString(end);
+      const days=(startDate&&endDate)?Math.max(1,Math.round((endDate-startDate)/86400000)+1):1;
       try {
         const ctx=await qtsPrepareTemplate(QTS_TRAVEL_TEMPLATE_B64); const sheetEntry=ctx.map.get("xl/worksheets/sheet1.xml"); const wbEntry=ctx.map.get("xl/workbook.xml");
         let xml=ctx.decoder.decode(sheetEntry.data); let wbxml=ctx.decoder.decode(wbEntry.data);
@@ -6504,15 +6591,23 @@
         }
         xml=qtsSetCellXml(xml,"B4",qtsExcelSerial(start),"number"); xml=qtsSetCellXml(xml,"J4",qtsExcelSerial(end),"number"); xml=qtsSetCellXml(xml,"Q4",days,"number");
         xml=qtsSetCellXml(xml,"L6",expense.destination||entry.title||""); xml=qtsSetCellXml(xml,"U6",entry.title||expense.destination||""); xml=qtsSetCellXml(xml,"A35",expense.note||"");
-        const startParts=String(start||"").split("-").map(Number);
-        lines.forEach((line,i)=>{ const r=12+i;
-          if(i===0) {xml=qtsSetCellXml(xml,`A${r}`,startParts[1]||"","number"); xml=qtsSetCellXml(xml,`B${r}`,startParts[2]||"","number");}
-          xml=qtsSetCellXml(xml,`C${r}`,line.from||""); xml=qtsSetCellXml(xml,`I${r}`,line.to||""); xml=qtsSetCellXml(xml,`O${r}`,line.route||getExpenseModeLabel(line.mode)); xml=qtsSetCellXml(xml,`T${r}`,Math.max(0,Number(line.amount||0)),"number");
+
+        exportRows.forEach((row,i)=>{
+          const r=12+i;
+          if(row.date) {
+            const parts=String(row.date).split("-").map(Number);
+            xml=qtsSetCellXml(xml,`A${r}`,parts[1]||"","number");
+            xml=qtsSetCellXml(xml,`B${r}`,parts[2]||"","number");
+          }
+          const line=row.line||{};
+          xml=qtsSetCellXml(xml,`C${r}`,line.from||"");
+          xml=qtsSetCellXml(xml,`I${r}`,line.to||"");
+          xml=qtsSetCellXml(xml,`O${r}`,line.route||((line.from||line.to||line.amount)?getExpenseModeLabel(line.mode):""));
+          if (Math.max(0,Number(line.amount||0))>0) xml=qtsSetCellXml(xml,`T${r}`,Math.max(0,Number(line.amount||0)),"number");
+          if (row.perDiem>0) xml=qtsSetCellXml(xml,`W${r}`,row.perDiem,"number");
         });
-        // Ver.6.8.1: 日当・宿泊費・業務費は会社様式の各欄へ反映。
-        // 交通明細の日付粒度とは独立しているため、出張単位の金額を先頭明細行へまとめて入れる。
-        const perDiemAmount = getExpensePerDiemAmount(expense);
-        xml=qtsSetCellXml(xml,"W12",perDiemAmount,"number");
+
+        // 宿泊費・業務費は出張単位の入力なので先頭行へまとめる。
         xml=qtsSetCellXml(xml,"Z12",expense.lodgingPlace||"");
         xml=qtsSetCellXml(xml,"AE12",Math.max(0,Number(expense.lodgingAmount||0)),"number");
         xml=qtsSetCellXml(xml,"AH12",expense.businessPurpose||"");
