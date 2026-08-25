@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.8.9</title>
+  <title>Q.T.S Scheduler — Ver.6.8.10</title>
   <link rel="icon" href="favicon.ico?v=655" sizes="any">
   <link rel="shortcut icon" href="favicon.ico?v=655" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=655">
@@ -1114,6 +1114,12 @@
         repeating-linear-gradient(2deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 10px),
         linear-gradient(135deg, #795236, #503522);
       border-color: #4d321f;
+    }
+
+    /* Ver.6.8.10: 木目ヘッダー上の年月は白字で固定 */
+    .calendar-header h2 {
+      color: #fffaf1 !important;
+      text-shadow: 0 1px 2px rgba(45, 25, 12, .45);
     }
 
     .calendar-grid {
@@ -2240,6 +2246,13 @@
     .time-chip:active{transform:translateY(1px)}
     .duration-chip{background:#f4f8fb;border-color:#c6d7e3;color:#36546b}
     .time-helper-note{font-size:.68rem;line-height:1.5;color:#846f5e;margin-top:5px}
+    @media (pointer:fine) and (min-width:701px){
+      #startTime.desktop-time-text, #endTime.desktop-time-text{
+        font-variant-numeric:tabular-nums;
+        letter-spacing:.04em;
+        min-width:132px;
+      }
+    }
     @media (pointer:coarse), (max-width:700px){.desktop-time-helper{display:none}}
 
 
@@ -2854,7 +2867,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.8.9 — ログイン</p>
+          <p id="loginVersion">Ver.6.8.10 — ログイン</p>
         </div>
       </div>
 
@@ -2881,7 +2894,7 @@
   </div>
 
   <header class="header-banner">
-    <h1>Q.T.S Scheduler</h1><p class="header-subtitle">WORK &amp; PROJECT PLANNER</p><div class="version-badge" id="headerVersion">Ver.6.4.4</div>
+    <h1>Q.T.S Scheduler</h1><p class="header-subtitle">WORK &amp; PROJECT PLANNER</p><div class="version-badge" id="headerVersion">Ver.6.8.10</div>
   </header>
 
   <div id="userSessionBar" class="user-session-bar" hidden>
@@ -3001,10 +3014,19 @@
           <button type="button" class="time-chip" data-time="09:00">9:00</button>
           <button type="button" class="time-chip" data-time="10:00">10:00</button>
           <button type="button" class="time-chip" data-time="11:00">11:00</button>
+          <button type="button" class="time-chip" data-time="12:00">12:00</button>
           <button type="button" class="time-chip" data-time="13:00">13:00</button>
           <button type="button" class="time-chip" data-time="14:00">14:00</button>
           <button type="button" class="time-chip" data-time="15:00">15:00</button>
           <button type="button" class="time-chip" data-time="16:00">16:00</button>
+          <button type="button" class="time-chip" data-time="17:00">17:00</button>
+          <button type="button" class="time-chip" data-time="18:00">18:00</button>
+          <button type="button" class="time-chip" data-time="19:00">19:00</button>
+          <button type="button" class="time-chip" data-time="20:00">20:00</button>
+          <button type="button" class="time-chip" data-time="21:00">21:00</button>
+          <button type="button" class="time-chip" data-time="22:00">22:00</button>
+          <button type="button" class="time-chip" data-time="23:00">23:00</button>
+          <button type="button" class="time-chip" data-time="24:00" title="翌日0:00として保存します">24:00</button>
         </div>
       </div>
       <div class="time-helper-group">
@@ -3017,7 +3039,7 @@
           <button type="button" class="time-chip duration-chip" data-minutes="180">+3時間</button>
         </div>
       </div>
-      <div class="time-helper-note">PCではボタン入力に加え、時刻欄へ直接入力もできます。スマホは従来の時刻入力をそのまま使います。</div>
+      <div class="time-helper-note">PCでは時刻欄へ「09:30」のように直接入力できます。24:00は翌日0:00として保存します。スマホは従来の時刻入力をそのまま使います。</div>
     </div>
 
     <div class="form-group">
@@ -3793,9 +3815,9 @@
           <button type="button" class="btn-secondary" id="btnOpenCsv">📤 CSV出力</button>
         </div>
         <div class="app-info-panel">
-          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.2</span><br>
+          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.10</span><br>
           無料プラン対応・写真圧縮保存版<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
-          Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
+          Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月24日
         </div>
       </div>
@@ -3900,8 +3922,8 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.8";
-    const APP_BUILD_DATE = "2026-08-24";
+    const APP_VERSION = "6.8.10";
+    const APP_BUILD_DATE = "2026-08-25";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCL6VijHRZryh7DdxNVcBdDXhRJtx2JU-4",
@@ -3978,8 +4000,12 @@
       document.documentElement.dataset.appVersion = APP_VERSION;
       const headerVersion = document.getElementById("headerVersion");
       const settingsVersion = document.getElementById("settingsVersion");
+      const loginVersion = document.getElementById("loginVersion");
+      document.title = `Q.T.S Scheduler — Ver.${APP_VERSION}`;
       if (headerVersion) headerVersion.textContent = `Ver.${APP_VERSION}`;
       if (settingsVersion) settingsVersion.textContent = `Ver.${APP_VERSION}`;
+      if (loginVersion) loginVersion.textContent = `Ver.${APP_VERSION} — ログイン`;
+      setupDesktopTimeInputs();
       initializeApp();
       initializeAuthentication();
     });
@@ -3992,9 +4018,7 @@
 
       document.getElementById("startDate").addEventListener("change", syncEndDate);
       document.querySelectorAll("#startQuickTimes .time-chip").forEach(button => {
-        button.addEventListener("click", () => {
-          document.getElementById("startTime").value = button.dataset.time || "";
-        });
+        button.addEventListener("click", () => setStartQuickTime(button.dataset.time || ""));
       });
       document.querySelectorAll("#endQuickDurations .duration-chip").forEach(button => {
         button.addEventListener("click", () => {
@@ -4779,11 +4803,34 @@
 
     async function addOrUpdateSchedule() {
       const editId = document.getElementById("editId").value;
-      const startDate = document.getElementById("startDate").value;
-      const endDate = document.getElementById("endDate").value || startDate;
+      let startDate = document.getElementById("startDate").value;
+      let endDate = document.getElementById("endDate").value || startDate;
       const isAllDay = document.getElementById("isAllDay").checked;
-      const startTime = isAllDay ? "" : document.getElementById("startTime").value;
-      const endTime = isAllDay ? "" : document.getElementById("endTime").value;
+      let startTime = "";
+      let endTime = "";
+      if (!isAllDay) {
+        startTime = readScheduleTimeInput("startTime", "開始時間", true);
+        if (startTime === null) return;
+        endTime = readScheduleTimeInput("endTime", "終了時間", true);
+        if (endTime === null) return;
+
+        // HTMLの標準時刻値は24:00を持てないため、保存時だけ翌日00:00へ正規化する。
+        if (startTime === "24:00" && startDate) {
+          const previousStartDate = startDate;
+          startDate = addDaysString(startDate, 1);
+          startTime = "00:00";
+          if (!endDate || endDate <= previousStartDate) endDate = startDate;
+          document.getElementById("startDate").value = startDate;
+          document.getElementById("endDate").value = endDate;
+          document.getElementById("startTime").value = startTime;
+        }
+        if (endTime === "24:00" && endDate) {
+          endDate = addDaysString(endDate, 1);
+          endTime = "00:00";
+          document.getElementById("endDate").value = endDate;
+          document.getElementById("endTime").value = endTime;
+        }
+      }
       const title = document.getElementById("title").value.trim();
       const memo = document.getElementById("memo").value.trim();
       const categoryId = document.getElementById("category").value;
@@ -7697,20 +7744,114 @@ ${error.message||error}`); }
     }
 
 
+    // ===== Ver.6.8.10 PC時刻入力・連続加算 =====
+    function normalizeScheduleTimeText(value, allow24 = false) {
+      const raw = String(value || "").trim().replace(/[：．.]/g, ":");
+      if (!raw) return "";
+      let hour, minute;
+      let match = raw.match(/^(\d{1,2}):(\d{1,2})$/);
+      if (match) {
+        hour = Number(match[1]);
+        minute = Number(match[2]);
+      } else if (/^\d{3,4}$/.test(raw)) {
+        const digits = raw.padStart(4, "0");
+        hour = Number(digits.slice(0, 2));
+        minute = Number(digits.slice(2));
+      } else if (/^\d{1,2}$/.test(raw)) {
+        hour = Number(raw);
+        minute = 0;
+      } else {
+        return null;
+      }
+      if (allow24 && hour === 24 && minute === 0) return "24:00";
+      if (hour < 0 || hour > 23 || minute < 0 || minute > 59) return null;
+      return `${String(hour).padStart(2,"0")}:${String(minute).padStart(2,"0")}`;
+    }
+
+    function setupDesktopTimeInputs() {
+      if (!window.matchMedia?.("(pointer: fine) and (min-width: 701px)").matches) return;
+      ["startTime", "endTime"].forEach(id => {
+        const input = document.getElementById(id);
+        if (!input) return;
+        // Chrome/Edgeのネイティブ時刻ポップアップによる崩れを避け、PCは直接入力式にする。
+        input.type = "text";
+        input.inputMode = "numeric";
+        input.maxLength = 5;
+        input.autocomplete = "off";
+        input.placeholder = "--:--";
+        input.classList.add("desktop-time-text");
+        input.addEventListener("blur", () => {
+          if (!input.value.trim()) return;
+          const normalized = normalizeScheduleTimeText(input.value, id === "startTime");
+          if (normalized) input.value = normalized;
+        });
+      });
+    }
+
+    function setStartQuickTime(timeValue) {
+      const input = document.getElementById("startTime");
+      if (!input) return;
+      const normalized = normalizeScheduleTimeText(timeValue, true);
+      if (!normalized) return;
+      input.value = normalized;
+    }
+
+    function readScheduleTimeInput(id, label, allow24 = false) {
+      const input = document.getElementById(id);
+      const raw = input?.value || "";
+      if (!raw.trim()) return "";
+      const normalized = normalizeScheduleTimeText(raw, allow24);
+      if (!normalized) {
+        alert(`${label}は「09:30」の形式で入力してください。`);
+        input?.focus();
+        return null;
+      }
+      if (input) input.value = normalized;
+      return normalized;
+    }
+
     function setEndTimeByMinutes(addMinutes) {
       const startInput = document.getElementById("startTime");
       const endInput = document.getElementById("endTime");
+      const startDateInput = document.getElementById("startDate");
+      const endDateInput = document.getElementById("endDate");
       if (!startInput || !endInput || !startInput.value || !addMinutes) {
         if (!startInput?.value) alert("先に開始時間を入力してください。");
         return;
       }
-      const [h,m] = startInput.value.split(":").map(Number);
-      const total = h * 60 + m + addMinutes;
-      if (total >= 24 * 60) {
-        endInput.value = "23:59";
+
+      const startTime = normalizeScheduleTimeText(startInput.value, true);
+      if (!startTime) {
+        alert("開始時間を確認してください。");
+        startInput.focus();
         return;
       }
-      endInput.value = `${String(Math.floor(total/60)).padStart(2,"0")}:${String(total%60).padStart(2,"0")}`;
+      const currentEnd = endInput.value ? normalizeScheduleTimeText(endInput.value, true) : "";
+      if (endInput.value && !currentEnd) {
+        alert("終了時間を確認してください。");
+        endInput.focus();
+        return;
+      }
+
+      // 1回目は開始時間から、2回目以降は現在の終了時間から加算する。
+      const baseTime = currentEnd || startTime;
+      let baseDate = currentEnd
+        ? (endDateInput?.value || startDateInput?.value || "")
+        : (startDateInput?.value || "");
+      let [h, m] = baseTime.split(":").map(Number);
+      if (baseTime === "24:00") {
+        h = 0;
+        m = 0;
+        if (baseDate) baseDate = addDaysString(baseDate, 1);
+      }
+
+      const total = h * 60 + m + Number(addMinutes || 0);
+      const dayCarry = Math.floor(total / (24 * 60));
+      const minuteOfDay = ((total % (24 * 60)) + (24 * 60)) % (24 * 60);
+      endInput.value = `${String(Math.floor(minuteOfDay / 60)).padStart(2,"0")}:${String(minuteOfDay % 60).padStart(2,"0")}`;
+      if (baseDate && endDateInput) {
+        endDateInput.value = addDaysString(baseDate, dayCarry);
+      }
     }
 
     function toggleAllDay() {
