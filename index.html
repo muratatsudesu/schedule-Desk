@@ -1603,7 +1603,7 @@
       top: 0;
       z-index: 80;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 8px;
       margin-bottom: 16px;
       padding: 8px;
@@ -2542,6 +2542,215 @@
       .action-btns { flex-wrap: wrap; justify-content: flex-end; }
     }
 
+    /* ===== Ver.6.7 月次経費一覧・未精算管理 ===== */
+    #expenseView .card-title { color: var(--brand-navy); }
+    .expense-month-controls {
+      display: grid;
+      grid-template-columns: auto minmax(150px, 190px) auto auto minmax(150px, 190px) minmax(150px, 190px);
+      gap: 8px;
+      align-items: center;
+    }
+    .expense-month-controls input,
+    .expense-month-controls select {
+      width: 100%;
+      min-height: 40px;
+      padding: 8px 10px;
+      border: 1px solid #c9b9a8;
+      border-radius: 8px;
+      background: #fff;
+      font: inherit;
+      color: #47382f;
+      box-sizing: border-box;
+    }
+    .expense-month-summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .expense-month-summary-tile {
+      padding: 13px 14px;
+      background: linear-gradient(145deg, #fff, #f7f2eb);
+      border: 1px solid #d9cdbf;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(76, 55, 38, .06);
+    }
+    .expense-month-summary-tile strong {
+      display: block;
+      margin-top: 4px;
+      color: #3e3028;
+      font-size: 1.2rem;
+    }
+    .expense-month-summary-tile.unsettled { border-top: 4px solid #d28a28; }
+    .expense-month-summary-tile.settled { border-top: 4px solid #2f8b68; }
+    .expense-month-summary-tile.total { border-top: 4px solid #315f8e; }
+    .expense-month-summary-tile.count { border-top: 4px solid #8c6e55; }
+    .expense-month-note {
+      margin-top: 9px;
+      color: #6e6259;
+      font-size: .75rem;
+      line-height: 1.5;
+    }
+    .expense-month-list {
+      display: grid;
+      gap: 10px;
+    }
+    .expense-month-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      padding: 13px 14px;
+      background: #fffdf9;
+      border: 1px solid #ddcfbf;
+      border-left: 5px solid #d28a28;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(65, 47, 34, .055);
+    }
+    .expense-month-item.is-settled {
+      border-left-color: #2f8b68;
+      background: #fbfefc;
+    }
+    .expense-month-item-title {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 7px;
+      color: #3d3129;
+      font-weight: 850;
+    }
+    .expense-month-date {
+      color: #6c5e54;
+      font-size: .78rem;
+      font-weight: 800;
+    }
+    .expense-month-type {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      color: #5e482d;
+      font-size: .68rem;
+      font-weight: 800;
+      background: #f6ead7;
+      border: 1px solid #dfc49d;
+      border-radius: 999px;
+    }
+    .expense-month-status {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      color: #8b5818;
+      font-size: .68rem;
+      font-weight: 850;
+      background: #fff3dd;
+      border: 1px solid #e9c58e;
+      border-radius: 999px;
+    }
+    .expense-month-status.settled {
+      color: #23634c;
+      background: #e8f6ef;
+      border-color: #abd8c4;
+    }
+    .expense-month-destination {
+      margin-top: 5px;
+      color: #58483c;
+      font-size: .82rem;
+    }
+    .expense-month-lines {
+      display: grid;
+      gap: 4px;
+      margin-top: 8px;
+    }
+    .expense-month-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 10px;
+      color: #695c52;
+      font-size: .75rem;
+      line-height: 1.45;
+    }
+    .expense-month-line-amount { font-weight: 800; color: #4b3828; }
+    .expense-month-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px 12px;
+      margin-top: 8px;
+      color: #786a60;
+      font-size: .7rem;
+    }
+    .expense-month-note-text {
+      margin-top: 7px;
+      padding: 6px 8px;
+      color: #6b5d53;
+      font-size: .72rem;
+      background: #f7f3ee;
+      border-radius: 6px;
+    }
+    .expense-month-item-side {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 10px;
+      min-width: 150px;
+    }
+    .expense-month-amount {
+      color: #3d3026;
+      font-size: 1.12rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .expense-month-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+    .expense-settle-btn,
+    .expense-unsettle-btn,
+    .expense-edit-from-list {
+      padding: 6px 9px;
+      border-radius: 7px;
+      font-size: .72rem;
+      font-weight: 800;
+    }
+    .expense-settle-btn {
+      color: #fff;
+      background: #2f8b68;
+      border: 1px solid #267359;
+    }
+    .expense-unsettle-btn {
+      color: #80521b;
+      background: #fff2d9;
+      border: 1px solid #dfba7b;
+    }
+    .expense-edit-from-list {
+      color: #fff;
+      background: #517da6;
+      border: 1px solid #416a90;
+    }
+    .expense-month-empty {
+      padding: 28px 14px;
+      color: #796b60;
+      text-align: center;
+      background: #fbf8f4;
+      border: 1px dashed #d9cabb;
+      border-radius: 10px;
+    }
+    @media (max-width: 900px) {
+      .main-navigation { grid-template-columns: 1fr 1fr 1fr; }
+      .expense-month-controls { grid-template-columns: 1fr 1fr; }
+      .expense-month-summary { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .main-navigation { grid-template-columns: 1fr; }
+      .expense-month-controls { grid-template-columns: 1fr 1fr; }
+      .expense-month-controls .expense-month-wide { grid-column: 1 / -1; }
+      .expense-month-summary { grid-template-columns: 1fr 1fr; }
+      .expense-month-item { grid-template-columns: 1fr; }
+      .expense-month-item-side { min-width: 0; align-items: stretch; }
+      .expense-month-actions { justify-content: flex-start; }
+    }
+
   </style>
 </head>
 
@@ -2552,7 +2761,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.6.3 — ログイン</p>
+          <p>Ver.6.7 — ログイン</p>
         </div>
       </div>
 
@@ -2595,6 +2804,7 @@
   <nav class="main-navigation" aria-label="メイン画面">
     <button type="button" class="main-nav-button active" id="navSchedule">📅 スケジュール</button>
     <button type="button" class="main-nav-button" id="navAnnual">📋 年間予定表</button>
+    <button type="button" class="main-nav-button" id="navExpense">💰 経費精算</button>
   </nav>
 
   <main id="scheduleView" class="app-view">
@@ -3108,6 +3318,44 @@
     </section>
   </main>
 
+  <main id="expenseView" class="app-view" hidden>
+    <section class="card">
+      <h2 class="card-title">💰 月次経費一覧</h2>
+      <div class="expense-month-controls">
+        <button type="button" class="btn-secondary btn-small" id="expensePrevMonth">◀ 前月</button>
+        <input type="month" id="expenseMonthPicker" aria-label="経費表示月">
+        <button type="button" class="btn-secondary btn-small" id="expenseNextMonth">次月 ▶</button>
+        <button type="button" class="btn-secondary btn-small" id="expenseThisMonth">今月</button>
+        <select id="expenseStatusFilter" class="expense-month-wide" aria-label="精算状態">
+          <option value="unsettled">未精算のみ</option>
+          <option value="all">すべて</option>
+          <option value="settled">精算済みのみ</option>
+        </select>
+        <select id="expenseTypeFilter" class="expense-month-wide" aria-label="経費区分">
+          <option value="all">通常交通費＋出張</option>
+          <option value="normal">通常交通費のみ</option>
+          <option value="trip">出張のみ</option>
+        </select>
+      </div>
+      <div class="expense-month-summary">
+        <div class="expense-month-summary-tile unsettled">未精算<strong id="expenseMonthUnsettledTotal">0円</strong></div>
+        <div class="expense-month-summary-tile settled">精算済み<strong id="expenseMonthSettledTotal">0円</strong></div>
+        <div class="expense-month-summary-tile total">月合計<strong id="expenseMonthGrandTotal">0円</strong></div>
+        <div class="expense-month-summary-tile count">登録件数<strong id="expenseMonthCount">0件</strong></div>
+      </div>
+      <div class="expense-month-note">
+        🔐 経費データはこれまで通り、この端末のブラウザ内だけに保存されます。ここでは月ごとの確認と「未精算 ⇔ 精算済み」の切り替えができます。
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="list-title">
+        <span id="expenseMonthListTitle">今月の未精算経費</span>
+      </div>
+      <div id="expenseMonthList" class="expense-month-list"></div>
+    </section>
+  </main>
+
 
 
   <div id="projectDetailModal" class="modal">
@@ -3323,7 +3571,7 @@
 
 
 
-  <!-- Ver.6.6.3 経費メモ -->
+  <!-- Ver.6.7 経費メモ -->
   <div id="expenseModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="expenseModalTitle">
     <div class="modal-content expense-modal-content">
       <div class="modal-header">
@@ -3332,7 +3580,7 @@
       </div>
       <div class="modal-body">
         <div class="expense-local-note">
-          🔐 Ver.6.6.3では経費メモと経路履歴を<strong>この端末のブラウザ内だけ</strong>に保存します。外部APIは使いません。経路候補の呼び出しに加えて、往復区間の追加・経費メモ本体の削除・不要な経路履歴の削除ができます。
+          🔐 Ver.6.7では経費メモと経路履歴を<strong>この端末のブラウザ内だけ</strong>に保存します。外部APIは使いません。経路候補の呼び出しに加えて、往復区間の追加・経費メモ本体の削除・不要な経路履歴の削除ができます。
         </div>
         <div class="expense-schedule-box">
           <div id="expenseScheduleTitle" class="expense-schedule-title">予定</div>
@@ -3403,7 +3651,7 @@
         <div class="app-info-panel">
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.2</span><br>
           無料プラン対応・写真圧縮保存版<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
-          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
+          Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月24日
         </div>
       </div>
@@ -3508,7 +3756,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.6";
+    const APP_VERSION = "6.7";
     const APP_BUILD_DATE = "2026-08-24";
 
     const firebaseConfig = {
@@ -3638,6 +3886,19 @@
 
       document.getElementById("navSchedule").addEventListener("click", () => switchMainView("schedule"));
       document.getElementById("navAnnual").addEventListener("click", () => switchMainView("annual"));
+      document.getElementById("navExpense").addEventListener("click", () => switchMainView("expense"));
+      document.getElementById("expensePrevMonth").addEventListener("click", () => changeExpenseMonth(-1));
+      document.getElementById("expenseNextMonth").addEventListener("click", () => changeExpenseMonth(1));
+      document.getElementById("expenseThisMonth").addEventListener("click", () => {
+        setExpenseMonthValue(getLocalDateString(new Date()).slice(0,7));
+        renderExpenseMonthlyView();
+      });
+      document.getElementById("expenseMonthPicker").addEventListener("change", event => {
+        setExpenseMonthValue(event.target.value);
+        renderExpenseMonthlyView();
+      });
+      document.getElementById("expenseStatusFilter").addEventListener("change", renderExpenseMonthlyView);
+      document.getElementById("expenseTypeFilter").addEventListener("change", renderExpenseMonthlyView);
       document.getElementById("annualSearch").addEventListener("input", filterAnnualProjects);
       document.getElementById("annualYearFilter").addEventListener("change", filterAnnualProjects);
       document.querySelectorAll(".annual-project-card").forEach(card => {
@@ -3736,8 +3997,10 @@
 
       toggleAllDay();
       updateCategoryPreview();
-      if (localStorage.getItem("qtsMainView") === "annual") {
-        switchMainView("annual");
+      initializeExpenseMonthlyView();
+      const savedMainView = localStorage.getItem("qtsMainView");
+      if (savedMainView === "annual" || savedMainView === "expense") {
+        switchMainView(savedMainView);
       }
     }
 
@@ -4152,6 +4415,7 @@
       updateSharedViewMode();
       renderTeamWeekBoard();
       updateLegacyScheduleCount();
+      renderExpenseMonthlyView();
 
       if (detailSelectedDate) {
         renderDetailSchedules(detailSelectedDate);
@@ -5158,7 +5422,7 @@
     }
 
 
-    // ===== Ver.6.6.3 経費メモ＋往復・削除強化（安全・無料の端末内保存） =====
+    // ===== Ver.6.7 経費メモ＋月次経費一覧（安全・無料の端末内保存） =====
     function getExpenseStorageKey() {
       const uid = currentUser?.uid || "guest";
       return `qtsExpenseMemosV1:${uid}`;
@@ -5179,7 +5443,7 @@
       localStorage.setItem(getExpenseStorageKey(), JSON.stringify(store || {}));
     }
 
-    // ===== Ver.6.6.3 経路履歴・候補表示＋履歴削除（端末内保存） =====
+    // ===== Ver.6.7 経路履歴・候補表示＋履歴削除（端末内保存） =====
     function getExpenseRouteHistoryKey() {
       const uid = currentUser?.uid || "guest";
       return `qtsExpenseRouteHistoryV1:${uid}`;
@@ -5495,6 +5759,7 @@
 
     function refreshExpenseViews() {
       renderAll();
+      renderExpenseMonthlyView();
       if (detailSelectedDate && document.getElementById("detailModal")?.classList.contains("open")) {
         renderDetailSchedules(detailSelectedDate);
       }
@@ -5510,13 +5775,16 @@
       const key = getExpenseScheduleKey(expenseEditingSchedule);
       const store = loadExpenseStore();
       store[key] = {
-        version: 1,
+        version: 2,
         type: document.getElementById("expenseType").value || "normal",
         destination: document.getElementById("expenseDestination").value.trim(),
         lines,
         receipt: document.getElementById("expenseReceipt").checked,
         settled: document.getElementById("expenseSettled").checked,
         note: document.getElementById("expenseNote").value.trim(),
+        scheduleTitle: expenseEditingSchedule.title || "",
+        scheduleDate: expenseEditingSchedule.startDate || "",
+        scheduleEndDate: expenseEditingSchedule.endDate || expenseEditingSchedule.startDate || "",
         updatedAt: new Date().toISOString()
       };
       saveExpenseStore(store);
@@ -5544,6 +5812,252 @@
       expenseEditingSchedule = null;
       showStatusMessage("経費メモを削除しました。予定と経路履歴は残っています。", "success");
       refreshExpenseViews();
+    }
+
+
+    // ===== Ver.6.7 月次経費一覧・未精算管理 =====
+    function initializeExpenseMonthlyView() {
+      const picker = document.getElementById("expenseMonthPicker");
+      if (!picker) return;
+      const saved = localStorage.getItem("qtsExpenseMonth") || getLocalDateString(new Date()).slice(0,7);
+      setExpenseMonthValue(saved);
+      renderExpenseMonthlyView();
+    }
+
+    function setExpenseMonthValue(value) {
+      const normalized = /^\d{4}-\d{2}$/.test(String(value || ""))
+        ? String(value)
+        : getLocalDateString(new Date()).slice(0,7);
+      const picker = document.getElementById("expenseMonthPicker");
+      if (picker) picker.value = normalized;
+      localStorage.setItem("qtsExpenseMonth", normalized);
+      return normalized;
+    }
+
+    function changeExpenseMonth(delta) {
+      const picker = document.getElementById("expenseMonthPicker");
+      const current = setExpenseMonthValue(picker?.value || getLocalDateString(new Date()).slice(0,7));
+      const [year, month] = current.split("-").map(Number);
+      const date = new Date(year, month - 1 + Number(delta || 0), 1);
+      setExpenseMonthValue(`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}`);
+      renderExpenseMonthlyView();
+    }
+
+    function getExpenseScheduleLookup() {
+      const map = new Map();
+      (schedules || []).forEach(item => {
+        const key = getExpenseScheduleKey(item);
+        if (!key) return;
+        const existing = map.get(key);
+        if (!existing || String(item.startDate || "") < String(existing.startDate || "")) {
+          map.set(key, item);
+        }
+      });
+      return map;
+    }
+
+    function getExpenseMonthEntries(monthValue) {
+      const store = loadExpenseStore();
+      const scheduleLookup = getExpenseScheduleLookup();
+      return Object.entries(store).map(([key, expense]) => {
+        const schedule = scheduleLookup.get(key) || null;
+        const date = schedule?.startDate || expense?.scheduleDate || "";
+        const title = schedule?.title || expense?.scheduleTitle || expense?.destination || "予定";
+        return { key, expense, schedule, date, title };
+      }).filter(entry => entry.date && entry.date.slice(0,7) === monthValue)
+        .sort((a,b) => {
+          const dateCompare = String(a.date).localeCompare(String(b.date));
+          if (dateCompare) return dateCompare;
+          return String(a.title).localeCompare(String(b.title), "ja");
+        });
+    }
+
+    function getExpenseModeLabel(mode) {
+      return ({
+        train: "電車",
+        car: "車・高速",
+        taxi: "タクシー",
+        bus: "バス",
+        other: "その他"
+      })[mode] || "その他";
+    }
+
+    function formatExpenseListDate(dateStr) {
+      const date = createDateFromString(dateStr);
+      if (!date) return dateStr || "";
+      const weekdays = ["日","月","火","水","木","金","土"];
+      return `${date.getMonth()+1}/${date.getDate()}（${weekdays[date.getDay()]}）`;
+    }
+
+    function setExpenseSettledByKey(key, settled) {
+      const store = loadExpenseStore();
+      if (!store[key]) {
+        showStatusMessage("経費メモが見つかりませんでした。", "error");
+        return;
+      }
+      store[key].settled = Boolean(settled);
+      store[key].updatedAt = new Date().toISOString();
+      saveExpenseStore(store);
+      showStatusMessage(settled ? "精算済みに変更しました。" : "未精算に戻しました。", "success");
+      refreshExpenseViews();
+    }
+
+    function findScheduleForExpenseEntry(entry) {
+      if (entry?.schedule) return entry.schedule;
+      return (schedules || []).find(item => getExpenseScheduleKey(item) === entry?.key) || null;
+    }
+
+    function createExpenseMonthlyItem(entry) {
+      const expense = entry.expense || {};
+      const total = getExpenseTotal(expense);
+      const item = document.createElement("article");
+      item.className = `expense-month-item${expense.settled ? " is-settled" : ""}`;
+
+      const main = document.createElement("div");
+
+      const title = document.createElement("div");
+      title.className = "expense-month-item-title";
+
+      const date = document.createElement("span");
+      date.className = "expense-month-date";
+      date.textContent = formatExpenseListDate(entry.date);
+
+      const name = document.createElement("span");
+      name.textContent = entry.title || "予定";
+
+      const type = document.createElement("span");
+      type.className = "expense-month-type";
+      type.textContent = getExpenseTypeLabel(expense.type);
+
+      const status = document.createElement("span");
+      status.className = `expense-month-status${expense.settled ? " settled" : ""}`;
+      status.textContent = expense.settled ? "✓ 精算済み" : "● 未精算";
+
+      title.append(date, name, type, status);
+      main.appendChild(title);
+
+      if (expense.destination && expense.destination !== entry.title) {
+        const destination = document.createElement("div");
+        destination.className = "expense-month-destination";
+        destination.textContent = `外出先：${expense.destination}`;
+        main.appendChild(destination);
+      }
+
+      const lines = document.createElement("div");
+      lines.className = "expense-month-lines";
+      (expense.lines || []).forEach(line => {
+        const row = document.createElement("div");
+        row.className = "expense-month-line";
+        const routeText = [line.from, line.to].filter(Boolean).join(" → ") || "区間未入力";
+        const routeName = line.route ? ` / ${line.route}` : "";
+        const left = document.createElement("span");
+        left.textContent = `${getExpenseModeLabel(line.mode)}：${routeText}${routeName}`;
+        const amount = document.createElement("span");
+        amount.className = "expense-month-line-amount";
+        amount.textContent = `${formatExpenseMoney(line.amount)}円`;
+        row.append(left, amount);
+        lines.appendChild(row);
+      });
+      main.appendChild(lines);
+
+      const meta = document.createElement("div");
+      meta.className = "expense-month-meta";
+      meta.innerHTML = `<span>${expense.receipt ? "🧾 領収書あり" : "領収書なし"}</span>`;
+      main.appendChild(meta);
+
+      if (expense.note) {
+        const note = document.createElement("div");
+        note.className = "expense-month-note-text";
+        note.textContent = `メモ：${expense.note}`;
+        main.appendChild(note);
+      }
+
+      const side = document.createElement("div");
+      side.className = "expense-month-item-side";
+
+      const amountBox = document.createElement("div");
+      amountBox.className = "expense-month-amount";
+      amountBox.textContent = `${formatExpenseMoney(total)}円`;
+
+      const actions = document.createElement("div");
+      actions.className = "expense-month-actions";
+
+      const toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = expense.settled ? "expense-unsettle-btn" : "expense-settle-btn";
+      toggle.textContent = expense.settled ? "↩ 未精算に戻す" : "✓ 精算済みにする";
+      toggle.addEventListener("click", () => setExpenseSettledByKey(entry.key, !expense.settled));
+
+      const edit = document.createElement("button");
+      edit.type = "button";
+      edit.className = "expense-edit-from-list";
+      edit.textContent = "✏️ 経費編集";
+      const schedule = findScheduleForExpenseEntry(entry);
+      if (schedule) {
+        edit.addEventListener("click", () => openExpenseModal(schedule));
+      } else {
+        edit.disabled = true;
+        edit.title = "元の予定が見つからないため編集できません";
+      }
+
+      actions.append(toggle, edit);
+      side.append(amountBox, actions);
+      item.append(main, side);
+      return item;
+    }
+
+    function renderExpenseMonthlyView() {
+      const list = document.getElementById("expenseMonthList");
+      const picker = document.getElementById("expenseMonthPicker");
+      if (!list || !picker) return;
+
+      const monthValue = setExpenseMonthValue(picker.value || localStorage.getItem("qtsExpenseMonth"));
+      const statusFilter = document.getElementById("expenseStatusFilter")?.value || "unsettled";
+      const typeFilter = document.getElementById("expenseTypeFilter")?.value || "all";
+      const allEntries = getExpenseMonthEntries(monthValue);
+      const typeEntries = allEntries.filter(entry =>
+        typeFilter === "all" || (entry.expense?.type || "normal") === typeFilter
+      );
+
+      const unsettledTotal = typeEntries.filter(e => !e.expense?.settled)
+        .reduce((sum,e) => sum + getExpenseTotal(e.expense), 0);
+      const settledTotal = typeEntries.filter(e => e.expense?.settled)
+        .reduce((sum,e) => sum + getExpenseTotal(e.expense), 0);
+      const grandTotal = unsettledTotal + settledTotal;
+
+      const unsettledEl = document.getElementById("expenseMonthUnsettledTotal");
+      const settledEl = document.getElementById("expenseMonthSettledTotal");
+      const grandEl = document.getElementById("expenseMonthGrandTotal");
+      const countEl = document.getElementById("expenseMonthCount");
+      if (unsettledEl) unsettledEl.textContent = `${formatExpenseMoney(unsettledTotal)}円`;
+      if (settledEl) settledEl.textContent = `${formatExpenseMoney(settledTotal)}円`;
+      if (grandEl) grandEl.textContent = `${formatExpenseMoney(grandTotal)}円`;
+      if (countEl) countEl.textContent = `${typeEntries.length}件`;
+
+      let filtered = typeEntries.filter(entry => {
+        if (statusFilter === "unsettled" && entry.expense?.settled) return false;
+        if (statusFilter === "settled" && !entry.expense?.settled) return false;
+        return true;
+      });
+
+      const [year, month] = monthValue.split("-").map(Number);
+      const titleEl = document.getElementById("expenseMonthListTitle");
+      const statusLabel = statusFilter === "unsettled" ? "未精算"
+        : statusFilter === "settled" ? "精算済み" : "経費";
+      if (titleEl) titleEl.textContent = `${year}年${month}月の${statusLabel}（${filtered.length}件）`;
+
+      list.innerHTML = "";
+      if (!filtered.length) {
+        const empty = document.createElement("div");
+        empty.className = "expense-month-empty";
+        empty.textContent = statusFilter === "unsettled"
+          ? "この月の未精算経費はありません。"
+          : "条件に一致する経費はありません。";
+        list.appendChild(empty);
+        return;
+      }
+
+      filtered.forEach(entry => list.appendChild(createExpenseMonthlyItem(entry)));
     }
 
     function createScheduleItem(item) {
@@ -6267,18 +6781,23 @@
     let activeProjectContactData = null;
 
     function switchMainView(viewName) {
-      const isAnnual = viewName === "annual";
+      const safeView = ["schedule", "annual", "expense"].includes(viewName) ? viewName : "schedule";
       const scheduleView = document.getElementById("scheduleView");
       const annualView = document.getElementById("annualView");
+      const expenseView = document.getElementById("expenseView");
       const navSchedule = document.getElementById("navSchedule");
       const navAnnual = document.getElementById("navAnnual");
+      const navExpense = document.getElementById("navExpense");
 
-      scheduleView.hidden = isAnnual;
-      annualView.hidden = !isAnnual;
-      navSchedule.classList.toggle("active", !isAnnual);
-      navAnnual.classList.toggle("active", isAnnual);
+      scheduleView.hidden = safeView !== "schedule";
+      annualView.hidden = safeView !== "annual";
+      expenseView.hidden = safeView !== "expense";
+      navSchedule.classList.toggle("active", safeView === "schedule");
+      navAnnual.classList.toggle("active", safeView === "annual");
+      navExpense.classList.toggle("active", safeView === "expense");
 
-      localStorage.setItem("qtsMainView", isAnnual ? "annual" : "schedule");
+      if (safeView === "expense") renderExpenseMonthlyView();
+      localStorage.setItem("qtsMainView", safeView);
     }
 
 
