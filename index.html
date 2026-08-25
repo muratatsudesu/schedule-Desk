@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.8.4</title>
+  <title>Q.T.S Scheduler — Ver.6.8.5</title>
   <link rel="icon" href="favicon.ico?v=655" sizes="any">
   <link rel="shortcut icon" href="favicon.ico?v=655" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=655">
@@ -2447,7 +2447,7 @@
       border: 1px solid #e0d4c8;
       border-radius: 8px;
     }
-    /* Ver.6.8.4: 出張だけ各移動区間に「利用日」を持たせる。 */
+    /* Ver.6.8.5: 出張だけ各移動区間に「利用日」を持たせる。 */
     .expense-lines.trip-mode .expense-line {
       grid-template-columns: 112px 128px 1fr 1fr 1.2fr 100px 96px;
     }
@@ -2826,7 +2826,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.8.4 — ログイン</p>
+          <p>Ver.6.8.5 — ログイン</p>
         </div>
       </div>
 
@@ -3653,7 +3653,7 @@
 
 
 
-  <!-- Ver.6.8.4 経費メモ -->
+  <!-- Ver.6.8.5 経費メモ -->
   <div id="expenseModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="expenseModalTitle">
     <div class="modal-content expense-modal-content">
       <div class="modal-header">
@@ -3662,7 +3662,7 @@
       </div>
       <div class="modal-body">
         <div class="expense-local-note">
-          🔐 Ver.6.8.4では経費メモと経路履歴を<strong>この端末のブラウザ内だけ</strong>に保存します。外部APIは使いません。会社様式のExcel出力もブラウザ内で生成し、経費データを外部へ送信しません。
+          🔐 Ver.6.8.5では複数の移動明細を<strong>配列としてまとめて保存・復元</strong>します。経費メモと経路履歴は<strong>この端末のブラウザ内だけ</strong>に保存します。外部APIは使いません。会社様式のExcel出力もブラウザ内で生成し、経費データを外部へ送信しません。
         </div>
         <div class="expense-schedule-box">
           <div id="expenseScheduleTitle" class="expense-schedule-title">予定</div>
@@ -3766,7 +3766,7 @@
         <div class="app-info-panel">
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.2</span><br>
           無料プラン対応・写真圧縮保存版<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
-          Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
+          Ver.6.8.5：出張移動明細を配列の正本モデルで複数保存・復元し、保存後の全内容一致検証を追加<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月24日
         </div>
       </div>
@@ -3931,7 +3931,10 @@
     let currentAttachments = [];
     let dropActionResolver = null;
     let expenseEditingSchedule = null;
-    // Ver.6.8.4: 経費メモの未保存変更を検知するため、開いた時点のフォーム内容を保持。
+    // Ver.6.8.5: 移動明細はDOMだけに依存せず、編集中の配列を正本として保持する。
+    let expenseDraftLines = [];
+    let expenseDraftLineSeq = 0;
+    // Ver.6.8.5: 経費メモの未保存変更を検知するため、開いた時点のフォーム内容を保持。
     let expenseOriginalFormSnapshot = "";
     let expenseSnapshotReady = false;
     let expenseBypassUnsavedWarning = false;
@@ -4108,7 +4111,7 @@
         }
       });
 
-      // Ver.6.8.4: 経費メモ編集中にブラウザ更新/タブを閉じる場合も標準警告を出す。
+      // Ver.6.8.5: 経費メモ編集中にブラウザ更新/タブを閉じる場合も標準警告を出す。
       window.addEventListener("beforeunload", event => {
         if (!hasUnsavedExpenseChanges()) return;
         event.preventDefault();
@@ -5552,7 +5555,7 @@
     }
 
 
-    // ===== Ver.6.8.4 経費メモ＋月次経費一覧（複数区間安定化・未保存警告） =====
+    // ===== Ver.6.8.5 経費メモ＋月次経費一覧（複数区間安定化・未保存警告） =====
     function getExpenseStorageKey() {
       const uid = currentUser?.uid || "guest";
       return `qtsExpenseMemosV1:${uid}`;
@@ -5696,6 +5699,7 @@
       row.querySelector(".expense-to").value = item.to || "";
       row.querySelector(".expense-route").value = item.route || "";
       row.querySelector(".expense-amount").value = item.amount || "";
+      syncExpenseDraftLineFromRow(row);
       updateExpenseTotalPreview();
       refreshExpenseRouteCandidates(row);
     }
@@ -5753,11 +5757,71 @@
       return days * EXPENSE_PER_DIEM_RATE;
     }
 
-    function getExpenseTransportTotal(expense) {
-      return (expense?.lines || []).reduce((sum, line) => sum + Math.max(0, Number(line.amount || 0)), 0);
+    // Ver.6.8.5: 保存済み明細の正本を取得。
+    function getStoredExpenseLines(expense) {
+      const primary = Array.isArray(expense?.lines) ? expense.lines : [];
+      const backup = Array.isArray(expense?.linesBackup) ? expense.linesBackup : [];
+      const source = backup.length > primary.length ? backup : primary;
+      return source.map(line => ({
+        mode: line?.mode || "train",
+        date: String(line?.date || ""),
+        from: String(line?.from || ""),
+        to: String(line?.to || ""),
+        route: String(line?.route || ""),
+        amount: Math.max(0, Number(line?.amount || 0))
+      }));
     }
 
-    // Ver.6.8.4: 宿泊費は「1泊あたり」の単価として扱う。
+    function makeExpenseDraftLine(data = {}) {
+      return {
+        _id: String(data?._id || `expense-line-${Date.now()}-${++expenseDraftLineSeq}`),
+        mode: data?.mode || "train",
+        date: String(data?.date || ""),
+        from: String(data?.from || ""),
+        to: String(data?.to || ""),
+        route: String(data?.route || ""),
+        amount: data?.amount === "" || data?.amount == null ? "" : Math.max(0, Number(data.amount || 0))
+      };
+    }
+
+    function getExpenseDraftLineByRow(row) {
+      const id = row?.dataset?.expenseLineId || "";
+      return expenseDraftLines.find(line => line._id === id) || null;
+    }
+
+    function syncExpenseDraftLineFromRow(row) {
+      const model = getExpenseDraftLineByRow(row);
+      if (!model || !row) return;
+      model.mode = row.querySelector(".expense-mode")?.value || "train";
+      model.date = row.querySelector(".expense-line-date")?.value || "";
+      model.from = row.querySelector(".expense-from")?.value || "";
+      model.to = row.querySelector(".expense-to")?.value || "";
+      model.route = row.querySelector(".expense-route")?.value || "";
+      const rawAmount = row.querySelector(".expense-amount")?.value ?? "";
+      model.amount = rawAmount === "" ? "" : Math.max(0, Number(rawAmount || 0));
+    }
+
+    function syncAllExpenseDraftLinesFromForm() {
+      document.querySelectorAll("#expenseLines .expense-line").forEach(syncExpenseDraftLineFromRow);
+    }
+
+    function getExpenseDraftLinesForSave() {
+      syncAllExpenseDraftLinesFromForm();
+      return expenseDraftLines.map(line => ({
+        mode: line.mode || "train",
+        date: String(line.date || ""),
+        from: String(line.from || "").trim(),
+        to: String(line.to || "").trim(),
+        route: String(line.route || "").trim(),
+        amount: Math.max(0, Number(line.amount || 0))
+      })).filter(line => line.from || line.to || line.route || line.amount > 0);
+    }
+
+    function getExpenseTransportTotal(expense) {
+      return getStoredExpenseLines(expense).reduce((sum, line) => sum + Math.max(0, Number(line.amount || 0)), 0);
+    }
+
+    // Ver.6.8.5: 宿泊費は「1泊あたり」の単価として扱う。
     // 出張開始日〜終了日のうち、最終日を除いた日数＝泊数。
     function getExpenseLodgingNights(expense) {
       if ((expense?.type || "normal") !== "trip") return 0;
@@ -5809,10 +5873,20 @@
     function addExpenseLine(data = {}, insertAfterRow = null) {
       const container = document.getElementById("expenseLines");
       if (!container) return null;
+      const model = makeExpenseDraftLine(data);
+      if (insertAfterRow) {
+        const afterModel = getExpenseDraftLineByRow(insertAfterRow);
+        const afterIndex = afterModel ? expenseDraftLines.findIndex(line => line._id === afterModel._id) : -1;
+        if (afterIndex >= 0) expenseDraftLines.splice(afterIndex + 1, 0, model);
+        else expenseDraftLines.push(model);
+      } else {
+        expenseDraftLines.push(model);
+      }
       const row = document.createElement("div");
       row.className = "expense-line";
+      row.dataset.expenseLineId = model._id;
       row.innerHTML = `
-        <label class="expense-line-field"><span>移動手段</span><select class="expense-mode">${expenseModeOptions(data.mode || "train")}</select></label>
+        <label class="expense-line-field"><span>移動手段</span><select class="expense-mode">${expenseModeOptions(model.mode || "train")}</select></label>
         <label class="expense-line-field expense-date-field"><span>利用日</span><input class="expense-line-date" type="date"></label>
         <label class="expense-line-field"><span>乗車駅 / 乗IC</span><input class="expense-from" type="text" maxlength="60" placeholder="出発地"></label>
         <label class="expense-line-field"><span>降車駅 / 降IC</span><input class="expense-to" type="text" maxlength="60" placeholder="到着地"></label>
@@ -5827,15 +5901,15 @@
           <select class="expense-history-select"><option value="">過去の経路から選択</option></select>
           <button type="button" class="expense-history-delete" disabled>履歴削除</button>
         </div>`;
-      row.querySelector(".expense-from").value = data.from || "";
-      row.querySelector(".expense-to").value = data.to || "";
-      row.querySelector(".expense-route").value = data.route || "";
-      row.querySelector(".expense-amount").value = data.amount ?? "";
+      row.querySelector(".expense-from").value = model.from || "";
+      row.querySelector(".expense-to").value = model.to || "";
+      row.querySelector(".expense-route").value = model.route || "";
+      row.querySelector(".expense-amount").value = model.amount ?? "";
       const lineDateInput = row.querySelector(".expense-line-date");
       const scheduleStartDate = expenseEditingSchedule?.startDate || "";
       const scheduleEndDate = expenseEditingSchedule?.endDate || scheduleStartDate;
       if (lineDateInput) {
-        lineDateInput.value = data.date || scheduleStartDate;
+        lineDateInput.value = model.date || scheduleStartDate;
         if (scheduleStartDate) lineDateInput.min = scheduleStartDate;
         if (scheduleEndDate) lineDateInput.max = scheduleEndDate;
       }
@@ -5865,6 +5939,8 @@
       });
 
       row.querySelector(".expense-remove-line").addEventListener("click", () => {
+        const lineId = row.dataset.expenseLineId || "";
+        expenseDraftLines = expenseDraftLines.filter(line => line._id !== lineId);
         row.remove();
         if (!container.children.length) addExpenseLine();
         updateExpenseTotalPreview();
@@ -5891,7 +5967,11 @@
           refreshExpenseRouteCandidates(row);
         });
       });
-      row.querySelectorAll("input,select").forEach(el => el.addEventListener("input", updateExpenseTotalPreview));
+      row.querySelectorAll("input,select").forEach(el => {
+        const sync = () => { syncExpenseDraftLineFromRow(row); updateExpenseTotalPreview(); };
+        el.addEventListener("input", sync);
+        el.addEventListener("change", sync);
+      });
       if (insertAfterRow?.parentNode === container) {
         insertAfterRow.insertAdjacentElement("afterend", row);
       } else {
@@ -5916,11 +5996,11 @@
       return result.length ? result : [startDate].filter(Boolean);
     }
 
-    // Ver.6.8.4: 6.8.1以前の出張明細には利用日が無いため、
+    // Ver.6.8.5: 6.8.1以前の出張明細には利用日が無いため、
     // 「明細数＝出張日数」のときだけ順番に各日へ割り当てる。
     // それ以外は開始日扱いにして、画面で利用日を直せるようにする。
     function getExpenseLinesWithTripDates(expense, startDate, endDate) {
-      const lines = Array.isArray(expense?.lines) ? expense.lines.map(line => ({...line})) : [];
+      const lines = getStoredExpenseLines(expense).map(line => ({...line}));
       const dates = getExpenseTripDateList(startDate, endDate);
       const valid = new Set(dates);
       const hasAnyDate = lines.some(line => line.date);
@@ -5998,7 +6078,9 @@
       if (deleteHint) deleteHint.hidden = !expense;
       const lines = document.getElementById("expenseLines");
       lines.innerHTML = "";
-      const baseLines = Array.isArray(expense?.lines) && expense.lines.length ? expense.lines : [{}];
+      expenseDraftLines = [];
+      const storedLines = getStoredExpenseLines(expense);
+      const baseLines = storedLines.length ? storedLines : [{}];
       const isTripExpense = (document.getElementById("expenseType")?.value || "normal") === "trip";
       const savedLines = isTripExpense
         ? getExpenseLinesWithTripDates({ lines: baseLines }, item.startDate || "", item.endDate || item.startDate || "")
@@ -6012,25 +6094,19 @@
     }
 
     function readExpenseLinesFromForm() {
-      return Array.from(document.querySelectorAll("#expenseLines .expense-line")).map(row => ({
-        mode: row.querySelector(".expense-mode")?.value || "train",
-        date: row.querySelector(".expense-line-date")?.value || "",
-        from: row.querySelector(".expense-from")?.value.trim() || "",
-        to: row.querySelector(".expense-to")?.value.trim() || "",
-        route: row.querySelector(".expense-route")?.value.trim() || "",
-        amount: Math.max(0, Number(row.querySelector(".expense-amount")?.value || 0))
-      })).filter(line => line.from || line.to || line.route || line.amount > 0);
+      return getExpenseDraftLinesForSave();
     }
 
-    // Ver.6.8.4: 経費フォームの「現在値」を文字列化して、保存前の変更を検知する。
+    // Ver.6.8.5: 経費フォームの「現在値」を文字列化して、保存前の変更を検知する。
     function getExpenseFormSnapshot() {
-      const rows = Array.from(document.querySelectorAll("#expenseLines .expense-line")).map(row => ({
-        mode: row.querySelector(".expense-mode")?.value || "train",
-        date: row.querySelector(".expense-line-date")?.value || "",
-        from: row.querySelector(".expense-from")?.value || "",
-        to: row.querySelector(".expense-to")?.value || "",
-        route: row.querySelector(".expense-route")?.value || "",
-        amount: row.querySelector(".expense-amount")?.value || ""
+      syncAllExpenseDraftLinesFromForm();
+      const rows = expenseDraftLines.map(line => ({
+        mode: line.mode || "train",
+        date: line.date || "",
+        from: line.from || "",
+        to: line.to || "",
+        route: line.route || "",
+        amount: line.amount ?? ""
       }));
       return JSON.stringify({
         type: document.getElementById("expenseType")?.value || "normal",
@@ -6091,15 +6167,17 @@
       const store = loadExpenseStore();
       const tripDays = getEditingTripDays();
       store[key] = {
-        version: 4,
+        version: 5,
         type,
         destination: document.getElementById("expenseDestination").value.trim(),
-        lines,
+        lines: lines.map(line => ({...line})),
+        linesBackup: lines.map(line => ({...line})),
+        lineCount: lines.length,
         perDiemRate: type === "trip" ? EXPENSE_PER_DIEM_RATE : 0,
         perDiemDays: type === "trip" ? tripDays : 0,
         perDiemAmount: type === "trip" ? tripDays * EXPENSE_PER_DIEM_RATE : 0,
         lodgingPlace: type === "trip" ? document.getElementById("expenseLodgingPlace").value.trim() : "",
-        // Ver.6.8.4以降 lodgingAmount は「1泊あたり」の宿泊単価。
+        // Ver.6.8.5以降 lodgingAmount は「1泊あたり」の宿泊単価。
         lodgingAmount: type === "trip" ? lodgingAmount : 0,
         lodgingNights: type === "trip" ? Math.max(0, tripDays - 1) : 0,
         businessPurpose: type === "trip" ? document.getElementById("expenseBusinessPurpose").value.trim() : "",
@@ -6114,11 +6192,17 @@
         updatedAt: new Date().toISOString()
       };
       saveExpenseStore(store);
-      // Ver.6.8.4: 複数区間がlocalStorageへ全件保存されたことを即時確認。
+      // Ver.6.8.5: 件数だけでなく全明細内容まで再読込して一致確認する。
       const persisted = loadExpenseStore()[key];
-      const persistedLineCount = Array.isArray(persisted?.lines) ? persisted.lines.length : 0;
-      if (persistedLineCount !== lines.length) {
-        alert(`経費メモの保存確認で区間数が一致しませんでした。\n入力：${lines.length}区間 / 保存：${persistedLineCount}区間\n\nもう一度保存してください。`);
+      const persistedLines = getStoredExpenseLines(persisted);
+      const persistedLineCount = persistedLines.length;
+      const normalizedExpected = JSON.stringify(lines.map(line => ({...line, amount: Math.max(0, Number(line.amount || 0))})));
+      const normalizedPersisted = JSON.stringify(persistedLines);
+      if (persistedLineCount !== lines.length || normalizedPersisted !== normalizedExpected) {
+        alert(`経費メモの保存確認で移動明細が一致しませんでした。
+入力：${lines.length}区間 / 保存：${persistedLineCount}区間
+
+画面は閉じません。内容を確認してもう一度保存してください。`);
         return;
       }
       rememberExpenseRoutes(lines);
@@ -6284,7 +6368,7 @@
 
       const lines = document.createElement("div");
       lines.className = "expense-month-lines";
-      (expense.lines || []).forEach(line => {
+      getStoredExpenseLines(expense).forEach(line => {
         const row = document.createElement("div");
         row.className = "expense-month-line";
         const routeText = [line.from, line.to].filter(Boolean).join(" → ") || "区間未入力";
@@ -6437,7 +6521,7 @@
         if (statusFilter === "settled" && !entry.expense?.settled) return false;
         return true;
       });
-      const normalLines = normalEntries.reduce((sum, entry) => sum + (entry.expense?.lines || []).length, 0);
+      const normalLines = normalEntries.reduce((sum, entry) => sum + getStoredExpenseLines(entry.expense).length, 0);
       const info = document.getElementById("expenseNormalExportInfo");
       const normalBtn = document.getElementById("expenseExportNormalBtn");
       if (info) info.textContent = `${normalEntries.length}件 / ${normalLines}区間`;
@@ -6623,7 +6707,7 @@
       if (!entriesToExport.length) { alert("選択条件に一致する通常交通費がありません。"); return; }
       const monthValue=document.getElementById("expenseMonthPicker")?.value || ""; const [year,month]=monthValue.split("-").map(Number);
       const rows=[];
-      entriesToExport.forEach(entry => (entry.expense?.lines || []).forEach((line,index)=>rows.push({
+      entriesToExport.forEach(entry => getStoredExpenseLines(entry.expense).forEach((line,index)=>rows.push({
         date:index===0?entry.date:"", destination:index===0?(entry.expense?.destination||entry.title):"", ...line
       })));
       if (rows.length>56) { alert(`交通費明細が${rows.length}区間あります。会社様式は最大56区間のため、先頭56区間を出力します。`); rows.length=56; }
@@ -6651,7 +6735,7 @@
       } catch(error) { console.error(error); alert(`Excel出力に失敗しました。\n${error.message||error}`); }
     }
 
-    // Ver.6.8.4: 選択した複数日出張の期間内にある「出張」経費をまとめる。
+    // Ver.6.8.5: 選択した複数日出張の期間内にある「出張」経費をまとめる。
     // 8/4の予定と8/5の予定に別々に交通費を残していても、同じ出張期間ならExcelへ集約する。
     function getAllExpenseEntriesForTravelExport() {
       const store = loadExpenseStore();
@@ -6679,13 +6763,13 @@
         const cStart = candidate.expense?.scheduleDate || candidate.date || "";
         const cEnd = candidate.expense?.scheduleEndDate || candidate.endDate || cStart;
         const scheduleOverlaps = Boolean(cStart && cEnd && cStart <= end && cEnd >= start);
-        const lineInRange = (candidate.expense?.lines || []).some(line => qtsDateInRange(line.date, start, end));
+        const lineInRange = getStoredExpenseLines(candidate.expense).some(line => qtsDateInRange(line.date, start, end));
         return scheduleOverlaps || lineInRange;
       });
       return candidates.length ? candidates : [selectedEntry];
     }
 
-    // Ver.6.8.4: 保存済みの移動明細は「1区間＝1明細」として全件保持する。
+    // Ver.6.8.5: 保存済みの移動明細は「1区間＝1明細」として全件保持する。
     // 以前のfingerprint重複排除は、同額・同経路を実際に複数回使ったケースまで
     // 消す可能性があるため廃止。特に選択した出張メモ内の全区間を最優先で出す。
     function getCombinedTravelLines(entries, start, end) {
@@ -6738,7 +6822,7 @@
       // 選択した出張期間内の、別予定に登録された出張交通費もまとめる。
       const travelEntries=getTravelEntriesForSelectedTrip(entry,start,end);
       const datedLines=getCombinedTravelLines(travelEntries,start,end);
-      const selectedSavedLines = Array.isArray(expense.lines) ? expense.lines.length : 0;
+      const selectedSavedLines = getStoredExpenseLines(expense).length;
       if (datedLines.length < selectedSavedLines) {
         alert(`保存済みの出張移動明細${selectedSavedLines}区間に対し、出力対象が${datedLines.length}区間しか取得できませんでした。\nExcel出力を中止します。経費メモを開いて内容を確認・保存し直してください。`);
         return;
