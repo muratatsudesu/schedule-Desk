@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.8.6</title>
+  <title>Q.T.S Scheduler — Ver.6.8.7</title>
   <link rel="icon" href="favicon.ico?v=655" sizes="any">
   <link rel="shortcut icon" href="favicon.ico?v=655" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=655">
@@ -2711,6 +2711,22 @@
       border: 1px solid #dfc49d;
       border-radius: 999px;
     }
+    .expense-month-line-count {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      color: #315f8e;
+      font-size: .68rem;
+      font-weight: 850;
+      background: #eef5fb;
+      border: 1px solid #b9d0e5;
+      border-radius: 999px;
+    }
+    .expense-month-line-count.no-lines {
+      color: #71675f;
+      background: #f4f1ed;
+      border-color: #d7cec4;
+    }
     .expense-month-status {
       display: inline-flex;
       align-items: center;
@@ -2838,7 +2854,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.8.6 — ログイン</p>
+          <p>Ver.6.8.7 — ログイン</p>
         </div>
       </div>
 
@@ -3418,10 +3434,10 @@
         <div class="expense-month-summary-tile unsettled">未精算<strong id="expenseMonthUnsettledTotal">0円</strong></div>
         <div class="expense-month-summary-tile settled">精算済み<strong id="expenseMonthSettledTotal">0円</strong></div>
         <div class="expense-month-summary-tile total">月合計<strong id="expenseMonthGrandTotal">0円</strong></div>
-        <div class="expense-month-summary-tile count">登録件数<strong id="expenseMonthCount">0件</strong></div>
+        <div class="expense-month-summary-tile count">経費メモ / 移動区間<strong id="expenseMonthCount">0件 / 0区間</strong></div>
       </div>
       <div class="expense-month-note">
-        🔐 経費データはこれまで通り、この端末のブラウザ内だけに保存されます。ここでは月ごとの確認と「未精算 ⇔ 精算済み」の切り替えができます。
+        🔐 経費データはこれまで通り、この端末のブラウザ内だけに保存されます。「経費メモ」は予定に紐づく登録数、「移動区間」は各メモ内の交通明細数です。ここでは月ごとの確認と「未精算 ⇔ 精算済み」の切り替えができます。
       </div>
       <div class="expense-export-box">
         <div class="expense-export-title">📄 会社様式へExcel出力</div>
@@ -3674,7 +3690,7 @@
       </div>
       <div class="modal-body">
         <div class="expense-local-note">
-          🔐 Ver.6.8.6では、1つの経費メモは<strong>「通常交通費」か「出張」のどちらか一方だけ</strong>に所属します。区分を切り替える場合は、現在の移動明細を新しい区分へ<strong>移動</strong>する確認を表示します。経費データはこの端末のブラウザ内だけに保存し、外部APIは使いません。
+          🔐 Ver.6.8.7でも、1つの経費メモは<strong>「通常交通費」か「出張」のどちらか一方だけ</strong>に所属します。区分を切り替える場合は、現在の移動明細を新しい区分へ<strong>移動</strong>する確認を表示します。経費データはこの端末のブラウザ内だけに保存し、外部APIは使いません。
         </div>
         <div class="expense-schedule-box">
           <div id="expenseScheduleTitle" class="expense-schedule-title">予定</div>
@@ -3779,7 +3795,7 @@
         <div class="app-info-panel">
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.2</span><br>
           無料プラン対応・写真圧縮保存版<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
-          Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
+          Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月24日
         </div>
       </div>
@@ -3884,7 +3900,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.6";
+    const APP_VERSION = "6.8.7";
     const APP_BUILD_DATE = "2026-08-24";
 
     const firebaseConfig = {
@@ -6322,7 +6338,7 @@
     }
 
 
-    // ===== Ver.6.8 月次経費一覧・未精算管理 =====
+    // ===== Ver.6.8.7 月次経費一覧・区間数視認性改善 =====
     function initializeExpenseMonthlyView() {
       const picker = document.getElementById("expenseMonthPicker");
       if (!picker) return;
@@ -6436,11 +6452,17 @@
       type.className = "expense-month-type";
       type.textContent = getExpenseTypeLabel(expense.type);
 
+      // Ver.6.8.7: 1つの経費メモ内に何区間あるかをカード上で明示する。
+      const storedLines = getStoredExpenseLines(expense);
+      const lineCount = document.createElement("span");
+      lineCount.className = `expense-month-line-count${storedLines.length ? "" : " no-lines"}`;
+      lineCount.textContent = storedLines.length ? `${storedLines.length}区間` : "移動なし";
+
       const status = document.createElement("span");
       status.className = `expense-month-status${expense.settled ? " settled" : ""}`;
       status.textContent = expense.settled ? "✓ 精算済み" : "● 未精算";
 
-      title.append(date, name, type, status);
+      title.append(date, name, type, lineCount, status);
       main.appendChild(title);
 
       if (expense.destination && expense.destination !== entry.title) {
@@ -6452,7 +6474,7 @@
 
       const lines = document.createElement("div");
       lines.className = "expense-month-lines";
-      getStoredExpenseLines(expense).forEach(line => {
+      storedLines.forEach(line => {
         const row = document.createElement("div");
         row.className = "expense-month-line";
         const routeText = [line.from, line.to].filter(Boolean).join(" → ") || "区間未入力";
@@ -6551,7 +6573,9 @@
       if (unsettledEl) unsettledEl.textContent = `${formatExpenseMoney(unsettledTotal)}円`;
       if (settledEl) settledEl.textContent = `${formatExpenseMoney(settledTotal)}円`;
       if (grandEl) grandEl.textContent = `${formatExpenseMoney(grandTotal)}円`;
-      if (countEl) countEl.textContent = `${typeEntries.length}件`;
+      const typeLineCount = typeEntries.reduce((sum, entry) =>
+        sum + getStoredExpenseLines(entry.expense || {}).length, 0);
+      if (countEl) countEl.textContent = `${typeEntries.length}件 / ${typeLineCount}区間`;
 
       let filtered = typeEntries.filter(entry => {
         if (statusFilter === "unsettled" && entry.expense?.settled) return false;
@@ -6565,7 +6589,9 @@
       const titleEl = document.getElementById("expenseMonthListTitle");
       const statusLabel = statusFilter === "unsettled" ? "未精算"
         : statusFilter === "settled" ? "精算済み" : "経費";
-      if (titleEl) titleEl.textContent = `${year}年${month}月の${statusLabel}（${filtered.length}件）`;
+      const filteredLineCount = filtered.reduce((sum, entry) =>
+        sum + getStoredExpenseLines(entry.expense || {}).length, 0);
+      if (titleEl) titleEl.textContent = `${year}年${month}月の${statusLabel}（${filtered.length}件・${filteredLineCount}区間）`;
 
       list.innerHTML = "";
       if (!filtered.length) {
