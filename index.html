@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.8.7</title>
+  <title>Q.T.S Scheduler — Ver.6.8.8</title>
   <link rel="icon" href="favicon.ico?v=655" sizes="any">
   <link rel="shortcut icon" href="favicon.ico?v=655" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=655">
@@ -2854,7 +2854,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p>Ver.6.8.7 — ログイン</p>
+          <p>Ver.6.8.8 — ログイン</p>
         </div>
       </div>
 
@@ -3690,7 +3690,7 @@
       </div>
       <div class="modal-body">
         <div class="expense-local-note">
-          🔐 Ver.6.8.7でも、1つの経費メモは<strong>「通常交通費」か「出張」のどちらか一方だけ</strong>に所属します。区分を切り替える場合は、現在の移動明細を新しい区分へ<strong>移動</strong>する確認を表示します。経費データはこの端末のブラウザ内だけに保存し、外部APIは使いません。
+          🔐 Ver.6.8.8でも、1つの経費メモは<strong>「通常交通費」か「出張」のどちらか一方だけ</strong>に所属します。区分を切り替える場合は、現在の移動明細を新しい区分へ<strong>移動</strong>する確認を表示します。経費データはこの端末のブラウザ内だけに保存し、外部APIは使いません。
         </div>
         <div class="expense-schedule-box">
           <div id="expenseScheduleTitle" class="expense-schedule-title">予定</div>
@@ -3716,7 +3716,7 @@
         <div class="expense-toolbar">
           <button type="button" class="btn-secondary btn-small" id="expenseAddLineBtn">＋ 区間を追加</button>
         </div>
-        <div class="expense-history-hint">※ 出張時は各区間に「利用日」を指定できます。「↔往復」は複数日出張なら復路を終了日に自動設定します。履歴候補は選択後に「履歴削除」で候補だけ削除できます（登録済みの経費メモには影響しません）。</div>
+        <div class="expense-history-hint">※ Ver.6.8.8では、カレンダーで選んだ日を新しく追加する区間の「利用日」に自動設定します。保存済み区間の日付は変更しません。「↔往復」は複数日出張なら復路を終了日に自動設定します。履歴候補は選択後に「履歴削除」で候補だけ削除できます（登録済みの経費メモには影響しません）。</div>
 
         <div id="expenseTripExtras" class="expense-trip-box" hidden>
           <div class="expense-section-label">出張手当・その他経費</div>
@@ -3795,7 +3795,7 @@
         <div class="app-info-panel">
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.2</span><br>
           無料プラン対応・写真圧縮保存版<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
-          Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
+          Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月24日
         </div>
       </div>
@@ -3900,7 +3900,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.7";
+    const APP_VERSION = "6.8.8";
     const APP_BUILD_DATE = "2026-08-24";
 
     const firebaseConfig = {
@@ -3960,6 +3960,8 @@
     let currentAttachments = [];
     let dropActionResolver = null;
     let expenseEditingSchedule = null;
+    // Ver.6.8.8: 経費ボタンを押したカレンダー上の日付。新規明細の既定利用日にだけ使う。
+    let expenseEntryDate = "";
     // Ver.6.8.6: 移動明細はDOMだけに依存せず、編集中の配列を正本として保持する。
     let expenseDraftLines = [];
     let expenseDraftLineSeq = 0;
@@ -4095,7 +4097,10 @@
       document.getElementById("btnOpenCsv").addEventListener("click", () => { closeModal("settingsModal"); prepareCsvModal(); openModal("csvModal"); });
       document.getElementById("btnExportCsv").addEventListener("click", exportCsv);
 
-      document.getElementById("expenseAddLineBtn").addEventListener("click", () => addExpenseLine());
+      document.getElementById("expenseAddLineBtn").addEventListener("click", () => {
+        const isTrip = (document.getElementById("expenseType")?.value || "normal") === "trip";
+        addExpenseLine(isTrip ? { date: getExpenseNewLineDefaultDate() } : {});
+      });
       document.getElementById("expenseSaveBtn").addEventListener("click", saveExpenseMemo);
       document.getElementById("expenseDeleteBtn").addEventListener("click", deleteExpenseMemo);
       document.getElementById("expenseType").addEventListener("change", handleExpenseTypeChange);
@@ -5582,7 +5587,7 @@
         return;
       }
 
-      data.forEach(item => container.appendChild(createScheduleItem(item)));
+      data.forEach(item => container.appendChild(createScheduleItem(item, filterDate || "")));
     }
 
 
@@ -5905,10 +5910,22 @@
       ].map(([value,label]) => `<option value="${value}"${selected===value?" selected":""}>${label}</option>`).join("");
     }
 
+    // Ver.6.8.8: 新規の出張明細は「カレンダーで選んだ入力日」を利用日の初期値にする。
+    function getExpenseNewLineDefaultDate() {
+      const start = expenseEditingSchedule?.startDate || "";
+      const end = expenseEditingSchedule?.endDate || start;
+      const candidate = expenseEntryDate || start;
+      if (candidate && start && end && candidate >= start && candidate <= end) return candidate;
+      return start;
+    }
+
     function addExpenseLine(data = {}, insertAfterRow = null) {
       const container = document.getElementById("expenseLines");
       if (!container) return null;
-      const model = makeExpenseDraftLine(data);
+      const inputData = { ...(data || {}) };
+      const isTripNow = (document.getElementById("expenseType")?.value || "normal") === "trip";
+      if (isTripNow && !inputData.date) inputData.date = getExpenseNewLineDefaultDate();
+      const model = makeExpenseDraftLine(inputData);
       if (insertAfterRow) {
         const afterModel = getExpenseDraftLineByRow(insertAfterRow);
         const afterIndex = afterModel ? expenseDraftLines.findIndex(line => line._id === afterModel._id) : -1;
@@ -5944,7 +5961,7 @@
       const scheduleStartDate = expenseEditingSchedule?.startDate || "";
       const scheduleEndDate = expenseEditingSchedule?.endDate || scheduleStartDate;
       if (lineDateInput) {
-        lineDateInput.value = model.date || scheduleStartDate;
+        lineDateInput.value = model.date || getExpenseNewLineDefaultDate() || scheduleStartDate;
         if (scheduleStartDate) lineDateInput.min = scheduleStartDate;
         if (scheduleEndDate) lineDateInput.max = scheduleEndDate;
       }
@@ -6100,13 +6117,13 @@
       }
 
       expenseConfirmedType = nextType;
-      // 通常交通費→出張へ移動した場合、空の日付は出張開始日を基準にする。
+      // Ver.6.8.8: 通常交通費→出張へ移動した場合も、空の日付だけ入力基準日を使う。保存済み日付は上書きしない。
       if (nextType === "trip") {
-        const startDate = expenseEditingSchedule?.startDate || "";
-        expenseDraftLines.forEach(line => { if (!line.date) line.date = startDate; });
+        const defaultDate = getExpenseNewLineDefaultDate();
+        expenseDraftLines.forEach(line => { if (!line.date) line.date = defaultDate; });
         document.querySelectorAll("#expenseLines .expense-line").forEach(row => {
           const input = row.querySelector(".expense-line-date");
-          if (input && !input.value) input.value = startDate;
+          if (input && !input.value) input.value = defaultDate;
           syncExpenseDraftLineFromRow(row);
         });
       }
@@ -6150,13 +6167,19 @@
       if (target) target.textContent = formatExpenseMoney(transport + extras);
     }
 
-    function openExpenseModal(item) {
+    function openExpenseModal(item, entryDate = "") {
       if (!item) return;
       expenseEditingSchedule = item;
+      const scheduleStart = item.startDate || "";
+      const scheduleEnd = item.endDate || scheduleStart;
+      expenseEntryDate = entryDate && scheduleStart && scheduleEnd && entryDate >= scheduleStart && entryDate <= scheduleEnd
+        ? entryDate
+        : scheduleStart;
       const expense = getExpenseMemo(item);
       const category = getCategoryForSchedule(item);
       document.getElementById("expenseScheduleTitle").textContent = item.title || "無題";
-      document.getElementById("expenseScheduleDate").textContent = `${getScheduleDateRangeText(item)}　${getScheduleTimeText(item)}`;
+      document.getElementById("expenseScheduleDate").textContent = `${getScheduleDateRangeText(item)}　${getScheduleTimeText(item)}`
+        + (expenseEntryDate ? `　｜入力基準日：${formatJapaneseDate(expenseEntryDate)}` : "");
       document.getElementById("expenseType").value = expense?.type || (category?.legacyKey === "trip" ? "trip" : "normal");
       expenseConfirmedType = document.getElementById("expenseType").value || "normal";
       updateExpenseTypeOwnerNotice();
@@ -6177,7 +6200,7 @@
       lines.innerHTML = "";
       expenseDraftLines = [];
       const storedLines = getStoredExpenseLines(expense);
-      const baseLines = storedLines.length ? storedLines : [{}];
+      const baseLines = storedLines.length ? storedLines : [{ date: expenseEntryDate || item.startDate || "" }];
       const isTripExpense = (document.getElementById("expenseType")?.value || "normal") === "trip";
       const savedLines = isTripExpense
         ? getExpenseLinesWithTripDates({ lines: baseLines }, item.startDate || "", item.endDate || item.startDate || "")
@@ -7000,7 +7023,7 @@ ${error.message||error}`); }
     }
 
 
-    function createScheduleItem(item) {
+    function createScheduleItem(item, expenseContextDate = "") {
       const category = getCategoryForSchedule(item);
       const element = document.createElement("div");
       element.className = "schedule-item";
@@ -7075,7 +7098,7 @@ ${error.message||error}`); }
       expense.type = "button";
       expense.className = `btn-expense${getExpenseMemo(item) ? " has-expense" : ""}`;
       expense.textContent = "💰経費";
-      expense.addEventListener("click", () => openExpenseModal(item));
+      expense.addEventListener("click", () => openExpenseModal(item, expenseContextDate));
 
       const edit = document.createElement("button");
       edit.type = "button";
@@ -7191,7 +7214,7 @@ ${error.message||error}`); }
         expense.type = "button";
         expense.className = `btn-expense${getExpenseMemo(item) ? " has-expense" : ""}`;
         expense.textContent = "💰経費";
-        expense.addEventListener("click", () => openExpenseModal(item));
+        expense.addEventListener("click", () => openExpenseModal(item, dateStr));
 
         const edit = document.createElement("button");
         edit.type = "button";
@@ -7678,6 +7701,7 @@ ${error.message||error}`); }
         detailSelectedDate = null;
       }
       if (id === "expenseModal") {
+        expenseEntryDate = "";
         expenseSnapshotReady = false;
         expenseOriginalFormSnapshot = "";
       }
