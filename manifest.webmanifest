@@ -1,12 +1,12 @@
 {
   "name": "Q.T.S Scheduler",
-  "short_name": "QTS",
-  "description": "Q.T.S専用スケジュール・年間案件管理アプリ",
-  "start_url": "./",
+  "short_name": "Q.T.S",
+  "description": "Q.T.S Scheduler - Work & Project Planner",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#eef3f5",
-  "theme_color": "#0d2f57",
+  "background_color": "#0b2f4d",
+  "theme_color": "#0b2f4d",
   "icons": [
     {
       "src": "icon-192.png",
@@ -32,6 +32,5 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ],
-  "id": "./"
+  ]
 }
