@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.8.15</title>
+  <title>Q.T.S Scheduler — Ver.6.8.16</title>
   <link rel="icon" href="favicon.ico?v=655" sizes="any">
   <link rel="shortcut icon" href="favicon.ico?v=655" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=655">
@@ -1733,6 +1733,56 @@
       border-radius: 8px;
     }
 
+    /* ===== Ver.6.8.16 年間予定表Excel・PC保存先 ===== */
+    .annual-excel-folder-row,
+    .annual-excel-master-row {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 9px;
+      align-items: center;
+      margin-bottom: 9px;
+    }
+
+    .annual-excel-folder-info {
+      min-width: 0;
+      padding: 9px 11px;
+      color: #29465f;
+      background: #fff;
+      border: 1px solid #c7d5df;
+      border-radius: 8px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .annual-excel-secondary-btn {
+      padding: 9px 12px;
+      border: 1px solid #aabcc9;
+      border-radius: 8px;
+      background: #fff;
+      color: #29465f;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .annual-excel-secondary-btn:hover { background: #f2f6f8; }
+
+    .annual-excel-master-help {
+      margin: -2px 0 9px;
+      color: #6a7b88;
+      font-size: .72rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 700px) {
+      .annual-excel-folder-row,
+      .annual-excel-master-row,
+      .annual-excel-sync-controls {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .annual-excel-sync-status {
       min-height: 1.35em;
       margin-top: 8px;
@@ -3451,14 +3501,23 @@
           <span class="pc-only-badge">PC用</span>
         </div>
         <p class="annual-excel-sync-note">
-          PC内の年間予定表Excelを選び、Q.T.Sの年間案件だけを「入力シート」へ反映します。
-          カレンダーの通常予定は対象外です。B列「番号」と年間予定表本体・数式・色・レイアウトには触れず、C～I相当の案件情報だけを見出し名で探して更新します。元ファイルは上書きせず、更新版を別ファイルとして作成します。
+          このPCで年間予定表の保存先フォルダを一度設定し、基準Excelを登録します。以後はQ.T.Sの年間案件だけを「入力シート」へ反映し、同じExcelを更新します。
+          更新前のExcelは「バックアップ」フォルダへ日時付きで自動保存します。カレンダーの通常予定、B列「番号」、年間予定表本体・数式・色・レイアウトには触れません。
         </p>
-        <div class="annual-excel-sync-controls">
-          <input class="annual-excel-file" type="file" id="annualExcelFile" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" aria-label="年間予定表Excelを選択">
-          <button type="button" class="btn-primary" id="annualExcelUpdateBtn" disabled>📊 更新版Excelを作成</button>
+        <div class="annual-excel-folder-row">
+          <button type="button" class="annual-excel-secondary-btn" id="annualExcelFolderBtn">📁 保存先フォルダを設定</button>
+          <div class="annual-excel-folder-info" id="annualExcelFolderInfo">保存先：未設定</div>
         </div>
-        <div class="annual-excel-sync-status info" id="annualExcelSyncStatus">Excelを選択してください。案件No.を共通キーにして更新します。</div>
+        <div class="annual-excel-master-row">
+          <input class="annual-excel-file" type="file" id="annualExcelFile" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" aria-label="基準にする年間予定表Excelを選択">
+          <button type="button" class="annual-excel-secondary-btn" id="annualExcelRegisterBtn" disabled>📄 このExcelを基準ファイルに登録</button>
+        </div>
+        <div class="annual-excel-master-help">初回だけ、現在使っている年間予定表Excelを選んで登録してください。登録後は毎回ファイルを選ぶ必要はありません。</div>
+        <div class="annual-excel-sync-controls">
+          <div class="annual-excel-folder-info" id="annualExcelMasterInfo">基準ファイル：未登録</div>
+          <button type="button" class="btn-primary" id="annualExcelUpdateBtn" disabled>📊 年間予定表を更新</button>
+        </div>
+        <div class="annual-excel-sync-status info" id="annualExcelSyncStatus">保存先フォルダと基準Excelを登録してください。</div>
       </div>
 
       <div class="annual-legend">
@@ -4198,8 +4257,8 @@
           <button type="button" class="btn-secondary" id="btnOpenCsv">📤 CSV出力</button>
         </div>
         <div class="app-info-panel">
-          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.15</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
+          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.16</span><br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
           Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月26日
         </div>
@@ -4305,7 +4364,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.15";
+    const APP_VERSION = "6.8.16";
     const APP_BUILD_DATE = "2026-08-26";
 
     const firebaseConfig = {
@@ -4468,7 +4527,10 @@
       document.getElementById("annualSearch").addEventListener("input", filterAnnualProjects);
       document.getElementById("annualYearFilter").addEventListener("change", filterAnnualProjects);
       document.getElementById("annualExcelFile").addEventListener("change", handleAnnualExcelSelection);
+      document.getElementById("annualExcelFolderBtn").addEventListener("click", chooseAnnualExcelFolder);
+      document.getElementById("annualExcelRegisterBtn").addEventListener("click", registerAnnualExcelMasterFile);
       document.getElementById("annualExcelUpdateBtn").addEventListener("click", updateAnnualExcelFile);
+      initializeAnnualExcelStorage();
       renderAnnualProjectIds();
       document.querySelectorAll(".annual-project-card").forEach(card => {
         card.addEventListener("click", () => openProjectDetail(card));
@@ -8942,20 +9004,234 @@ ${error.message||error}`); }
       el.className = `annual-excel-sync-status ${type}`;
     }
 
+    // ===== Ver.6.8.16 PCごとの年間予定表保存先 =====
+    const ANNUAL_EXCEL_DB_NAME = "qtsAnnualExcelLocal";
+    const ANNUAL_EXCEL_DB_STORE = "handles";
+    const ANNUAL_EXCEL_DIR_KEY = "annualExcelDirectory";
+    const ANNUAL_EXCEL_MASTER_KEY = "qtsAnnualExcelMasterName";
+    let annualExcelDirectoryHandle = null;
+
+    function annualExcelFileSystemSupported() {
+      return typeof window.showDirectoryPicker === "function" && "indexedDB" in window;
+    }
+
+    function openAnnualExcelDb() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(ANNUAL_EXCEL_DB_NAME, 1);
+        request.onupgradeneeded = () => {
+          const db = request.result;
+          if (!db.objectStoreNames.contains(ANNUAL_EXCEL_DB_STORE)) db.createObjectStore(ANNUAL_EXCEL_DB_STORE);
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error || new Error("PC保存先の設定を読み込めませんでした。"));
+      });
+    }
+
+    async function saveAnnualExcelDirectoryHandle(handle) {
+      const db = await openAnnualExcelDb();
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(ANNUAL_EXCEL_DB_STORE, "readwrite");
+        tx.objectStore(ANNUAL_EXCEL_DB_STORE).put(handle, ANNUAL_EXCEL_DIR_KEY);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error || new Error("保存先設定を記録できませんでした。"));
+        tx.onabort = () => reject(tx.error || new Error("保存先設定を記録できませんでした。"));
+      });
+      db.close();
+    }
+
+    async function loadAnnualExcelDirectoryHandle() {
+      const db = await openAnnualExcelDb();
+      const handle = await new Promise((resolve, reject) => {
+        const tx = db.transaction(ANNUAL_EXCEL_DB_STORE, "readonly");
+        const request = tx.objectStore(ANNUAL_EXCEL_DB_STORE).get(ANNUAL_EXCEL_DIR_KEY);
+        request.onsuccess = () => resolve(request.result || null);
+        request.onerror = () => reject(request.error || new Error("保存先設定を読み込めませんでした。"));
+      });
+      db.close();
+      return handle;
+    }
+
+    async function ensureAnnualExcelDirectoryPermission(requestPermission = false) {
+      if (!annualExcelDirectoryHandle) return false;
+      const options = { mode: "readwrite" };
+      if (typeof annualExcelDirectoryHandle.queryPermission === "function") {
+        const current = await annualExcelDirectoryHandle.queryPermission(options);
+        if (current === "granted") return true;
+      }
+      if (requestPermission && typeof annualExcelDirectoryHandle.requestPermission === "function") {
+        return (await annualExcelDirectoryHandle.requestPermission(options)) === "granted";
+      }
+      return false;
+    }
+
+    function getAnnualExcelMasterName() {
+      return String(localStorage.getItem(ANNUAL_EXCEL_MASTER_KEY) || "").trim();
+    }
+
+    function refreshAnnualExcelStorageUi() {
+      const folderInfo = document.getElementById("annualExcelFolderInfo");
+      const masterInfo = document.getElementById("annualExcelMasterInfo");
+      const registerBtn = document.getElementById("annualExcelRegisterBtn");
+      const updateBtn = document.getElementById("annualExcelUpdateBtn");
+      const selectedFile = document.getElementById("annualExcelFile")?.files?.[0] || null;
+      const masterName = getAnnualExcelMasterName();
+
+      if (folderInfo) folderInfo.textContent = annualExcelDirectoryHandle ? `保存先：${annualExcelDirectoryHandle.name}` : "保存先：未設定";
+      if (masterInfo) masterInfo.textContent = masterName ? `基準ファイル：${masterName}` : "基準ファイル：未登録";
+      if (registerBtn) registerBtn.disabled = !(annualExcelDirectoryHandle && selectedFile && /\.xlsx$/i.test(selectedFile.name));
+      if (updateBtn) updateBtn.disabled = !(annualExcelFileSystemSupported() && annualExcelDirectoryHandle && masterName);
+    }
+
+    async function initializeAnnualExcelStorage() {
+      if (!annualExcelFileSystemSupported()) {
+        refreshAnnualExcelStorageUi();
+        setAnnualExcelSyncStatus("PC保存機能は最新のChrome / Edgeでご利用ください。", "error");
+        return;
+      }
+      try {
+        annualExcelDirectoryHandle = await loadAnnualExcelDirectoryHandle();
+        refreshAnnualExcelStorageUi();
+        if (annualExcelDirectoryHandle && getAnnualExcelMasterName()) {
+          setAnnualExcelSyncStatus("このPCの保存先と基準Excelを記憶しています。必要なら更新ボタンを押してください。", "success");
+        } else if (annualExcelDirectoryHandle) {
+          setAnnualExcelSyncStatus("保存先は設定済みです。初回だけ基準にする年間予定表Excelを登録してください。", "info");
+        }
+      } catch (error) {
+        console.warn("annual excel local settings load error", error);
+        refreshAnnualExcelStorageUi();
+        setAnnualExcelSyncStatus("保存先設定を読み込めませんでした。もう一度フォルダを設定してください。", "error");
+      }
+    }
+
+    async function chooseAnnualExcelFolder() {
+      if (!annualExcelFileSystemSupported()) {
+        setAnnualExcelSyncStatus("この機能は最新のChrome / Edgeでご利用ください。", "error");
+        return;
+      }
+      try {
+        const handle = await window.showDirectoryPicker({ mode: "readwrite" });
+        annualExcelDirectoryHandle = handle;
+        await saveAnnualExcelDirectoryHandle(handle);
+
+        let masterName = getAnnualExcelMasterName();
+        if (masterName) {
+          try {
+            await handle.getFileHandle(masterName);
+          } catch (error) {
+            if (error?.name === "NotFoundError") {
+              localStorage.removeItem(ANNUAL_EXCEL_MASTER_KEY);
+              masterName = "";
+            } else {
+              throw error;
+            }
+          }
+        }
+
+        refreshAnnualExcelStorageUi();
+        setAnnualExcelSyncStatus(
+          masterName
+            ? `保存先を「${handle.name}」に変更しました。基準ファイルは ${masterName} です。`
+            : `保存先を「${handle.name}」に設定しました。次に現在の年間予定表Excelを選んで基準ファイルに登録してください。`,
+          "success"
+        );
+      } catch (error) {
+        if (error?.name === "AbortError") return;
+        console.error("annual excel folder select error", error);
+        setAnnualExcelSyncStatus(`保存先フォルダを設定できませんでした：${error.message || error}`, "error");
+      }
+    }
+
     function handleAnnualExcelSelection(event) {
       const file = event.target.files?.[0] || null;
-      const button = document.getElementById("annualExcelUpdateBtn");
-      button.disabled = !file;
+      refreshAnnualExcelStorageUi();
       if (!file) {
-        setAnnualExcelSyncStatus("Excelを選択してください。案件No.を共通キーにして更新します。", "info");
+        setAnnualExcelSyncStatus("基準にする年間予定表Excelを選択してください。", "info");
         return;
       }
       if (!/\.xlsx$/i.test(file.name)) {
-        button.disabled = true;
         setAnnualExcelSyncStatus(".xlsx形式の年間予定表を選択してください。", "error");
         return;
       }
-      setAnnualExcelSyncStatus(`選択中：${file.name}　「更新版Excelを作成」で入力シートだけを更新します。`, "success");
+      if (!annualExcelDirectoryHandle) {
+        setAnnualExcelSyncStatus(`「${file.name}」を選択しました。先に保存先フォルダを設定してください。`, "info");
+        return;
+      }
+      setAnnualExcelSyncStatus(`選択中：${file.name}　「このExcelを基準ファイルに登録」を押してください。`, "success");
+    }
+
+    function qtsAnnualBackupName(filename) {
+      const now = new Date();
+      const stamp = [
+        now.getFullYear(),
+        String(now.getMonth() + 1).padStart(2, "0"),
+        String(now.getDate()).padStart(2, "0"),
+        "_",
+        String(now.getHours()).padStart(2, "0"),
+        String(now.getMinutes()).padStart(2, "0"),
+        String(now.getSeconds()).padStart(2, "0")
+      ].join("");
+      const base = String(filename || "年間予定表.xlsx").replace(/\.xlsx$/i, "");
+      return `${qtsSafeFileName(base)}_${stamp}.xlsx`;
+    }
+
+    async function qtsWriteFileHandle(fileHandle, bytes) {
+      const writable = await fileHandle.createWritable();
+      try {
+        await writable.write(new Blob([bytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
+        await writable.close();
+      } catch (error) {
+        try { await writable.abort(); } catch (_) {}
+        throw error;
+      }
+    }
+
+    async function qtsBackupExistingAnnualExcel(filename, originalBytes) {
+      const backupDir = await annualExcelDirectoryHandle.getDirectoryHandle("バックアップ", { create: true });
+      const backupHandle = await backupDir.getFileHandle(qtsAnnualBackupName(filename), { create: true });
+      await qtsWriteFileHandle(backupHandle, originalBytes);
+    }
+
+    async function registerAnnualExcelMasterFile() {
+      const file = document.getElementById("annualExcelFile")?.files?.[0] || null;
+      const button = document.getElementById("annualExcelRegisterBtn");
+      if (!file || !/\.xlsx$/i.test(file.name)) {
+        setAnnualExcelSyncStatus("先に.xlsx形式の年間予定表Excelを選択してください。", "error");
+        return;
+      }
+      if (!annualExcelDirectoryHandle) {
+        setAnnualExcelSyncStatus("先に保存先フォルダを設定してください。", "error");
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "登録中…";
+      try {
+        if (!(await ensureAnnualExcelDirectoryPermission(true))) throw new Error("保存先フォルダへの書き込みが許可されていません。");
+        const bytes = new Uint8Array(await file.arrayBuffer());
+
+        let existingBytes = null;
+        try {
+          const existingHandle = await annualExcelDirectoryHandle.getFileHandle(file.name);
+          const existingFile = await existingHandle.getFile();
+          if (existingFile.size > 0) existingBytes = new Uint8Array(await existingFile.arrayBuffer());
+        } catch (error) {
+          if (error?.name !== "NotFoundError") throw error;
+        }
+        if (existingBytes) await qtsBackupExistingAnnualExcel(file.name, existingBytes);
+
+        const targetHandle = await annualExcelDirectoryHandle.getFileHandle(file.name, { create: true });
+        await qtsWriteFileHandle(targetHandle, bytes);
+        localStorage.setItem(ANNUAL_EXCEL_MASTER_KEY, file.name);
+        document.getElementById("annualExcelFile").value = "";
+        refreshAnnualExcelStorageUi();
+        setAnnualExcelSyncStatus(`基準ファイル「${file.name}」を登録しました。以後は「年間予定表を更新」だけで更新できます。`, "success");
+      } catch (error) {
+        console.error("annual excel master register error", error);
+        setAnnualExcelSyncStatus(`基準Excelを登録できませんでした：${error.message || error}`, "error");
+      } finally {
+        button.textContent = "📄 このExcelを基準ファイルに登録";
+        refreshAnnualExcelStorageUi();
+      }
     }
 
     function getAnnualProjectExcelRows() {
@@ -9207,11 +9483,10 @@ ${error.message||error}`); }
     }
 
     async function updateAnnualExcelFile() {
-      const fileInput = document.getElementById("annualExcelFile");
       const button = document.getElementById("annualExcelUpdateBtn");
-      const file = fileInput?.files?.[0] || null;
-      if (!file) {
-        setAnnualExcelSyncStatus("先に年間予定表Excelを選択してください。", "error");
+      const masterName = getAnnualExcelMasterName();
+      if (!annualExcelDirectoryHandle || !masterName) {
+        setAnnualExcelSyncStatus("先に保存先フォルダと基準Excelを登録してください。", "error");
         return;
       }
       if (typeof DecompressionStream === "undefined") {
@@ -9221,16 +9496,26 @@ ${error.message||error}`); }
 
       button.disabled = true;
       button.textContent = "更新中…";
-      setAnnualExcelSyncStatus("Excelの入力シートを確認しています…。元ファイルは変更しません。", "info");
+      setAnnualExcelSyncStatus(`「${masterName}」を確認しています…。更新前ファイルは自動バックアップします。`, "info");
 
       try {
-        // 状態の読み込みが遅れていた場合にも、Excelへ最新状態を反映する。
+        if (!(await ensureAnnualExcelDirectoryPermission(true))) throw new Error("保存先フォルダへの書き込みが許可されていません。");
+
+        // 状態・詳細納期の読み込みが遅れていた場合にも最新情報をExcelへ反映する。
         await loadAnnualProjectStatuses();
         const projects = getAnnualProjectExcelRows();
         if (!projects.length) throw new Error("Q.T.S側の年間案件が見つかりません。");
 
-        const bytes = new Uint8Array(await file.arrayBuffer());
-        const entries = await qtsUnzip(bytes);
+        let masterHandle;
+        try {
+          masterHandle = await annualExcelDirectoryHandle.getFileHandle(masterName);
+        } catch (error) {
+          if (error?.name === "NotFoundError") throw new Error(`基準ファイル「${masterName}」が保存先フォルダに見つかりません。もう一度基準Excelを登録してください。`);
+          throw error;
+        }
+        const file = await masterHandle.getFile();
+        const originalBytes = new Uint8Array(await file.arrayBuffer());
+        const entries = await qtsUnzip(originalBytes);
         const map = new Map(entries.map(entry => [entry.name, entry]));
         const decoder = new TextDecoder("utf-8");
         const encoder = new TextEncoder();
@@ -9244,23 +9529,25 @@ ${error.message||error}`); }
         sheetEntry.data = encoder.encode(result.xml);
 
         const workbookEntry = map.get("xl/workbook.xml");
-        if (workbookEntry) {
-          workbookEntry.data = encoder.encode(qtsForceRecalc(decoder.decode(workbookEntry.data)));
-        }
+        if (workbookEntry) workbookEntry.data = encoder.encode(qtsForceRecalc(decoder.decode(workbookEntry.data)));
 
         const out = qtsZipStore(entries);
-        const baseName = file.name.replace(/\.xlsx$/i, "");
-        qtsDownloadBytes(out, `${qtsSafeFileName(baseName)}_QTS更新.xlsx`);
+
+        // バックアップに成功してから基準ファイルを上書きする。
+        await qtsBackupExistingAnnualExcel(masterName, originalBytes);
+        await qtsWriteFileHandle(masterHandle, out);
+
         setAnnualExcelSyncStatus(
-          `完了：${projects.length}案件を確認（既存更新 ${result.updated}件／新規追加 ${result.added}件／案件No初回紐付け ${result.migratedIds}件）。更新版をダウンロードしました。`,
+          `完了：「${masterName}」を更新しました（既存更新 ${result.updated}件／新規追加 ${result.added}件／案件No初回紐付け ${result.migratedIds}件）。更新前のExcelは「バックアップ」フォルダに保存済みです。`,
           "success"
         );
       } catch (error) {
         console.error("annual excel update error", error);
-        setAnnualExcelSyncStatus(`Excel更新に失敗しました：${error.message || error}`, "error");
+        const extra = /writable|write|permission|許可/i.test(String(error?.message || error)) ? " Excelを開いている場合は閉じてから再実行してください。" : "";
+        setAnnualExcelSyncStatus(`Excel更新に失敗しました：${error.message || error}${extra}`, "error");
       } finally {
-        button.disabled = false;
-        button.textContent = "📊 更新版Excelを作成";
+        button.textContent = "📊 年間予定表を更新";
+        refreshAnnualExcelStorageUi();
       }
     }
 
