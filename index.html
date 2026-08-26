@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Q.T.S Scheduler — Ver.6.8.11</title>
-  <link rel="icon" href="favicon.ico?v=6811" sizes="any">
-  <link rel="shortcut icon" href="favicon.ico?v=6811" type="image/x-icon">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=6811">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=6811">
-  <link rel="manifest" href="manifest.webmanifest?v=6811">
+  <link rel="icon" href="favicon.ico?v=655" sizes="any">
+  <link rel="shortcut icon" href="favicon.ico?v=655" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=655">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=655">
+  <link rel="manifest" href="manifest.webmanifest?v=655">
   <meta name="theme-color" content="#4a301f">
 
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -1116,7 +1116,7 @@
       border-color: #4d321f;
     }
 
-    /* Ver.6.8.11: 木目ヘッダー上の年月は白字で固定 */
+    /* Ver.6.8.10: 木目ヘッダー上の年月は白字で固定 */
     .calendar-header h2 {
       color: #fffaf1 !important;
       text-shadow: 0 1px 2px rgba(45, 25, 12, .45);
@@ -1721,6 +1721,21 @@
       margin-top: 5px;
       color: #657687;
       font-size: .78rem;
+    }
+
+    /* ===== Ver.6.8.11 案件No ===== */
+    .annual-project-id {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 6px;
+      padding: 3px 7px;
+      color: #36536d;
+      font-size: .70rem;
+      font-weight: 750;
+      letter-spacing: .02em;
+      background: #eef3f7;
+      border: 1px solid #d7e1e8;
+      border-radius: 999px;
     }
 
     .annual-project-timing {
@@ -2867,7 +2882,7 @@
         <div class="auth-mark">QTS</div>
         <div>
           <h2>Q.T.S Scheduler</h2>
-          <p id="loginVersion">Ver.6.8.11 — ログイン</p>
+          <p id="loginVersion">Ver.6.8.10 — ログイン</p>
         </div>
       </div>
 
@@ -2894,7 +2909,7 @@
   </div>
 
   <header class="header-banner">
-    <h1>Q.T.S Scheduler</h1><p class="header-subtitle">WORK &amp; PROJECT PLANNER</p><div class="version-badge" id="headerVersion">Ver.6.8.11</div>
+    <h1>Q.T.S Scheduler</h1><p class="header-subtitle">WORK &amp; PROJECT PLANNER</p><div class="version-badge" id="headerVersion">Ver.6.8.10</div>
   </header>
 
   <div id="userSessionBar" class="user-session-bar" hidden>
@@ -3183,7 +3198,7 @@
       <div class="annual-controls">
         <div class="search-wrap">
           <span class="search-icon">🔍</span>
-          <input type="search" id="annualSearch" placeholder="案件名・担当者・時期で検索">
+          <input type="search" id="annualSearch" placeholder="案件名・案件No・担当者・時期で検索">
         </div>
         <select id="annualYearFilter">
           <option value="all">すべての年度</option>
@@ -3198,6 +3213,7 @@
       <div id="annualProjectList" class="annual-project-list">
       <article class="annual-project-card"
         tabindex="0" role="button"
+        data-project-id="QTS-2026-0001"
         data-project-no="1"
         data-project-name="東京ステーションホテル"
         data-project-owner="寺門"
@@ -3216,6 +3232,7 @@
 
       <article class="annual-project-card"
         tabindex="0" role="button"
+        data-project-id="QTS-2026-0002"
         data-project-no="2"
         data-project-name="帝国ホテル"
         data-project-owner="寺門"
@@ -3234,6 +3251,7 @@
 
       <article class="annual-project-card"
         tabindex="0" role="button"
+        data-project-id="QTS-2026-0003"
         data-project-no="3"
         data-project-name="広島サンフラワー（富良野）"
         data-project-owner="寺門"
@@ -3252,6 +3270,7 @@
 
       <article class="annual-project-card"
         tabindex="0" role="button"
+        data-project-id="QTS-2026-0004"
         data-project-no="5"
         data-project-name="ホテル日航福岡10F"
         data-project-owner="金子"
@@ -3270,6 +3289,7 @@
 
       <article class="annual-project-card"
         tabindex="0" role="button"
+        data-project-id="QTS-2026-0005"
         data-project-no="6"
         data-project-name="モーニングパーク主税町"
         data-project-owner="金子"
@@ -3288,6 +3308,7 @@
 
       <article class="annual-project-card"
         tabindex="0" role="button"
+        data-project-id="QTS-2026-0006"
         data-project-no="7"
         data-project-name="コマツ東京本社"
         data-project-owner="金子"
@@ -3306,6 +3327,7 @@
 
       <article class="annual-project-card"
         tabindex="0" role="button"
+        data-project-id="QTS-2026-0007"
         data-project-no="8"
         data-project-name="みゆきビル"
         data-project-owner="金子"
@@ -3324,6 +3346,7 @@
 
       <article class="annual-project-card future"
         tabindex="0" role="button"
+        data-project-id="QTS-2026-0008"
         data-project-no="9"
         data-project-name="サンフラワー（札幌）"
         data-project-owner="寺門"
@@ -3342,6 +3365,7 @@
 
       <article class="annual-project-card future"
         tabindex="0" role="button"
+        data-project-id="QTS-2026-0009"
         data-project-no="10"
         data-project-name="裾野500F計画"
         data-project-owner="金子"
@@ -3360,6 +3384,7 @@
 
       <article class="annual-project-card future"
         tabindex="0" role="button"
+        data-project-id="QTS-2026-0010"
         data-project-no="11"
         data-project-name="ホテル日航福岡11F"
         data-project-owner="金子"
@@ -3378,6 +3403,7 @@
 
       <article class="annual-project-card future"
         tabindex="0" role="button"
+        data-project-id="QTS-2026-0011"
         data-project-no="12"
         data-project-name="ホテル日航福岡12F"
         data-project-owner="金子"
@@ -3396,6 +3422,7 @@
 
       <article class="annual-project-card future"
         tabindex="0" role="button"
+        data-project-id="QTS-2026-0012"
         data-project-no="13"
         data-project-name="ホテル日航福岡14F"
         data-project-owner="金子"
@@ -3815,9 +3842,9 @@
           <button type="button" class="btn-secondary" id="btnOpenCsv">📤 CSV出力</button>
         </div>
         <div class="app-info-panel">
-          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.11</span><br>
+          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.10</span><br>
           無料プラン対応・写真圧縮保存版<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
-          Ver.6.8.11：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
+          Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月24日
         </div>
       </div>
@@ -3923,7 +3950,7 @@
 
   <script>
     const APP_VERSION = "6.8.11";
-    const APP_BUILD_DATE = "2026-08-25";
+    const APP_BUILD_DATE = "2026-08-26";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCL6VijHRZryh7DdxNVcBdDXhRJtx2JU-4",
@@ -4084,6 +4111,7 @@
       document.getElementById("expenseExportTravelBtn").addEventListener("click", exportTravelExpenseExcel);
       document.getElementById("annualSearch").addEventListener("input", filterAnnualProjects);
       document.getElementById("annualYearFilter").addEventListener("change", filterAnnualProjects);
+      renderAnnualProjectIds();
       document.querySelectorAll(".annual-project-card").forEach(card => {
         card.addEventListener("click", () => openProjectDetail(card));
         card.addEventListener("keydown", e => {
@@ -7744,7 +7772,7 @@ ${error.message||error}`); }
     }
 
 
-    // ===== Ver.6.8.11 PC時刻入力・連続加算 =====
+    // ===== Ver.6.8.10 PC時刻入力・連続加算 =====
     function normalizeScheduleTimeText(value, allow24 = false) {
       const raw = String(value || "").trim().replace(/[：．.]/g, ":");
       if (!raw) return "";
@@ -7957,6 +7985,46 @@ ${error.message||error}`); }
     let activeProjectCard = null;
     let activeProjectContactData = null;
 
+    // ===== Ver.6.8.11 案件No自動採番の土台 =====
+    // 既存案件はHTML内に固定IDを保持し、並び順（左の番号）が変わっても案件Noは変えない。
+    // 今後、年間案件の新規登録機能を接続するときは issueNextProjectId() を使い、
+    // 発行したIDを案件データ側へ保存する。状態は日付連動させず手動管理とする。
+    function parseProjectId(projectId) {
+      const match = String(projectId || "").match(/^QTS-(\d{4})-(\d{4,})$/);
+      return match ? { year: Number(match[1]), sequence: Number(match[2]) } : null;
+    }
+
+    function getNextProjectSequence(year) {
+      return Array.from(document.querySelectorAll(".annual-project-card"))
+        .map(card => parseProjectId(card.dataset.projectId))
+        .filter(value => value && value.year === Number(year))
+        .reduce((max, value) => Math.max(max, value.sequence), 0) + 1;
+    }
+
+    function issueNextProjectId(year = new Date().getFullYear()) {
+      const safeYear = Number(year) || new Date().getFullYear();
+      const next = getNextProjectSequence(safeYear);
+      return `QTS-${safeYear}-${String(next).padStart(4, "0")}`;
+    }
+
+    function renderAnnualProjectIds() {
+      const cards = Array.from(document.querySelectorAll(".annual-project-card"));
+      cards.forEach(card => {
+        // 移行用フォールバック。通常はHTMLに固定IDが入っているためここでは採番されない。
+        if (!card.dataset.projectId) card.dataset.projectId = issueNextProjectId();
+
+        const body = card.querySelector(".annual-project-name")?.parentElement;
+        if (!body) return;
+        let label = body.querySelector(".annual-project-id");
+        if (!label) {
+          label = document.createElement("div");
+          label.className = "annual-project-id";
+          body.appendChild(label);
+        }
+        label.textContent = `案件No. ${card.dataset.projectId}`;
+      });
+    }
+
     function switchMainView(viewName) {
       const safeView = ["schedule", "annual", "expense"].includes(viewName) ? viewName : "schedule";
       const scheduleView = document.getElementById("scheduleView");
@@ -7982,6 +8050,7 @@ ${error.message||error}`); }
       activeProjectCard = card;
 
       const no = card.dataset.projectNo || "-";
+      const projectId = card.dataset.projectId || "";
       const name = card.dataset.projectName || "";
       const owner = card.dataset.projectOwner || "";
       const year = card.dataset.projectYear || "";
@@ -7990,7 +8059,7 @@ ${error.message||error}`); }
       document.getElementById("projectDetailNo").textContent = no;
       document.getElementById("projectDetailName").textContent = name;
       document.getElementById("projectDetailMeta").textContent =
-        `担当：${owner}　｜　${year}　｜　${timing}`;
+        `${projectId ? `案件No. ${projectId}　｜　` : ""}担当：${owner}　｜　${year}　｜　${timing}`;
 
       const n = normalizeText(name);
       const related = schedules.filter(s => {
@@ -8214,8 +8283,8 @@ ${error.message||error}`); }
       let visibleCount = 0;
 
       cards.forEach(card => {
-        const matchesKeyword = !keyword ||
-          normalizeText(card.dataset.projectSearch).includes(keyword);
+        const searchText = `${card.dataset.projectSearch || ""} ${card.dataset.projectId || ""}`;
+        const matchesKeyword = !keyword || normalizeText(searchText).includes(keyword);
         const isFuture = card.classList.contains("future");
         const matchesYear =
           yearFilter === "all" ||

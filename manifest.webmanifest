@@ -1,24 +1,20 @@
 {
   "name": "Q.T.S Scheduler",
   "short_name": "Q.T.S",
-  "description": "Q.T.S Scheduler - Work & Project Planner",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "./",
   "display": "standalone",
-  "background_color": "#0b2f4d",
-  "theme_color": "#0b2f4d",
+  "background_color": "#f6f4f0",
+  "theme_color": "#4a301f",
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
+      "type": "image/png"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
+      "type": "image/png"
     },
     {
       "src": "icon-maskable-192.png",
