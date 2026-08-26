@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.8.17</title>
+  <title>Q.T.S Scheduler — Ver.6.8.18</title>
   <link rel="icon" href="favicon.ico?v=655" sizes="any">
   <link rel="shortcut icon" href="favicon.ico?v=655" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=655">
@@ -2035,6 +2035,52 @@
       color:#29465f; font-weight:700;
     }
     .project-doc-placeholder span { color:#84919d; font-size:.72rem; font-weight:600; }
+
+    /* ===== Ver.6.8.18 PC案件管理フォルダ・完了案件整理 ===== */
+    .project-local-storage {
+      padding: 12px;
+      border: 1px solid #d5e0e7;
+      border-radius: 11px;
+      background: #f8fafb;
+    }
+    .project-local-storage + .project-local-storage { margin-top: 9px; }
+    .project-local-status {
+      margin: 7px 0 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: #eef3f6;
+      color: #40576b;
+      font-size: .78rem;
+      font-weight: 700;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+    .project-local-actions { display:flex; flex-wrap:wrap; gap:8px; }
+    .project-local-message {
+      min-height: 1.1em;
+      margin-top: 8px;
+      font-size: .76rem;
+      color: #607386;
+    }
+    .project-local-message.success { color:#176d55; font-weight:750; }
+    .project-local-message.error { color:#a23838; font-weight:750; }
+    .project-local-note { margin:8px 0 0; color:#6a7b8b; font-size:.72rem; line-height:1.55; }
+    .annual-local-manager {
+      margin: 14px 0;
+      padding: 14px;
+      border: 1px solid #d2dfe6;
+      border-radius: 13px;
+      background: #f8fbfc;
+    }
+    .annual-local-manager-title {
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom: 8px; color:#173b5d; font-weight:850;
+    }
+    .annual-local-manager-row { display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+    .annual-local-manager-info {
+      flex:1 1 260px; min-width:0; color:#526b7f; font-size:.78rem; font-weight:700; word-break:break-word;
+    }
+    .annual-local-manager-note { margin:8px 0 0; color:#6a7b8b; font-size:.73rem; line-height:1.55; }
     .project-management-section {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(230px, .7fr);
@@ -3492,6 +3538,21 @@
         <div class="annual-excel-sync-status info" id="annualExcelSyncStatus">保存先フォルダと基準Excelを登録してください。</div>
       </div>
 
+      <div class="annual-local-manager">
+        <div class="annual-local-manager-title">
+          <span>🗂️ PC案件管理フォルダ</span>
+          <span class="pc-only-badge">PC専用</span>
+        </div>
+        <div class="annual-local-manager-row">
+          <button type="button" class="annual-excel-secondary-btn" id="projectRootFolderBtn">📁 QTS案件管理フォルダを設定</button>
+          <div class="annual-local-manager-info" id="projectRootFolderInfo">案件管理フォルダ：未設定</div>
+        </div>
+        <p class="annual-local-manager-note">
+          先ほど作成した「QTS案件管理」フォルダを選択してください。このPCだけに記憶し、
+          「進行案件」「完了案件」の整理に使います。年間予定表Excelの設定とは別管理です。
+        </p>
+      </div>
+
       <div class="annual-legend">
         <span>2026年度案件</span>
         <span class="future-legend">来年度以降の案件</span>
@@ -4041,11 +4102,22 @@
         </section>
 
         <section class="project-detail-box">
-          <h4>📎 関連資料</h4>
-          <p class="small-note">図面・見積書・写真を案件単位でまとめるための入口です。</p>
-          <div class="project-doc-placeholder">📐 図面 <span>今後連携</span></div>
-          <div class="project-doc-placeholder">📄 見積書 <span>今後連携</span></div>
-          <div class="project-doc-placeholder">📷 写真 <span>今後連携</span></div>
+          <h4>🗂️ このPCの案件資料</h4>
+          <p class="small-note">資料本体はクラウドへ送らず、このPCの「QTS案件管理」フォルダ内で管理します。</p>
+          <div class="project-local-storage">
+            <strong>保存状態</strong>
+            <div class="project-local-status" id="projectLocalFolderStatus">案件管理フォルダを確認中…</div>
+            <div class="project-local-actions">
+              <button type="button" class="btn-secondary btn-small" id="projectLocalPrepareBtn">📁 案件フォルダを準備</button>
+              <button type="button" class="btn-secondary btn-small" id="projectLocalArchiveBtn">📦 完了案件へ整理</button>
+            </div>
+            <div class="project-local-message" id="projectLocalMessage"></div>
+            <p class="project-local-note">
+              新規作成時は「図面・工程表・現場写真・その他」を自動で用意します。
+              「完了案件へ整理」は案件状態が「完了」または「アーカイブ」のときだけ実行できます。
+              このPCの資料整理は他の利用者のPCには影響しません。
+            </p>
+          </div>
         </section>
       </div>
 
@@ -4212,8 +4284,8 @@
           <button type="button" class="btn-secondary" id="btnOpenCsv">📤 CSV出力</button>
         </div>
         <div class="app-info-panel">
-          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.17</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
+          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.18</span><br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
           Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月26日
         </div>
@@ -4319,7 +4391,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.17";
+    const APP_VERSION = "6.8.18";
     const APP_BUILD_DATE = "2026-08-26";
 
     const firebaseConfig = {
@@ -4485,7 +4557,11 @@
       document.getElementById("annualExcelFolderBtn").addEventListener("click", chooseAnnualExcelFolder);
       document.getElementById("annualExcelRegisterBtn").addEventListener("click", registerAnnualExcelMasterFile);
       document.getElementById("annualExcelUpdateBtn").addEventListener("click", updateAnnualExcelFile);
+      document.getElementById("projectRootFolderBtn").addEventListener("click", chooseProjectRootFolder);
+      document.getElementById("projectLocalPrepareBtn").addEventListener("click", prepareActiveProjectLocalFolder);
+      document.getElementById("projectLocalArchiveBtn").addEventListener("click", archiveActiveProjectLocalFolder);
       initializeAnnualExcelStorage();
+      initializeProjectLocalStorage();
       renderAnnualProjectIds();
       document.querySelectorAll(".annual-project-card").forEach(card => {
         card.addEventListener("click", () => openProjectDetail(card));
@@ -8615,6 +8691,7 @@ ${error.message||error}`); }
 
         applyProjectStatusToCard(activeProjectCard, status);
         setProjectStatusMessage("保存しました。ほかのPCでも同じ状態を読み込みます。", "success");
+        await refreshProjectLocalFolderUi(activeProjectCard);
         filterAnnualProjects();
       } catch (error) {
         console.error("project status save error", error);
@@ -8708,9 +8785,12 @@ ${error.message||error}`); }
       fillProjectContactForm({});
       setProjectContactsEditMode(false);
       showProjectContactsStatus("関係者情報を読み込んでいます…", "info");
+      setProjectLocalMessage("");
       openModal("projectDetailModal");
+      await refreshProjectLocalFolderUi(card);
 
       await loadProjectContacts(card);
+      await refreshProjectLocalFolderUi(card);
     }
 
     function getLegacyProjectContactDocId(card) {
@@ -8940,6 +9020,314 @@ ${error.message||error}`); }
       el.hidden = true;
       el.textContent = "";
       el.className = "project-contacts-status";
+    }
+
+    // ===== Ver.6.8.18 PC案件管理フォルダ・完了案件整理 =====
+    // 共有するのは案件情報だけ。図面・工程表・現場写真などの実ファイルは各PC内で管理する。
+    // 「完了案件へ整理」を実行しても共有の案件状態は自動変更しないため、他PCの整理状況には影響しない。
+    const PROJECT_LOCAL_DB_NAME = "qtsProjectLocal";
+    const PROJECT_LOCAL_DB_STORE = "handles";
+    const PROJECT_LOCAL_ROOT_KEY = "projectRootDirectory";
+    const PROJECT_LOCAL_SUBFOLDERS = ["図面", "工程表", "現場写真", "その他"];
+    let projectRootDirectoryHandle = null;
+
+    function projectLocalFileSystemSupported() {
+      return typeof window.showDirectoryPicker === "function" && "indexedDB" in window;
+    }
+
+    function openProjectLocalDb() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(PROJECT_LOCAL_DB_NAME, 1);
+        request.onupgradeneeded = () => {
+          const db = request.result;
+          if (!db.objectStoreNames.contains(PROJECT_LOCAL_DB_STORE)) db.createObjectStore(PROJECT_LOCAL_DB_STORE);
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error || new Error("案件管理フォルダの設定を読み込めませんでした。"));
+      });
+    }
+
+    async function saveProjectRootDirectoryHandle(handle) {
+      const db = await openProjectLocalDb();
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(PROJECT_LOCAL_DB_STORE, "readwrite");
+        tx.objectStore(PROJECT_LOCAL_DB_STORE).put(handle, PROJECT_LOCAL_ROOT_KEY);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error || new Error("案件管理フォルダの設定を保存できませんでした。"));
+        tx.onabort = () => reject(tx.error || new Error("案件管理フォルダの設定を保存できませんでした。"));
+      });
+      db.close();
+    }
+
+    async function loadProjectRootDirectoryHandle() {
+      const db = await openProjectLocalDb();
+      const handle = await new Promise((resolve, reject) => {
+        const tx = db.transaction(PROJECT_LOCAL_DB_STORE, "readonly");
+        const request = tx.objectStore(PROJECT_LOCAL_DB_STORE).get(PROJECT_LOCAL_ROOT_KEY);
+        request.onsuccess = () => resolve(request.result || null);
+        request.onerror = () => reject(request.error || new Error("案件管理フォルダの設定を読み込めませんでした。"));
+      });
+      db.close();
+      return handle;
+    }
+
+    async function ensureProjectRootPermission(requestPermission = false) {
+      if (!projectRootDirectoryHandle) return false;
+      const options = { mode: "readwrite" };
+      if (typeof projectRootDirectoryHandle.queryPermission === "function") {
+        const current = await projectRootDirectoryHandle.queryPermission(options);
+        if (current === "granted") return true;
+      }
+      if (requestPermission && typeof projectRootDirectoryHandle.requestPermission === "function") {
+        return (await projectRootDirectoryHandle.requestPermission(options)) === "granted";
+      }
+      return false;
+    }
+
+    function setProjectLocalMessage(message = "", type = "") {
+      const el = document.getElementById("projectLocalMessage");
+      if (!el) return;
+      el.textContent = message;
+      el.className = `project-local-message${type ? ` ${type}` : ""}`;
+    }
+
+    function refreshProjectRootFolderInfo() {
+      const info = document.getElementById("projectRootFolderInfo");
+      if (!info) return;
+      info.textContent = projectRootDirectoryHandle
+        ? `案件管理フォルダ：${projectRootDirectoryHandle.name}`
+        : "案件管理フォルダ：未設定";
+    }
+
+    async function ensureProjectBaseFolders() {
+      if (!projectRootDirectoryHandle) throw new Error("QTS案件管理フォルダが未設定です。");
+      await projectRootDirectoryHandle.getDirectoryHandle("進行案件", { create: true });
+      await projectRootDirectoryHandle.getDirectoryHandle("完了案件", { create: true });
+    }
+
+    async function initializeProjectLocalStorage() {
+      if (!projectLocalFileSystemSupported()) {
+        refreshProjectRootFolderInfo();
+        return;
+      }
+      try {
+        projectRootDirectoryHandle = await loadProjectRootDirectoryHandle();
+        refreshProjectRootFolderInfo();
+      } catch (error) {
+        console.warn("project local settings load error", error);
+        projectRootDirectoryHandle = null;
+        refreshProjectRootFolderInfo();
+      }
+    }
+
+    async function chooseProjectRootFolder() {
+      if (!projectLocalFileSystemSupported()) {
+        alert("PC案件管理機能は最新のChrome / Edgeでご利用ください。");
+        return;
+      }
+      try {
+        const handle = await window.showDirectoryPicker({ mode: "readwrite" });
+        projectRootDirectoryHandle = handle;
+        await saveProjectRootDirectoryHandle(handle);
+        if (!(await ensureProjectRootPermission(true))) throw new Error("フォルダへの書き込みが許可されていません。");
+        await ensureProjectBaseFolders();
+        refreshProjectRootFolderInfo();
+        if (activeProjectCard) await refreshProjectLocalFolderUi(activeProjectCard);
+      } catch (error) {
+        if (error?.name === "AbortError") return;
+        console.error("project root select error", error);
+        alert(`案件管理フォルダを設定できませんでした：${error.message || error}`);
+      }
+    }
+
+    function qtsSafeProjectFolderName(card) {
+      const id = String(card?.dataset?.projectId || "QTS").trim();
+      const name = String(card?.dataset?.projectName || "案件").trim();
+      const safe = `${id}_${name}`
+        .normalize("NFKC")
+        .replace(/[\\/:*?"<>|]/g, "_")
+        .replace(/[. ]+$/g, "")
+        .replace(/\s+/g, " ")
+        .slice(0, 120);
+      return safe || id || "QTS_案件";
+    }
+
+    function qtsProjectFiscalFolderName(card) {
+      const yearText = String(card?.dataset?.projectYear || "").trim();
+      if (yearText) return yearText.replace(/[\\/:*?"<>|]/g, "_");
+      const parsed = parseProjectId(card?.dataset?.projectId || "");
+      return parsed ? `${parsed.year}年度` : "年度未設定";
+    }
+
+    async function qtsTryGetDirectory(parent, name) {
+      try {
+        return await parent.getDirectoryHandle(name);
+      } catch (error) {
+        if (error?.name === "NotFoundError") return null;
+        throw error;
+      }
+    }
+
+    async function getProjectLocalFolderState(card) {
+      if (!projectRootDirectoryHandle) return { location: "unset" };
+      const folderName = qtsSafeProjectFolderName(card);
+      const progressRoot = await qtsTryGetDirectory(projectRootDirectoryHandle, "進行案件");
+      const active = progressRoot ? await qtsTryGetDirectory(progressRoot, folderName) : null;
+      if (active) return { location: "active", handle: active, folderName, path: `進行案件\\${folderName}` };
+
+      const completeRoot = await qtsTryGetDirectory(projectRootDirectoryHandle, "完了案件");
+      const fiscalName = qtsProjectFiscalFolderName(card);
+      const fiscal = completeRoot ? await qtsTryGetDirectory(completeRoot, fiscalName) : null;
+      const archived = fiscal ? await qtsTryGetDirectory(fiscal, folderName) : null;
+      if (archived) return { location: "complete", handle: archived, folderName, path: `完了案件\\${fiscalName}\\${folderName}` };
+      return { location: "missing", folderName };
+    }
+
+    async function refreshProjectLocalFolderUi(card = activeProjectCard) {
+      const statusEl = document.getElementById("projectLocalFolderStatus");
+      const prepareBtn = document.getElementById("projectLocalPrepareBtn");
+      const archiveBtn = document.getElementById("projectLocalArchiveBtn");
+      if (!statusEl || !prepareBtn || !archiveBtn) return;
+      prepareBtn.textContent = "📁 案件フォルダを準備";
+      archiveBtn.textContent = "📦 完了案件へ整理";
+
+      if (!projectLocalFileSystemSupported()) {
+        statusEl.textContent = "この機能は最新のChrome / EdgeのPC版で利用できます。";
+        prepareBtn.disabled = true;
+        archiveBtn.disabled = true;
+        return;
+      }
+      if (!projectRootDirectoryHandle) {
+        statusEl.textContent = "年間予定表画面で「QTS案件管理フォルダ」を設定してください。";
+        prepareBtn.disabled = true;
+        archiveBtn.disabled = true;
+        return;
+      }
+      try {
+        const permitted = await ensureProjectRootPermission(false);
+        if (!permitted) {
+          statusEl.textContent = `設定済み：${projectRootDirectoryHandle.name}（操作時にフォルダ使用の許可が必要です）`;
+          prepareBtn.disabled = false;
+          archiveBtn.disabled = !(card && ["完了", "アーカイブ"].includes(card.dataset.projectStatus));
+          return;
+        }
+        await ensureProjectBaseFolders();
+        const state = await getProjectLocalFolderState(card);
+        if (state.location === "active") statusEl.textContent = `このPC：${state.path}`;
+        else if (state.location === "complete") statusEl.textContent = `このPC：${state.path}（整理済み）`;
+        else statusEl.textContent = `このPC：案件フォルダ未作成（${state.folderName}）`;
+        prepareBtn.disabled = state.location !== "missing";
+        prepareBtn.textContent = state.location === "active" ? "✓ 案件フォルダ準備済み"
+          : state.location === "complete" ? "✓ 完了案件へ整理済み"
+          : "📁 案件フォルダを準備";
+        archiveBtn.disabled = !(state.location === "active" && card && ["完了", "アーカイブ"].includes(card.dataset.projectStatus));
+      } catch (error) {
+        console.warn("project local ui refresh error", error);
+        statusEl.textContent = "案件フォルダの状態を確認できませんでした。";
+        prepareBtn.disabled = false;
+        archiveBtn.disabled = true;
+      }
+    }
+
+    async function prepareActiveProjectLocalFolder() {
+      const card = activeProjectCard;
+      if (!card) return;
+      if (!projectRootDirectoryHandle) {
+        setProjectLocalMessage("先に年間予定表画面でQTS案件管理フォルダを設定してください。", "error");
+        return;
+      }
+      const button = document.getElementById("projectLocalPrepareBtn");
+      button.disabled = true;
+      button.textContent = "作成中…";
+      setProjectLocalMessage("案件フォルダを準備しています…");
+      try {
+        if (!(await ensureProjectRootPermission(true))) throw new Error("案件管理フォルダへの書き込みが許可されていません。");
+        await ensureProjectBaseFolders();
+        const current = await getProjectLocalFolderState(card);
+        if (current.location === "complete") {
+          setProjectLocalMessage("この案件はこのPCで完了案件へ整理済みです。", "success");
+          return;
+        }
+        const activeRoot = await projectRootDirectoryHandle.getDirectoryHandle("進行案件", { create: true });
+        const folder = await activeRoot.getDirectoryHandle(qtsSafeProjectFolderName(card), { create: true });
+        for (const sub of PROJECT_LOCAL_SUBFOLDERS) await folder.getDirectoryHandle(sub, { create: true });
+        setProjectLocalMessage("案件フォルダを準備しました。エクスプローラーから通常のフォルダとして利用できます。", "success");
+      } catch (error) {
+        console.error("prepare project local folder error", error);
+        setProjectLocalMessage(`案件フォルダを作成できませんでした：${error.message || error}`, "error");
+      } finally {
+        await refreshProjectLocalFolderUi(card);
+      }
+    }
+
+    async function qtsDirectoryHasEntries(directoryHandle) {
+      for await (const _entry of directoryHandle.values()) return true;
+      return false;
+    }
+
+    async function qtsCopyDirectoryRecursive(sourceDir, targetDir) {
+      for await (const [name, handle] of sourceDir.entries()) {
+        if (handle.kind === "directory") {
+          const targetSub = await targetDir.getDirectoryHandle(name, { create: true });
+          await qtsCopyDirectoryRecursive(handle, targetSub);
+        } else if (handle.kind === "file") {
+          const file = await handle.getFile();
+          const targetFile = await targetDir.getFileHandle(name, { create: true });
+          const writable = await targetFile.createWritable();
+          try {
+            await writable.write(file);
+            await writable.close();
+          } catch (error) {
+            try { await writable.abort(); } catch (_) {}
+            throw error;
+          }
+        }
+      }
+    }
+
+    async function archiveActiveProjectLocalFolder() {
+      const card = activeProjectCard;
+      if (!card) return;
+      if (!["完了", "アーカイブ"].includes(card.dataset.projectStatus)) {
+        setProjectLocalMessage("先に案件状態を「完了」にして保存してください。", "error");
+        return;
+      }
+      const button = document.getElementById("projectLocalArchiveBtn");
+      button.disabled = true;
+      button.textContent = "整理中…";
+      setProjectLocalMessage("完了案件へ整理しています。資料が多い場合は少し時間がかかります…");
+      try {
+        if (!(await ensureProjectRootPermission(true))) throw new Error("案件管理フォルダへの書き込みが許可されていません。");
+        await ensureProjectBaseFolders();
+        const state = await getProjectLocalFolderState(card);
+        if (state.location === "complete") {
+          setProjectLocalMessage("この案件はこのPCですでに完了案件へ整理済みです。", "success");
+          return;
+        }
+        if (state.location !== "active" || !state.handle) throw new Error("進行案件フォルダがありません。先に案件フォルダを準備してください。");
+
+        const completeRoot = await projectRootDirectoryHandle.getDirectoryHandle("完了案件", { create: true });
+        const fiscalName = qtsProjectFiscalFolderName(card);
+        const fiscal = await completeRoot.getDirectoryHandle(fiscalName, { create: true });
+        let existing = await qtsTryGetDirectory(fiscal, state.folderName);
+        if (existing && await qtsDirectoryHasEntries(existing)) {
+          const ok = confirm("同じ案件の完了フォルダがすでにあります。内容を統合しますか？同名ファイルは新しい内容で上書きされます。");
+          if (!ok) return;
+        }
+        const destination = existing || await fiscal.getDirectoryHandle(state.folderName, { create: true });
+
+        // 先に全ファイルをコピーし、成功した場合だけ進行案件側を削除する。途中失敗時は元資料を残す。
+        await qtsCopyDirectoryRecursive(state.handle, destination);
+        const activeRoot = await projectRootDirectoryHandle.getDirectoryHandle("進行案件");
+        await activeRoot.removeEntry(state.folderName, { recursive: true });
+        setProjectLocalMessage(`このPCの資料を「完了案件\\${fiscalName}」へ整理しました。Q.T.Sの共有状態は変更していません。`, "success");
+      } catch (error) {
+        console.error("archive project local folder error", error);
+        setProjectLocalMessage(`完了案件へ整理できませんでした：${error.message || error}`, "error");
+      } finally {
+        button.textContent = "📦 完了案件へ整理";
+        await refreshProjectLocalFolderUi(card);
+      }
     }
 
     // ===== Ver.6.8.13 年間予定表Excel連携 =====
