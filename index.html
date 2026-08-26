@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.8.20.1</title>
+  <title>Q.T.S Scheduler — Ver.6.8.21</title>
   <link rel="icon" href="favicon.ico?v=655" sizes="any">
   <link rel="shortcut icon" href="favicon.ico?v=655" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=655">
@@ -3225,7 +3225,12 @@
       .expense-month-actions { justify-content: flex-start; }
     }
 
-  </style>
+  
+
+    /* ===== Ver.6.8.21 スマホ/タブレットではPC専用UIを非表示 ===== */
+    html.qts-mobile-ui .qts-desktop-only { display: none !important; }
+    html.qts-mobile-ui .project-photo-transfer-grid { grid-template-columns: 1fr; }
+</style>
 </head>
 
 <body class="auth-locked">
@@ -3560,7 +3565,7 @@
         </select>
       </div>
 
-      <div class="annual-excel-sync">
+      <div class="annual-excel-sync qts-desktop-only">
         <div class="annual-excel-sync-title">
           <span>📊 年間予定表Excel連携</span>
           <span class="pc-only-badge">PC用</span>
@@ -3585,7 +3590,7 @@
         <div class="annual-excel-sync-status info" id="annualExcelSyncStatus">保存先フォルダと基準Excelを登録してください。</div>
       </div>
 
-      <div class="annual-local-manager">
+      <div class="annual-local-manager qts-desktop-only">
         <div class="annual-local-manager-title">
           <span>🗂️ PC案件管理フォルダ</span>
           <span class="pc-only-badge">PC専用</span>
@@ -4148,7 +4153,7 @@
           <div id="projectRelatedSchedules" class="project-related-list"></div>
         </section>
 
-        <section class="project-detail-box">
+        <section class="project-detail-box qts-desktop-only">
           <h4>🗂️ このPCの案件資料</h4>
           <p class="small-note">資料本体はクラウドへ送らず、このPCの「QTS案件管理」フォルダ内で管理します。</p>
           <div class="project-local-storage">
@@ -4162,6 +4167,7 @@
               <button type="button" class="btn-secondary btn-small" id="projectLocalPrepareBtn">📁 案件フォルダを準備</button>
               <button type="button" class="btn-secondary btn-small" id="projectLocalBrowseBtn" hidden>📂 資料一覧を表示</button>
               <button type="button" class="btn-secondary btn-small" id="projectLocalArchiveBtn">📦 完了案件へ整理</button>
+              <button type="button" class="btn-secondary btn-small" id="projectLocalRestoreBtn" hidden>↩ 進行案件へ戻す</button>
             </div>
             <div class="project-local-counts" id="projectLocalCounts" hidden></div>
             <div class="project-local-browser" id="projectLocalBrowser" hidden>
@@ -4176,6 +4182,7 @@
               新規作成時は「図面・工程表・現場写真・その他」を自動で用意します。
               PDF・画像・テキストは資料一覧から直接確認できます。ExcelなどはPCへ保存して開きます。
               「完了案件へ整理」は案件状態が「完了」または「アーカイブ」のときだけ実行できます。
+              完了側に整理した後で案件状態を「進行中」または「未稼働」に戻した場合は、「進行案件へ戻す」でPC資料も元へ戻せます。
               このPCの資料整理は他の利用者のPCには影響しません。
             </p>
           </div>
@@ -4200,7 +4207,7 @@
               <button type="button" class="btn-secondary btn-small" id="projectPhotoTransferClearBtn" disabled>選択解除</button>
             </div>
           </div>
-          <div class="project-photo-transfer-box">
+          <div class="project-photo-transfer-box qts-desktop-only">
             <span class="project-photo-transfer-label">この案件の受取待ち</span>
             <div class="project-photo-transfer-queue">
               <span>一時保管中</span><span class="project-photo-transfer-count" id="projectPhotoTransferPendingCount">0枚</span>
@@ -4382,8 +4389,8 @@
           <button type="button" class="btn-secondary" id="btnOpenCsv">📤 CSV出力</button>
         </div>
         <div class="app-info-panel">
-          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.20.1</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
+          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.21</span><br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
           Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月26日
         </div>
@@ -4489,7 +4496,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.20.1";
+    const APP_VERSION = "6.8.21";
     const APP_BUILD_DATE = "2026-08-26";
 
     const firebaseConfig = {
@@ -4563,6 +4570,17 @@
     let expenseSnapshotReady = false;
     let expenseBypassUnsavedWarning = false;
 
+    // ===== Ver.6.8.21 端末別UI =====
+    function qtsIsMobileOrTabletUi() {
+      const ua = String(navigator.userAgent || "");
+      const iPadOs = navigator.platform === "MacIntel" && Number(navigator.maxTouchPoints || 0) > 1;
+      return /Android|iPhone|iPad|iPod|Mobile/i.test(ua) || iPadOs;
+    }
+
+    function applyQtsDeviceUi() {
+      document.documentElement.classList.toggle("qts-mobile-ui", qtsIsMobileOrTabletUi());
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       document.documentElement.dataset.appVersion = APP_VERSION;
       const headerVersion = document.getElementById("headerVersion");
@@ -4572,6 +4590,7 @@
       if (headerVersion) headerVersion.textContent = `Ver.${APP_VERSION}`;
       if (settingsVersion) settingsVersion.textContent = `Ver.${APP_VERSION}`;
       if (loginVersion) loginVersion.textContent = `Ver.${APP_VERSION} — ログイン`;
+      applyQtsDeviceUi();
       setupDesktopTimeInputs();
       initializeApp();
       initializeAuthentication();
@@ -4661,6 +4680,7 @@
       document.getElementById("projectLocalBrowseBtn").addEventListener("click", () => showProjectLocalFiles());
       document.getElementById("projectLocalBrowserCloseBtn").addEventListener("click", hideProjectLocalBrowser);
       document.getElementById("projectLocalArchiveBtn").addEventListener("click", archiveActiveProjectLocalFolder);
+      document.getElementById("projectLocalRestoreBtn").addEventListener("click", restoreActiveProjectLocalFolder);
       document.getElementById("projectPhotoTransferInput").addEventListener("change", handleProjectPhotoTransferSelection);
       document.getElementById("projectPhotoTransferSendBtn").addEventListener("click", sendProjectPhotoTransfer);
       document.getElementById("projectPhotoTransferClearBtn").addEventListener("click", clearProjectPhotoTransferSelection);
@@ -9461,9 +9481,22 @@ ${error.message||error}`); }
       const prepareBtn = document.getElementById("projectLocalPrepareBtn");
       const browseBtn = document.getElementById("projectLocalBrowseBtn");
       const archiveBtn = document.getElementById("projectLocalArchiveBtn");
+      const restoreBtn = document.getElementById("projectLocalRestoreBtn");
       const counts = document.getElementById("projectLocalCounts");
-      if (!statusEl || !permissionBtn || !prepareBtn || !browseBtn || !archiveBtn) return;
-      hideProjectLocalBrowser(); permissionBtn.hidden = true; permissionNote?.classList.remove("show"); browseBtn.hidden = true; prepareBtn.hidden = false; prepareBtn.disabled = true; prepareBtn.textContent = "📁 案件フォルダを準備"; archiveBtn.disabled = true; archiveBtn.textContent = "📦 完了案件へ整理";
+      if (!statusEl || !permissionBtn || !prepareBtn || !browseBtn || !archiveBtn || !restoreBtn) return;
+      hideProjectLocalBrowser();
+      permissionBtn.hidden = true;
+      permissionNote?.classList.remove("show");
+      browseBtn.hidden = true;
+      prepareBtn.hidden = false;
+      prepareBtn.disabled = true;
+      prepareBtn.textContent = "📁 案件フォルダを準備";
+      archiveBtn.hidden = false;
+      archiveBtn.disabled = true;
+      archiveBtn.textContent = "📦 完了案件へ整理";
+      restoreBtn.hidden = true;
+      restoreBtn.disabled = true;
+      restoreBtn.textContent = "↩ 進行案件へ戻す";
       if (counts) { counts.hidden = true; counts.innerHTML = ""; }
       if (!projectLocalFileSystemSupported()) { statusEl.textContent = "この機能は最新のChrome / EdgeのPC版で利用できます。"; return; }
       if (!projectRootDirectoryHandle) { statusEl.textContent = "年間予定表画面で「QTS案件管理フォルダ」を設定してください。"; return; }
@@ -9475,14 +9508,26 @@ ${error.message||error}`); }
         }
         await ensureProjectBaseFolders();
         const state = await getProjectLocalFolderState(card);
+        const qtsStatus = String(card?.dataset?.projectStatus || "未稼働");
+        const qtsCompleted = ["完了", "アーカイブ"].includes(qtsStatus);
         if (state.location === "active") {
-          statusEl.textContent = `✅ このPC：${state.path}`;
-          prepareBtn.textContent = "✅ 案件フォルダ準備済み"; prepareBtn.disabled = true; browseBtn.hidden = false; browseBtn.disabled = false;
-          archiveBtn.disabled = !(card && ["完了", "アーカイブ"].includes(card.dataset.projectStatus));
+          statusEl.textContent = qtsCompleted
+            ? `⚠ Q.T.S状態は「${qtsStatus}」ですが、PC資料は ${state.path} にあります。`
+            : `✅ このPC：${state.path}`;
+          prepareBtn.textContent = "✅ 案件フォルダ準備済み";
+          prepareBtn.disabled = true;
+          browseBtn.hidden = false; browseBtn.disabled = false;
+          archiveBtn.disabled = !qtsCompleted;
           renderProjectLocalCounts(await getProjectLocalCategoryStats(state.handle));
         } else if (state.location === "complete") {
-          statusEl.textContent = `✅ このPC：${state.path}（整理済み）`;
-          prepareBtn.textContent = "✅ 完了案件へ整理済み"; prepareBtn.disabled = true; browseBtn.hidden = false; browseBtn.disabled = false; archiveBtn.disabled = true;
+          statusEl.textContent = qtsCompleted
+            ? `✅ このPC：${state.path}（整理済み）`
+            : `⚠ Q.T.S状態は「${qtsStatus}」ですが、PC資料は ${state.path} にあります。`;
+          prepareBtn.textContent = "✅ 完了案件側に保存済み";
+          prepareBtn.disabled = true;
+          browseBtn.hidden = false; browseBtn.disabled = false;
+          archiveBtn.hidden = true;
+          if (!qtsCompleted) { restoreBtn.hidden = false; restoreBtn.disabled = false; }
           renderProjectLocalCounts(await getProjectLocalCategoryStats(state.handle));
         } else {
           statusEl.textContent = `このPC：案件フォルダ未作成（${state.folderName}）`;
@@ -9490,7 +9535,8 @@ ${error.message||error}`); }
         }
       } catch (error) {
         console.warn("project local ui refresh error", error);
-        statusEl.textContent = "案件フォルダの状態を確認できませんでした。"; prepareBtn.disabled = false; browseBtn.hidden = true; archiveBtn.disabled = true;
+        statusEl.textContent = "案件フォルダの状態を確認できませんでした。";
+        prepareBtn.disabled = false; browseBtn.hidden = true; archiveBtn.disabled = true; restoreBtn.hidden = true;
       }
     }
 
@@ -9548,6 +9594,54 @@ ${error.message||error}`); }
       } catch (error) {
         console.error("archive project local folder error", error); setProjectLocalMessage(`完了案件へ整理できませんでした：${error.message || error}`, "error");
       } finally { button.textContent = "📦 完了案件へ整理"; await refreshProjectLocalFolderUi(card); }
+    }
+
+
+    async function restoreActiveProjectLocalFolder() {
+      const card = activeProjectCard;
+      if (!card) return;
+      const qtsStatus = String(card.dataset.projectStatus || "未稼働");
+      if (["完了", "アーカイブ"].includes(qtsStatus)) {
+        setProjectLocalMessage("案件状態を先に「進行中」または「未稼働」へ戻して保存してください。", "error");
+        return;
+      }
+      const button = document.getElementById("projectLocalRestoreBtn");
+      if (button) { button.disabled = true; button.textContent = "戻しています…"; }
+      setProjectLocalMessage("完了案件側の資料を進行案件へ戻しています。資料が多い場合は少し時間がかかります…");
+      try {
+        if (!(await ensureProjectRootPermission(true))) throw new Error("案件管理フォルダへの書き込みが許可されていません。");
+        await ensureProjectBaseFolders();
+        const state = await getProjectLocalFolderState(card);
+        if (state.location === "active") {
+          setProjectLocalMessage("この案件のPC資料はすでに進行案件側にあります。", "success");
+          return;
+        }
+        if (state.location !== "complete" || !state.handle) throw new Error("完了案件側の案件フォルダが見つかりません。");
+
+        const activeRoot = await projectRootDirectoryHandle.getDirectoryHandle("進行案件", { create: true });
+        let existing = await qtsTryGetDirectory(activeRoot, state.folderName);
+        if (existing && await qtsDirectoryHasEntries(existing)) {
+          const ok = confirm("進行案件側に同じ案件フォルダがあります。内容を統合しますか？同名ファイルは完了案件側の内容で上書きされます。");
+          if (!ok) return;
+        }
+        const destination = existing || await activeRoot.getDirectoryHandle(state.folderName, { create: true });
+        await qtsCopyDirectoryRecursive(state.handle, destination);
+
+        const completeRoot = await projectRootDirectoryHandle.getDirectoryHandle("完了案件");
+        const fiscalName = qtsProjectFiscalFolderName(card);
+        const fiscal = await completeRoot.getDirectoryHandle(fiscalName);
+        await fiscal.removeEntry(state.folderName, { recursive: true });
+        if (!(await qtsDirectoryHasEntries(fiscal))) {
+          try { await completeRoot.removeEntry(fiscalName); } catch (_) {}
+        }
+        setProjectLocalMessage("このPCの資料を「進行案件」へ戻しました。Q.T.Sの共有状態は変更していません。", "success");
+      } catch (error) {
+        console.error("restore project local folder error", error);
+        setProjectLocalMessage(`進行案件へ戻せませんでした：${error.message || error}`, "error");
+      } finally {
+        if (button) button.textContent = "↩ 進行案件へ戻す";
+        await refreshProjectLocalFolderUi(card);
+      }
     }
 
     // ===== Ver.6.8.20 スマホ→PC 現場写真転送 Ver.1 =====
