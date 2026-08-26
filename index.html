@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.8.11</title>
+  <title>Q.T.S Scheduler — Ver.6.8.12</title>
   <link rel="icon" href="favicon.ico?v=655" sizes="any">
   <link rel="shortcut icon" href="favicon.ico?v=655" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=655">
@@ -1738,6 +1738,58 @@
       border-radius: 999px;
     }
 
+    /* ===== Ver.6.8.12 詳細納期＋状態 ===== */
+    .annual-project-due {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 7px;
+      color: #29465f;
+      font-size: .79rem;
+      font-weight: 750;
+      line-height: 1.45;
+    }
+
+    .annual-project-due strong {
+      color: #173b5d;
+      font-weight: 850;
+    }
+
+    .annual-project-status {
+      min-width: 92px;
+      padding: 7px 10px;
+      font-size: .76rem;
+      font-weight: 800;
+      text-align: center;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .annual-project-status.status-pending {
+      color: #5b6670;
+      background: #eef1f3;
+      border-color: #d6dde2;
+    }
+
+    .annual-project-status.status-active {
+      color: #176d55;
+      background: #e4f4ee;
+      border-color: #c1e2d7;
+    }
+
+    .annual-project-status.status-complete {
+      color: #24547b;
+      background: #e7f0f8;
+      border-color: #c9ddeb;
+    }
+
+    .annual-project-status.status-archive {
+      color: #695c50;
+      background: #f0ece7;
+      border-color: #ddd4ca;
+    }
+
     .annual-project-timing {
       min-width: 112px;
       padding: 6px 9px;
@@ -1843,7 +1895,8 @@
       .annual-project-card {
         grid-template-columns: 35px minmax(0, 1fr);
       }
-      .annual-project-timing {
+      .annual-project-timing,
+      .annual-project-status {
         grid-column: 2;
         justify-self: start;
       }
@@ -1888,7 +1941,65 @@
       color:#29465f; font-weight:700;
     }
     .project-doc-placeholder span { color:#84919d; font-size:.72rem; font-weight:600; }
-    @media(max-width:700px){ .project-detail-grid{grid-template-columns:1fr;} }
+    .project-management-section {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(230px, .7fr);
+      gap: 12px;
+      margin-bottom: 14px;
+      padding: 14px;
+      background: #f7fafb;
+      border: 1px solid #cfdee5;
+      border-radius: 14px;
+    }
+    .project-management-item {
+      padding: 11px 12px;
+      background: #fff;
+      border: 1px solid #d7e1e7;
+      border-radius: 11px;
+    }
+    .project-management-label {
+      margin-bottom: 5px;
+      color: #6a7b8b;
+      font-size: .72rem;
+      font-weight: 800;
+    }
+    .project-management-value {
+      color: #173b5d;
+      font-size: .95rem;
+      font-weight: 850;
+      line-height: 1.45;
+    }
+    .project-status-controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .project-status-controls select {
+      flex: 1;
+      min-width: 0;
+      padding: 8px 9px;
+      border: 1px solid #bdcbd5;
+      border-radius: 8px;
+      background: #fff;
+      color: #173b5d;
+      font-weight: 750;
+    }
+    .project-status-controls button {
+      flex: 0 0 auto;
+      padding: 8px 11px;
+    }
+    .project-status-message {
+      margin-top: 6px;
+      color: #607386;
+      font-size: .72rem;
+      min-height: 1em;
+    }
+    .project-status-message.success { color: #176d55; }
+    .project-status-message.error { color: #a33c3c; }
+    @media(max-width:700px){
+      .project-detail-grid{grid-template-columns:1fr;}
+      .project-management-section{grid-template-columns:1fr;}
+    }
 
 
     /* ===== Ver.6.3 Stakeholders / project contacts ===== */
@@ -3198,7 +3309,7 @@
       <div class="annual-controls">
         <div class="search-wrap">
           <span class="search-icon">🔍</span>
-          <input type="search" id="annualSearch" placeholder="案件名・案件No・担当者・時期で検索">
+          <input type="search" id="annualSearch" placeholder="案件名・案件No・担当者・納期・状態で検索">
         </div>
         <select id="annualYearFilter">
           <option value="all">すべての年度</option>
@@ -3218,16 +3329,21 @@
         data-project-name="東京ステーションホテル"
         data-project-owner="寺門"
         data-project-year="2026年度"
-        data-project-timing="進行案件"
-        data-project-search="東京ステーションホテル 寺門 2026年度 進行案件">
+        data-project-start="2026-08-06"
+        data-project-end="2026-08-15"
+        data-project-due-approx=""
+        data-project-due="2026年8月6日 ～ 8月15日"
+        data-project-status="進行中"
+        data-project-search="東京ステーションホテル 寺門 2026年度 2026年8月6日 ～ 8月15日 進行中">
         <div class="annual-project-number">1</div>
         <div>
           <div class="annual-project-name">東京ステーションホテル</div>
           <div class="annual-project-meta">
             <span>👤 担当：寺門</span><span>📅 2026年度</span>
           </div>
+          <div class="annual-project-due">📦 <strong>納期：</strong><span>2026年8月6日 ～ 8月15日</span></div>
         </div>
-        <div class="annual-project-timing">進行案件</div>
+        <div class="annual-project-status status-active">進行中</div>
       </article>
 
       <article class="annual-project-card"
@@ -3237,16 +3353,21 @@
         data-project-name="帝国ホテル"
         data-project-owner="寺門"
         data-project-year="2026年度"
-        data-project-timing="長期案件"
-        data-project-search="帝国ホテル 寺門 2026年度 長期案件">
+        data-project-start="2026-09-01"
+        data-project-end="2027-03-30"
+        data-project-due-approx=""
+        data-project-due="2026年9月1日 ～ 2027年3月30日"
+        data-project-status="進行中"
+        data-project-search="帝国ホテル 寺門 2026年度 2026年9月1日 ～ 2027年3月30日 進行中">
         <div class="annual-project-number">2</div>
         <div>
           <div class="annual-project-name">帝国ホテル</div>
           <div class="annual-project-meta">
             <span>👤 担当：寺門</span><span>📅 2026年度</span>
           </div>
+          <div class="annual-project-due">📦 <strong>納期：</strong><span>2026年9月1日 ～ 2027年3月30日</span></div>
         </div>
-        <div class="annual-project-timing">長期案件</div>
+        <div class="annual-project-status status-active">進行中</div>
       </article>
 
       <article class="annual-project-card"
@@ -3256,16 +3377,21 @@
         data-project-name="広島サンフラワー（富良野）"
         data-project-owner="寺門"
         data-project-year="2026年度"
-        data-project-timing="進行案件"
-        data-project-search="広島サンフラワー（富良野） 寺門 2026年度 進行案件">
+        data-project-start="2026-11-06"
+        data-project-end="2026-11-18"
+        data-project-due-approx=""
+        data-project-due="2026年11月6日 ～ 11月18日"
+        data-project-status="進行中"
+        data-project-search="広島サンフラワー（富良野） 寺門 2026年度 2026年11月6日 ～ 11月18日 進行中">
         <div class="annual-project-number">3</div>
         <div>
           <div class="annual-project-name">広島サンフラワー（富良野）</div>
           <div class="annual-project-meta">
             <span>👤 担当：寺門</span><span>📅 2026年度</span>
           </div>
+          <div class="annual-project-due">📦 <strong>納期：</strong><span>2026年11月6日 ～ 11月18日</span></div>
         </div>
-        <div class="annual-project-timing">進行案件</div>
+        <div class="annual-project-status status-active">進行中</div>
       </article>
 
       <article class="annual-project-card"
@@ -3275,16 +3401,21 @@
         data-project-name="ホテル日航福岡10F"
         data-project-owner="金子"
         data-project-year="2026年度"
-        data-project-timing="2026年度"
-        data-project-search="ホテル日航福岡10F 金子 2026年度 2026年度">
+        data-project-start="2026-12-01"
+        data-project-end="2026-12-30"
+        data-project-due-approx=""
+        data-project-due="2026年12月1日 ～ 12月30日"
+        data-project-status="未稼働"
+        data-project-search="ホテル日航福岡10F 金子 2026年度 2026年12月1日 ～ 12月30日 未稼働">
         <div class="annual-project-number">5</div>
         <div>
           <div class="annual-project-name">ホテル日航福岡10F</div>
           <div class="annual-project-meta">
             <span>👤 担当：金子</span><span>📅 2026年度</span>
           </div>
+          <div class="annual-project-due">📦 <strong>納期：</strong><span>2026年12月1日 ～ 12月30日</span></div>
         </div>
-        <div class="annual-project-timing">2026年度</div>
+        <div class="annual-project-status status-pending">未稼働</div>
       </article>
 
       <article class="annual-project-card"
@@ -3294,16 +3425,21 @@
         data-project-name="モーニングパーク主税町"
         data-project-owner="金子"
         data-project-year="2026年度"
-        data-project-timing="2026年度"
-        data-project-search="モーニングパーク主税町 金子 2026年度 2026年度">
+        data-project-start="2026-12-06"
+        data-project-end="2026-12-12"
+        data-project-due-approx=""
+        data-project-due="2026年12月6日 ～ 12月12日"
+        data-project-status="進行中"
+        data-project-search="モーニングパーク主税町 金子 2026年度 2026年12月6日 ～ 12月12日 進行中">
         <div class="annual-project-number">6</div>
         <div>
           <div class="annual-project-name">モーニングパーク主税町</div>
           <div class="annual-project-meta">
             <span>👤 担当：金子</span><span>📅 2026年度</span>
           </div>
+          <div class="annual-project-due">📦 <strong>納期：</strong><span>2026年12月6日 ～ 12月12日</span></div>
         </div>
-        <div class="annual-project-timing">2026年度</div>
+        <div class="annual-project-status status-active">進行中</div>
       </article>
 
       <article class="annual-project-card"
@@ -3313,16 +3449,21 @@
         data-project-name="コマツ東京本社"
         data-project-owner="金子"
         data-project-year="2026年度"
-        data-project-timing="2026年度"
-        data-project-search="コマツ東京本社 金子 2026年度 2026年度">
+        data-project-start="2026-12-18"
+        data-project-end="2026-12-22"
+        data-project-due-approx=""
+        data-project-due="2026年12月18日 ～ 12月22日"
+        data-project-status="未稼働"
+        data-project-search="コマツ東京本社 金子 2026年度 2026年12月18日 ～ 12月22日 未稼働">
         <div class="annual-project-number">7</div>
         <div>
           <div class="annual-project-name">コマツ東京本社</div>
           <div class="annual-project-meta">
             <span>👤 担当：金子</span><span>📅 2026年度</span>
           </div>
+          <div class="annual-project-due">📦 <strong>納期：</strong><span>2026年12月18日 ～ 12月22日</span></div>
         </div>
-        <div class="annual-project-timing">2026年度</div>
+        <div class="annual-project-status status-pending">未稼働</div>
       </article>
 
       <article class="annual-project-card"
@@ -3332,16 +3473,21 @@
         data-project-name="みゆきビル"
         data-project-owner="金子"
         data-project-year="2026年度"
-        data-project-timing="新規案件"
-        data-project-search="みゆきビル 金子 2026年度 新規案件">
+        data-project-start=""
+        data-project-end=""
+        data-project-due-approx=""
+        data-project-due="未定"
+        data-project-status="未稼働"
+        data-project-search="みゆきビル 金子 2026年度 未定 未稼働">
         <div class="annual-project-number">8</div>
         <div>
           <div class="annual-project-name">みゆきビル</div>
           <div class="annual-project-meta">
             <span>👤 担当：金子</span><span>📅 2026年度</span>
           </div>
+          <div class="annual-project-due">📦 <strong>納期：</strong><span>未定</span></div>
         </div>
-        <div class="annual-project-timing">新規案件</div>
+        <div class="annual-project-status status-pending">未稼働</div>
       </article>
 
       <article class="annual-project-card future"
@@ -3351,16 +3497,21 @@
         data-project-name="サンフラワー（札幌）"
         data-project-owner="寺門"
         data-project-year="2027年度"
-        data-project-timing="2027年2月頃"
-        data-project-search="サンフラワー（札幌） 寺門 2027年度 2027年2月頃">
+        data-project-start=""
+        data-project-end=""
+        data-project-due-approx="2027年2月ごろ"
+        data-project-due="2027年2月ごろ"
+        data-project-status="未稼働"
+        data-project-search="サンフラワー（札幌） 寺門 2027年度 2027年2月ごろ 未稼働">
         <div class="annual-project-number">9</div>
         <div>
           <div class="annual-project-name">サンフラワー（札幌）</div>
           <div class="annual-project-meta">
             <span>👤 担当：寺門</span><span>📅 2027年度</span>
           </div>
+          <div class="annual-project-due">📦 <strong>納期：</strong><span>2027年2月ごろ</span></div>
         </div>
-        <div class="annual-project-timing">2027年2月頃</div>
+        <div class="annual-project-status status-pending">未稼働</div>
       </article>
 
       <article class="annual-project-card future"
@@ -3370,16 +3521,21 @@
         data-project-name="裾野500F計画"
         data-project-owner="金子"
         data-project-year="2027年度"
-        data-project-timing="2027年7月頃"
-        data-project-search="裾野500F計画 金子 2027年度 2027年7月頃">
+        data-project-start=""
+        data-project-end=""
+        data-project-due-approx="2027年7月ごろ"
+        data-project-due="2027年7月ごろ"
+        data-project-status="進行中"
+        data-project-search="裾野500F計画 金子 2027年度 2027年7月ごろ 進行中">
         <div class="annual-project-number">10</div>
         <div>
           <div class="annual-project-name">裾野500F計画</div>
           <div class="annual-project-meta">
             <span>👤 担当：金子</span><span>📅 2027年度</span>
           </div>
+          <div class="annual-project-due">📦 <strong>納期：</strong><span>2027年7月ごろ</span></div>
         </div>
-        <div class="annual-project-timing">2027年7月頃</div>
+        <div class="annual-project-status status-active">進行中</div>
       </article>
 
       <article class="annual-project-card future"
@@ -3389,16 +3545,21 @@
         data-project-name="ホテル日航福岡11F"
         data-project-owner="金子"
         data-project-year="2027年度"
-        data-project-timing="2027年5月頃"
-        data-project-search="ホテル日航福岡11F 金子 2027年度 2027年5月頃">
+        data-project-start=""
+        data-project-end=""
+        data-project-due-approx="2027年5月ごろ"
+        data-project-due="2027年5月ごろ"
+        data-project-status="未稼働"
+        data-project-search="ホテル日航福岡11F 金子 2027年度 2027年5月ごろ 未稼働">
         <div class="annual-project-number">11</div>
         <div>
           <div class="annual-project-name">ホテル日航福岡11F</div>
           <div class="annual-project-meta">
             <span>👤 担当：金子</span><span>📅 2027年度</span>
           </div>
+          <div class="annual-project-due">📦 <strong>納期：</strong><span>2027年5月ごろ</span></div>
         </div>
-        <div class="annual-project-timing">2027年5月頃</div>
+        <div class="annual-project-status status-pending">未稼働</div>
       </article>
 
       <article class="annual-project-card future"
@@ -3408,16 +3569,21 @@
         data-project-name="ホテル日航福岡12F"
         data-project-owner="金子"
         data-project-year="2027年度"
-        data-project-timing="2027年8月頃"
-        data-project-search="ホテル日航福岡12F 金子 2027年度 2027年8月頃">
+        data-project-start=""
+        data-project-end=""
+        data-project-due-approx="2027年8月ごろ"
+        data-project-due="2027年8月ごろ"
+        data-project-status="未稼働"
+        data-project-search="ホテル日航福岡12F 金子 2027年度 2027年8月ごろ 未稼働">
         <div class="annual-project-number">12</div>
         <div>
           <div class="annual-project-name">ホテル日航福岡12F</div>
           <div class="annual-project-meta">
             <span>👤 担当：金子</span><span>📅 2027年度</span>
           </div>
+          <div class="annual-project-due">📦 <strong>納期：</strong><span>2027年8月ごろ</span></div>
         </div>
-        <div class="annual-project-timing">2027年8月頃</div>
+        <div class="annual-project-status status-pending">未稼働</div>
       </article>
 
       <article class="annual-project-card future"
@@ -3427,16 +3593,21 @@
         data-project-name="ホテル日航福岡14F"
         data-project-owner="金子"
         data-project-year="2027年度"
-        data-project-timing="2027年10月頃"
-        data-project-search="ホテル日航福岡14F 金子 2027年度 2027年10月頃">
+        data-project-start=""
+        data-project-end=""
+        data-project-due-approx="2027年10月ごろ"
+        data-project-due="2027年10月ごろ"
+        data-project-status="未稼働"
+        data-project-search="ホテル日航福岡14F 金子 2027年度 2027年10月ごろ 未稼働">
         <div class="annual-project-number">13</div>
         <div>
           <div class="annual-project-name">ホテル日航福岡14F</div>
           <div class="annual-project-meta">
             <span>👤 担当：金子</span><span>📅 2027年度</span>
           </div>
+          <div class="annual-project-due">📦 <strong>納期：</strong><span>2027年10月ごろ</span></div>
         </div>
-        <div class="annual-project-timing">2027年10月頃</div>
+        <div class="annual-project-status status-pending">未稼働</div>
       </article>
       </div>
       <p id="annualEmptyMessage" class="empty-message" hidden>条件に一致する案件はありません。</p>
@@ -3531,6 +3702,26 @@
           <div class="project-detail-meta" id="projectDetailMeta"></div>
         </div>
       </div>
+
+      <section class="project-management-section">
+        <div class="project-management-item">
+          <div class="project-management-label">📦 詳細納期</div>
+          <div class="project-management-value" id="projectDetailDue">未定</div>
+        </div>
+        <div class="project-management-item">
+          <div class="project-management-label">案件状態（手動）</div>
+          <div class="project-status-controls">
+            <select id="projectStatusSelect" aria-label="案件状態">
+              <option value="未稼働">未稼働</option>
+              <option value="進行中">進行中</option>
+              <option value="完了">完了</option>
+              <option value="アーカイブ">アーカイブ</option>
+            </select>
+            <button type="button" class="btn-secondary btn-small" id="projectStatusSaveBtn">保存</button>
+          </div>
+          <div class="project-status-message" id="projectStatusMessage"></div>
+        </div>
+      </section>
 
       <section class="project-stakeholder-section">
         <div class="project-section-heading">
@@ -3842,10 +4033,10 @@
           <button type="button" class="btn-secondary" id="btnOpenCsv">📤 CSV出力</button>
         </div>
         <div class="app-info-panel">
-          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.10</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
+          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.12</span><br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
           Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
-          更新日：2026年8月24日
+          更新日：2026年8月26日
         </div>
       </div>
       <div class="modal-footer">
@@ -3949,7 +4140,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.11";
+    const APP_VERSION = "6.8.12";
     const APP_BUILD_DATE = "2026-08-26";
 
     const firebaseConfig = {
@@ -4138,6 +4329,8 @@
         setProjectContactsEditMode(false);
       });
       document.getElementById("projectContactsForm").addEventListener("submit", saveProjectContacts);
+
+      document.getElementById("projectStatusSaveBtn").addEventListener("click", saveProjectStatus);
 
       document.getElementById("annualZoomIn").addEventListener("click", () => changeAnnualZoom(0.15));
       document.getElementById("annualZoomOut").addEventListener("click", () => changeAnnualZoom(-0.15));
@@ -4330,6 +4523,7 @@
 
       subscribeCategories();
       subscribeSchedules();
+      loadAnnualProjectStatuses();
     }
 
     function stopDataSubscriptions() {
@@ -8025,6 +8219,93 @@ ${error.message||error}`); }
       });
     }
 
+    const PROJECT_STATUSES = ["未稼働", "進行中", "完了", "アーカイブ"];
+
+    function getProjectStatusClass(status) {
+      return status === "進行中" ? "status-active"
+        : status === "完了" ? "status-complete"
+        : status === "アーカイブ" ? "status-archive"
+        : "status-pending";
+    }
+
+    function applyProjectStatusToCard(card, status) {
+      if (!card) return;
+      const safeStatus = PROJECT_STATUSES.includes(status) ? status : "未稼働";
+      card.dataset.projectStatus = safeStatus;
+
+      const badge = card.querySelector(".annual-project-status");
+      if (badge) {
+        badge.textContent = safeStatus;
+        badge.className = `annual-project-status ${getProjectStatusClass(safeStatus)}`;
+      }
+
+      const baseSearch = [
+        card.dataset.projectName || "",
+        card.dataset.projectOwner || "",
+        card.dataset.projectYear || "",
+        card.dataset.projectDue || ""
+      ].join(" ");
+      card.dataset.projectSearch = `${baseSearch} ${safeStatus}`.trim();
+    }
+
+    async function loadAnnualProjectStatuses() {
+      if (!currentUser) return;
+      const cards = Array.from(document.querySelectorAll(".annual-project-card"));
+      await Promise.all(cards.map(async card => {
+        try {
+          const docId = getProjectContactDocId(card);
+          const snap = await db.collection("projectContacts").doc(docId).get();
+          if (!snap.exists) return;
+          const saved = String(snap.data()?.projectStatus || "");
+          if (PROJECT_STATUSES.includes(saved)) applyProjectStatusToCard(card, saved);
+        } catch (error) {
+          console.warn("project status load skipped", error);
+        }
+      }));
+      filterAnnualProjects();
+    }
+
+    function setProjectStatusMessage(message = "", type = "") {
+      const el = document.getElementById("projectStatusMessage");
+      if (!el) return;
+      el.textContent = message;
+      el.className = `project-status-message${type ? ` ${type}` : ""}`;
+    }
+
+    async function saveProjectStatus() {
+      if (!activeProjectCard || !currentUser) return;
+      const select = document.getElementById("projectStatusSelect");
+      const button = document.getElementById("projectStatusSaveBtn");
+      const status = String(select?.value || "");
+      if (!PROJECT_STATUSES.includes(status)) return;
+
+      button.disabled = true;
+      button.textContent = "保存中…";
+      setProjectStatusMessage("状態を保存しています…");
+      try {
+        const docId = getProjectContactDocId(activeProjectCard);
+        await db.collection("projectContacts").doc(docId).set({
+          projectNo: activeProjectCard.dataset.projectNo || "",
+          projectId: activeProjectCard.dataset.projectId || "",
+          projectName: activeProjectCard.dataset.projectName || "",
+          projectStatus: status,
+          projectStatusUpdatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          appVersion: APP_VERSION
+        }, { merge: true });
+
+        applyProjectStatusToCard(activeProjectCard, status);
+        setProjectStatusMessage("保存しました。ほかのPCでも同じ状態を読み込みます。", "success");
+        filterAnnualProjects();
+      } catch (error) {
+        console.error("project status save error", error);
+        setProjectStatusMessage("保存できませんでした。接続状態をご確認ください。", "error");
+      } finally {
+        button.disabled = false;
+        button.textContent = "保存";
+      }
+    }
+
     function switchMainView(viewName) {
       const safeView = ["schedule", "annual", "expense"].includes(viewName) ? viewName : "schedule";
       const scheduleView = document.getElementById("scheduleView");
@@ -8054,12 +8335,18 @@ ${error.message||error}`); }
       const name = card.dataset.projectName || "";
       const owner = card.dataset.projectOwner || "";
       const year = card.dataset.projectYear || "";
-      const timing = card.dataset.projectTiming || "";
+      const due = card.dataset.projectDue || "未定";
+      const status = PROJECT_STATUSES.includes(card.dataset.projectStatus)
+        ? card.dataset.projectStatus
+        : "未稼働";
 
       document.getElementById("projectDetailNo").textContent = no;
       document.getElementById("projectDetailName").textContent = name;
       document.getElementById("projectDetailMeta").textContent =
-        `${projectId ? `案件No. ${projectId}　｜　` : ""}担当：${owner}　｜　${year}　｜　${timing}`;
+        `${projectId ? `案件No. ${projectId}　｜　` : ""}担当：${owner}　｜　${year}`;
+      document.getElementById("projectDetailDue").textContent = due;
+      document.getElementById("projectStatusSelect").value = status;
+      setProjectStatusMessage("");
 
       const n = normalizeText(name);
       const related = schedules.filter(s => {
@@ -8141,9 +8428,16 @@ ${error.message||error}`); }
         const snap = await db.collection("projectContacts").doc(docId).get();
         if (activeProjectCard !== card) return;
 
+        const rawProjectData = snap.exists ? snap.data() : {};
         activeProjectContactData = snap.exists
-          ? normalizeProjectContactData(snap.data())
+          ? normalizeProjectContactData(rawProjectData)
           : normalizeProjectContactData({});
+
+        const savedStatus = String(rawProjectData?.projectStatus || "");
+        if (PROJECT_STATUSES.includes(savedStatus)) {
+          applyProjectStatusToCard(card, savedStatus);
+          document.getElementById("projectStatusSelect").value = savedStatus;
+        }
 
         renderProjectContacts(activeProjectContactData);
         fillProjectContactForm(activeProjectContactData);
