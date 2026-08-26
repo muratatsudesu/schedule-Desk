@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.8.13</title>
+  <title>Q.T.S Scheduler — Ver.6.8.14</title>
   <link rel="icon" href="favicon.ico?v=655" sizes="any">
   <link rel="shortcut icon" href="favicon.ico?v=655" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=655">
@@ -4122,8 +4122,8 @@
           <button type="button" class="btn-secondary" id="btnOpenCsv">📤 CSV出力</button>
         </div>
         <div class="app-info-panel">
-          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.13</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
+          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.14</span><br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
           Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月26日
         </div>
@@ -4229,7 +4229,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.13";
+    const APP_VERSION = "6.8.14";
     const APP_BUILD_DATE = "2026-08-26";
 
     const firebaseConfig = {
@@ -8765,20 +8765,43 @@ ${error.message||error}`); }
       return qtsNormalizeSheetTarget(rel.getAttribute("Target"));
     }
 
+    // Excelの共有文字列には、日本語の「ふりがな(rPh)」が内部保存される場合がある。
+    // getElementsByTagName("t") ですべて拾うと「案件名アンケンメイ」のようになって
+    // 見出し・案件名の照合に失敗するため、画面に表示される本文(t / r>t)だけを読む。
+    function qtsVisibleRichText(node) {
+      if (!node) return "";
+      const parts = [];
+      Array.from(node.childNodes || []).forEach(child => {
+        if (child.nodeType !== 1) return;
+        const localName = child.localName || child.nodeName?.split(":").pop();
+        if (localName === "t") {
+          parts.push(child.textContent || "");
+          return;
+        }
+        if (localName === "r") {
+          Array.from(child.childNodes || []).forEach(grandChild => {
+            if (grandChild.nodeType !== 1) return;
+            const grandName = grandChild.localName || grandChild.nodeName?.split(":").pop();
+            if (grandName === "t") parts.push(grandChild.textContent || "");
+          });
+        }
+      });
+      return parts.join("");
+    }
+
     function qtsReadSharedStrings(map, decoder) {
       const entry = map.get("xl/sharedStrings.xml");
       if (!entry) return [];
       const doc = new DOMParser().parseFromString(decoder.decode(entry.data), "application/xml");
-      return Array.from(doc.getElementsByTagNameNS("*", "si")).map(si =>
-        Array.from(si.getElementsByTagNameNS("*", "t")).map(t => t.textContent || "").join("")
-      );
+      return Array.from(doc.getElementsByTagNameNS("*", "si")).map(si => qtsVisibleRichText(si));
     }
 
     function qtsCellDisplayValue(cell, sharedStrings) {
       if (!cell) return "";
       const type = cell.getAttribute("t") || "";
       if (type === "inlineStr") {
-        return Array.from(cell.getElementsByTagNameNS("*", "t")).map(t => t.textContent || "").join("");
+        const inlineNode = cell.getElementsByTagNameNS("*", "is")[0];
+        return qtsVisibleRichText(inlineNode);
       }
       const valueNode = cell.getElementsByTagNameNS("*", "v")[0];
       const raw = valueNode?.textContent || "";
