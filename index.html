@@ -2086,7 +2086,7 @@
     .project-local-empty { padding:12px; color:#748595; font-size:.74rem; }
     @media (max-width:560px) { .project-local-counts { grid-template-columns:1fr; } }
 
-    /* ===== Ver.6.8.23 現場写真ギャラリー ===== */
+    /* ===== Ver.6.8.24 現場写真ギャラリー（30枚ずつ表示） ===== */
     .project-local-browser.photo-gallery-mode { overflow:visible; }
     .project-local-browser.photo-gallery-mode .project-local-file-list {
       max-height:640px; padding:10px; background:#f7fafb;
@@ -2131,6 +2131,13 @@
     .project-photo-gallery-open { border:1px solid #c8d6de; background:#f8fbfc; color:#21435f; }
     .project-photo-gallery-delete { border:1px solid #e1c9c9; background:#fff7f7; color:#a24343; }
     .project-photo-gallery-summary { margin:0 0 7px; color:#647785; font-size:.69rem; line-height:1.45; }
+    .project-photo-gallery-progress { margin:10px 0 0; color:#6f808c; font-size:.68rem; text-align:center; }
+    .project-photo-gallery-more-wrap { display:flex; justify-content:center; padding:10px 0 2px; }
+    .project-photo-gallery-more {
+      min-width:180px; border:1px solid #bfd0da; border-radius:9px; background:#fff; color:#214d6a;
+      padding:8px 14px; font-size:.72rem; font-weight:850; cursor:pointer;
+    }
+    .project-photo-gallery-more:hover { background:#eef5f8; }
     @media (max-width:900px) {
       .project-photo-gallery-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
     }
@@ -3302,8 +3309,9 @@
 
   
 
-    /* ===== Ver.6.8.21 スマホ/タブレットではPC専用UIを非表示 ===== */
+    /* ===== Ver.6.8.24 端末別UI ===== */
     html.qts-mobile-ui .qts-desktop-only { display: none !important; }
+    html:not(.qts-mobile-ui) .qts-mobile-only { display: none !important; }
     html.qts-mobile-ui .project-photo-transfer-grid { grid-template-columns: 1fr; }
 </style>
 </head>
@@ -4268,12 +4276,13 @@
         <div class="project-photo-transfer-head">
           <div>
             <h4>📷 現場写真転送</h4>
-            <p>スマホで選んだ写真を、この案件のPC「現場写真」フォルダへ受け渡します。</p>
+            <p class="qts-mobile-only">スマホで選んだ写真を、この案件のPC「現場写真」フォルダへ受け渡します。</p>
+            <p class="qts-desktop-only">スマホから送られた現場写真を、このPCの案件フォルダへ取り込みます。</p>
           </div>
-          <span class="project-photo-transfer-badge">スマホ → PC</span>
+          <span class="project-photo-transfer-badge qts-mobile-only">スマホ → PC</span><span class="project-photo-transfer-badge qts-desktop-only">PCで受取</span>
         </div>
         <div class="project-photo-transfer-grid">
-          <div class="project-photo-transfer-box">
+          <div class="project-photo-transfer-box qts-mobile-only">
             <span class="project-photo-transfer-label">現場で写真を送る</span>
             <input class="project-photo-transfer-input" type="file" id="projectPhotoTransferInput" accept="image/*" multiple>
             <div class="project-photo-transfer-selected" id="projectPhotoTransferSelected">写真は未選択です。</div>
@@ -4317,10 +4326,12 @@
           </div>
         </div>
         <div class="project-photo-transfer-message" id="projectPhotoTransferMessage"></div>
-        <p class="project-photo-transfer-note">
+        <p class="project-photo-transfer-note qts-mobile-only">
           1回最大30枚。通信量と無料運用を抑えるため最大1600px程度の標準画質JPEGへ圧縮して一時送信します。
-          各写真に分類・コメントを付けられ、一括設定もできます。PC取込時は「現場写真\撮影日」へ写真をまとめて保存し、分類・コメントはQ.T.Sの写真ギャラリーと同じ撮影日フォルダのコメント一覧CSVで管理します。
-          PCへ正常に取り込んだ後は画像本体をクラウドから除去し、PCの案件フォルダを保管先とします。
+          各写真に分類・コメントを付けられ、一括設定もできます。
+        </p>
+        <p class="project-photo-transfer-note qts-desktop-only">
+          PCへ取り込むと「現場写真\撮影日」へ保存します。分類・コメントはQ.T.Sの写真ギャラリーと同じ撮影日フォルダのコメント一覧CSVで管理し、正常取込後はクラウド上の画像本体を除去します。
         </p>
       </section>
 
@@ -4488,7 +4499,7 @@
         </div>
         <div class="app-info-panel">
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.21</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
           Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月26日
         </div>
@@ -4594,7 +4605,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.23";
+    const APP_VERSION = "6.8.24";
     const APP_BUILD_DATE = "2026-08-26";
 
     const firebaseConfig = {
@@ -9263,6 +9274,9 @@ ${error.message||error}`); }
     let projectRootDirectoryHandle = null;
     let projectLocalVisibleFiles = new Map();
     let projectPhotoGalleryObjectUrls = [];
+    const PROJECT_PHOTO_GALLERY_PAGE_SIZE = 30;
+    const PROJECT_PHOTO_GALLERY_SCAN_LIMIT = 1000;
+    let projectPhotoGalleryRenderToken = 0;
 
     function projectLocalFileSystemSupported() {
       return typeof window.showDirectoryPicker === "function" && "indexedDB" in window;
@@ -9582,7 +9596,7 @@ ${error.message||error}`); }
     }
 
     async function qtsLoadPhotoGalleryEntries(photoRoot) {
-      const files = await qtsCollectFilesRecursive(photoRoot, "", [], PROJECT_LOCAL_FILE_LIST_LIMIT);
+      const files = await qtsCollectFilesRecursive(photoRoot, "", [], PROJECT_PHOTO_GALLERY_SCAN_LIMIT);
       const photos = files.filter(entry => /\.(jpe?g|png|webp|heic|heif|gif)$/i.test(entry.name));
       const ledgers = new Map();
       const dateHandles = new Map();
@@ -9623,6 +9637,7 @@ ${error.message||error}`); }
     async function showProjectPhotoGallery(filter = "すべて") {
       const card = activeProjectCard;
       if (!card || !projectRootDirectoryHandle) return;
+      const renderToken = ++projectPhotoGalleryRenderToken;
       try {
         if (!(await ensureProjectRootPermission(true))) throw new Error("案件管理フォルダへのアクセスが許可されていません。");
         const state = await getProjectLocalFolderState(card);
@@ -9646,11 +9661,14 @@ ${error.message||error}`); }
         }
 
         const allEntries = await qtsLoadPhotoGalleryEntries(photoRoot);
-        const entries = filter === "すべて" ? allEntries : allEntries.filter(entry => entry.category === filter);
+        if (renderToken !== projectPhotoGalleryRenderToken) return;
+        const entries = (filter === "すべて" ? allEntries : allEntries.filter(entry => entry.category === filter))
+          .sort((a,b) => String(b.dateName).localeCompare(String(a.dateName)) || String(b.takenAt).localeCompare(String(a.takenAt)));
 
         const summary = document.createElement("div");
         summary.className = "project-photo-gallery-summary";
-        summary.textContent = `このPCに保存されている現場写真 ${allEntries.length}枚。分類・コメントは写真と一緒に確認できます。`;
+        const scanCapped = allEntries.length >= PROJECT_PHOTO_GALLERY_SCAN_LIMIT;
+        summary.textContent = `このPCに保存されている現場写真 ${allEntries.length}${scanCapped ? "+" : ""}枚。画面負荷を抑えるため30枚ずつ表示します。`;
         list.appendChild(summary);
 
         const toolbar = document.createElement("div");
@@ -9673,88 +9691,134 @@ ${error.message||error}`); }
           return;
         }
 
-        const grouped = new Map();
-        entries.sort((a,b) => String(b.dateName).localeCompare(String(a.dateName)) || String(a.takenAt).localeCompare(String(b.takenAt)));
-        entries.forEach(entry => {
-          if (!grouped.has(entry.dateName)) grouped.set(entry.dateName, []);
-          grouped.get(entry.dateName).push(entry);
-        });
+        let rendered = 0;
+        let cardIndex = 0;
+        const content = document.createElement("div");
+        list.appendChild(content);
+        const progress = document.createElement("div");
+        progress.className = "project-photo-gallery-progress";
+        list.appendChild(progress);
+        const moreWrap = document.createElement("div");
+        moreWrap.className = "project-photo-gallery-more-wrap";
+        const moreBtn = document.createElement("button");
+        moreBtn.type = "button";
+        moreBtn.className = "project-photo-gallery-more";
+        moreBtn.textContent = "さらに30枚表示";
+        moreWrap.appendChild(moreBtn);
+        list.appendChild(moreWrap);
 
-        let index = 0;
-        for (const [dateName, dayEntries] of grouped.entries()) {
-          const day = document.createElement("div");
-          day.className = "project-photo-gallery-day";
-          day.textContent = `📅 ${dateName}　${dayEntries.length}枚`;
-          list.appendChild(day);
+        async function appendNextPage() {
+          if (renderToken !== projectPhotoGalleryRenderToken) return;
+          moreBtn.disabled = true;
+          moreBtn.textContent = "読み込み中…";
+          const page = entries.slice(rendered, rendered + PROJECT_PHOTO_GALLERY_PAGE_SIZE);
+          if (!page.length) return;
 
-          const grid = document.createElement("div");
-          grid.className = "project-photo-gallery-grid";
-          for (const entry of dayEntries) {
-            const key = `photo_${Date.now()}_${index++}`;
-            projectLocalVisibleFiles.set(key, entry);
+          const grouped = new Map();
+          page.forEach(entry => {
+            if (!grouped.has(entry.dateName)) grouped.set(entry.dateName, []);
+            grouped.get(entry.dateName).push(entry);
+          });
 
-            const cardEl = document.createElement("article");
-            cardEl.className = "project-photo-gallery-card";
-            const thumbWrap = document.createElement("div");
-            thumbWrap.className = "project-photo-gallery-thumb-wrap";
-            const img = document.createElement("img");
-            img.className = "project-photo-gallery-thumb";
-            img.loading = "lazy";
-            img.alt = entry.comment || entry.name;
-            try {
-              const file = await entry.handle.getFile();
-              const url = URL.createObjectURL(file);
-              projectPhotoGalleryObjectUrls.push(url);
-              img.src = url;
-            } catch (_) {}
-            img.addEventListener("click", () => openProjectLocalFile(key));
-            thumbWrap.appendChild(img);
+          for (const [dateName, dayEntries] of grouped.entries()) {
+            if (renderToken !== projectPhotoGalleryRenderToken) return;
+            let grid = content.querySelector(`.project-photo-gallery-grid[data-date="${CSS.escape(dateName)}"]`);
+            if (!grid) {
+              const day = document.createElement("div");
+              day.className = "project-photo-gallery-day";
+              day.dataset.date = dateName;
+              const fullDayCount = entries.filter(entry => entry.dateName === dateName).length;
+              day.textContent = `📅 ${dateName}　${fullDayCount}枚`;
+              content.appendChild(day);
+              grid = document.createElement("div");
+              grid.className = "project-photo-gallery-grid";
+              grid.dataset.date = dateName;
+              content.appendChild(grid);
+            }
 
-            const body = document.createElement("div");
-            body.className = "project-photo-gallery-body";
-            const meta = document.createElement("div");
-            meta.className = "project-photo-gallery-meta";
-            const category = document.createElement("span");
-            category.className = "project-photo-gallery-category";
-            category.textContent = entry.category;
-            const time = document.createElement("span");
-            time.className = "project-photo-gallery-time";
-            time.textContent = entry.takenAt || dateName;
-            meta.append(category, time);
+            for (const entry of dayEntries) {
+              if (renderToken !== projectPhotoGalleryRenderToken) return;
+              const key = `photo_${Date.now()}_${cardIndex++}`;
+              projectLocalVisibleFiles.set(key, entry);
 
-            const comment = document.createElement("div");
-            comment.className = "project-photo-gallery-comment";
-            comment.textContent = entry.comment || "コメントなし";
+              const cardEl = document.createElement("article");
+              cardEl.className = "project-photo-gallery-card";
+              const thumbWrap = document.createElement("div");
+              thumbWrap.className = "project-photo-gallery-thumb-wrap";
+              const img = document.createElement("img");
+              img.className = "project-photo-gallery-thumb";
+              img.loading = "lazy";
+              img.decoding = "async";
+              img.alt = entry.comment || entry.name;
+              try {
+                const file = await entry.handle.getFile();
+                if (renderToken !== projectPhotoGalleryRenderToken) return;
+                const url = URL.createObjectURL(file);
+                projectPhotoGalleryObjectUrls.push(url);
+                img.src = url;
+              } catch (_) {}
+              img.addEventListener("click", () => openProjectLocalFile(key));
+              thumbWrap.appendChild(img);
 
-            const sender = document.createElement("div");
-            sender.className = "project-photo-gallery-sender";
-            sender.textContent = entry.senderName ? `登録：${entry.senderName}` : "登録者情報なし";
+              const body = document.createElement("div");
+              body.className = "project-photo-gallery-body";
+              const meta = document.createElement("div");
+              meta.className = "project-photo-gallery-meta";
+              const category = document.createElement("span");
+              category.className = "project-photo-gallery-category";
+              category.textContent = entry.category;
+              const time = document.createElement("span");
+              time.className = "project-photo-gallery-time";
+              time.textContent = entry.takenAt || dateName;
+              meta.append(category, time);
 
-            const fileName = document.createElement("div");
-            fileName.className = "project-photo-gallery-file";
-            fileName.textContent = entry.name;
+              const comment = document.createElement("div");
+              comment.className = "project-photo-gallery-comment";
+              comment.textContent = entry.comment || "コメントなし";
 
-            const actions = document.createElement("div");
-            actions.className = "project-photo-gallery-actions";
-            const open = document.createElement("button");
-            open.type = "button"; open.className = "project-photo-gallery-open"; open.textContent = "拡大";
-            open.addEventListener("click", () => openProjectLocalFile(key));
-            const del = document.createElement("button");
-            del.type = "button"; del.className = "project-photo-gallery-delete"; del.textContent = "削除";
-            del.addEventListener("click", () => deleteProjectPhotoGalleryEntry(key, filter));
-            actions.append(open, del);
+              const sender = document.createElement("div");
+              sender.className = "project-photo-gallery-sender";
+              sender.textContent = entry.senderName ? `登録：${entry.senderName}` : "登録者情報なし";
 
-            body.append(meta, comment, sender, fileName, actions);
-            cardEl.append(thumbWrap, body);
-            grid.appendChild(cardEl);
+              const fileName = document.createElement("div");
+              fileName.className = "project-photo-gallery-file";
+              fileName.textContent = entry.name;
+
+              const actions = document.createElement("div");
+              actions.className = "project-photo-gallery-actions";
+              const open = document.createElement("button");
+              open.type = "button"; open.className = "project-photo-gallery-open"; open.textContent = "拡大";
+              open.addEventListener("click", () => openProjectLocalFile(key));
+              const del = document.createElement("button");
+              del.type = "button"; del.className = "project-photo-gallery-delete"; del.textContent = "削除";
+              del.addEventListener("click", () => deleteProjectPhotoGalleryEntry(key, filter));
+              actions.append(open, del);
+
+              body.append(meta, comment, sender, fileName, actions);
+              cardEl.append(thumbWrap, body);
+              grid.appendChild(cardEl);
+            }
           }
-          list.appendChild(grid);
+
+          rendered += page.length;
+          progress.textContent = `${entries.length}枚中 ${rendered}枚を表示中`;
+          const remaining = entries.length - rendered;
+          if (remaining > 0) {
+            moreWrap.hidden = false;
+            moreBtn.disabled = false;
+            moreBtn.textContent = `さらに${Math.min(PROJECT_PHOTO_GALLERY_PAGE_SIZE, remaining)}枚表示`;
+          } else {
+            moreWrap.hidden = true;
+          }
         }
 
-        if (allEntries.length >= PROJECT_LOCAL_FILE_LIST_LIMIT) {
+        moreBtn.addEventListener("click", appendNextPage);
+        await appendNextPage();
+
+        if (scanCapped) {
           const note = document.createElement("div");
           note.className = "project-local-empty";
-          note.textContent = `表示は先頭${PROJECT_LOCAL_FILE_LIST_LIMIT}枚までです。`;
+          note.textContent = `高速表示のため、1回の読込対象は先頭${PROJECT_PHOTO_GALLERY_SCAN_LIMIT}枚までです。`;
           list.appendChild(note);
         }
       } catch (error) {
