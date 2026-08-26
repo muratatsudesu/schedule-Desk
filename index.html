@@ -2100,6 +2100,22 @@
     .project-photo-transfer-label { display:block; margin-bottom:6px; color:#36566e; font-size:.75rem; font-weight:850; }
     .project-photo-transfer-input { width:100%; box-sizing:border-box; padding:8px; border:1px solid #cbd8df; border-radius:8px; background:#fbfcfd; color:#36566e; font-size:.74rem; }
     .project-photo-transfer-selected { margin:7px 0; min-height:1.2em; color:#657888; font-size:.72rem; line-height:1.5; overflow-wrap:anywhere; }
+    .project-photo-transfer-editor { margin:9px 0; }
+    .project-photo-transfer-editor[hidden] { display:none; }
+    .project-photo-transfer-bulk { padding:9px; border:1px solid #d9e4e8; border-radius:9px; background:#f7fbfa; }
+    .project-photo-transfer-bulk-title { margin-bottom:6px; color:#2f566d; font-size:.73rem; font-weight:850; }
+    .project-photo-transfer-bulk-grid { display:grid; grid-template-columns:140px minmax(0,1fr); gap:8px; align-items:end; margin-bottom:7px; }
+    .project-photo-transfer-bulk-grid label { display:flex; flex-direction:column; gap:3px; color:#607787; font-size:.68rem; font-weight:750; }
+    .project-photo-transfer-bulk-grid select, .project-photo-transfer-bulk-grid textarea,
+    .project-photo-transfer-item-fields select, .project-photo-transfer-item-fields textarea { width:100%; box-sizing:border-box; border:1px solid #cad9df; border-radius:7px; background:#fff; color:#304f63; font:inherit; padding:6px 7px; }
+    .project-photo-transfer-bulk-grid textarea, .project-photo-transfer-item-fields textarea { resize:vertical; min-height:48px; line-height:1.4; }
+    .project-photo-transfer-items { display:grid; gap:8px; margin-top:8px; max-height:440px; overflow:auto; padding-right:2px; }
+    .project-photo-transfer-item { display:grid; grid-template-columns:76px minmax(0,1fr) auto; gap:8px; align-items:start; padding:8px; border:1px solid #dbe4e8; border-radius:9px; background:#fff; }
+    .project-photo-transfer-thumb { width:76px; height:76px; object-fit:cover; border-radius:7px; background:#edf2f4; border:1px solid #d7e1e5; }
+    .project-photo-transfer-item-name { margin-bottom:5px; color:#315268; font-size:.68rem; font-weight:800; line-height:1.35; overflow-wrap:anywhere; }
+    .project-photo-transfer-item-fields { display:grid; grid-template-columns:125px minmax(0,1fr); gap:7px; align-items:start; }
+    .project-photo-transfer-item-fields label { display:flex; flex-direction:column; gap:3px; color:#687e8d; font-size:.65rem; font-weight:750; }
+    .project-photo-transfer-remove { border:1px solid #dfc8c8; border-radius:7px; background:#fff7f7; color:#a24343; padding:5px 7px; font-size:.67rem; font-weight:800; cursor:pointer; }
     .project-photo-transfer-actions { display:flex; flex-wrap:wrap; gap:7px; align-items:center; }
     .project-photo-transfer-queue { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 10px; border-radius:9px; background:#eef5f6; color:#294d63; font-size:.78rem; font-weight:800; }
     .project-photo-transfer-count { color:#176d55; font-size:1rem; font-weight:900; white-space:nowrap; }
@@ -2111,6 +2127,12 @@
     @media (max-width:680px) {
       .project-photo-transfer-grid { grid-template-columns:1fr; }
       .project-photo-transfer-head { align-items:center; }
+      .project-photo-transfer-bulk-grid { grid-template-columns:1fr; }
+      .project-photo-transfer-item { grid-template-columns:66px minmax(0,1fr); }
+      .project-photo-transfer-thumb { width:66px; height:66px; }
+      .project-photo-transfer-remove { grid-column:1 / -1; justify-self:end; }
+      .project-photo-transfer-item-fields { grid-template-columns:1fr; }
+      .project-photo-transfer-items { max-height:520px; }
     }
     .annual-local-manager {
       margin: 14px 0;
@@ -4202,6 +4224,28 @@
             <span class="project-photo-transfer-label">現場で写真を送る</span>
             <input class="project-photo-transfer-input" type="file" id="projectPhotoTransferInput" accept="image/*" multiple>
             <div class="project-photo-transfer-selected" id="projectPhotoTransferSelected">写真は未選択です。</div>
+            <div class="project-photo-transfer-editor" id="projectPhotoTransferEditor" hidden>
+              <div class="project-photo-transfer-bulk">
+                <div class="project-photo-transfer-bulk-title">まとめて設定</div>
+                <div class="project-photo-transfer-bulk-grid">
+                  <label>分類
+                    <select id="projectPhotoTransferBulkCategory">
+                      <option value="全景">全景</option>
+                      <option value="搬入">搬入</option>
+                      <option value="施工中">施工中</option>
+                      <option value="完了">完了</option>
+                      <option value="傷・不具合">傷・不具合</option>
+                      <option value="その他" selected>その他</option>
+                    </select>
+                  </label>
+                  <label>コメント
+                    <textarea id="projectPhotoTransferBulkComment" maxlength="300" rows="2" placeholder="例：3階客室 搬入前。スマホの音声入力も使えます。"></textarea>
+                  </label>
+                </div>
+                <button type="button" class="btn-secondary btn-small" id="projectPhotoTransferBulkApplyBtn">選択中すべてに適用</button>
+              </div>
+              <div class="project-photo-transfer-items" id="projectPhotoTransferItems"></div>
+            </div>
             <div class="project-photo-transfer-actions">
               <button type="button" class="btn-primary btn-small" id="projectPhotoTransferSendBtn" disabled>📤 PCへ送る</button>
               <button type="button" class="btn-secondary btn-small" id="projectPhotoTransferClearBtn" disabled>選択解除</button>
@@ -4222,7 +4266,8 @@
         <div class="project-photo-transfer-message" id="projectPhotoTransferMessage"></div>
         <p class="project-photo-transfer-note">
           1回最大30枚。通信量と無料運用を抑えるため最大1600px程度の標準画質JPEGへ圧縮して一時送信します。
-          PCへ正常に取り込んだ後は画像本体をクラウドから除去し、PCの案件フォルダを保管先とします。原画質転送・写真ごとのコメントは次段階で追加できます。
+          各写真に分類・コメントを付けられ、一括設定もできます。PC取込時は「現場写真\撮影日\分類」へ整理し、同じ撮影日フォルダにコメント一覧CSVを残します。
+          PCへ正常に取り込んだ後は画像本体をクラウドから除去し、PCの案件フォルダを保管先とします。
         </p>
       </section>
 
@@ -4390,7 +4435,7 @@
         </div>
         <div class="app-info-panel">
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.21</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
           Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月26日
         </div>
@@ -4496,7 +4541,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.21";
+    const APP_VERSION = "6.8.22";
     const APP_BUILD_DATE = "2026-08-26";
 
     const firebaseConfig = {
@@ -4684,6 +4729,7 @@
       document.getElementById("projectPhotoTransferInput").addEventListener("change", handleProjectPhotoTransferSelection);
       document.getElementById("projectPhotoTransferSendBtn").addEventListener("click", sendProjectPhotoTransfer);
       document.getElementById("projectPhotoTransferClearBtn").addEventListener("click", clearProjectPhotoTransferSelection);
+      document.getElementById("projectPhotoTransferBulkApplyBtn").addEventListener("click", applyProjectPhotoTransferBulkSettings);
       document.getElementById("projectPhotoTransferReceiveBtn").addEventListener("click", receiveProjectPhotoTransfer);
       document.getElementById("projectPhotoTransferRefreshBtn").addEventListener("click", () => refreshProjectPhotoTransferUi(activeProjectCard));
       initializeAnnualExcelStorage();
@@ -9353,11 +9399,25 @@ ${error.message||error}`); }
       return { count: Math.min(count, limit), capped };
     }
 
+    async function qtsCountPhotoImagesRecursive(directoryHandle, limit = PROJECT_LOCAL_COUNT_LIMIT) {
+      let count = 0;
+      async function walk(dir) {
+        for await (const [name, handle] of dir.entries()) {
+          if (handle.kind === "file" && /\.(jpe?g|png|webp|heic|heif|gif)$/i.test(name)) { count += 1; if (count > limit) return true; }
+          else if (handle.kind === "directory" && await walk(handle)) return true;
+        }
+        return false;
+      }
+      const capped = await walk(directoryHandle);
+      return { count: Math.min(count, limit), capped };
+    }
+
     async function getProjectLocalCategoryStats(projectHandle) {
       const stats = [];
       for (const name of PROJECT_LOCAL_SUBFOLDERS) {
         const dir = await qtsTryGetDirectory(projectHandle, name);
         if (!dir) stats.push({ name, count: 0, capped: false });
+        else if (name === "現場写真") stats.push({ name, ...(await qtsCountPhotoImagesRecursive(dir)) });
         else stats.push({ name, ...(await qtsCountFilesRecursive(dir)) });
       }
       return stats;
@@ -9644,16 +9704,19 @@ ${error.message||error}`); }
       }
     }
 
-    // ===== Ver.6.8.20 スマホ→PC 現場写真転送 Ver.1 =====
+    // ===== Ver.6.8.22 スマホ→PC 現場写真転送 Ver.2 =====
+    // 写真ごとの分類・コメント、一括設定に対応。
     // 画像本体は projectContacts コレクションへ「1写真=1文書」で一時保存する。
+    // PC取込時は 現場写真\撮影日\分類 へ保存し、撮影日フォルダに現場写真一覧.csvを残す。
     // PCへ受取完了後は dataUrl とキュー検索用UIDを削除し、重いデータをクラウドへ残さない。
-    // 既存の認証・Firestoreルールを利用するためFirebase Storageの追加設定は不要。
     const PROJECT_PHOTO_TRANSFER_TYPE = "sitePhotoTransfer";
     const PROJECT_PHOTO_TRANSFER_MAX_FILES = 30;
     const PROJECT_PHOTO_TRANSFER_MAX_DIMENSION = 1600;
     const PROJECT_PHOTO_TRANSFER_TARGET_BYTES = 320 * 1024;
     const PROJECT_PHOTO_TRANSFER_HARD_BYTES = 560 * 1024;
-    let projectPhotoTransferSelectedFiles = [];
+    const PROJECT_PHOTO_TRANSFER_COMMENT_MAX = 300;
+    const PROJECT_PHOTO_TRANSFER_CATEGORIES = ["全景", "搬入", "施工中", "完了", "傷・不具合", "その他"];
+    let projectPhotoTransferSelectedFiles = []; // { file, previewUrl, category, comment }
     let projectPhotoTransferPendingDocs = [];
 
     function setProjectPhotoTransferMessage(message = "", type = "") {
@@ -9663,31 +9726,133 @@ ${error.message||error}`); }
       el.className = `project-photo-transfer-message${type ? ` ${type}` : ""}`;
     }
 
+    function qtsProjectPhotoCategory(value) {
+      const text = String(value || "").trim();
+      return PROJECT_PHOTO_TRANSFER_CATEGORIES.includes(text) ? text : "その他";
+    }
+
+    function qtsRevokeProjectPhotoPreview(entry) {
+      try { if (entry?.previewUrl) URL.revokeObjectURL(entry.previewUrl); } catch (_) {}
+    }
+
     function clearProjectPhotoTransferSelection() {
+      projectPhotoTransferSelectedFiles.forEach(qtsRevokeProjectPhotoPreview);
       projectPhotoTransferSelectedFiles = [];
       const input = document.getElementById("projectPhotoTransferInput");
       const selected = document.getElementById("projectPhotoTransferSelected");
       const sendBtn = document.getElementById("projectPhotoTransferSendBtn");
       const clearBtn = document.getElementById("projectPhotoTransferClearBtn");
+      const editor = document.getElementById("projectPhotoTransferEditor");
+      const items = document.getElementById("projectPhotoTransferItems");
+      const bulkComment = document.getElementById("projectPhotoTransferBulkComment");
+      const bulkCategory = document.getElementById("projectPhotoTransferBulkCategory");
       if (input) input.value = "";
       if (selected) selected.textContent = "写真は未選択です。";
       if (sendBtn) sendBtn.disabled = true;
       if (clearBtn) clearBtn.disabled = true;
+      if (editor) editor.hidden = true;
+      if (items) items.innerHTML = "";
+      if (bulkComment) bulkComment.value = "";
+      if (bulkCategory) bulkCategory.value = "その他";
+    }
+
+    function renderProjectPhotoTransferSelection() {
+      const box = document.getElementById("projectPhotoTransferSelected");
+      const editor = document.getElementById("projectPhotoTransferEditor");
+      const items = document.getElementById("projectPhotoTransferItems");
+      const sendBtn = document.getElementById("projectPhotoTransferSendBtn");
+      const clearBtn = document.getElementById("projectPhotoTransferClearBtn");
+      if (!box || !editor || !items) return;
+      items.innerHTML = "";
+      const count = projectPhotoTransferSelectedFiles.length;
+      if (!count) {
+        box.textContent = "写真は未選択です。";
+        editor.hidden = true;
+        if (sendBtn) sendBtn.disabled = true;
+        if (clearBtn) clearBtn.disabled = true;
+        return;
+      }
+      box.textContent = `${count}枚選択中。必要な写真だけ個別に分類・コメントを変更できます。`;
+      editor.hidden = false;
+      if (sendBtn) sendBtn.disabled = false;
+      if (clearBtn) clearBtn.disabled = false;
+
+      projectPhotoTransferSelectedFiles.forEach((entry, index) => {
+        const card = document.createElement("div");
+        card.className = "project-photo-transfer-item";
+        const img = document.createElement("img");
+        img.className = "project-photo-transfer-thumb";
+        img.src = entry.previewUrl;
+        img.alt = entry.file?.name || `写真${index + 1}`;
+
+        const body = document.createElement("div");
+        const name = document.createElement("div");
+        name.className = "project-photo-transfer-item-name";
+        name.textContent = `${index + 1}. ${entry.file?.name || "写真"}`;
+        const fields = document.createElement("div");
+        fields.className = "project-photo-transfer-item-fields";
+
+        const categoryLabel = document.createElement("label");
+        categoryLabel.textContent = "分類";
+        const category = document.createElement("select");
+        PROJECT_PHOTO_TRANSFER_CATEGORIES.forEach(value => {
+          const option = document.createElement("option"); option.value = value; option.textContent = value; category.appendChild(option);
+        });
+        category.value = qtsProjectPhotoCategory(entry.category);
+        category.addEventListener("change", () => { entry.category = qtsProjectPhotoCategory(category.value); });
+        categoryLabel.appendChild(category);
+
+        const commentLabel = document.createElement("label");
+        commentLabel.textContent = "コメント";
+        const comment = document.createElement("textarea");
+        comment.rows = 2;
+        comment.maxLength = PROJECT_PHOTO_TRANSFER_COMMENT_MAX;
+        comment.placeholder = "例：305号室 TVボード右側に傷あり";
+        comment.value = entry.comment || "";
+        comment.addEventListener("input", () => { entry.comment = comment.value.slice(0, PROJECT_PHOTO_TRANSFER_COMMENT_MAX); });
+        commentLabel.appendChild(comment);
+        fields.append(categoryLabel, commentLabel);
+        body.append(name, fields);
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "project-photo-transfer-remove";
+        remove.textContent = "除外";
+        remove.addEventListener("click", () => {
+          qtsRevokeProjectPhotoPreview(projectPhotoTransferSelectedFiles[index]);
+          projectPhotoTransferSelectedFiles.splice(index, 1);
+          renderProjectPhotoTransferSelection();
+        });
+        card.append(img, body, remove);
+        items.appendChild(card);
+      });
     }
 
     function handleProjectPhotoTransferSelection(event) {
       const selected = Array.from(event.target.files || []).filter(file => String(file.type || "").startsWith("image/"));
+      projectPhotoTransferSelectedFiles.forEach(qtsRevokeProjectPhotoPreview);
+      projectPhotoTransferSelectedFiles = [];
       if (!selected.length) { clearProjectPhotoTransferSelection(); return; }
       if (selected.length > PROJECT_PHOTO_TRANSFER_MAX_FILES) {
         alert(`1回に送れる写真は最大${PROJECT_PHOTO_TRANSFER_MAX_FILES}枚です。先頭${PROJECT_PHOTO_TRANSFER_MAX_FILES}枚を選択します。`);
       }
-      projectPhotoTransferSelectedFiles = selected.slice(0, PROJECT_PHOTO_TRANSFER_MAX_FILES);
-      const box = document.getElementById("projectPhotoTransferSelected");
-      const names = projectPhotoTransferSelectedFiles.slice(0, 5).map(file => file.name).join(" / ");
-      if (box) box.textContent = `${projectPhotoTransferSelectedFiles.length}枚選択：${names}${projectPhotoTransferSelectedFiles.length > 5 ? " …" : ""}`;
-      document.getElementById("projectPhotoTransferSendBtn").disabled = false;
-      document.getElementById("projectPhotoTransferClearBtn").disabled = false;
+      projectPhotoTransferSelectedFiles = selected.slice(0, PROJECT_PHOTO_TRANSFER_MAX_FILES).map(file => ({
+        file,
+        previewUrl: URL.createObjectURL(file),
+        category: "その他",
+        comment: ""
+      }));
+      renderProjectPhotoTransferSelection();
       setProjectPhotoTransferMessage("");
+    }
+
+    function applyProjectPhotoTransferBulkSettings() {
+      if (!projectPhotoTransferSelectedFiles.length) return;
+      const category = qtsProjectPhotoCategory(document.getElementById("projectPhotoTransferBulkCategory")?.value);
+      const comment = String(document.getElementById("projectPhotoTransferBulkComment")?.value || "").slice(0, PROJECT_PHOTO_TRANSFER_COMMENT_MAX);
+      projectPhotoTransferSelectedFiles.forEach(entry => { entry.category = category; entry.comment = comment; });
+      renderProjectPhotoTransferSelection();
+      setProjectPhotoTransferMessage(`${projectPhotoTransferSelectedFiles.length}枚に「${category}」${comment ? "＋一括コメント" : ""}を適用しました。`, "success");
     }
 
     function qtsTransferPhotoSafeBaseName(name = "photo") {
@@ -9743,15 +9908,16 @@ ${error.message||error}`); }
       if (navigator.onLine === false) { setProjectPhotoTransferMessage("ネット接続を確認してから送信してください。", "error"); return; }
       const button = document.getElementById("projectPhotoTransferSendBtn");
       const input = document.getElementById("projectPhotoTransferInput");
-      const files = [...projectPhotoTransferSelectedFiles];
+      const entries = [...projectPhotoTransferSelectedFiles];
       const batchId = `${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
       let sent = 0;
       button.disabled = true; if (input) input.disabled = true;
       try {
-        for (let index = 0; index < files.length; index += 1) {
-          button.textContent = `送信中 ${index + 1}/${files.length}`;
-          setProjectPhotoTransferMessage(`${index + 1}/${files.length}枚目を圧縮して送信しています…`);
-          const file = files[index];
+        for (let index = 0; index < entries.length; index += 1) {
+          button.textContent = `送信中 ${index + 1}/${entries.length}`;
+          setProjectPhotoTransferMessage(`${index + 1}/${entries.length}枚目を圧縮して送信しています…`);
+          const entry = entries[index];
+          const file = entry.file;
           const compressed = await compressProjectTransferPhoto(file);
           const doc = db.collection("projectContacts").doc();
           await doc.set({
@@ -9767,6 +9933,8 @@ ${error.message||error}`); }
             originalName: file.name || "photo",
             fileName: qtsTransferPhotoFileName(file, index),
             photoTakenAtMs: Number(file.lastModified) || Date.now(),
+            photoCategory: qtsProjectPhotoCategory(entry.category),
+            photoComment: String(entry.comment || "").slice(0, PROJECT_PHOTO_TRANSFER_COMMENT_MAX),
             contentType: compressed.contentType,
             width: compressed.width,
             height: compressed.height,
@@ -9780,12 +9948,12 @@ ${error.message||error}`); }
           sent += 1;
         }
         clearProjectPhotoTransferSelection();
-        setProjectPhotoTransferMessage(`${sent}枚をPC受取待ちへ送りました。PCで同じ案件を開いて「このPCに取り込む」を押してください。`, "success");
+        setProjectPhotoTransferMessage(`${sent}枚をコメント・分類付きでPC受取待ちへ送りました。PCで同じ案件を開いて「このPCに取り込む」を押してください。`, "success");
       } catch (error) {
         console.error("project photo transfer send error", error);
-        projectPhotoTransferSelectedFiles = files.slice(sent);
-        const selected = document.getElementById("projectPhotoTransferSelected");
-        if (selected) selected.textContent = projectPhotoTransferSelectedFiles.length ? `${projectPhotoTransferSelectedFiles.length}枚が未送信です。もう一度送信できます。` : "写真は未選択です。";
+        entries.slice(0, sent).forEach(qtsRevokeProjectPhotoPreview);
+        projectPhotoTransferSelectedFiles = entries.slice(sent);
+        renderProjectPhotoTransferSelection();
         setProjectPhotoTransferMessage(`${sent}枚まで送信しました。残りを送れませんでした：${error.message || error}`, "error");
       } finally {
         button.textContent = "📤 PCへ送る";
@@ -9830,6 +9998,15 @@ ${error.message||error}`); }
       return `${(value/(1024*1024)).toFixed(1)}MB`;
     }
 
+    function qtsProjectPhotoCategorySummary(items = []) {
+      const counts = new Map();
+      items.forEach(item => {
+        const category = qtsProjectPhotoCategory(item.data?.photoCategory);
+        counts.set(category, (counts.get(category) || 0) + 1);
+      });
+      return [...counts.entries()].map(([name,count]) => `${name}${count}`).join(" / ");
+    }
+
     async function refreshProjectPhotoTransferUi(card = activeProjectCard) {
       const count = document.getElementById("projectPhotoTransferPendingCount");
       const detail = document.getElementById("projectPhotoTransferPendingDetail");
@@ -9847,7 +10024,8 @@ ${error.message||error}`); }
         count.textContent = `${items.length}枚`;
         if (items.length) {
           const senderNames = [...new Set(items.map(item => item.data.senderName).filter(Boolean))];
-          detail.textContent = `${senderNames.length ? `送信者：${senderNames.join("・")}　` : ""}合計 約${qtsHumanBytes(totalBytes)}。PC取込後はクラウド画像本体を除去します。`;
+          const summary = qtsProjectPhotoCategorySummary(items);
+          detail.textContent = `${senderNames.length ? `送信者：${senderNames.join("・")}　` : ""}${summary ? `分類：${summary}　` : ""}合計 約${qtsHumanBytes(totalBytes)}。PC取込後はクラウド画像本体を除去します。`;
         } else {
           detail.textContent = projectLocalFileSystemSupported() ? "現在、受取待ち写真はありません。" : "同じQ.T.Sアカウントで送信すると、PC側に受取待ちとして表示されます。";
         }
@@ -9869,6 +10047,31 @@ ${error.message||error}`); }
     function qtsPhotoDateFolderName(ms) {
       const date = new Date(Number(ms) || Date.now());
       return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;
+    }
+
+    function qtsPhotoDateTimeText(ms) {
+      const date = new Date(Number(ms) || Date.now());
+      return `${date.getFullYear()}/${String(date.getMonth()+1).padStart(2,"0")}/${String(date.getDate()).padStart(2,"0")} ${String(date.getHours()).padStart(2,"0")}:${String(date.getMinutes()).padStart(2,"0")}:${String(date.getSeconds()).padStart(2,"0")}`;
+    }
+
+    function qtsCsvEscape(value) {
+      return `"${String(value ?? "").replace(/"/g, '""').replace(/\r?\n/g, " ")}"`;
+    }
+
+    async function appendProjectPhotoTransferLedger(dateDir, rows = []) {
+      if (!rows.length) return;
+      const fileHandle = await dateDir.getFileHandle("現場写真一覧.csv", { create:true });
+      const currentFile = await fileHandle.getFile();
+      let existing = currentFile.size ? await currentFile.text() : "";
+      const header = ["転送ID","写真ファイル","保存先","撮影日時","分類","コメント","登録者","案件No","案件名"].map(qtsCsvEscape).join(",") + "\r\n";
+      if (!existing) existing = "\ufeff" + header;
+      const additions = rows.filter(row => !existing.includes(qtsCsvEscape(row.transferId))).map(row => [
+        row.transferId, row.fileName, row.relativePath, row.takenAt, row.category, row.comment, row.senderName, row.projectNo, row.projectName
+      ].map(qtsCsvEscape).join(",") + "\r\n").join("");
+      if (!additions) return;
+      const writable = await fileHandle.createWritable();
+      try { await writable.write(existing + additions); await writable.close(); }
+      catch (error) { try { await writable.abort(); } catch (_) {} throw error; }
     }
 
     async function ensureProjectFolderForPhotoReceive(card) {
@@ -9901,18 +10104,37 @@ ${error.message||error}`); }
         if (!items.length) { setProjectPhotoTransferMessage("受取待ち写真はありません。", "success"); return; }
         const projectFolder = await ensureProjectFolderForPhotoReceive(card);
         const photoRoot = await projectFolder.getDirectoryHandle("現場写真", { create:true });
+        const ledgers = new Map();
         let saved = 0;
         for (const item of items) {
           button.textContent = `受取中 ${saved + 1}/${items.length}`;
           const data = item.data;
-          const dateDir = await photoRoot.getDirectoryHandle(qtsPhotoDateFolderName(data.photoTakenAtMs || data.clientCreatedAtMs), { create:true });
+          const dateName = qtsPhotoDateFolderName(data.photoTakenAtMs || data.clientCreatedAtMs);
+          const dateDir = await photoRoot.getDirectoryHandle(dateName, { create:true });
+          const category = qtsProjectPhotoCategory(data.photoCategory);
+          const categoryDir = await dateDir.getDirectoryHandle(category, { create:true });
           const fileName = String(data.fileName || `photo_${item.id}.jpg`).replace(/[\\/:*?"<>|]/g,"_");
-          const fileHandle = await dateDir.getFileHandle(fileName, { create:true });
+          const fileHandle = await categoryDir.getFileHandle(fileName, { create:true });
           const writable = await fileHandle.createWritable();
           try { await writable.write(qtsDataUrlToBlob(data.dataUrl)); await writable.close(); }
           catch (error) { try { await writable.abort(); } catch (_) {} throw error; }
+          const ledger = ledgers.get(dateName) || { handle: dateDir, rows: [] };
+          ledger.rows.push({
+            transferId: item.id,
+            fileName,
+            relativePath: `${category}\\${fileName}`,
+            takenAt: qtsPhotoDateTimeText(data.photoTakenAtMs || data.clientCreatedAtMs),
+            category,
+            comment: String(data.photoComment || ""),
+            senderName: String(data.senderName || ""),
+            projectNo: String(data.projectNo || ""),
+            projectName: String(data.projectName || "")
+          });
+          ledgers.set(dateName, ledger);
           saved += 1;
         }
+        for (const ledger of ledgers.values()) await appendProjectPhotoTransferLedger(ledger.handle, ledger.rows);
+
         const batch = db.batch();
         items.forEach(item => batch.update(item.ref, {
           dataUrl: firebase.firestore.FieldValue.delete(),
@@ -9924,7 +10146,7 @@ ${error.message||error}`); }
           receivedAppVersion: APP_VERSION
         }));
         await batch.commit();
-        setProjectPhotoTransferMessage(`${saved}枚をこのPCの「現場写真」へ取り込みました。画像本体はクラウドから除去しました。`, "success");
+        setProjectPhotoTransferMessage(`${saved}枚を分類別に「現場写真」へ取り込み、コメント一覧CSVも保存しました。画像本体はクラウドから除去しました。`, "success");
         await refreshProjectLocalFolderUi(card);
       } catch (error) {
         console.error("project photo transfer receive error", error);
