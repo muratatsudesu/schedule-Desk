@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.8.14</title>
+  <title>Q.T.S Scheduler — Ver.6.8.15</title>
   <link rel="icon" href="favicon.ico?v=655" sizes="any">
   <link rel="shortcut icon" href="favicon.ico?v=655" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=655">
@@ -2041,6 +2041,58 @@
       font-weight: 850;
       line-height: 1.45;
     }
+    /* ===== Ver.6.8.15 案件納期編集 ===== */
+    .project-due-editor {
+      margin-top: 9px;
+      padding-top: 9px;
+      border-top: 1px dashed #d5e0e6;
+    }
+    .project-due-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .project-due-field {
+      display: grid;
+      gap: 4px;
+    }
+    .project-due-field.full { grid-column: 1 / -1; }
+    .project-due-field label {
+      color: #617588;
+      font-size: .7rem;
+      font-weight: 800;
+    }
+    .project-due-field input {
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+      padding: 8px 9px;
+      border: 1px solid #bdcbd5;
+      border-radius: 8px;
+      background: #fff;
+      color: #173b5d;
+      font-weight: 700;
+    }
+    .project-due-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .project-due-help {
+      margin-top: 6px;
+      color: #7a8793;
+      font-size: .68rem;
+      line-height: 1.45;
+    }
+    .project-due-message {
+      flex: 1;
+      min-height: 1em;
+      color: #607386;
+      font-size: .72rem;
+    }
+    .project-due-message.success { color: #176d55; }
+    .project-due-message.error { color: #a33c3c; }
     .project-status-controls {
       display: flex;
       gap: 8px;
@@ -2071,6 +2123,9 @@
     @media(max-width:700px){
       .project-detail-grid{grid-template-columns:1fr;}
       .project-management-section{grid-template-columns:1fr;}
+      .project-due-grid{grid-template-columns:1fr;}
+      .project-due-field.full{grid-column:auto;}
+      .project-due-actions{align-items:stretch; flex-direction:column;}
     }
 
 
@@ -3796,6 +3851,27 @@
         <div class="project-management-item">
           <div class="project-management-label">📦 詳細納期</div>
           <div class="project-management-value" id="projectDetailDue">未定</div>
+          <div class="project-due-editor">
+            <div class="project-due-grid">
+              <div class="project-due-field">
+                <label for="projectDueStart">開始日</label>
+                <input type="date" id="projectDueStart">
+              </div>
+              <div class="project-due-field">
+                <label for="projectDueEnd">終了日</label>
+                <input type="date" id="projectDueEnd">
+              </div>
+              <div class="project-due-field full">
+                <label for="projectDueApprox">納品時期未定（例：2027年2月ごろ）</label>
+                <input type="text" id="projectDueApprox" maxlength="40" placeholder="日付未確定の場合だけ入力">
+              </div>
+            </div>
+            <div class="project-due-help">確定日を入れた場合は「納品時期未定」を空欄にして保存します。1日だけの納品は開始日か終了日のどちらか一方だけでも保存できます。</div>
+            <div class="project-due-actions">
+              <button type="button" class="btn-secondary btn-small" id="projectDueSaveBtn">納期を保存</button>
+              <div class="project-due-message" id="projectDueMessage"></div>
+            </div>
+          </div>
         </div>
         <div class="project-management-item">
           <div class="project-management-label">案件状態（手動）</div>
@@ -4122,8 +4198,8 @@
           <button type="button" class="btn-secondary" id="btnOpenCsv">📤 CSV出力</button>
         </div>
         <div class="app-info-panel">
-          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.14</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
+          <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.15</span><br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
           Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月26日
         </div>
@@ -4229,7 +4305,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.14";
+    const APP_VERSION = "6.8.15";
     const APP_BUILD_DATE = "2026-08-26";
 
     const firebaseConfig = {
@@ -4422,6 +4498,18 @@
       document.getElementById("projectContactsForm").addEventListener("submit", saveProjectContacts);
 
       document.getElementById("projectStatusSaveBtn").addEventListener("click", saveProjectStatus);
+      document.getElementById("projectDueSaveBtn").addEventListener("click", saveProjectDue);
+      document.getElementById("projectDueApprox").addEventListener("input", event => {
+        if (event.target.value.trim()) {
+          document.getElementById("projectDueStart").value = "";
+          document.getElementById("projectDueEnd").value = "";
+        }
+      });
+      ["projectDueStart", "projectDueEnd"].forEach(id => {
+        document.getElementById(id).addEventListener("change", event => {
+          if (event.target.value) document.getElementById("projectDueApprox").value = "";
+        });
+      });
 
       document.getElementById("annualZoomIn").addEventListener("click", () => changeAnnualZoom(0.15));
       document.getElementById("annualZoomOut").addEventListener("click", () => changeAnnualZoom(-0.15));
@@ -8339,6 +8427,130 @@ ${error.message||error}`); }
       card.dataset.projectSearch = `${baseSearch} ${safeStatus}`.trim();
     }
 
+    // ===== Ver.6.8.15 詳細納期の共有編集 =====
+    function parseProjectDateString(value) {
+      const text = String(value || "").trim();
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(text)) return null;
+      const [year, month, day] = text.split("-").map(Number);
+      const date = new Date(year, month - 1, day);
+      if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) return null;
+      return { year, month, day };
+    }
+
+    function formatProjectDueDate(value, includeYear = true, includeMonth = true) {
+      const date = parseProjectDateString(value);
+      if (!date) return "";
+      if (includeYear) return `${date.year}年${date.month}月${date.day}日`;
+      if (includeMonth) return `${date.month}月${date.day}日`;
+      return `${date.day}日`;
+    }
+
+    function buildProjectDueText(start, end, approx = "") {
+      const safeStart = String(start || "").trim();
+      const safeEnd = String(end || "").trim();
+      const safeApprox = String(approx || "").trim();
+      if (!safeStart && !safeEnd) return safeApprox || "未定";
+
+      const actualStart = safeStart || safeEnd;
+      const actualEnd = safeEnd || safeStart;
+      if (actualStart === actualEnd) return formatProjectDueDate(actualStart) || "未定";
+
+      const startDate = parseProjectDateString(actualStart);
+      const endDate = parseProjectDateString(actualEnd);
+      if (!startDate || !endDate) return safeApprox || "未定";
+      const endText = startDate.year !== endDate.year
+        ? formatProjectDueDate(actualEnd, true, true)
+        : formatProjectDueDate(actualEnd, false, true);
+      return `${formatProjectDueDate(actualStart, true, true)} ～ ${endText}`;
+    }
+
+    function applyProjectDueToCard(card, start = "", end = "", approx = "") {
+      if (!card) return;
+      const safeStart = String(start || "").trim();
+      const safeEnd = String(end || "").trim();
+      const safeApprox = String(approx || "").trim();
+      const dueText = buildProjectDueText(safeStart, safeEnd, safeApprox);
+
+      card.dataset.projectStart = safeStart;
+      card.dataset.projectEnd = safeEnd;
+      card.dataset.projectDueApprox = safeApprox;
+      card.dataset.projectDue = dueText;
+
+      const dueSpan = card.querySelector(".annual-project-due span");
+      if (dueSpan) dueSpan.textContent = dueText;
+
+      const baseSearch = [
+        card.dataset.projectName || "",
+        card.dataset.projectOwner || "",
+        card.dataset.projectYear || "",
+        dueText,
+        card.dataset.projectStatus || "未稼働"
+      ].join(" ");
+      card.dataset.projectSearch = baseSearch.trim();
+    }
+
+    function setProjectDueMessage(message = "", type = "") {
+      const el = document.getElementById("projectDueMessage");
+      if (!el) return;
+      el.textContent = message;
+      el.className = `project-due-message${type ? ` ${type}` : ""}`;
+    }
+
+    function fillProjectDueEditor(card) {
+      document.getElementById("projectDueStart").value = card?.dataset?.projectStart || "";
+      document.getElementById("projectDueEnd").value = card?.dataset?.projectEnd || "";
+      document.getElementById("projectDueApprox").value = card?.dataset?.projectDueApprox || "";
+      document.getElementById("projectDetailDue").textContent = card?.dataset?.projectDue || "未定";
+      setProjectDueMessage("");
+    }
+
+    async function saveProjectDue() {
+      if (!activeProjectCard || !currentUser) return;
+      const button = document.getElementById("projectDueSaveBtn");
+      let start = String(document.getElementById("projectDueStart")?.value || "").trim();
+      let end = String(document.getElementById("projectDueEnd")?.value || "").trim();
+      let approx = String(document.getElementById("projectDueApprox")?.value || "").trim();
+
+      if (start && !end) end = start;
+      if (end && !start) start = end;
+      if (start && end && end < start) {
+        setProjectDueMessage("終了日は開始日以降にしてください。", "error");
+        return;
+      }
+      if (start || end) approx = "";
+
+      button.disabled = true;
+      button.textContent = "保存中…";
+      setProjectDueMessage("納期を保存しています…");
+      try {
+        const docId = getProjectContactDocId(activeProjectCard);
+        const dueText = buildProjectDueText(start, end, approx);
+        await db.collection("projectContacts").doc(docId).set({
+          projectNo: activeProjectCard.dataset.projectNo || "",
+          projectId: activeProjectCard.dataset.projectId || "",
+          projectName: activeProjectCard.dataset.projectName || "",
+          projectStart: start,
+          projectEnd: end,
+          projectDueApprox: approx,
+          projectDue: dueText,
+          projectDueUpdatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          appVersion: APP_VERSION
+        }, { merge: true });
+
+        applyProjectDueToCard(activeProjectCard, start, end, approx);
+        fillProjectDueEditor(activeProjectCard);
+        setProjectDueMessage("保存しました。Excel更新にもこの納期が反映されます。", "success");
+        filterAnnualProjects();
+      } catch (error) {
+        console.error("project due save error", error);
+        setProjectDueMessage("保存できませんでした。接続状態をご確認ください。", "error");
+      } finally {
+        button.disabled = false;
+        button.textContent = "納期を保存";
+      }
+    }
+
     async function loadAnnualProjectStatuses() {
       if (!currentUser) return;
       const cards = Array.from(document.querySelectorAll(".annual-project-card"));
@@ -8346,8 +8558,15 @@ ${error.message||error}`); }
         try {
           const snap = await getProjectDataSnapshot(card);
           if (!snap.exists) return;
-          const saved = String(snap.data()?.projectStatus || "");
+          const raw = snap.data() || {};
+          const saved = String(raw.projectStatus || "");
           if (PROJECT_STATUSES.includes(saved)) applyProjectStatusToCard(card, saved);
+          const hasSavedDue = Object.prototype.hasOwnProperty.call(raw, "projectStart") ||
+            Object.prototype.hasOwnProperty.call(raw, "projectEnd") ||
+            Object.prototype.hasOwnProperty.call(raw, "projectDueApprox");
+          if (hasSavedDue) {
+            applyProjectDueToCard(card, raw.projectStart || "", raw.projectEnd || "", raw.projectDueApprox || "");
+          }
         } catch (error) {
           console.warn("project status load skipped", error);
         }
@@ -8435,6 +8654,7 @@ ${error.message||error}`); }
       document.getElementById("projectDetailMeta").textContent =
         `${projectId ? `案件No. ${projectId}　｜　` : ""}担当：${owner}　｜　${year}`;
       document.getElementById("projectDetailDue").textContent = due;
+      fillProjectDueEditor(card);
       document.getElementById("projectStatusSelect").value = status;
       setProjectStatusMessage("");
 
@@ -8572,6 +8792,14 @@ ${error.message||error}`); }
           document.getElementById("projectStatusSelect").value = savedStatus;
         }
 
+        const hasSavedDue = Object.prototype.hasOwnProperty.call(rawProjectData, "projectStart") ||
+          Object.prototype.hasOwnProperty.call(rawProjectData, "projectEnd") ||
+          Object.prototype.hasOwnProperty.call(rawProjectData, "projectDueApprox");
+        if (hasSavedDue) {
+          applyProjectDueToCard(card, rawProjectData.projectStart || "", rawProjectData.projectEnd || "", rawProjectData.projectDueApprox || "");
+          fillProjectDueEditor(card);
+        }
+
         renderProjectContacts(activeProjectContactData);
         fillProjectContactForm(activeProjectContactData);
         hideProjectContactsStatus();
@@ -8665,6 +8893,7 @@ ${error.message||error}`); }
 
         await db.collection("projectContacts").doc(docId).set({
           projectNo: activeProjectCard.dataset.projectNo || "",
+          projectId: activeProjectCard.dataset.projectId || "",
           projectName: activeProjectCard.dataset.projectName || "",
           contacts,
           ...contacts,
