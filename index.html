@@ -2326,6 +2326,74 @@
     }
 
 
+    /* ===== Ver.6.8.25 重要事項・申し送り ===== */
+    .project-important-section {
+      margin-bottom: 14px;
+      padding: 15px;
+      background: linear-gradient(145deg, #fffaf0, #fff5dd);
+      border: 1px solid #ead39a;
+      border-radius: 14px;
+      box-shadow: 0 3px 12px rgba(111, 78, 25, .06);
+    }
+    .project-important-section.has-notes {
+      border-color: #dfb94f;
+      background: linear-gradient(145deg, #fffaf0, #fff0c8);
+    }
+    .project-important-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .project-important-heading h4 { margin: 0; color: #6f4a12; font-size: 1rem; }
+    .project-important-heading p { margin: 3px 0 0; color: #8b7651; font-size: .75rem; line-height: 1.45; }
+    .project-important-view {
+      min-height: 48px;
+      padding: 11px 12px;
+      border: 1px solid rgba(208, 174, 89, .48);
+      border-radius: 10px;
+      background: rgba(255,255,255,.78);
+      color: #513b1d;
+      font-size: .86rem;
+      font-weight: 700;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .project-important-view.empty { color: #9a8b70; font-weight: 600; }
+    .project-important-meta {
+      margin-top: 6px;
+      color: #9a845e;
+      font-size: .68rem;
+      min-height: 1em;
+    }
+    .project-important-editor { margin-top: 8px; }
+    .project-important-editor textarea {
+      width: 100%;
+      min-height: 130px;
+      box-sizing: border-box;
+      resize: vertical;
+      padding: 10px 11px;
+      border: 1px solid #d8bf7f;
+      border-radius: 9px;
+      background: #fff;
+      color: #40311c;
+      font: inherit;
+      line-height: 1.55;
+    }
+    .project-important-editor-help { margin-top: 5px; color: #8a795b; font-size: .68rem; line-height: 1.45; }
+    .project-important-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 9px; }
+    .project-important-message { flex: 1 1 180px; min-height: 1em; color: #756441; font-size: .72rem; }
+    .project-important-message.success { color: #176d55; font-weight: 750; }
+    .project-important-message.error { color: #a33c3c; font-weight: 750; }
+    @media(max-width:700px){
+      .project-important-heading { gap: 8px; }
+      .project-important-heading p { font-size: .7rem; }
+      .project-important-view { font-size: .82rem; }
+    }
+
+
     /* ===== Ver.6.3 Stakeholders / project contacts ===== */
     .project-stakeholder-section {
       margin-bottom: 14px;
@@ -4098,6 +4166,31 @@
         </div>
       </section>
 
+      <section class="project-important-section" id="projectImportantSection">
+        <div class="project-important-heading">
+          <div>
+            <h4>📌 重要事項・申し送り</h4>
+            <p>搬入条件・立会い・駐車・現場ルールなど、案件を開いたら最初に確認したい内容を共有します。</p>
+          </div>
+          <button type="button" class="btn-secondary btn-small" id="projectImportantEditBtn">✏️ 編集</button>
+        </div>
+        <div id="projectImportantView" class="project-important-view empty">重要事項はまだ登録されていません。</div>
+        <div id="projectImportantMeta" class="project-important-meta"></div>
+        <div id="projectImportantEditor" class="project-important-editor" hidden>
+          <textarea id="projectImportantInput" maxlength="1200" placeholder="例：
+・搬入口は南側サービスヤード
+・9:00以前の搬入禁止
+・現場到着時は〇〇様へ連絡
+・2t車まで／高さ制限3.0m"></textarea>
+          <div class="project-important-editor-help">最大1,200文字。PC・スマホどちらからでも編集でき、案件メンバー間で共有されます。</div>
+          <div class="project-important-actions">
+            <button type="button" class="btn-primary btn-small" id="projectImportantSaveBtn">💾 保存</button>
+            <button type="button" class="btn-secondary btn-small" id="projectImportantCancelBtn">キャンセル</button>
+            <div id="projectImportantMessage" class="project-important-message"></div>
+          </div>
+        </div>
+      </section>
+
       <section class="project-stakeholder-section">
         <div class="project-section-heading">
           <div>
@@ -4499,7 +4592,7 @@
         </div>
         <div class="app-info-panel">
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.21</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.8.25：案件詳細に「重要事項・申し送り」を追加。搬入条件・立会い・駐車・現場ルール等をPC/スマホで共有保存し、案件を開いた直後に目立つ固定欄で確認可能<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
           Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月26日
         </div>
@@ -4605,8 +4698,8 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.24";
-    const APP_BUILD_DATE = "2026-08-26";
+    const APP_VERSION = "6.8.25";
+    const APP_BUILD_DATE = "2026-08-27";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCL6VijHRZryh7DdxNVcBdDXhRJtx2JU-4",
@@ -4816,6 +4909,16 @@
         }
         window.scrollTo({top:0, behavior:"smooth"});
       });
+
+      document.getElementById("projectImportantEditBtn").addEventListener("click", () => {
+        setProjectImportantEditMode(true);
+      });
+      document.getElementById("projectImportantCancelBtn").addEventListener("click", () => {
+        document.getElementById("projectImportantInput").value = activeProjectImportantNotes || "";
+        setProjectImportantMessage("");
+        setProjectImportantEditMode(false);
+      });
+      document.getElementById("projectImportantSaveBtn").addEventListener("click", saveProjectImportantNotes);
 
       document.getElementById("projectContactsEditBtn").addEventListener("click", () => {
         setProjectContactsEditMode(true);
@@ -8678,6 +8781,7 @@ ${error.message||error}`); }
       if (event.key === "Escape" && document.getElementById("photoViewer")?.classList.contains("open")) closePhotoViewer();
     });
     let activeProjectCard = null;
+    let activeProjectImportantNotes = "";
     let activeProjectContactData = null;
 
     // ===== Ver.6.8.11 案件No自動採番の土台 =====
@@ -8981,6 +9085,11 @@ ${error.message||error}`); }
       fillProjectDueEditor(card);
       document.getElementById("projectStatusSelect").value = status;
       setProjectStatusMessage("");
+      activeProjectImportantNotes = "";
+      renderProjectImportantNotes("", {});
+      document.getElementById("projectImportantInput").value = "";
+      setProjectImportantMessage("");
+      setProjectImportantEditMode(false);
 
       const n = normalizeText(name);
       const related = schedules.filter(s => {
@@ -9112,6 +9221,10 @@ ${error.message||error}`); }
         if (activeProjectCard !== card) return;
 
         const rawProjectData = snap.exists ? snap.data() : {};
+        activeProjectImportantNotes = String(rawProjectData?.importantNotes || "");
+        renderProjectImportantNotes(activeProjectImportantNotes, rawProjectData);
+        document.getElementById("projectImportantInput").value = activeProjectImportantNotes;
+        setProjectImportantEditMode(false);
         activeProjectContactData = snap.exists
           ? normalizeProjectContactData(rawProjectData)
           : normalizeProjectContactData({});
@@ -9136,6 +9249,10 @@ ${error.message||error}`); }
       } catch (error) {
         console.error("project contacts load error", error);
         if (activeProjectCard !== card) return;
+        activeProjectImportantNotes = "";
+        renderProjectImportantNotes("", {});
+        document.getElementById("projectImportantInput").value = "";
+        setProjectImportantEditMode(false);
         activeProjectContactData = normalizeProjectContactData({});
         renderProjectContacts(activeProjectContactData);
         fillProjectContactForm(activeProjectContactData);
@@ -9143,6 +9260,94 @@ ${error.message||error}`); }
           "関係者情報を読み込めませんでした。Firestoreの権限設定をご確認ください。",
           "error"
         );
+      }
+    }
+
+    function formatProjectImportantUpdatedAt(value) {
+      try {
+        const date = value?.toDate ? value.toDate() : (value ? new Date(value) : null);
+        if (!date || Number.isNaN(date.getTime())) return "";
+        return date.toLocaleString("ja-JP", { year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+      } catch (_) {
+        return "";
+      }
+    }
+
+    function renderProjectImportantNotes(notes = "", raw = {}) {
+      const text = String(notes || "").trim();
+      const section = document.getElementById("projectImportantSection");
+      const view = document.getElementById("projectImportantView");
+      const meta = document.getElementById("projectImportantMeta");
+      if (!section || !view || !meta) return;
+
+      section.classList.toggle("has-notes", Boolean(text));
+      view.classList.toggle("empty", !text);
+      view.textContent = text || "重要事項はまだ登録されていません。";
+
+      const by = String(raw?.importantNotesUpdatedBy || "").trim();
+      const at = formatProjectImportantUpdatedAt(raw?.importantNotesUpdatedAt);
+      meta.textContent = text && (by || at)
+        ? `最終更新${by ? `：${by}` : ""}${at ? `　${at}` : ""}`
+        : "";
+    }
+
+    function setProjectImportantEditMode(editing) {
+      const editor = document.getElementById("projectImportantEditor");
+      const editBtn = document.getElementById("projectImportantEditBtn");
+      if (!editor || !editBtn) return;
+      editor.hidden = !editing;
+      editBtn.hidden = editing;
+      if (editing) {
+        const input = document.getElementById("projectImportantInput");
+        input.value = activeProjectImportantNotes || "";
+        setProjectImportantMessage("");
+        setTimeout(() => input.focus(), 0);
+      }
+    }
+
+    function setProjectImportantMessage(message = "", type = "") {
+      const el = document.getElementById("projectImportantMessage");
+      if (!el) return;
+      el.textContent = message;
+      el.className = `project-important-message${type ? ` ${type}` : ""}`;
+    }
+
+    async function saveProjectImportantNotes() {
+      if (!activeProjectCard || !currentUser) return;
+      const input = document.getElementById("projectImportantInput");
+      const saveBtn = document.getElementById("projectImportantSaveBtn");
+      const notes = String(input?.value || "").trim().slice(0, 1200);
+      const updatedBy = currentUserProfile?.displayName || currentUser.email || "";
+
+      saveBtn.disabled = true;
+      saveBtn.textContent = "保存中…";
+      setProjectImportantMessage("共有データへ保存しています…");
+      try {
+        const docId = getProjectContactDocId(activeProjectCard);
+        await db.collection("projectContacts").doc(docId).set({
+          projectNo: activeProjectCard.dataset.projectNo || "",
+          projectId: activeProjectCard.dataset.projectId || "",
+          projectName: activeProjectCard.dataset.projectName || "",
+          importantNotes: notes,
+          importantNotesUpdatedBy: updatedBy,
+          importantNotesUpdatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          appVersion: APP_VERSION
+        }, { merge: true });
+
+        activeProjectImportantNotes = notes;
+        renderProjectImportantNotes(notes, {
+          importantNotesUpdatedBy: updatedBy,
+          importantNotesUpdatedAt: new Date()
+        });
+        setProjectImportantMessage("保存しました。", "success");
+        setProjectImportantEditMode(false);
+      } catch (error) {
+        console.error("project important notes save error", error);
+        setProjectImportantMessage("保存できませんでした。接続または権限設定をご確認ください。", "error");
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "💾 保存";
       }
     }
 
