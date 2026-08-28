@@ -4985,7 +4985,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.29";
+    const APP_VERSION = "6.8.29.1";
     const APP_BUILD_DATE = "2026-08-28";
 
     const firebaseConfig = {
@@ -9095,6 +9095,8 @@ ${error.message||error}`); }
     let activeProjectSiteEditingReportId = "";
     let activeProjectImportantNotes = "";
     let activeProjectContactData = null;
+    // Ver.6.8.29.1: 案件ダッシュボードから、このPCの図面・現場写真へ直接入れるよう状態を共有する。
+    let projectLocalDashboardState = { status: "loading", drawings: 0, photos: 0 };
 
     // ===== Ver.6.8.11 案件No自動採番の土台 =====
     // 既存案件はHTML内に固定IDを保持し、並び順（左の番号）が変わっても案件Noは変えない。
@@ -9380,6 +9382,7 @@ ${error.message||error}`); }
       clearProjectPhotoTransferSelection();
       projectPhotoTransferPendingDocs = [];
       projectPhotoTransferQueueState = "loading";
+      projectLocalDashboardState = { status: "loading", drawings: 0, photos: 0 };
 
       const no = card.dataset.projectNo || "-";
       const projectId = card.dataset.projectId || "";
@@ -9670,7 +9673,7 @@ ${error.message||error}`); }
     }
 
 
-    // ===== Ver.6.8.29 案件ダッシュボード・未処理通知 =====
+    // ===== Ver.6.8.29.1 案件ダッシュボード・未処理通知＋PC資料ショートカット =====
     function qtsOpenProjectDashboardTarget(target) {
       if (target === "important") {
         document.getElementById("projectImportantSection")?.scrollIntoView({ behavior:"smooth", block:"start" });
@@ -9678,6 +9681,27 @@ ${error.message||error}`); }
       }
       if (target === "photo") {
         document.querySelector(".project-photo-transfer-section")?.scrollIntoView({ behavior:"smooth", block:"start" });
+        return;
+      }
+      if (target === "local-permission") {
+        grantProjectRootPermission();
+        return;
+      }
+      if (target === "local-prepare") {
+        prepareActiveProjectLocalFolder();
+        return;
+      }
+      if (target === "local-section") {
+        document.querySelector(".project-local-storage")?.scrollIntoView({ behavior:"smooth", block:"start" });
+        return;
+      }
+      if (["local-drawings","local-photos","local-files"].includes(target)) {
+        const category = target === "local-drawings" ? "図面" : target === "local-photos" ? "現場写真" : "";
+        Promise.resolve(showProjectLocalFiles(category)).then(() => {
+          const browser = document.getElementById("projectLocalBrowser");
+          const destination = browser && !browser.hidden ? browser : document.querySelector(".project-local-storage");
+          destination?.scrollIntoView({ behavior:"smooth", block:"start" });
+        });
         return;
       }
       if (target === "setup") {
@@ -9764,6 +9788,30 @@ ${error.message||error}`); }
 
       tiles.push({icon:"📌",value:important?"あり":"なし",label:"重要事項",detail:important?"申し送りを確認":"現在登録なし",tone:important?"info":"good",target:"important"});
 
+      // PCだけ、ローカル案件資料の状態をダッシュボードへ出す。タブレット/スマホは従来どおり非表示。
+      const desktopLocalUi = !qtsIsMobileOrTabletUi();
+      const localState = projectLocalDashboardState || {status:"loading",drawings:0,photos:0};
+      if(desktopLocalUi){
+        if(localState.status === "permission"){
+          tiles.push({icon:"🔐",value:"要許可",label:"PC資料",detail:"クリックしてアクセス許可",tone:"attention",target:"local-permission"});
+          attention++;
+        } else if(localState.status === "ready"){
+          tiles.push({icon:"📐",value:`${localState.drawings||0}件`,label:"図面",detail:"過去図面を開く",tone:"info",target:"local-drawings"});
+          tiles.push({icon:"📷",value:`${localState.photos||0}枚`,label:"現場写真",detail:"写真ギャラリーを開く",tone:"info",target:"local-photos"});
+        } else if(localState.status === "missing"){
+          tiles.push({icon:"📁",value:"未準備",label:"PC資料",detail:"案件フォルダを準備",tone:"info",target:"local-prepare"});
+        } else if(localState.status === "unset"){
+          tiles.push({icon:"📁",value:"未設定",label:"PC資料",detail:"QTS案件管理フォルダを設定",tone:"info",target:"local-section"});
+        } else if(localState.status === "error"){
+          tiles.push({icon:"⚠️",value:"確認失敗",label:"PC資料",detail:"フォルダ状態を確認",tone:"attention",target:"local-section"});
+          attention++;
+        } else if(localState.status === "unsupported"){
+          tiles.push({icon:"💻",value:"利用不可",label:"PC資料",detail:"Chrome / Edge PC版で利用",tone:"info",target:"local-section"});
+        } else {
+          tiles.push({icon:"📁",value:"確認中",label:"PC資料",detail:"フォルダ状態を確認中",tone:"info",target:"local-section"});
+        }
+      }
+
       grid.innerHTML="";
       tiles.forEach(t=>{
         const b=document.createElement("button"); b.type="button"; b.className=`project-action-tile ${t.tone||"info"}`; b.title=`${t.label}を開く`;
@@ -9773,7 +9821,7 @@ ${error.message||error}`); }
         b.append(icon,value,label); b.addEventListener("click",()=>qtsOpenProjectDashboardTarget(t.target)); grid.appendChild(b);
       });
 
-      if(projectPhotoTransferQueueState==="loading"){
+      if(projectPhotoTransferQueueState==="loading" || (desktopLocalUi && localState.status==="loading")){
         state.textContent="確認中…"; state.className="project-action-dashboard-state loading";
       } else if(attention>0){
         state.textContent=`要確認 ${attention}項目`; state.className="project-action-dashboard-state attention";
@@ -11309,6 +11357,8 @@ ${error.message||error}`); }
       const restoreBtn = document.getElementById("projectLocalRestoreBtn");
       const counts = document.getElementById("projectLocalCounts");
       if (!statusEl || !permissionBtn || !prepareBtn || !browseBtn || !archiveBtn || !restoreBtn) return;
+      projectLocalDashboardState = { status: "loading", drawings: 0, photos: 0 };
+      renderProjectActionDashboard();
       hideProjectLocalBrowser();
       permissionBtn.hidden = true;
       permissionNote?.classList.remove("show");
@@ -11323,45 +11373,68 @@ ${error.message||error}`); }
       restoreBtn.disabled = true;
       restoreBtn.textContent = "↩ 進行案件へ戻す";
       if (counts) { counts.hidden = true; counts.innerHTML = ""; }
-      if (!projectLocalFileSystemSupported()) { statusEl.textContent = "この機能は最新のChrome / EdgeのPC版で利用できます。"; return; }
-      if (!projectRootDirectoryHandle) { statusEl.textContent = "案件管理画面で「QTS案件管理フォルダ」を設定してください。"; return; }
+      if (!projectLocalFileSystemSupported()) {
+        statusEl.textContent = "この機能は最新のChrome / EdgeのPC版で利用できます。";
+        projectLocalDashboardState = { status: "unsupported", drawings: 0, photos: 0 };
+        renderProjectActionDashboard();
+        return;
+      }
+      if (!projectRootDirectoryHandle) {
+        statusEl.textContent = "案件管理画面で「QTS案件管理フォルダ」を設定してください。";
+        projectLocalDashboardState = { status: "unset", drawings: 0, photos: 0 };
+        renderProjectActionDashboard();
+        return;
+      }
       try {
         const permissionState = await getProjectRootPermissionState();
         if (permissionState !== "granted") {
           statusEl.textContent = `設定済み：${projectRootDirectoryHandle.name}（再アクセス許可が必要です）`;
-          permissionBtn.hidden = false; permissionNote?.classList.add("show"); prepareBtn.hidden = true; return;
+          permissionBtn.hidden = false; permissionNote?.classList.add("show"); prepareBtn.hidden = true;
+          projectLocalDashboardState = { status: "permission", drawings: 0, photos: 0 };
+          renderProjectActionDashboard();
+          return;
         }
         await ensureProjectBaseFolders();
         const state = await getProjectLocalFolderState(card);
         const qtsStatus = String(card?.dataset?.projectStatus || "未稼働");
         const qtsCompleted = ["完了", "アーカイブ"].includes(qtsStatus);
-        if (state.location === "active") {
-          statusEl.textContent = qtsCompleted
-            ? `⚠ Q.T.S状態は「${qtsStatus}」ですが、PC資料は ${state.path} にあります。`
-            : `✅ このPC：${state.path}`;
-          prepareBtn.textContent = "✅ 案件フォルダ準備済み";
-          prepareBtn.disabled = true;
-          browseBtn.hidden = false; browseBtn.disabled = false;
-          archiveBtn.disabled = !qtsCompleted;
-          renderProjectLocalCounts(await getProjectLocalCategoryStats(state.handle));
-        } else if (state.location === "complete") {
-          statusEl.textContent = qtsCompleted
-            ? `✅ このPC：${state.path}（整理済み）`
-            : `⚠ Q.T.S状態は「${qtsStatus}」ですが、PC資料は ${state.path} にあります。`;
-          prepareBtn.textContent = "✅ 完了案件側に保存済み";
-          prepareBtn.disabled = true;
-          browseBtn.hidden = false; browseBtn.disabled = false;
-          archiveBtn.hidden = true;
-          if (!qtsCompleted) { restoreBtn.hidden = false; restoreBtn.disabled = false; }
-          renderProjectLocalCounts(await getProjectLocalCategoryStats(state.handle));
+        if (state.location === "active" || state.location === "complete") {
+          if (state.location === "active") {
+            statusEl.textContent = qtsCompleted
+              ? `⚠ Q.T.S状態は「${qtsStatus}」ですが、PC資料は ${state.path} にあります。`
+              : `✅ このPC：${state.path}`;
+            prepareBtn.textContent = "✅ 案件フォルダ準備済み";
+            prepareBtn.disabled = true;
+            browseBtn.hidden = false; browseBtn.disabled = false;
+            archiveBtn.disabled = !qtsCompleted;
+          } else {
+            statusEl.textContent = qtsCompleted
+              ? `✅ このPC：${state.path}（整理済み）`
+              : `⚠ Q.T.S状態は「${qtsStatus}」ですが、PC資料は ${state.path} にあります。`;
+            prepareBtn.textContent = "✅ 完了案件側に保存済み";
+            prepareBtn.disabled = true;
+            browseBtn.hidden = false; browseBtn.disabled = false;
+            archiveBtn.hidden = true;
+            if (!qtsCompleted) { restoreBtn.hidden = false; restoreBtn.disabled = false; }
+          }
+          const stats = await getProjectLocalCategoryStats(state.handle);
+          renderProjectLocalCounts(stats);
+          const drawings = Number(stats.find(x => x.name === "図面")?.count || 0);
+          const photos = Number(stats.find(x => x.name === "現場写真")?.count || 0);
+          projectLocalDashboardState = { status: "ready", drawings, photos, location: state.location };
+          renderProjectActionDashboard();
         } else {
           statusEl.textContent = `このPC：案件フォルダ未作成（${state.folderName}）`;
           prepareBtn.disabled = false; browseBtn.hidden = true; archiveBtn.disabled = true;
+          projectLocalDashboardState = { status: "missing", drawings: 0, photos: 0 };
+          renderProjectActionDashboard();
         }
       } catch (error) {
         console.warn("project local ui refresh error", error);
         statusEl.textContent = "案件フォルダの状態を確認できませんでした。";
         prepareBtn.disabled = false; browseBtn.hidden = true; archiveBtn.disabled = true; restoreBtn.hidden = true;
+        projectLocalDashboardState = { status: "error", drawings: 0, photos: 0 };
+        renderProjectActionDashboard();
       }
     }
 
