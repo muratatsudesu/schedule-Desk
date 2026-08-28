@@ -2086,6 +2086,54 @@
     .project-local-empty { padding:12px; color:#748595; font-size:.74rem; }
     @media (max-width:560px) { .project-local-counts { grid-template-columns:1fr; } }
 
+    /* ===== Ver.6.8.30 図面・資料の版管理 ===== */
+    .project-local-browser.revision-mode { overflow:visible; }
+    .project-local-browser.revision-mode .project-local-file-list { max-height:620px; padding:9px; background:#f7fafb; }
+    .project-revision-summary {
+      margin:0 0 8px; padding:9px 10px; border:1px solid #d5e1e6; border-radius:9px;
+      background:#fff; color:#5f7482; font-size:.7rem; line-height:1.55;
+    }
+    .project-revision-summary strong { color:#244e67; }
+    .project-revision-summary.attention { border-color:#e3cb93; background:#fff9ea; color:#765b27; }
+    .project-revision-help { margin:0 0 8px; color:#738692; font-size:.66rem; line-height:1.5; }
+    .project-revision-row { align-items:flex-start; padding:9px; border:1px solid #e0e7ea; border-radius:9px; margin-bottom:7px; background:#fff; }
+    .project-revision-row.latest { border-color:#b9ddcf; background:#fbfffd; }
+    .project-revision-row.old { background:#fafbfb; }
+    .project-revision-badges { display:flex; flex-wrap:wrap; gap:5px; margin:4px 0 2px; }
+    .project-revision-badge { display:inline-flex; align-items:center; padding:2px 6px; border-radius:999px; font-size:.59rem; font-weight:850; }
+    .project-revision-badge.group { background:#eef4f7; color:#4c6677; }
+    .project-revision-badge.rev { background:#edf1fb; color:#53699b; }
+    .project-revision-badge.latest { background:#e7f5ef; color:#176d55; }
+    .project-revision-badge.old { background:#eef1f3; color:#6f7e87; }
+    .project-revision-badge.pending { background:#fff2d9; color:#7b5a1a; }
+    .project-revision-note { display:block; margin-top:4px; color:#627986; font-size:.65rem; line-height:1.45; white-space:pre-wrap; }
+    .project-revision-actions { display:flex; flex:0 0 auto; flex-wrap:wrap; justify-content:flex-end; gap:5px; max-width:260px; }
+    .project-revision-actions button {
+      border:1px solid #c8d6de; border-radius:7px; background:#f8fbfc; padding:5px 7px;
+      color:#21435f; font-size:.64rem; font-weight:800; cursor:pointer;
+    }
+    .project-revision-actions button.latest-action { border-color:#b8d8cc; background:#eef8f4; color:#176d55; }
+    .project-revision-actions button.unset-action { border-color:#e2cfa2; background:#fff9e8; color:#765a22; }
+    .project-revision-editor {
+      flex:1 0 100%; margin-top:8px; padding:9px; border:1px solid #d7e2e6; border-radius:9px; background:#f8fbfc;
+      display:grid; grid-template-columns:minmax(150px,1.4fr) minmax(90px,.6fr); gap:7px;
+    }
+    .project-revision-editor[hidden] { display:none; }
+    .project-revision-editor label { display:flex; flex-direction:column; gap:3px; color:#6b7f8c; font-size:.62rem; font-weight:800; }
+    .project-revision-editor label.wide { grid-column:1/-1; }
+    .project-revision-editor input, .project-revision-editor textarea {
+      width:100%; box-sizing:border-box; border:1px solid #cbd8df; border-radius:7px; background:#fff; color:#304e63; padding:6px 7px; font-size:.68rem;
+    }
+    .project-revision-editor textarea { min-height:55px; resize:vertical; }
+    .project-revision-editor-actions { grid-column:1/-1; display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+    .project-revision-editor-actions button { border-radius:7px; padding:5px 9px; font-size:.65rem; font-weight:850; cursor:pointer; }
+    @media (max-width:700px) {
+      .project-revision-row { flex-wrap:wrap; }
+      .project-revision-actions { width:100%; max-width:none; justify-content:flex-start; }
+      .project-revision-editor { grid-template-columns:1fr; }
+      .project-revision-editor label.wide, .project-revision-editor-actions { grid-column:auto; }
+    }
+
     /* ===== Ver.6.8.24 現場写真ギャラリー（30枚ずつ表示） ===== */
     .project-local-browser.photo-gallery-mode { overflow:visible; }
     .project-local-browser.photo-gallery-mode .project-local-file-list {
@@ -4644,6 +4692,7 @@
             <p class="project-local-note">
               新規作成時は「図面・工程表・現場写真・その他」を自動で用意します。
               PDF・画像・テキストは資料一覧から直接確認できます。ExcelなどはPCへ保存して開きます。
+              図面・工程表・その他は「資料名（系統）・版・メモ」を登録し、最新版を明示できます。元ファイル自体は変更しません。
               「完了案件へ整理」は案件状態が「完了」または「アーカイブ」のときだけ実行できます。
               完了側に整理した後で案件状態を「進行中」または「未稼働」に戻した場合は、「進行案件へ戻す」でPC資料も元へ戻せます。
               このPCの資料整理は他の利用者のPCには影響しません。
@@ -4985,7 +5034,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.29.1";
+    const APP_VERSION = "6.8.30";
     const APP_BUILD_DATE = "2026-08-28";
 
     const firebaseConfig = {
@@ -9095,8 +9144,8 @@ ${error.message||error}`); }
     let activeProjectSiteEditingReportId = "";
     let activeProjectImportantNotes = "";
     let activeProjectContactData = null;
-    // Ver.6.8.29.1: 案件ダッシュボードから、このPCの図面・現場写真へ直接入れるよう状態を共有する。
-    let projectLocalDashboardState = { status: "loading", drawings: 0, photos: 0 };
+    // Ver.6.8.30: PC資料ショートカットに加え、図面の「最新版未指定」もダッシュボードで確認する。
+    let projectLocalDashboardState = { status: "loading", drawings: 0, photos: 0, drawingRevisionPending: 0, drawingRevisionGroups: 0 };
 
     // ===== Ver.6.8.11 案件No自動採番の土台 =====
     // 既存案件はHTML内に固定IDを保持し、並び順（左の番号）が変わっても案件Noは変えない。
@@ -9382,7 +9431,7 @@ ${error.message||error}`); }
       clearProjectPhotoTransferSelection();
       projectPhotoTransferPendingDocs = [];
       projectPhotoTransferQueueState = "loading";
-      projectLocalDashboardState = { status: "loading", drawings: 0, photos: 0 };
+      projectLocalDashboardState = { status: "loading", drawings: 0, photos: 0, drawingRevisionPending: 0, drawingRevisionGroups: 0 };
 
       const no = card.dataset.projectNo || "-";
       const projectId = card.dataset.projectId || "";
@@ -9673,7 +9722,7 @@ ${error.message||error}`); }
     }
 
 
-    // ===== Ver.6.8.29.1 案件ダッシュボード・未処理通知＋PC資料ショートカット =====
+    // ===== Ver.6.8.30 案件ダッシュボード・未処理通知＋PC資料/図面版管理ショートカット =====
     function qtsOpenProjectDashboardTarget(target) {
       if (target === "important") {
         document.getElementById("projectImportantSection")?.scrollIntoView({ behavior:"smooth", block:"start" });
@@ -9790,13 +9839,16 @@ ${error.message||error}`); }
 
       // PCだけ、ローカル案件資料の状態をダッシュボードへ出す。タブレット/スマホは従来どおり非表示。
       const desktopLocalUi = !qtsIsMobileOrTabletUi();
-      const localState = projectLocalDashboardState || {status:"loading",drawings:0,photos:0};
+      const localState = projectLocalDashboardState || {status:"loading",drawings:0,photos:0,drawingRevisionPending:0,drawingRevisionGroups:0};
       if(desktopLocalUi){
         if(localState.status === "permission"){
           tiles.push({icon:"🔐",value:"要許可",label:"PC資料",detail:"クリックしてアクセス許可",tone:"attention",target:"local-permission"});
           attention++;
         } else if(localState.status === "ready"){
-          tiles.push({icon:"📐",value:`${localState.drawings||0}件`,label:"図面",detail:"過去図面を開く",tone:"info",target:"local-drawings"});
+          const revisionPending=Number(localState.drawingRevisionPending||0);
+          const revisionNeeds=isActive&&revisionPending>0;
+          tiles.push({icon:"📐",value:`${localState.drawings||0}件`,label:"図面",detail:revisionPending?`最新版未指定 ${revisionPending}系統`:"版管理を開く",tone:revisionNeeds?"attention":"info",target:"local-drawings"});
+          if(revisionNeeds) attention++;
           tiles.push({icon:"📷",value:`${localState.photos||0}枚`,label:"現場写真",detail:"写真ギャラリーを開く",tone:"info",target:"local-photos"});
         } else if(localState.status === "missing"){
           tiles.push({icon:"📁",value:"未準備",label:"PC資料",detail:"案件フォルダを準備",tone:"info",target:"local-prepare"});
@@ -10725,6 +10777,8 @@ ${error.message||error}`); }
     const PROJECT_LOCAL_DB_STORE = "handles";
     const PROJECT_LOCAL_ROOT_KEY = "projectRootDirectory";
     const PROJECT_LOCAL_SUBFOLDERS = ["図面", "工程表", "現場写真", "その他"];
+    const PROJECT_REVISION_META_FILE = "QTS_版管理.json";
+    const PROJECT_REVISION_CATEGORIES = new Set(["図面", "工程表", "その他"]);
     const PROJECT_LOCAL_FILE_LIST_LIMIT = 200;
     const PROJECT_LOCAL_COUNT_LIMIT = 999;
     let projectRootDirectoryHandle = null;
@@ -10954,7 +11008,7 @@ ${error.message||error}`); }
       const list = document.getElementById("projectLocalFileList");
       projectPhotoGalleryObjectUrls.forEach(url => { try { URL.revokeObjectURL(url); } catch (_) {} });
       projectPhotoGalleryObjectUrls = [];
-      if (browser) { browser.hidden = true; browser.classList.remove("photo-gallery-mode"); }
+      if (browser) { browser.hidden = true; browser.classList.remove("photo-gallery-mode", "revision-mode"); }
       if (list) list.innerHTML = "";
       projectLocalVisibleFiles.clear();
     }
@@ -10985,6 +11039,271 @@ ${error.message||error}`); }
       return results;
     }
 
+    function qtsRevisionPathKey(category, path = "") {
+      return `${String(category || "").trim()}/${String(path || "").replace(/\\/g,"/")}`;
+    }
+
+    function qtsInferRevisionInfo(fileName = "") {
+      const original = String(fileName || "").normalize("NFKC");
+      const base = original.replace(/\.[^.]+$/, "").trim();
+      let group = base;
+      let revision = "";
+      const revMatch = base.match(/(?:^|[\s._-])(?:rev(?:ision)?|ver(?:sion)?|v|r)[\s._-]*([0-9]+(?:[._-][0-9]+)*)\s*$/i);
+      if (revMatch) {
+        const digits = String(revMatch[1] || "").replace(/[._-]+/g,".");
+        revision = `Rev${digits}`;
+        group = base.slice(0, revMatch.index).replace(/[\s._-]+$/g, "").trim() || base;
+      } else {
+        const jpMatch = base.match(/(?:^|[\s._-])第?\s*([0-9]+)\s*版\s*$/i);
+        if (jpMatch) {
+          revision = `第${jpMatch[1]}版`;
+          group = base.slice(0, jpMatch.index).replace(/[\s._-]+$/g, "").trim() || base;
+        }
+      }
+      return { group: group || base || original || "資料", revision };
+    }
+
+    function qtsNormalizeProjectRevisionMeta(raw = {}) {
+      const source = raw && typeof raw === "object" && raw.items && typeof raw.items === "object" ? raw.items : {};
+      const items = {};
+      Object.entries(source).forEach(([key, value]) => {
+        if (!key || !value || typeof value !== "object") return;
+        items[String(key).slice(0,500)] = {
+          group:String(value.group || "").slice(0,120),
+          revision:String(value.revision || "").slice(0,40),
+          note:String(value.note || "").slice(0,500),
+          latest:Boolean(value.latest),
+          updatedAt:String(value.updatedAt || "").slice(0,40),
+          updatedBy:String(value.updatedBy || "").slice(0,100)
+        };
+      });
+      return { schemaVersion:1, items };
+    }
+
+    async function qtsReadProjectRevisionMeta(projectHandle) {
+      if (!projectHandle) return qtsNormalizeProjectRevisionMeta({});
+      try {
+        const handle = await projectHandle.getFileHandle(PROJECT_REVISION_META_FILE);
+        const file = await handle.getFile();
+        const text = await file.text();
+        return qtsNormalizeProjectRevisionMeta(JSON.parse(text || "{}"));
+      } catch (error) {
+        if (error?.name === "NotFoundError") return qtsNormalizeProjectRevisionMeta({});
+        console.warn("project revision meta read error", error);
+        return qtsNormalizeProjectRevisionMeta({});
+      }
+    }
+
+    async function qtsWriteProjectRevisionMeta(projectHandle, meta) {
+      if (!projectHandle) throw new Error("案件フォルダが見つかりません。");
+      const handle = await projectHandle.getFileHandle(PROJECT_REVISION_META_FILE, { create:true });
+      const writable = await handle.createWritable();
+      const payload = qtsNormalizeProjectRevisionMeta(meta);
+      payload.updatedAt = new Date().toISOString();
+      payload.appVersion = APP_VERSION;
+      await writable.write(JSON.stringify(payload, null, 2));
+      await writable.close();
+    }
+
+    function qtsRevisionInfoForEntry(category, entry, meta) {
+      const inferred = qtsInferRevisionInfo(entry?.name || "");
+      const rawPath = String(entry?.path || entry?.name || "");
+      const key = qtsRevisionPathKey(category, rawPath);
+      const saved = meta?.items?.[key] || {};
+      const parts = rawPath.split("\\");
+      const parentPath = parts.length > 1 ? parts.slice(0,-1).join(" / ") : "";
+      const inferredGroup = parentPath ? `${parentPath} / ${inferred.group}` : inferred.group;
+      return {
+        key, entry,
+        group:String(saved.group || inferredGroup || "資料").trim().slice(0,120),
+        revision:String(saved.revision || inferred.revision || "").trim().slice(0,40),
+        note:String(saved.note || "").trim().slice(0,500),
+        latest:Boolean(saved.latest),
+        explicit:Boolean(meta?.items?.[key])
+      };
+    }
+
+    function qtsBuildRevisionGroups(infos = []) {
+      const groups = new Map();
+      infos.forEach(info => {
+        const key = String(info.group || "資料").trim() || "資料";
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(info);
+      });
+      return groups;
+    }
+
+    async function qtsGetProjectRevisionSummary(projectHandle, category = "図面") {
+      const dir = await qtsTryGetDirectory(projectHandle, category);
+      if (!dir) return { total:0, groups:0, multiGroups:0, pendingGroups:0 };
+      const files = await qtsCollectFilesRecursive(dir, "", [], PROJECT_LOCAL_FILE_LIST_LIMIT);
+      const meta = await qtsReadProjectRevisionMeta(projectHandle);
+      const infos = files.map(entry => qtsRevisionInfoForEntry(category, entry, meta));
+      const groups = qtsBuildRevisionGroups(infos);
+      let multiGroups = 0, pendingGroups = 0;
+      groups.forEach(list => {
+        if (list.length < 2) return;
+        multiGroups++;
+        const latestCount = list.filter(x => x.latest).length;
+        if (latestCount !== 1) pendingGroups++;
+      });
+      return { total:files.length, groups:groups.size, multiGroups, pendingGroups };
+    }
+
+    async function qtsRefreshDrawingRevisionDashboard(projectHandle) {
+      try {
+        const summary = await qtsGetProjectRevisionSummary(projectHandle, "図面");
+        projectLocalDashboardState = {
+          ...(projectLocalDashboardState || {}),
+          drawingRevisionPending:summary.pendingGroups,
+          drawingRevisionGroups:summary.multiGroups
+        };
+        renderProjectActionDashboard();
+      } catch (error) {
+        console.warn("drawing revision dashboard refresh error", error);
+      }
+    }
+
+    async function qtsSetProjectRevisionLatest(category, projectHandle, entry, makeLatest = true) {
+      try {
+        const meta = await qtsReadProjectRevisionMeta(projectHandle);
+        const info = qtsRevisionInfoForEntry(category, entry, meta);
+        if (makeLatest) {
+          Object.entries(meta.items).forEach(([metaKey, item]) => {
+            if (metaKey.startsWith(`${category}/`) && String(item.group || "").trim() === info.group) item.latest = false;
+          });
+        }
+        const current = meta.items[info.key] || {};
+        meta.items[info.key] = {
+          ...current,
+          group:info.group,
+          revision:info.revision,
+          note:info.note,
+          latest:Boolean(makeLatest),
+          updatedAt:new Date().toISOString(),
+          updatedBy:currentUserProfile?.displayName || currentUser?.email || ""
+        };
+        await qtsWriteProjectRevisionMeta(projectHandle, meta);
+        setProjectLocalMessage(makeLatest ? `「${entry.name}」を最新版に指定しました。` : `「${entry.name}」の最新版指定を解除しました。`, "success");
+        await qtsRefreshDrawingRevisionDashboard(projectHandle);
+        await showProjectLocalFiles(category);
+      } catch (error) {
+        console.error("project revision latest save error", error);
+        setProjectLocalMessage(`最新版を保存できませんでした：${error.message || error}`, "error");
+      }
+    }
+
+    async function qtsSaveProjectRevisionInfo(category, projectHandle, entry, group, revision, note) {
+      const safeGroup = String(group || "").trim().slice(0,120);
+      if (!safeGroup) { setProjectLocalMessage("資料名（系統）を入力してください。", "error"); return; }
+      try {
+        const meta = await qtsReadProjectRevisionMeta(projectHandle);
+        const info = qtsRevisionInfoForEntry(category, entry, meta);
+        const old = meta.items[info.key] || {};
+        if (old.latest && safeGroup !== info.group) {
+          Object.entries(meta.items).forEach(([key, item]) => {
+            if (key !== info.key && key.startsWith(`${category}/`) && String(item.group || "").trim() === safeGroup) item.latest = false;
+          });
+        }
+        meta.items[info.key] = {
+          ...old,
+          group:safeGroup,
+          revision:String(revision || "").trim().slice(0,40),
+          note:String(note || "").trim().slice(0,500),
+          latest:Boolean(old.latest),
+          updatedAt:new Date().toISOString(),
+          updatedBy:currentUserProfile?.displayName || currentUser?.email || ""
+        };
+        await qtsWriteProjectRevisionMeta(projectHandle, meta);
+        setProjectLocalMessage(`「${entry.name}」の版情報を保存しました。`, "success");
+        await qtsRefreshDrawingRevisionDashboard(projectHandle);
+        await showProjectLocalFiles(category);
+      } catch (error) {
+        console.error("project revision info save error", error);
+        setProjectLocalMessage(`版情報を保存できませんでした：${error.message || error}`, "error");
+      }
+    }
+
+    async function renderProjectRevisionFiles(category, projectHandle, files, list) {
+      const meta = await qtsReadProjectRevisionMeta(projectHandle);
+      const infos = files.map(entry => qtsRevisionInfoForEntry(category, entry, meta));
+      const groups = qtsBuildRevisionGroups(infos);
+      let multiGroups = 0, pendingGroups = 0;
+      groups.forEach(groupItems => {
+        if (groupItems.length < 2) return;
+        multiGroups++;
+        if (groupItems.filter(x => x.latest).length !== 1) pendingGroups++;
+      });
+
+      const summary = document.createElement("div");
+      summary.className = `project-revision-summary${pendingGroups ? " attention" : ""}`;
+      const strong = document.createElement("strong");
+      strong.textContent = `${files.length}ファイル / ${groups.size}系統`;
+      summary.appendChild(strong);
+      summary.appendChild(document.createTextNode(multiGroups ? `　｜　複数版 ${multiGroups}系統　｜　最新版未指定 ${pendingGroups}系統` : "　｜　複数版はまだありません"));
+      list.appendChild(summary);
+
+      const help = document.createElement("div");
+      help.className = "project-revision-help";
+      help.textContent = "ファイル名の Rev01 / Rev02 / v2 などは自動推定します。推定が合わない場合は「版情報」から資料名（系統）と版を修正できます。最新版指定は元ファイルを変更せず、案件フォルダ内の QTS_版管理.json にだけ保存します。";
+      list.appendChild(help);
+
+      infos.sort((a,b) => {
+        const g = a.group.localeCompare(b.group,"ja",{numeric:true,sensitivity:"base"});
+        if (g) return g;
+        if (a.latest !== b.latest) return a.latest ? -1 : 1;
+        return String(b.revision || b.entry.name).localeCompare(String(a.revision || a.entry.name),"ja",{numeric:true,sensitivity:"base"});
+      });
+
+      infos.forEach((info, index) => {
+        const groupItems = groups.get(info.group) || [info];
+        const latestCount = groupItems.filter(x => x.latest).length;
+        const key = `${Date.now()}_${index}_${Math.random().toString(36).slice(2,7)}`;
+        projectLocalVisibleFiles.set(key, info.entry);
+
+        const row = document.createElement("div");
+        row.className = `project-local-file-row project-revision-row${info.latest ? " latest" : (groupItems.length>1 && latestCount===1 ? " old" : "")}`;
+
+        const nameBox = document.createElement("div");
+        nameBox.className = "project-local-file-name";
+        const name = document.createElement("strong"); name.textContent = info.entry.name;
+        const badges = document.createElement("div"); badges.className = "project-revision-badges";
+        const groupBadge = document.createElement("span"); groupBadge.className = "project-revision-badge group"; groupBadge.textContent = info.group;
+        badges.appendChild(groupBadge);
+        if (info.revision) { const rev = document.createElement("span"); rev.className="project-revision-badge rev"; rev.textContent=info.revision; badges.appendChild(rev); }
+        const status = document.createElement("span");
+        if (info.latest) { status.className="project-revision-badge latest"; status.textContent="✓ 最新版"; }
+        else if (groupItems.length>1 && latestCount===1) { status.className="project-revision-badge old"; status.textContent="旧版"; }
+        else if (groupItems.length>1) { status.className="project-revision-badge pending"; status.textContent="最新版未指定"; }
+        else { status.className="project-revision-badge old"; status.textContent="1ファイル"; }
+        badges.appendChild(status);
+        const path = document.createElement("span"); path.className="project-local-file-path"; path.textContent=info.entry.path;
+        nameBox.append(name,badges,path);
+        if (info.note) { const note=document.createElement("span"); note.className="project-revision-note"; note.textContent=info.note; nameBox.appendChild(note); }
+
+        const actions = document.createElement("div"); actions.className="project-revision-actions";
+        const open = document.createElement("button"); open.type="button"; open.textContent="開く"; open.addEventListener("click",()=>openProjectLocalFile(key));
+        const edit = document.createElement("button"); edit.type="button"; edit.textContent="版情報";
+        const latest = document.createElement("button"); latest.type="button"; latest.className=info.latest?"unset-action":"latest-action"; latest.textContent=info.latest?"最新版解除":"最新版にする";
+        latest.addEventListener("click",()=>qtsSetProjectRevisionLatest(category, projectHandle, info.entry, !info.latest));
+        actions.append(open,edit,latest);
+
+        const editor = document.createElement("div"); editor.className="project-revision-editor"; editor.hidden=true;
+        const groupLabel=document.createElement("label"); groupLabel.textContent="資料名（同じ図面の系統）"; const groupInput=document.createElement("input"); groupInput.value=info.group; groupInput.maxLength=120; groupLabel.appendChild(groupInput);
+        const revLabel=document.createElement("label"); revLabel.textContent="版"; const revInput=document.createElement("input"); revInput.value=info.revision; revInput.maxLength=40; revInput.placeholder="例：Rev03"; revLabel.appendChild(revInput);
+        const noteLabel=document.createElement("label"); noteLabel.className="wide"; noteLabel.textContent="変更内容・メモ"; const noteInput=document.createElement("textarea"); noteInput.value=info.note; noteInput.maxLength=500; noteInput.placeholder="例：客室デスク寸法変更を反映"; noteLabel.appendChild(noteInput);
+        const editorActions=document.createElement("div"); editorActions.className="project-revision-editor-actions";
+        const save=document.createElement("button"); save.type="button"; save.className="btn-primary btn-small"; save.textContent="💾 版情報を保存";
+        const cancel=document.createElement("button"); cancel.type="button"; cancel.className="btn-secondary btn-small"; cancel.textContent="キャンセル";
+        save.addEventListener("click",()=>qtsSaveProjectRevisionInfo(category, projectHandle, info.entry, groupInput.value, revInput.value, noteInput.value));
+        cancel.addEventListener("click",()=>{editor.hidden=true;});
+        edit.addEventListener("click",()=>{editor.hidden=!editor.hidden;if(!editor.hidden)setTimeout(()=>groupInput.focus(),0);});
+        editorActions.append(save,cancel); editor.append(groupLabel,revLabel,noteLabel,editorActions);
+
+        row.append(nameBox,actions,editor); list.appendChild(row);
+      });
+    }
+
     async function showProjectLocalFiles(category = "") {
       const card = activeProjectCard;
       if (!card || !projectRootDirectoryHandle) return;
@@ -10996,36 +11315,42 @@ ${error.message||error}`); }
         const browser = document.getElementById("projectLocalBrowser");
         const title = document.getElementById("projectLocalBrowserTitle");
         const list = document.getElementById("projectLocalFileList");
-        projectLocalVisibleFiles.clear(); list.innerHTML = ""; browser.hidden = false; browser.classList.remove("photo-gallery-mode");
-        title.textContent = category ? `${projectLocalCategoryIcon(category)} ${category}` : "📂 案件資料一覧";
+        projectLocalVisibleFiles.clear(); list.innerHTML = ""; browser.hidden = false; browser.classList.remove("photo-gallery-mode", "revision-mode");
+        title.textContent = category ? `${projectLocalCategoryIcon(category)} ${category}${PROJECT_REVISION_CATEGORIES.has(category)?"｜版管理":""}` : "📂 案件資料一覧";
         let files = [];
+        let categoryDir = null;
         if (category) {
-          const categoryDir = await qtsTryGetDirectory(state.handle, category);
+          categoryDir = await qtsTryGetDirectory(state.handle, category);
           if (categoryDir) files = await qtsCollectFilesRecursive(categoryDir, "", [], PROJECT_LOCAL_FILE_LIST_LIMIT);
         } else {
           for (const sub of PROJECT_LOCAL_SUBFOLDERS) {
             if (files.length >= PROJECT_LOCAL_FILE_LIST_LIMIT) break;
-            const categoryDir = await qtsTryGetDirectory(state.handle, sub);
-            if (!categoryDir) continue;
-            files.push(...await qtsCollectFilesRecursive(categoryDir, sub, [], PROJECT_LOCAL_FILE_LIST_LIMIT - files.length));
+            const dir = await qtsTryGetDirectory(state.handle, sub);
+            if (!dir) continue;
+            files.push(...await qtsCollectFilesRecursive(dir, sub, [], PROJECT_LOCAL_FILE_LIST_LIMIT - files.length));
           }
         }
-        files = files.filter(entry => entry.name !== "現場写真一覧.csv");
+        files = files.filter(entry => entry.name !== "現場写真一覧.csv" && entry.name !== PROJECT_REVISION_META_FILE);
         if (!files.length) {
           const empty = document.createElement("div"); empty.className = "project-local-empty"; empty.textContent = "この分類にはまだファイルがありません。"; list.appendChild(empty); return;
         }
-        files.forEach((entry, index) => {
-          const key = `${Date.now()}_${index}`; projectLocalVisibleFiles.set(key, entry);
-          const row = document.createElement("div"); row.className = "project-local-file-row";
-          const nameBox = document.createElement("div"); nameBox.className = "project-local-file-name";
-          const strong = document.createElement("strong"); strong.textContent = entry.name;
-          const path = document.createElement("span"); path.className = "project-local-file-path"; path.textContent = entry.path;
-          nameBox.append(strong, path);
-          const open = document.createElement("button"); open.type = "button"; open.className = "project-local-file-open"; open.textContent = "開く"; open.addEventListener("click", () => openProjectLocalFile(key));
-          row.append(nameBox, open); list.appendChild(row);
-        });
+        if (category && PROJECT_REVISION_CATEGORIES.has(category) && categoryDir) {
+          browser.classList.add("revision-mode");
+          await renderProjectRevisionFiles(category, state.handle, files, list);
+        } else {
+          files.forEach((entry, index) => {
+            const key = `${Date.now()}_${index}`; projectLocalVisibleFiles.set(key, entry);
+            const row = document.createElement("div"); row.className = "project-local-file-row";
+            const nameBox = document.createElement("div"); nameBox.className = "project-local-file-name";
+            const strong = document.createElement("strong"); strong.textContent = entry.name;
+            const path = document.createElement("span"); path.className = "project-local-file-path"; path.textContent = entry.path;
+            nameBox.append(strong, path);
+            const open = document.createElement("button"); open.type = "button"; open.className = "project-local-file-open"; open.textContent = "開く"; open.addEventListener("click", () => openProjectLocalFile(key));
+            row.append(nameBox, open); list.appendChild(row);
+          });
+        }
         if (files.length >= PROJECT_LOCAL_FILE_LIST_LIMIT) {
-          const note = document.createElement("div"); note.className = "project-local-empty"; note.textContent = `表示は先頭${PROJECT_LOCAL_FILE_LIST_LIMIT}件までです。大量の写真はPCフォルダ側で管理してください。`; list.appendChild(note);
+          const note = document.createElement("div"); note.className = "project-local-empty"; note.textContent = `表示は先頭${PROJECT_LOCAL_FILE_LIST_LIMIT}件までです。大量の資料はPCフォルダ側で管理してください。`; list.appendChild(note);
         }
       } catch (error) {
         console.error("show project local files error", error);
@@ -11104,6 +11429,7 @@ ${error.message||error}`); }
         const list = document.getElementById("projectLocalFileList");
         hideProjectLocalBrowser();
         browser.hidden = false;
+        browser.classList.remove("revision-mode");
         browser.classList.add("photo-gallery-mode");
         title.textContent = "📷 現場写真ギャラリー";
         list.innerHTML = "";
@@ -11357,7 +11683,7 @@ ${error.message||error}`); }
       const restoreBtn = document.getElementById("projectLocalRestoreBtn");
       const counts = document.getElementById("projectLocalCounts");
       if (!statusEl || !permissionBtn || !prepareBtn || !browseBtn || !archiveBtn || !restoreBtn) return;
-      projectLocalDashboardState = { status: "loading", drawings: 0, photos: 0 };
+      projectLocalDashboardState = { status: "loading", drawings: 0, photos: 0, drawingRevisionPending: 0, drawingRevisionGroups: 0 };
       renderProjectActionDashboard();
       hideProjectLocalBrowser();
       permissionBtn.hidden = true;
@@ -11375,13 +11701,13 @@ ${error.message||error}`); }
       if (counts) { counts.hidden = true; counts.innerHTML = ""; }
       if (!projectLocalFileSystemSupported()) {
         statusEl.textContent = "この機能は最新のChrome / EdgeのPC版で利用できます。";
-        projectLocalDashboardState = { status: "unsupported", drawings: 0, photos: 0 };
+        projectLocalDashboardState = { status: "unsupported", drawings: 0, photos: 0, drawingRevisionPending: 0, drawingRevisionGroups: 0 };
         renderProjectActionDashboard();
         return;
       }
       if (!projectRootDirectoryHandle) {
         statusEl.textContent = "案件管理画面で「QTS案件管理フォルダ」を設定してください。";
-        projectLocalDashboardState = { status: "unset", drawings: 0, photos: 0 };
+        projectLocalDashboardState = { status: "unset", drawings: 0, photos: 0, drawingRevisionPending: 0, drawingRevisionGroups: 0 };
         renderProjectActionDashboard();
         return;
       }
@@ -11390,7 +11716,7 @@ ${error.message||error}`); }
         if (permissionState !== "granted") {
           statusEl.textContent = `設定済み：${projectRootDirectoryHandle.name}（再アクセス許可が必要です）`;
           permissionBtn.hidden = false; permissionNote?.classList.add("show"); prepareBtn.hidden = true;
-          projectLocalDashboardState = { status: "permission", drawings: 0, photos: 0 };
+          projectLocalDashboardState = { status: "permission", drawings: 0, photos: 0, drawingRevisionPending: 0, drawingRevisionGroups: 0 };
           renderProjectActionDashboard();
           return;
         }
@@ -11421,19 +11747,20 @@ ${error.message||error}`); }
           renderProjectLocalCounts(stats);
           const drawings = Number(stats.find(x => x.name === "図面")?.count || 0);
           const photos = Number(stats.find(x => x.name === "現場写真")?.count || 0);
-          projectLocalDashboardState = { status: "ready", drawings, photos, location: state.location };
+          const revisionSummary = await qtsGetProjectRevisionSummary(state.handle, "図面");
+          projectLocalDashboardState = { status: "ready", drawings, photos, location: state.location, drawingRevisionPending: revisionSummary.pendingGroups, drawingRevisionGroups: revisionSummary.multiGroups };
           renderProjectActionDashboard();
         } else {
           statusEl.textContent = `このPC：案件フォルダ未作成（${state.folderName}）`;
           prepareBtn.disabled = false; browseBtn.hidden = true; archiveBtn.disabled = true;
-          projectLocalDashboardState = { status: "missing", drawings: 0, photos: 0 };
+          projectLocalDashboardState = { status: "missing", drawings: 0, photos: 0, drawingRevisionPending: 0, drawingRevisionGroups: 0 };
           renderProjectActionDashboard();
         }
       } catch (error) {
         console.warn("project local ui refresh error", error);
         statusEl.textContent = "案件フォルダの状態を確認できませんでした。";
         prepareBtn.disabled = false; browseBtn.hidden = true; archiveBtn.disabled = true; restoreBtn.hidden = true;
-        projectLocalDashboardState = { status: "error", drawings: 0, photos: 0 };
+        projectLocalDashboardState = { status: "error", drawings: 0, photos: 0, drawingRevisionPending: 0, drawingRevisionGroups: 0 };
         renderProjectActionDashboard();
       }
     }
