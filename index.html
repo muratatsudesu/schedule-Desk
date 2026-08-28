@@ -2397,7 +2397,10 @@
     .project-site-form-grid label { display:flex; flex-direction:column; gap:3px; color:#6c7f8c; font-size:.65rem; font-weight:750; }
     .project-site-config-list { display:grid; gap:5px; margin-top:8px; max-height:180px; overflow:auto; }
     .project-site-config-row { display:flex; justify-content:space-between; gap:7px; align-items:center; padding:6px 7px; border:1px solid #e0e7ea; border-radius:8px; background:#fff; font-size:.67rem; color:#405d71; }
+    .project-site-config-row-actions { display:flex; gap:5px; flex:0 0 auto; }
     .project-site-config-row button { border:1px solid #e1caca; border-radius:6px; background:#fff8f8; color:#a24545; padding:3px 6px; font-size:.6rem; font-weight:800; cursor:pointer; }
+    .project-site-config-row button.project-site-edit-btn { border-color:#c8dce8; background:#f5fbff; color:#2f647f; }
+    .project-site-roomtype-actions { display:flex; gap:7px; flex-wrap:wrap; align-items:center; margin-top:7px; }
     .project-site-setup-actions { display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin-top:10px; }
     .project-site-muted { color:#82919b; font-size:.65rem; line-height:1.5; }
     @media (max-width:900px) { .project-site-room-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
@@ -4280,7 +4283,7 @@
             <p>ホテルを中心に、現場全体・客室・パブリックの進捗とアイテム確認をまとめます。</p>
           </div>
           <div class="project-site-badges">
-            <span class="project-site-proto">Ver.6.8.26 試作</span>
+            <span class="project-site-proto">Ver.6.8.26.1 試作</span>
             <button type="button" class="btn-secondary btn-small" id="projectSiteSetupBtn">⚙️ 初期設定</button>
           </div>
         </div>
@@ -4306,7 +4309,11 @@
                 <label>タイプ名<input id="projectSiteRoomTypeName" class="project-site-input" placeholder="例：TYPE-A"></label>
                 <label class="full">アイテム（1行1品目）<textarea id="projectSiteRoomTypeItems" class="project-site-textarea" rows="4" placeholder="ベッドヘッド&#10;ナイトテーブル&#10;TVボード"></textarea></label>
               </div>
-              <button type="button" class="btn-secondary btn-small" id="projectSiteAddRoomTypeBtn">＋ 客室タイプ追加</button>
+              <div class="project-site-roomtype-actions">
+                <button type="button" class="btn-secondary btn-small" id="projectSiteAddRoomTypeBtn">＋ 客室タイプ追加</button>
+                <button type="button" class="btn-secondary btn-small" id="projectSiteCancelRoomTypeEditBtn" hidden>編集をキャンセル</button>
+              </div>
+              <div id="projectSiteRoomTypeEditHint" class="project-site-muted" hidden></div>
               <div id="projectSiteRoomTypeList" class="project-site-config-list"></div>
             </div>
             <div class="project-site-setup-box" id="projectSiteRoomBox">
@@ -4746,7 +4753,7 @@
         </div>
         <div class="app-info-panel">
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.21</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.8.26：現場進捗・客室チェック管理の試作版を追加。案件ごとに客室/パブリックをON/OFFし、現場全体チェック、客室タイプ、部屋一括登録、客室/パブリックのアイテムOK/NG/対象外・コメント・進捗集計に対応<br>Ver.6.8.25：案件詳細に「重要事項・申し送り」を追加。搬入条件・立会い・駐車・現場ルール等をPC/スマホで共有保存し、案件を開いた直後に目立つ固定欄で確認可能<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.8.26.1：客室タイプの編集に対応。タイプ名・アイテム追加/名称変更/削除を行え、使用中タイプも安全に更新。削除アイテムに既存チェックがある場合は確認表示<br>Ver.6.8.26：現場進捗・客室チェック管理の試作版を追加。案件ごとに客室/パブリックをON/OFFし、現場全体チェック、客室タイプ、部屋一括登録、客室/パブリックのアイテムOK/NG/対象外・コメント・進捗集計に対応<br>Ver.6.8.25：案件詳細に「重要事項・申し送り」を追加。搬入条件・立会い・駐車・現場ルール等をPC/スマホで共有保存し、案件を開いた直後に目立つ固定欄で確認可能<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
           Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月26日
         </div>
@@ -4852,7 +4859,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.26";
+    const APP_VERSION = "6.8.26.1";
     const APP_BUILD_DATE = "2026-08-28";
 
     const firebaseConfig = {
@@ -5079,6 +5086,7 @@
       document.getElementById("projectSiteGuestEnabled").addEventListener("change", renderProjectSiteConfigEditor);
       document.getElementById("projectSitePublicEnabled").addEventListener("change", renderProjectSiteConfigEditor);
       document.getElementById("projectSiteAddRoomTypeBtn").addEventListener("click", addProjectSiteRoomType);
+      document.getElementById("projectSiteCancelRoomTypeEditBtn").addEventListener("click", cancelProjectSiteRoomTypeEdit);
       document.getElementById("projectSiteAddRoomsBtn").addEventListener("click", addProjectSiteRooms);
       document.getElementById("projectSiteAddPublicBtn").addEventListener("click", addProjectSitePublic);
       document.getElementById("projectSiteSaveConfigBtn").addEventListener("click", saveProjectSiteConfig);
@@ -9528,6 +9536,8 @@ ${error.message||error}`); }
 
 
     // ===== Ver.6.8.26 現場進捗・客室チェック管理（試作） =====
+    let activeProjectSiteEditingRoomTypeId = "";
+
     const PROJECT_SITE_DEFAULT_COMMON = [
       ["搬入前","搬入口確認"],["搬入前","搬入時間確認"],["搬入前","養生範囲確認"],["搬入前","エレベーター使用条件確認"],["搬入前","車両・駐車場所確認"],
       ["施工前","図面最新版確認"],["施工前","商品・数量確認"],["施工前","現場寸法・納まり確認"],["施工前","搬入時の傷・破損確認"],
@@ -9571,6 +9581,7 @@ ${error.message||error}`); }
       activeProjectSiteRoomChecks={}; activeProjectSitePublicChecks={}; activeProjectSiteCommonChecks={};
       activeProjectSiteTab="common"; activeProjectSiteSelectedRoomId=""; activeProjectSiteSelectedPublicId="";
       activeProjectSiteGuestFloorFilter=""; activeProjectSiteGuestStateFilter="";
+      activeProjectSiteEditingRoomTypeId="";
       renderProjectSiteManagement();
     }
 
@@ -9728,6 +9739,7 @@ ${error.message||error}`); }
 
     function setProjectSiteSetupMode(open) {
       const box=document.getElementById("projectSiteSetup"); if(!box)return; box.hidden=!open; document.getElementById("projectSiteSetupBtn").textContent=open?"⚙️ 設定中":"⚙️ 初期設定";
+      if(!open && activeProjectSiteEditingRoomTypeId){activeProjectSiteEditingRoomTypeId="";const n=document.getElementById("projectSiteRoomTypeName");const i=document.getElementById("projectSiteRoomTypeItems");if(n)n.value="";if(i)i.value="";}
       if(open){ document.getElementById("projectSiteGuestEnabled").checked=activeProjectSiteConfig.guestEnabled; document.getElementById("projectSitePublicEnabled").checked=activeProjectSiteConfig.publicEnabled; renderProjectSiteConfigEditor(); }
     }
 
@@ -9736,7 +9748,25 @@ ${error.message||error}`); }
       common.value=(activeProjectSiteConfig.commonItems||[]).map(x=>`${x.phase}｜${x.name}`).join("\n");
       const typeList=document.getElementById("projectSiteRoomTypeList"); const select=document.getElementById("projectSiteRoomTypeSelect"); if(typeList&&select){
         typeList.innerHTML=""; select.innerHTML=activeProjectSiteConfig.roomTypes.length?activeProjectSiteConfig.roomTypes.map(t=>`<option value="${t.id}">${t.name}</option>`).join(""):'<option value="">先に客室タイプを追加</option>';
-        activeProjectSiteConfig.roomTypes.forEach(t=>{const row=document.createElement("div");row.className="project-site-config-row";const used=activeProjectSiteConfig.rooms.filter(r=>r.typeId===t.id).length;row.innerHTML=`<span><strong>${t.name}</strong>　${t.items.length}品目 / ${used}室</span>`;const del=document.createElement("button");del.type="button";del.textContent="削除";del.disabled=used>0;del.title=used>0?"使用中の客室タイプは削除できません":"";del.addEventListener("click",()=>{activeProjectSiteConfig.roomTypes=activeProjectSiteConfig.roomTypes.filter(x=>x.id!==t.id);renderProjectSiteConfigEditor();});row.appendChild(del);typeList.appendChild(row);});
+        activeProjectSiteConfig.roomTypes.forEach(t=>{
+          const row=document.createElement("div");row.className="project-site-config-row";
+          const used=activeProjectSiteConfig.rooms.filter(r=>r.typeId===t.id).length;
+          const label=document.createElement("span"); label.innerHTML=`<strong>${t.name}</strong>　${t.items.length}品目 / ${used}室`;
+          const actions=document.createElement("div"); actions.className="project-site-config-row-actions";
+          const edit=document.createElement("button"); edit.type="button"; edit.className="project-site-edit-btn"; edit.textContent="編集"; edit.addEventListener("click",()=>startProjectSiteRoomTypeEdit(t.id));
+          const del=document.createElement("button");del.type="button";del.textContent="削除";del.disabled=used>0;del.title=used>0?"使用中の客室タイプは削除できません":"";del.addEventListener("click",()=>{activeProjectSiteConfig.roomTypes=activeProjectSiteConfig.roomTypes.filter(x=>x.id!==t.id);if(activeProjectSiteEditingRoomTypeId===t.id)cancelProjectSiteRoomTypeEdit();renderProjectSiteConfigEditor();});
+          actions.append(edit,del); row.append(label,actions); typeList.appendChild(row);
+        });
+      }
+      const roomTypeActionBtn=document.getElementById("projectSiteAddRoomTypeBtn");
+      const roomTypeCancelBtn=document.getElementById("projectSiteCancelRoomTypeEditBtn");
+      const roomTypeHint=document.getElementById("projectSiteRoomTypeEditHint");
+      if(roomTypeActionBtn) roomTypeActionBtn.textContent=activeProjectSiteEditingRoomTypeId?"💾 客室タイプ更新":"＋ 客室タイプ追加";
+      if(roomTypeCancelBtn) roomTypeCancelBtn.hidden=!activeProjectSiteEditingRoomTypeId;
+      if(roomTypeHint){
+        const editing=qtsSiteTypeById(activeProjectSiteEditingRoomTypeId);
+        roomTypeHint.hidden=!editing;
+        roomTypeHint.textContent=editing?`「${editing.name}」を編集中です。アイテム削除は、このタイプを使う客室にも反映されます。`:"";
       }
       const rooms=document.getElementById("projectSiteRoomConfigList"); if(rooms){rooms.innerHTML="";(activeProjectSiteConfig.rooms||[]).slice().sort((a,b)=>`${a.floor}${a.roomNo}`.localeCompare(`${b.floor}${b.roomNo}`,"ja",{numeric:true})).forEach(r=>{const row=document.createElement("div");row.className="project-site-config-row";row.innerHTML=`<span>${r.floor?`${r.floor} / `:""}<strong>${r.roomNo}</strong>　${qtsSiteTypeById(r.typeId)?.name||"未設定"}</span>`;const del=document.createElement("button");del.type="button";del.textContent="削除";del.addEventListener("click",()=>{activeProjectSiteConfig.rooms=activeProjectSiteConfig.rooms.filter(x=>x.id!==r.id);delete activeProjectSiteRoomChecks[r.id];if(activeProjectSiteSelectedRoomId===r.id)activeProjectSiteSelectedRoomId="";renderProjectSiteConfigEditor();});row.appendChild(del);rooms.appendChild(row);});}
       const pubs=document.getElementById("projectSitePublicConfigList"); if(pubs){pubs.innerHTML="";(activeProjectSiteConfig.publicAreas||[]).forEach(a=>{const row=document.createElement("div");row.className="project-site-config-row";row.innerHTML=`<span>${a.floor?`${a.floor} / `:""}<strong>${a.name}</strong>　${a.items.length}品目</span>`;const del=document.createElement("button");del.type="button";del.textContent="削除";del.addEventListener("click",()=>{activeProjectSiteConfig.publicAreas=activeProjectSiteConfig.publicAreas.filter(x=>x.id!==a.id);delete activeProjectSitePublicChecks[a.id];if(activeProjectSiteSelectedPublicId===a.id)activeProjectSiteSelectedPublicId="";renderProjectSiteConfigEditor();});row.appendChild(del);pubs.appendChild(row);});}
@@ -9758,9 +9788,90 @@ ${error.message||error}`); }
       return [...new Set(out)].slice(0,500);
     }
 
+    function startProjectSiteRoomTypeEdit(typeId) {
+      const type=qtsSiteTypeById(typeId); if(!type)return;
+      activeProjectSiteEditingRoomTypeId=type.id;
+      const name=document.getElementById("projectSiteRoomTypeName");
+      const items=document.getElementById("projectSiteRoomTypeItems");
+      if(name)name.value=type.name||"";
+      if(items)items.value=(type.items||[]).map(x=>x.name).join("\n");
+      setProjectSiteConfigMessage(`「${type.name}」を編集しています。変更後に「客室タイプ更新」を押してください。`);
+      renderProjectSiteConfigEditor();
+      try{name?.focus();name?.scrollIntoView({behavior:"smooth",block:"center"});}catch(_){ }
+    }
+
+    function cancelProjectSiteRoomTypeEdit() {
+      activeProjectSiteEditingRoomTypeId="";
+      const name=document.getElementById("projectSiteRoomTypeName");
+      const items=document.getElementById("projectSiteRoomTypeItems");
+      if(name)name.value=""; if(items)items.value="";
+      setProjectSiteConfigMessage("客室タイプの編集をキャンセルしました。");
+      renderProjectSiteConfigEditor();
+    }
+
+    function qtsBuildEditedRoomTypeItems(oldItems, newNames) {
+      const old=Array.isArray(oldItems)?oldItems:[];
+      const used=new Set();
+      const result=new Array(newNames.length);
+      newNames.forEach((name,i)=>{
+        const exact=old.find((it,j)=>!used.has(j)&&it.name===name);
+        if(exact){const j=old.indexOf(exact);used.add(j);result[i]={id:exact.id,name};}
+      });
+      newNames.forEach((name,i)=>{
+        if(result[i])return;
+        if(old[i]&&!used.has(i)){used.add(i);result[i]={id:old[i].id,name};return;}
+        result[i]={id:qtsSiteId("item"),name};
+      });
+      return result;
+    }
+
+    function qtsCountRoomTypeChecks(typeId,itemIds) {
+      const ids=new Set(itemIds||[]); let count=0, rooms=0;
+      (activeProjectSiteConfig.rooms||[]).filter(r=>r.typeId===typeId).forEach(room=>{
+        const data=activeProjectSiteRoomChecks?.[room.id]||{}; let touched=false;
+        ids.forEach(id=>{
+          if(String(data?.statuses?.[id]||"pending")!=="pending" || String(data?.comments?.[id]||"").trim()){count++;touched=true;}
+        });
+        if(touched)rooms++;
+      });
+      return {count,rooms};
+    }
+
+    function qtsRemoveRoomTypeCheckKeys(typeId,itemIds) {
+      const ids=new Set(itemIds||[]);
+      (activeProjectSiteConfig.rooms||[]).filter(r=>r.typeId===typeId).forEach(room=>{
+        const data=activeProjectSiteRoomChecks?.[room.id]; if(!data)return;
+        ids.forEach(id=>{if(data.statuses)delete data.statuses[id];if(data.comments)delete data.comments[id];});
+      });
+    }
+
     function addProjectSiteRoomType() {
-      const name=document.getElementById("projectSiteRoomTypeName").value.trim(); const items=qtsParseSiteItemLines(document.getElementById("projectSiteRoomTypeItems").value); if(!name||!items.length){setProjectSiteConfigMessage("タイプ名とアイテムを入力してください。","error");return;}
-      activeProjectSiteConfig.roomTypes.push({id:qtsSiteId("type"),name:name.slice(0,40),items}); document.getElementById("projectSiteRoomTypeName").value="";document.getElementById("projectSiteRoomTypeItems").value="";setProjectSiteConfigMessage("客室タイプを追加しました。最後に初期設定を保存してください。");renderProjectSiteConfigEditor();
+      const name=document.getElementById("projectSiteRoomTypeName").value.trim().slice(0,40);
+      const newNames=String(document.getElementById("projectSiteRoomTypeItems").value||"").split(/\r?\n/).map(x=>x.trim()).filter(Boolean).map(x=>x.slice(0,100));
+      if(!name||!newNames.length){setProjectSiteConfigMessage("タイプ名とアイテムを入力してください。","error");return;}
+      if(activeProjectSiteEditingRoomTypeId){
+        const type=qtsSiteTypeById(activeProjectSiteEditingRoomTypeId); if(!type){cancelProjectSiteRoomTypeEdit();return;}
+        const newItems=qtsBuildEditedRoomTypeItems(type.items||[],newNames);
+        const keepIds=new Set(newItems.map(x=>x.id));
+        const removed=(type.items||[]).filter(x=>!keepIds.has(x.id));
+        if(removed.length){
+          const affected=qtsCountRoomTypeChecks(type.id,removed.map(x=>x.id));
+          const usedRooms=(activeProjectSiteConfig.rooms||[]).filter(r=>r.typeId===type.id).length;
+          const detail=affected.count?`\n\n削除対象には ${affected.rooms}室・${affected.count}件のチェック結果/コメントがあります。これらも削除されます。`:usedRooms?`\n\nこのタイプは${usedRooms}室で使用中です。削除したアイテムは各客室のチェック対象から外れます。`:"";
+          if(!confirm(`客室タイプ「${type.name}」から ${removed.length}アイテムを削除します。${detail}\n\nよろしいですか？`))return;
+          qtsRemoveRoomTypeCheckKeys(type.id,removed.map(x=>x.id));
+        }
+        type.name=name; type.items=newItems;
+        activeProjectSiteEditingRoomTypeId="";
+        document.getElementById("projectSiteRoomTypeName").value=""; document.getElementById("projectSiteRoomTypeItems").value="";
+        setProjectSiteConfigMessage("客室タイプを更新しました。最後に初期設定を保存してください。","success");
+        renderProjectSiteManagement();
+        return;
+      }
+      const items=newNames.map(n=>({id:qtsSiteId("item"),name:n}));
+      activeProjectSiteConfig.roomTypes.push({id:qtsSiteId("type"),name,items});
+      document.getElementById("projectSiteRoomTypeName").value="";document.getElementById("projectSiteRoomTypeItems").value="";
+      setProjectSiteConfigMessage("客室タイプを追加しました。最後に初期設定を保存してください。");renderProjectSiteConfigEditor();
     }
     function addProjectSiteRooms() {
       const floor=document.getElementById("projectSiteRoomFloor").value.trim().slice(0,30);const typeId=document.getElementById("projectSiteRoomTypeSelect").value;const nums=qtsParseRoomNumbers(document.getElementById("projectSiteRoomNumbers").value);if(!typeId||!nums.length){setProjectSiteConfigMessage("客室タイプと部屋番号を指定してください。","error");return;}
