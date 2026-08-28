@@ -1511,6 +1511,27 @@
       border-radius: 16px 16px 0 0;
     }
 
+    /* ===== Ver.6.8.31 バックアップ・復元 ===== */
+    .qts-backup-panel {
+      padding: 14px;
+      border: 1px solid #dcc9aa;
+      border-radius: 12px;
+      background: linear-gradient(145deg, #fffdf8, #f5ecdf);
+    }
+    .qts-backup-panel + .qts-backup-panel { margin-top: 12px; }
+    .qts-backup-panel h3 { margin: 0 0 6px; color: var(--brown-dark); font-size: 1rem; }
+    .qts-backup-panel p { margin: 0; color: #75685e; font-size: .76rem; line-height: 1.65; }
+    .qts-backup-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:11px; }
+    .qts-backup-actions button { min-height: 40px; }
+    .qts-backup-status { margin-top:9px; min-height:1.2em; color:#6b625b; font-size:.75rem; line-height:1.55; }
+    .qts-backup-status.success { color:#176d55; font-weight:750; }
+    .qts-backup-status.error { color:#a23838; font-weight:750; }
+    .qts-backup-file-summary { margin-top:10px; padding:10px 11px; border-radius:9px; background:#f8fafb; border:1px solid #d8e0e5; color:#536672; font-size:.74rem; line-height:1.65; }
+    .qts-backup-file-summary strong { color:#334d5e; }
+    .qts-backup-warning { margin-top:10px; padding:9px 11px; border-radius:9px; background:#fff7e6; border:1px solid #ead09b; color:#745b2d; font-size:.72rem; line-height:1.6; }
+    .qts-backup-local-note { margin-top:10px; padding:9px 11px; border-radius:9px; background:#eef6f8; border:1px solid #cadde3; color:#526c78; font-size:.72rem; line-height:1.6; }
+    @media (max-width:640px) { .qts-backup-actions { flex-direction:column; } .qts-backup-actions button { width:100%; } }
+
     .app-info-panel {
       margin-top: 14px;
       padding: 13px 14px;
@@ -4923,14 +4944,14 @@
             <button type="button" class="btn-secondary" id="btnAssignLegacyToMe">担当者なし予定を確認</button>
           </div>
           <div class="future-setting">🔐 Ver.6.3.1：利用者名・権限を管理者固定</div>
-          <div class="future-setting">バックアップ・復元（今後追加予定）</div>
+          <button type="button" class="btn-secondary" id="btnOpenBackupRestore">💾 バックアップ・復元</button>
           <button type="button" class="btn-secondary" id="btnOpenCsv">📤 CSV出力</button>
         </div>
         <div class="app-info-panel">
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.21</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.8.29：案件詳細の先頭に「案件ダッシュボード」を追加。客室・パブリック未完了、是正、当日日報、写真受取待ち、重要事項を一目で確認し、各機能へ直接移動できる未処理ナビに対応<br>Ver.6.8.28.1：大項目「年間予定表」を「案件管理」へ名称変更。年間予定表Excel連携の名称はそのまま残し、案件管理画面として役割を整理<br>Ver.6.8.28：現場日報を追加。日付・入退場時間・作業人数・作業内容・問題点・翌日の予定を案件ごとに共有保存し、日付別一覧・編集・削除・当日の是正状況確認に対応<br>Ver.6.8.27.1：是正・残工事から担当者欄を撤去。場所・アイテム・内容・期限・状態・対応メモに絞り、既存の見た目を崩さず入力と一覧表示を簡潔化<br>Ver.6.8.27：是正・残工事管理を追加。NGチェックから是正登録し、期限・状態・コメントを共有管理。未対応/対応中/完了の絞り込み、元チェックへの移動、完了＋元チェックOK、手動追加、現場写真への導線に対応<br>Ver.6.8.26.1：客室タイプの編集に対応。タイプ名・アイテム追加/名称変更/削除を行え、使用中タイプも安全に更新。削除アイテムに既存チェックがある場合は確認表示<br>Ver.6.8.26：現場進捗・客室チェック管理の試作版を追加。案件ごとに客室/パブリックをON/OFFし、現場全体チェック、客室タイプ、部屋一括登録、客室/パブリックのアイテムOK/NG/対象外・コメント・進捗集計に対応<br>Ver.6.8.25：案件詳細に「重要事項・申し送り」を追加。搬入条件・立会い・駐車・現場ルール等をPC/スマホで共有保存し、案件を開いた直後に目立つ固定欄で確認可能<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.8.31：バックアップ・復元を追加。共有予定・カテゴリー・案件共有情報・自分のプライベート予定・このPCの経費メモ等をJSONへ保存し、管理者は復元前の自動安全バックアップ後に上書き復元可能。復元は新規データを勝手に削除しない安全方式<br>Ver.6.8.30：PC案件資料の図面・工程表・その他に版管理を追加。Rev表記の自動判定、最新版指定、版メモ、案件ダッシュボードの最新版未指定警告に対応<br>Ver.6.8.29.1：案件ダッシュボードにPC資料アクセス許可の案内と、図面・現場写真へのワンタップ導線を追加<br>Ver.6.8.29：案件詳細の先頭に「案件ダッシュボード」を追加。客室・パブリック未完了、是正、当日日報、写真受取待ち、重要事項を一目で確認し、各機能へ直接移動できる未処理ナビに対応<br>Ver.6.8.28.1：大項目「年間予定表」を「案件管理」へ名称変更。年間予定表Excel連携の名称はそのまま残し、案件管理画面として役割を整理<br>Ver.6.8.28：現場日報を追加。日付・入退場時間・作業人数・作業内容・問題点・翌日の予定を案件ごとに共有保存し、日付別一覧・編集・削除・当日の是正状況確認に対応<br>Ver.6.8.27.1：是正・残工事から担当者欄を撤去。場所・アイテム・内容・期限・状態・対応メモに絞り、既存の見た目を崩さず入力と一覧表示を簡潔化<br>Ver.6.8.27：是正・残工事管理を追加。NGチェックから是正登録し、期限・状態・コメントを共有管理。未対応/対応中/完了の絞り込み、元チェックへの移動、完了＋元チェックOK、手動追加、現場写真への導線に対応<br>Ver.6.8.26.1：客室タイプの編集に対応。タイプ名・アイテム追加/名称変更/削除を行え、使用中タイプも安全に更新。削除アイテムに既存チェックがある場合は確認表示<br>Ver.6.8.26：現場進捗・客室チェック管理の試作版を追加。案件ごとに客室/パブリックをON/OFFし、現場全体チェック、客室タイプ、部屋一括登録、客室/パブリックのアイテムOK/NG/対象外・コメント・進捗集計に対応<br>Ver.6.8.25：案件詳細に「重要事項・申し送り」を追加。搬入条件・立会い・駐車・現場ルール等をPC/スマホで共有保存し、案件を開いた直後に目立つ固定欄で確認可能<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
           Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
-          更新日：2026年8月26日
+          更新日：2026年8月28日
         </div>
       </div>
       <div class="modal-footer">
@@ -4939,6 +4960,44 @@
     </div>
   </div>
 
+
+  <!-- Ver.6.8.31 バックアップ・復元 -->
+  <div id="backupRestoreModal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>💾 バックアップ・復元</h2>
+        <button type="button" class="modal-close" data-close-modal="backupRestoreModal">×</button>
+      </div>
+      <div class="modal-body">
+        <section class="qts-backup-panel">
+          <h3>① Q.T.Sデータをバックアップ</h3>
+          <p>共有予定・カテゴリー・案件の共有情報（現場管理／是正／日報／重要事項など）・自分のプライベート予定・このPCの経費メモを、1つのJSONファイルへ保存します。</p>
+          <div class="qts-backup-actions">
+            <button type="button" class="btn-primary" id="qtsBackupCreateBtn">💾 バックアップを作成</button>
+          </div>
+          <div class="qts-backup-status" id="qtsBackupCreateStatus"></div>
+        </section>
+
+        <section class="qts-backup-panel">
+          <h3>② バックアップから復元</h3>
+          <p>Q.T.Sで作成したJSONを選ぶと、復元内容を確認してから実行できます。共有データの復元は管理者のみ実行できます。</p>
+          <div class="qts-backup-actions">
+            <button type="button" class="btn-secondary" id="qtsBackupSelectBtn">📂 バックアップファイルを選択</button>
+            <input type="file" id="qtsBackupRestoreFile" accept="application/json,.json" hidden>
+            <button type="button" class="btn-primary" id="qtsBackupRestoreExecuteBtn" disabled>♻️ 復元を実行</button>
+          </div>
+          <div class="qts-backup-file-summary" id="qtsBackupRestoreSummary" hidden></div>
+          <div class="qts-backup-status" id="qtsBackupRestoreStatus"></div>
+          <div class="qts-backup-warning">復元を実行する直前に、現在のQ.T.Sデータを自動で「復元前バックアップ」としてダウンロードします。バックアップ後に追加された新しい予定や案件データは削除せず、同じIDのデータだけをバックアップ内容で上書きします。</div>
+        </section>
+
+        <div class="qts-backup-local-note">📁 <strong>PCの図面・現場写真・工程表などはこのJSONには含まれません。</strong><br>それらは通常のWindowsフォルダ「QTS案件管理」にあるため、PC故障対策としてはフォルダ自体を外付けSSD・NAS・OneDrive等へコピーしてください。QTS_版管理.json も案件フォルダ内にあるので一緒に保護されます。<br><span style="display:inline-block;margin-top:5px">※ Firebase AuthenticationのログインアカウントやFirestoreの権限ルール自体は、ブラウザから作るこのバックアップの対象外です。</span></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" data-close-modal="backupRestoreModal">閉じる</button>
+      </div>
+    </div>
+  </div>
 
   <div id="csvModal" class="modal" role="dialog" aria-modal="true">
     <div class="modal-content">
@@ -5034,7 +5093,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.30";
+    const APP_VERSION = "6.8.31";
     const APP_BUILD_DATE = "2026-08-28";
 
     const firebaseConfig = {
@@ -5294,6 +5353,16 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
       });
 
+      document.getElementById("btnOpenBackupRestore").addEventListener("click", () => {
+        closeModal("settingsModal");
+        qtsResetBackupRestoreUi();
+        openModal("backupRestoreModal");
+      });
+      document.getElementById("qtsBackupCreateBtn").addEventListener("click", qtsCreateAndDownloadBackup);
+      document.getElementById("qtsBackupSelectBtn").addEventListener("click", () => document.getElementById("qtsBackupRestoreFile").click());
+      document.getElementById("qtsBackupRestoreFile").addEventListener("change", qtsHandleRestoreFileSelection);
+      document.getElementById("qtsBackupRestoreExecuteBtn").addEventListener("click", qtsExecuteRestore);
+
       document.getElementById("btnOpenCsv").addEventListener("click", () => { closeModal("settingsModal"); prepareCsvModal(); openModal("csvModal"); });
       document.getElementById("btnExportCsv").addEventListener("click", exportCsv);
 
@@ -5341,6 +5410,7 @@
           closeModal("detailModal");
           closeModal("categoryModal");
           closeModal("settingsModal");
+          closeModal("backupRestoreModal");
           closeModal("csvModal");
           closeModal("expenseModal");
           resolveDropAction(null);
@@ -5370,6 +5440,341 @@
       const savedMainView = localStorage.getItem("qtsMainView");
       if (savedMainView === "annual" || savedMainView === "expense") {
         switchMainView(savedMainView);
+      }
+    }
+
+
+    // ===== Ver.6.8.31 バックアップ・復元 =====
+    const QTS_BACKUP_FORMAT = "QTS_BACKUP_V1";
+    let qtsSelectedRestoreBackup = null;
+    let qtsSelectedRestoreFileName = "";
+
+    function qtsSetBackupStatus(id, message = "", type = "") {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = message;
+      el.className = `qts-backup-status${type ? ` ${type}` : ""}`;
+    }
+
+    function qtsResetBackupRestoreUi() {
+      qtsSelectedRestoreBackup = null;
+      qtsSelectedRestoreFileName = "";
+      const input = document.getElementById("qtsBackupRestoreFile");
+      const summary = document.getElementById("qtsBackupRestoreSummary");
+      const execute = document.getElementById("qtsBackupRestoreExecuteBtn");
+      if (input) input.value = "";
+      if (summary) { summary.hidden = true; summary.innerHTML = ""; }
+      if (execute) execute.disabled = true;
+      qtsSetBackupStatus("qtsBackupCreateStatus", "");
+      qtsSetBackupStatus("qtsBackupRestoreStatus", "");
+    }
+
+    function qtsBackupSerializeValue(value) {
+      if (value === null || typeof value === "string" || typeof value === "number" || typeof value === "boolean") return value;
+      if (value === undefined) return null;
+      if (value instanceof Date) return { __qtsType:"Date", value:value.toISOString() };
+      try {
+        if (value instanceof firebase.firestore.Timestamp) {
+          return { __qtsType:"Timestamp", value:value.toDate().toISOString() };
+        }
+      } catch (_) {}
+      try {
+        if (firebase.firestore.GeoPoint && value instanceof firebase.firestore.GeoPoint) {
+          return { __qtsType:"GeoPoint", latitude:value.latitude, longitude:value.longitude };
+        }
+      } catch (_) {}
+      if (Array.isArray(value)) return value.map(qtsBackupSerializeValue);
+      if (typeof value === "object") {
+        const out = {};
+        Object.entries(value).forEach(([key, child]) => {
+          if (child !== undefined) out[key] = qtsBackupSerializeValue(child);
+        });
+        return out;
+      }
+      return String(value);
+    }
+
+    function qtsBackupDeserializeValue(value) {
+      if (value === null || typeof value !== "object") return value;
+      if (Array.isArray(value)) return value.map(qtsBackupDeserializeValue);
+      if (value.__qtsType === "Timestamp") {
+        const date = new Date(value.value || "");
+        return Number.isNaN(date.getTime()) ? null : firebase.firestore.Timestamp.fromDate(date);
+      }
+      if (value.__qtsType === "Date") {
+        const date = new Date(value.value || "");
+        return Number.isNaN(date.getTime()) ? null : date;
+      }
+      if (value.__qtsType === "GeoPoint") {
+        return new firebase.firestore.GeoPoint(Number(value.latitude) || 0, Number(value.longitude) || 0);
+      }
+      const out = {};
+      Object.entries(value).forEach(([key, child]) => { out[key] = qtsBackupDeserializeValue(child); });
+      return out;
+    }
+
+    async function qtsBackupReadCollection(collectionRef) {
+      const snapshot = await collectionRef.get();
+      return snapshot.docs.map(doc => ({ id:doc.id, data:qtsBackupSerializeValue(doc.data() || {}) }));
+    }
+
+    async function qtsBackupReadActiveProjects() {
+      const cards = Array.from(document.querySelectorAll(".annual-project-card"));
+      const ids = [...new Set(cards.map(card => getProjectContactDocId(card)).filter(Boolean))];
+      const items = [];
+      for (const id of ids) {
+        const snap = await db.collection("projectContacts").doc(id).get();
+        if (!snap.exists) continue;
+        const raw = snap.data() || {};
+        if (raw.recordType === PROJECT_PHOTO_TRANSFER_TYPE) continue;
+        items.push({ id, data:qtsBackupSerializeValue(raw) });
+      }
+      return items;
+    }
+
+    function qtsBackupLocalState() {
+      const simpleKeys = ["qtsMainView", "qtsLastCategoryId", "qtsExpenseMonth", "qtsAnnualExcelMasterName"];
+      const settings = {};
+      simpleKeys.forEach(key => {
+        const value = localStorage.getItem(key);
+        if (value !== null) settings[key] = value;
+      });
+      return {
+        expenseMemos: qtsBackupSerializeValue(loadExpenseStore()),
+        expenseRouteHistory: qtsBackupSerializeValue(loadExpenseRouteHistory()),
+        settings
+      };
+    }
+
+    async function qtsBuildBackupObject(reason = "manual") {
+      if (!currentUser) throw new Error("ログインが必要です。");
+      const [shared, categoryDocs, privateDocs, projects] = await Promise.all([
+        qtsBackupReadCollection(db.collection("schedules")),
+        qtsBackupReadCollection(db.collection("categories")),
+        qtsBackupReadCollection(getPrivateScheduleCollection()),
+        qtsBackupReadActiveProjects()
+      ]);
+      const annualProjects = Array.from(document.querySelectorAll(".annual-project-card")).map(card => ({
+        projectId:card.dataset.projectId || "",
+        projectNo:card.dataset.projectNo || "",
+        projectName:card.dataset.projectName || "",
+        owner:card.dataset.projectOwner || "",
+        year:card.dataset.projectYear || ""
+      }));
+      return {
+        qtsBackupFormat: QTS_BACKUP_FORMAT,
+        schemaVersion: 1,
+        appVersion: APP_VERSION,
+        firebaseProjectId: firebaseConfig.projectId,
+        createdAt: new Date().toISOString(),
+        reason,
+        createdBy: {
+          uid: currentUser.uid,
+          displayName: currentUserProfile?.displayName || "",
+          email: currentUser.email || ""
+        },
+        counts: {
+          sharedSchedules: shared.length,
+          categories: categoryDocs.length,
+          projectContacts: projects.length,
+          privateSchedules: privateDocs.length,
+          expenseMemos: Object.keys(loadExpenseStore() || {}).length
+        },
+        annualProjectReference: annualProjects,
+        data: {
+          sharedSchedules: shared,
+          categories: categoryDocs,
+          projectContacts: projects,
+          privateSchedules: privateDocs,
+          local: qtsBackupLocalState()
+        }
+      };
+    }
+
+    function qtsBackupFileStamp(date = new Date()) {
+      return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}_${String(date.getHours()).padStart(2,"0")}${String(date.getMinutes()).padStart(2,"0")}`;
+    }
+
+    function qtsDownloadBackupObject(backup, prefix = "QTS_Backup") {
+      const stamp = qtsBackupFileStamp(new Date());
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type:"application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${prefix}_${stamp}_Ver${APP_VERSION}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      return { name:a.download, bytes:blob.size };
+    }
+
+    function qtsHumanBackupBytes(bytes = 0) {
+      const value = Number(bytes) || 0;
+      if (value < 1024) return `${value}B`;
+      if (value < 1024*1024) return `${(value/1024).toFixed(value > 10240 ? 0 : 1)}KB`;
+      return `${(value/(1024*1024)).toFixed(1)}MB`;
+    }
+
+    async function qtsCreateAndDownloadBackup() {
+      const button = document.getElementById("qtsBackupCreateBtn");
+      if (!button || !currentUser) return;
+      const original = button.textContent;
+      button.disabled = true;
+      button.textContent = "バックアップ作成中…";
+      qtsSetBackupStatus("qtsBackupCreateStatus", "FirestoreとこのPCの経費メモを読み込んでいます…");
+      try {
+        const backup = await qtsBuildBackupObject("manual");
+        const result = qtsDownloadBackupObject(backup, "QTS_Backup");
+        qtsSetBackupStatus(
+          "qtsBackupCreateStatus",
+          `保存しました：共有予定 ${backup.counts.sharedSchedules}件 / 案件 ${backup.counts.projectContacts}件 / 自分の非公開予定 ${backup.counts.privateSchedules}件 / ${qtsHumanBackupBytes(result.bytes)}`,
+          "success"
+        );
+      } catch (error) {
+        console.error("QTS backup create error", error);
+        qtsSetBackupStatus("qtsBackupCreateStatus", `バックアップを作成できませんでした：${error.message || error}`, "error");
+      } finally {
+        button.disabled = false;
+        button.textContent = original;
+      }
+    }
+
+    function qtsValidateBackupObject(value) {
+      if (!value || typeof value !== "object") throw new Error("JSON形式が正しくありません。");
+      if (value.qtsBackupFormat !== QTS_BACKUP_FORMAT) throw new Error("Q.T.Sのバックアップファイルではありません。");
+      if (value.firebaseProjectId && value.firebaseProjectId !== firebaseConfig.projectId) throw new Error("別のFirebase環境のバックアップです。");
+      const data = value.data || {};
+      ["sharedSchedules","categories","projectContacts","privateSchedules"].forEach(key => {
+        if (!Array.isArray(data[key])) throw new Error(`${key} のデータ形式が正しくありません。`);
+      });
+      return value;
+    }
+
+    function qtsBackupEscapeHtml(value = "") {
+      return String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch] || ch));
+    }
+
+    function qtsBackupSummaryHtml(backup, fileName = "") {
+      const c = backup.counts || {};
+      const created = backup.createdAt ? new Date(backup.createdAt) : null;
+      const createdText = created && !Number.isNaN(created.getTime()) ? created.toLocaleString("ja-JP") : "不明";
+      const by = backup.createdBy?.displayName || backup.createdBy?.email || "不明";
+      return `<strong>${qtsBackupEscapeHtml(fileName || "バックアップ")}</strong><br>` +
+        `作成：${qtsBackupEscapeHtml(createdText)} / Ver.${qtsBackupEscapeHtml(backup.appVersion || "不明")} / ${qtsBackupEscapeHtml(by)}<br>` +
+        `共有予定 ${Number(c.sharedSchedules)||0}件　カテゴリー ${Number(c.categories)||0}件　案件 ${Number(c.projectContacts)||0}件<br>` +
+        `自分の非公開予定 ${Number(c.privateSchedules)||0}件　経費メモ ${Number(c.expenseMemos)||0}件`;
+    }
+
+    async function qtsHandleRestoreFileSelection(event) {
+      const file = event.target.files?.[0];
+      qtsSelectedRestoreBackup = null;
+      qtsSelectedRestoreFileName = "";
+      const summary = document.getElementById("qtsBackupRestoreSummary");
+      const execute = document.getElementById("qtsBackupRestoreExecuteBtn");
+      if (summary) { summary.hidden = true; summary.innerHTML = ""; }
+      if (execute) execute.disabled = true;
+      qtsSetBackupStatus("qtsBackupRestoreStatus", "");
+      if (!file) return;
+      try {
+        const text = await file.text();
+        const backup = qtsValidateBackupObject(JSON.parse(text));
+        qtsSelectedRestoreBackup = backup;
+        qtsSelectedRestoreFileName = file.name || "backup.json";
+        if (summary) { summary.innerHTML = qtsBackupSummaryHtml(backup, qtsSelectedRestoreFileName); summary.hidden = false; }
+        const isAdmin = currentUserProfile?.role === "admin";
+        if (execute) execute.disabled = !isAdmin;
+        qtsSetBackupStatus(
+          "qtsBackupRestoreStatus",
+          isAdmin ? "内容を確認しました。復元を実行できます。" : "共有データの復元は管理者アカウントで実行してください。",
+          isAdmin ? "success" : "error"
+        );
+      } catch (error) {
+        console.error("QTS restore file error", error);
+        qtsSetBackupStatus("qtsBackupRestoreStatus", `読み込めませんでした：${error.message || error}`, "error");
+      }
+    }
+
+    async function qtsRestoreDocuments(collectionRef, items = [], progress) {
+      const safe = Array.isArray(items) ? items.filter(x => x && x.id && x.data && typeof x.data === "object") : [];
+      const chunkSize = 350;
+      let done = 0;
+      for (let offset = 0; offset < safe.length; offset += chunkSize) {
+        const chunk = safe.slice(offset, offset + chunkSize);
+        const batch = db.batch();
+        chunk.forEach(item => {
+          batch.set(collectionRef.doc(String(item.id)), qtsBackupDeserializeValue(item.data), { merge:false });
+        });
+        await batch.commit();
+        done += chunk.length;
+        if (progress) progress(done, safe.length);
+      }
+      return done;
+    }
+
+    function qtsRestoreLocalState(local = {}) {
+      if (!currentUser) return;
+      if (local.expenseMemos && typeof local.expenseMemos === "object") {
+        localStorage.setItem(getExpenseStorageKey(), JSON.stringify(qtsBackupDeserializeValue(local.expenseMemos) || {}));
+      }
+      if (Array.isArray(local.expenseRouteHistory)) {
+        localStorage.setItem(getExpenseRouteHistoryKey(), JSON.stringify(qtsBackupDeserializeValue(local.expenseRouteHistory) || []));
+      }
+      const allowed = new Set(["qtsMainView", "qtsLastCategoryId", "qtsExpenseMonth", "qtsAnnualExcelMasterName"]);
+      Object.entries(local.settings || {}).forEach(([key, value]) => {
+        if (allowed.has(key) && typeof value === "string") localStorage.setItem(key, value);
+      });
+    }
+
+    async function qtsExecuteRestore() {
+      if (!qtsSelectedRestoreBackup || !currentUser) return;
+      if (currentUserProfile?.role !== "admin") {
+        qtsSetBackupStatus("qtsBackupRestoreStatus", "復元は管理者のみ実行できます。", "error");
+        return;
+      }
+      const backup = qtsSelectedRestoreBackup;
+      const created = backup.createdAt ? new Date(backup.createdAt) : null;
+      const when = created && !Number.isNaN(created.getTime()) ? created.toLocaleString("ja-JP") : "日時不明";
+      if (!confirm(`「${qtsSelectedRestoreFileName || "バックアップ"}」を復元します。\n作成日時：${when}\n\n最初に現在のQ.T.Sを自動バックアップします。続けますか？`)) return;
+
+      const button = document.getElementById("qtsBackupRestoreExecuteBtn");
+      const original = button.textContent;
+      button.disabled = true;
+      button.textContent = "安全バックアップ中…";
+      qtsSetBackupStatus("qtsBackupRestoreStatus", "現在のデータを復元前バックアップとして保存しています…");
+      try {
+        const safety = await qtsBuildBackupObject("pre_restore");
+        const safetyFile = qtsDownloadBackupObject(safety, "QTS_PreRestore_Backup");
+        qtsSetBackupStatus("qtsBackupRestoreStatus", `復元前バックアップを保存しました（${qtsHumanBackupBytes(safetyFile.bytes)}）。` , "success");
+        if (!confirm("復元前バックアップを作成しました。\nバックアップ内の同じIDのデータを上書きします。\n\n復元を実行しますか？")) return;
+
+        const data = backup.data || {};
+        const sameBackupOwner = !backup.createdBy?.uid || backup.createdBy.uid === currentUser.uid;
+        const steps = [
+          ["カテゴリー", db.collection("categories"), data.categories || []],
+          ["共有予定", db.collection("schedules"), data.sharedSchedules || []],
+          ["案件共有情報", db.collection("projectContacts"), data.projectContacts || []],
+          ["自分の非公開予定", getPrivateScheduleCollection(), sameBackupOwner ? (data.privateSchedules || []) : []]
+        ];
+        let totalDone = 0;
+        const total = steps.reduce((sum, step) => sum + step[2].length, 0);
+        for (const [label, ref, items] of steps) {
+          button.textContent = `${label}を復元中…`;
+          await qtsRestoreDocuments(ref, items, (done) => {
+            qtsSetBackupStatus("qtsBackupRestoreStatus", `${label}を復元中… ${done}/${items.length}（全体 ${totalDone + done}/${total}）`);
+          });
+          totalDone += items.length;
+        }
+        if (sameBackupOwner) qtsRestoreLocalState(data.local || {});
+        const ownerNote = sameBackupOwner ? "" : "（別ユーザー作成のため非公開予定・このPCの経費は復元対象外）";
+        qtsSetBackupStatus("qtsBackupRestoreStatus", `復元完了：${totalDone}文書。${ownerNote} 画面を再読み込みします…`, "success");
+        setTimeout(() => location.reload(), 1200);
+      } catch (error) {
+        console.error("QTS restore error", error);
+        qtsSetBackupStatus("qtsBackupRestoreStatus", `復元できませんでした：${error.message || error}\n復元前バックアップは手元に残っています。`, "error");
+      } finally {
+        button.disabled = false;
+        button.textContent = original;
       }
     }
 
