@@ -2593,6 +2593,38 @@
       .project-site-report-subgrid { grid-template-columns:1fr; }
     }
 
+    /* ===== Ver.6.8.33 作業完了報告書 ===== */
+    .project-site-completion-toolbar { display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; align-items:center; margin-bottom:10px; }
+    .project-site-completion-toolbar-left { display:flex; flex-wrap:wrap; gap:7px; align-items:center; }
+    .project-site-completion-card { padding:12px; border:1px solid #d7e2e7; border-radius:11px; background:#fbfcfd; }
+    .project-site-completion-form { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .project-site-completion-form label { display:flex; flex-direction:column; gap:3px; color:#6b7f8d; font-size:.64rem; font-weight:800; }
+    .project-site-completion-form .wide { grid-column:1/-1; }
+    .project-site-completion-help { margin:8px 0 0; color:#71838f; font-size:.65rem; line-height:1.55; }
+    .project-site-completion-actions { display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin-top:10px; }
+    .project-site-completion-photo-section { margin-top:12px; padding-top:11px; border-top:1px solid #dce5e9; }
+    .project-site-completion-photo-head { display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; align-items:center; margin-bottom:8px; }
+    .project-site-completion-photo-head strong { color:#294f67; font-size:.78rem; }
+    .project-site-completion-photo-count { color:#758793; font-size:.65rem; font-weight:800; }
+    .project-site-completion-selected { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+    .project-site-completion-selected-card { position:relative; overflow:hidden; border:1px solid #d7e2e7; border-radius:9px; background:#fff; }
+    .project-site-completion-selected-card img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; background:#edf2f4; }
+    .project-site-completion-selected-card span { display:block; padding:5px 7px; color:#5e7482; font-size:.6rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .project-site-completion-selected-card button { position:absolute; top:5px; right:5px; width:25px; height:25px; padding:0; border:0; border-radius:50%; background:rgba(71,49,39,.86); color:#fff; font-weight:900; cursor:pointer; }
+    .project-site-completion-photo-empty { padding:9px 10px; border:1px dashed #ccd8de; border-radius:8px; color:#7e8d96; font-size:.66rem; background:#fff; }
+    .project-site-completion-chooser { margin-top:10px; padding:10px; border:1px solid #d9e3e7; border-radius:10px; background:#f7fafb; }
+    .project-site-completion-filters { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+    .project-site-completion-filter { border:1px solid #cad7dd; border-radius:999px; background:#fff; color:#4d697a; padding:5px 8px; font-size:.61rem; font-weight:850; cursor:pointer; }
+    .project-site-completion-filter.active { background:#1f5b83; border-color:#1f5b83; color:#fff; }
+    .project-site-completion-photo-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; max-height:520px; overflow:auto; padding:2px; }
+    .project-site-completion-photo-option { position:relative; border:2px solid transparent; border-radius:9px; overflow:hidden; background:#fff; cursor:pointer; box-shadow:0 1px 4px rgba(31,70,94,.08); }
+    .project-site-completion-photo-option.selected { border-color:#2c7ca6; box-shadow:0 0 0 2px rgba(44,124,166,.14); }
+    .project-site-completion-photo-option img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; background:#eaf0f3; }
+    .project-site-completion-photo-option .meta { padding:5px 6px; color:#627987; font-size:.57rem; line-height:1.35; }
+    .project-site-completion-photo-option .check { position:absolute; top:5px; left:5px; min-width:24px; height:24px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,.92); color:#1f5b83; font-weight:900; }
+    @media(max-width:900px){.project-site-completion-photo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.project-site-completion-selected{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:700px){.project-site-completion-form{grid-template-columns:1fr}.project-site-completion-form .wide{grid-column:auto}.project-site-completion-photo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.project-site-completion-selected{grid-template-columns:1fr}}
+
     /* ===== Ver.6.8.25 重要事項・申し送り ===== */
     .project-important-section {
       margin-bottom: 14px;
@@ -4476,7 +4508,7 @@
             <p>ホテルを中心に、現場全体・客室・パブリックの進捗とアイテム確認をまとめます。</p>
           </div>
           <div class="project-site-badges">
-            <span class="project-site-proto">Ver.6.8.29</span>
+            <span class="project-site-proto" id="projectSiteVersionBadge">Ver.6.8.33</span>
             <button type="button" class="btn-secondary btn-small" id="projectSiteSetupBtn">⚙️ 初期設定</button>
           </div>
         </div>
@@ -4544,6 +4576,7 @@
           <div id="projectSitePublicPanel" class="project-site-panel" hidden></div>
           <div id="projectSiteCorrectionPanel" class="project-site-panel" hidden></div>
           <div id="projectSiteReportPanel" class="project-site-panel" hidden></div>
+          <div id="projectSiteCompletionPanel" class="project-site-panel" hidden></div>
         </div>
       </section>
 
@@ -4949,7 +4982,7 @@
         </div>
         <div class="app-info-panel">
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.21</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.8.32：是正・残工事からリペア業者向けA4「是正リスト」を印刷/PDF保存できる帳票出力を追加。期限・内部状態は印刷せず、場所・アイテム・是正内容・是正済み・是正後チェックに絞り、現在の絞り込み結果を現場で回りやすい場所順に出力<br>Ver.6.8.31：バックアップ・復元を追加。共有予定・カテゴリー・案件共有情報・自分のプライベート予定・このPCの経費メモ等をJSONへ保存し、管理者は復元前の自動安全バックアップ後に上書き復元可能。復元は新規データを勝手に削除しない安全方式<br>Ver.6.8.30：PC案件資料の図面・工程表・その他に版管理を追加。Rev表記の自動判定、最新版指定、版メモ、案件ダッシュボードの最新版未指定警告に対応<br>Ver.6.8.29.1：案件ダッシュボードにPC資料アクセス許可の案内と、図面・現場写真へのワンタップ導線を追加<br>Ver.6.8.29：案件詳細の先頭に「案件ダッシュボード」を追加。客室・パブリック未完了、是正、当日日報、写真受取待ち、重要事項を一目で確認し、各機能へ直接移動できる未処理ナビに対応<br>Ver.6.8.28.1：大項目「年間予定表」を「案件管理」へ名称変更。年間予定表Excel連携の名称はそのまま残し、案件管理画面として役割を整理<br>Ver.6.8.28：現場日報を追加。日付・入退場時間・作業人数・作業内容・問題点・翌日の予定を案件ごとに共有保存し、日付別一覧・編集・削除・当日の是正状況確認に対応<br>Ver.6.8.27.1：是正・残工事から担当者欄を撤去。場所・アイテム・内容・期限・状態・対応メモに絞り、既存の見た目を崩さず入力と一覧表示を簡潔化<br>Ver.6.8.27：是正・残工事管理を追加。NGチェックから是正登録し、期限・状態・コメントを共有管理。未対応/対応中/完了の絞り込み、元チェックへの移動、完了＋元チェックOK、手動追加、現場写真への導線に対応<br>Ver.6.8.26.1：客室タイプの編集に対応。タイプ名・アイテム追加/名称変更/削除を行え、使用中タイプも安全に更新。削除アイテムに既存チェックがある場合は確認表示<br>Ver.6.8.26：現場進捗・客室チェック管理の試作版を追加。案件ごとに客室/パブリックをON/OFFし、現場全体チェック、客室タイプ、部屋一括登録、客室/パブリックのアイテムOK/NG/対象外・コメント・進捗集計に対応<br>Ver.6.8.25：案件詳細に「重要事項・申し送り」を追加。搬入条件・立会い・駐車・現場ルール等をPC/スマホで共有保存し、案件を開いた直後に目立つ固定欄で確認可能<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.8.33：作業完了報告書を追加。現場日報と進捗から作業期間・作業内容・完了状況を自動取り込みでき、PCの現場写真から最大6枚を選択してA4印刷/PDF保存に対応。報告書内容は案件共有データへ保存<br>Ver.6.8.32：是正・残工事からリペア業者向けA4「是正リスト」を印刷/PDF保存できる帳票出力を追加。期限・内部状態は印刷せず、場所・アイテム・是正内容・是正済み・是正後チェックに絞り、現在の絞り込み結果を現場で回りやすい場所順に出力<br>Ver.6.8.31：バックアップ・復元を追加。共有予定・カテゴリー・案件共有情報・自分のプライベート予定・このPCの経費メモ等をJSONへ保存し、管理者は復元前の自動安全バックアップ後に上書き復元可能。復元は新規データを勝手に削除しない安全方式<br>Ver.6.8.30：PC案件資料の図面・工程表・その他に版管理を追加。Rev表記の自動判定、最新版指定、版メモ、案件ダッシュボードの最新版未指定警告に対応<br>Ver.6.8.29.1：案件ダッシュボードにPC資料アクセス許可の案内と、図面・現場写真へのワンタップ導線を追加<br>Ver.6.8.29：案件詳細の先頭に「案件ダッシュボード」を追加。客室・パブリック未完了、是正、当日日報、写真受取待ち、重要事項を一目で確認し、各機能へ直接移動できる未処理ナビに対応<br>Ver.6.8.28.1：大項目「年間予定表」を「案件管理」へ名称変更。年間予定表Excel連携の名称はそのまま残し、案件管理画面として役割を整理<br>Ver.6.8.28：現場日報を追加。日付・入退場時間・作業人数・作業内容・問題点・翌日の予定を案件ごとに共有保存し、日付別一覧・編集・削除・当日の是正状況確認に対応<br>Ver.6.8.27.1：是正・残工事から担当者欄を撤去。場所・アイテム・内容・期限・状態・対応メモに絞り、既存の見た目を崩さず入力と一覧表示を簡潔化<br>Ver.6.8.27：是正・残工事管理を追加。NGチェックから是正登録し、期限・状態・コメントを共有管理。未対応/対応中/完了の絞り込み、元チェックへの移動、完了＋元チェックOK、手動追加、現場写真への導線に対応<br>Ver.6.8.26.1：客室タイプの編集に対応。タイプ名・アイテム追加/名称変更/削除を行え、使用中タイプも安全に更新。削除アイテムに既存チェックがある場合は確認表示<br>Ver.6.8.26：現場進捗・客室チェック管理の試作版を追加。案件ごとに客室/パブリックをON/OFFし、現場全体チェック、客室タイプ、部屋一括登録、客室/パブリックのアイテムOK/NG/対象外・コメント・進捗集計に対応<br>Ver.6.8.25：案件詳細に「重要事項・申し送り」を追加。搬入条件・立会い・駐車・現場ルール等をPC/スマホで共有保存し、案件を開いた直後に目立つ固定欄で確認可能<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
           Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月28日
         </div>
@@ -5093,7 +5126,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.32";
+    const APP_VERSION = "6.8.33";
     const APP_BUILD_DATE = "2026-08-28";
 
     const firebaseConfig = {
@@ -5183,10 +5216,12 @@
       const headerVersion = document.getElementById("headerVersion");
       const settingsVersion = document.getElementById("settingsVersion");
       const loginVersion = document.getElementById("loginVersion");
+      const projectSiteVersionBadge = document.getElementById("projectSiteVersionBadge");
       document.title = `Q.T.S Scheduler — Ver.${APP_VERSION}`;
       if (headerVersion) headerVersion.textContent = `Ver.${APP_VERSION}`;
       if (settingsVersion) settingsVersion.textContent = `Ver.${APP_VERSION}`;
       if (loginVersion) loginVersion.textContent = `Ver.${APP_VERSION} — ログイン`;
+      if (projectSiteVersionBadge) projectSiteVersionBadge.textContent = `Ver.${APP_VERSION}`;
       applyQtsDeviceUi();
       setupDesktopTimeInputs();
       initializeApp();
@@ -9547,6 +9582,11 @@ ${error.message||error}`); }
     let activeProjectSiteEditingCorrectionId = "";
     let activeProjectSiteDailyReports = [];
     let activeProjectSiteEditingReportId = "";
+    let activeProjectSiteCompletionReport = null;
+    let projectCompletionPhotoEntries = [];
+    let projectCompletionPhotoChooserOpen = false;
+    let projectCompletionPhotoFilter = "完了";
+    let projectCompletionPhotoObjectUrls = [];
     let activeProjectImportantNotes = "";
     let activeProjectContactData = null;
     // Ver.6.8.30: PC資料ショートカットに加え、図面の「最新版未指定」もダッシュボードで確認する。
@@ -10353,6 +10393,20 @@ ${error.message||error}`); }
       })).filter(x=>x.date);
     }
 
+    function normalizeProjectSiteCompletionReport(raw={}) {
+      const photoPaths=[...new Set((Array.isArray(raw?.photoPaths)?raw.photoPaths:[]).map(x=>String(x||"").slice(0,500)).filter(Boolean))].slice(0,6);
+      return {
+        startDate:String(raw?.startDate||"").slice(0,10),
+        endDate:String(raw?.endDate||"").slice(0,10),
+        workContent:String(raw?.workContent||"").slice(0,2400),
+        completionStatus:String(raw?.completionStatus||"").slice(0,1600),
+        remarks:String(raw?.remarks||"").slice(0,1600),
+        photoPaths,
+        updatedAt:String(raw?.updatedAt||""),
+        updatedBy:String(raw?.updatedBy||"").slice(0,100)
+      };
+    }
+
     function qtsSiteReportDateLabel(dateStr) {
       if (!dateStr) return "日付未設定";
       const d=new Date(`${dateStr}T00:00:00`);
@@ -10371,7 +10425,8 @@ ${error.message||error}`); }
 
     function resetProjectSiteManagement() {
       activeProjectSiteConfig=qtsDefaultSiteConfig();
-      activeProjectSiteRoomChecks={}; activeProjectSitePublicChecks={}; activeProjectSiteCommonChecks={}; activeProjectSiteCorrections=[]; activeProjectSiteDailyReports=[];
+      activeProjectSiteRoomChecks={}; activeProjectSitePublicChecks={}; activeProjectSiteCommonChecks={}; activeProjectSiteCorrections=[]; activeProjectSiteDailyReports=[]; activeProjectSiteCompletionReport=normalizeProjectSiteCompletionReport({});
+      qtsClearCompletionPhotoUrls(); projectCompletionPhotoEntries=[]; projectCompletionPhotoChooserOpen=false; projectCompletionPhotoFilter="完了";
       activeProjectSiteTab="common"; activeProjectSiteSelectedRoomId=""; activeProjectSiteSelectedPublicId="";
       activeProjectSiteGuestFloorFilter=""; activeProjectSiteGuestStateFilter="";
       activeProjectSiteCorrectionFilter="active"; activeProjectSiteCorrectionSearch=""; activeProjectSiteEditingCorrectionId="";
@@ -10387,6 +10442,8 @@ ${error.message||error}`); }
       activeProjectSiteCommonChecks=(raw?.siteCommonChecks && typeof raw.siteCommonChecks === "object") ? raw.siteCommonChecks : {};
       activeProjectSiteCorrections=normalizeProjectSiteCorrections(raw?.siteCorrections || []);
       activeProjectSiteDailyReports=normalizeProjectSiteDailyReports(raw?.siteDailyReports || []);
+      activeProjectSiteCompletionReport=normalizeProjectSiteCompletionReport(raw?.siteCompletionReport || {});
+      qtsClearCompletionPhotoUrls(); projectCompletionPhotoEntries=[]; projectCompletionPhotoChooserOpen=false; projectCompletionPhotoFilter="完了";
       if (activeProjectSiteTab === "guest" && !activeProjectSiteConfig.guestEnabled) activeProjectSiteTab="common";
       if (activeProjectSiteTab === "public" && !activeProjectSiteConfig.publicEnabled) activeProjectSiteTab="common";
       renderProjectSiteManagement();
@@ -10436,14 +10493,14 @@ ${error.message||error}`); }
       const tabs=document.getElementById("projectSiteTabs"); if(!tabs) return; tabs.innerHTML="";
       const activeCorrectionCount=(activeProjectSiteCorrections||[]).filter(x=>x.status!=="done").length;
       const todayReport=(activeProjectSiteDailyReports||[]).some(r=>r.date===qtsSiteTodayKey());
-      const defs=[["common","✅ 現場全体"],["guest","🛏️ 客室"],["public","🛋️ パブリック"],["correction",`🚨 是正・残工事${activeCorrectionCount?` ${activeCorrectionCount}`:""}`],["report",`📝 現場日報${todayReport?" ✓":""}`]];
+      const defs=[["common","✅ 現場全体"],["guest","🛏️ 客室"],["public","🛋️ パブリック"],["correction",`🚨 是正・残工事${activeCorrectionCount?` ${activeCorrectionCount}`:""}`],["report",`📝 現場日報${todayReport?" ✓":""}`],["completion","📄 作業完了報告書"]];
       defs.forEach(([id,label])=>{
         if (id==="guest"&&!activeProjectSiteConfig.guestEnabled) return;
         if (id==="public"&&!activeProjectSiteConfig.publicEnabled) return;
         const b=document.createElement("button"); b.type="button"; b.className=`project-site-tab${activeProjectSiteTab===id?" active":""}`; b.textContent=label;
         b.addEventListener("click",()=>{activeProjectSiteTab=id; renderProjectSiteManagement();}); tabs.appendChild(b);
       });
-      ["common","guest","public","correction","report"].forEach(id=>{ const p=document.getElementById(`projectSite${id[0].toUpperCase()+id.slice(1)}Panel`); if(p) p.hidden=activeProjectSiteTab!==id; });
+      ["common","guest","public","correction","report","completion"].forEach(id=>{ const p=document.getElementById(`projectSite${id[0].toUpperCase()+id.slice(1)}Panel`); if(p) p.hidden=activeProjectSiteTab!==id; });
     }
 
     function renderProjectSiteCheckRows(container, items, checkData, scope, scopeId="") {
@@ -10548,6 +10605,7 @@ ${error.message||error}`); }
       renderProjectSiteCommon(); if(activeProjectSiteConfig.guestEnabled)renderProjectSiteGuest(); if(activeProjectSiteConfig.publicEnabled)renderProjectSitePublic();
       renderProjectSiteCorrections();
       renderProjectSiteDailyReports();
+      renderProjectSiteCompletionReport();
       renderProjectSiteConfigEditor();
       renderProjectActionDashboard();
     }
@@ -11150,6 +11208,257 @@ ${error.message||error}`); }
         const photo=document.createElement("button");photo.type="button";photo.textContent="📷 現場写真";photo.addEventListener("click",openProjectSiteCorrectionPhotos);
         const del=document.createElement("button");del.type="button";del.className="danger";del.textContent="削除";del.addEventListener("click",()=>deleteProjectSiteReport(r.id));actions.append(edit,correction,photo,del);card.appendChild(actions);list.appendChild(card);
       });
+    }
+
+    // ===== Ver.6.8.33 作業完了報告書 =====
+    function qtsClearCompletionPhotoUrls(){
+      (projectCompletionPhotoObjectUrls||[]).forEach(url=>{try{URL.revokeObjectURL(url);}catch(_){}});
+      projectCompletionPhotoObjectUrls=[];
+    }
+
+    function qtsCompletionSuggestion(){
+      const reports=(activeProjectSiteDailyReports||[]).slice().sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+      const dates=reports.map(r=>r.date).filter(Boolean);
+      const workLines=[];
+      const seen=new Set();
+      reports.forEach(r=>{
+        const text=String(r.workContent||"").trim();
+        if(!text||seen.has(text))return;
+        seen.add(text);
+        workLines.push(text);
+      });
+      const rooms=activeProjectSiteConfig?.rooms||[];
+      const roomDone=rooms.filter(r=>roomStateFor(r)==="done").length;
+      const pubs=activeProjectSiteConfig?.publicAreas||[];
+      const pubDone=pubs.filter(a=>publicStateFor(a)==="done").length;
+      const corrections=activeProjectSiteCorrections||[];
+      const corrDone=corrections.filter(c=>c.status==="done").length;
+      const corrActive=corrections.length-corrDone;
+      const status=[];
+      if(activeProjectSiteConfig?.guestEnabled)status.push(`客室：${roomDone}/${rooms.length}室 完了`);
+      if(activeProjectSiteConfig?.publicEnabled)status.push(`パブリック：${pubDone}/${pubs.length}エリア 完了`);
+      if(corrections.length)status.push(`是正・残工事：完了 ${corrDone}件 / 未完了 ${corrActive}件`);
+      if(!status.length)status.push("対象作業を完了しました。");
+      return {
+        startDate:dates[0]||"",
+        endDate:dates[dates.length-1]||dates[0]||"",
+        workContent:workLines.join("\n").slice(0,2400),
+        completionStatus:status.join("\n").slice(0,1600)
+      };
+    }
+
+    function qtsCompletionEnsureDraft(){
+      if(!activeProjectSiteCompletionReport)activeProjectSiteCompletionReport=normalizeProjectSiteCompletionReport({});
+      const c=activeProjectSiteCompletionReport;
+      const sug=qtsCompletionSuggestion();
+      if(!c.startDate)c.startDate=sug.startDate;
+      if(!c.endDate)c.endDate=sug.endDate;
+      if(!c.workContent)c.workContent=sug.workContent;
+      if(!c.completionStatus)c.completionStatus=sug.completionStatus;
+      if(!Array.isArray(c.photoPaths))c.photoPaths=[];
+      return c;
+    }
+
+    function qtsCompletionSyncFromForm(){
+      const c=qtsCompletionEnsureDraft();
+      const val=id=>String(document.getElementById(id)?.value||"").trim();
+      if(document.getElementById("projectSiteCompletionStart")){
+        c.startDate=val("projectSiteCompletionStart").slice(0,10);
+        c.endDate=val("projectSiteCompletionEnd").slice(0,10);
+        c.workContent=val("projectSiteCompletionWork").slice(0,2400);
+        c.completionStatus=val("projectSiteCompletionStatus").slice(0,1600);
+        c.remarks=val("projectSiteCompletionRemarks").slice(0,1600);
+      }
+      return c;
+    }
+
+    function qtsCompletionSetMessage(message="",type=""){
+      const el=document.getElementById("projectSiteCompletionMessage");if(!el)return;
+      el.textContent=message;el.className=`project-site-message${type?` ${type}`:""}`;
+    }
+
+    function qtsCompletionAutoFill(){
+      const sug=qtsCompletionSuggestion();
+      const c=qtsCompletionEnsureDraft();
+      const hasText=Boolean(c.startDate||c.endDate||c.workContent||c.completionStatus||c.remarks);
+      if(hasText&&!confirm("日報・進捗から作業完了報告書の内容を自動入力します。現在の作業期間・作業内容・完了状況は上書きされます。よろしいですか？"))return;
+      c.startDate=sug.startDate;c.endDate=sug.endDate;c.workContent=sug.workContent;c.completionStatus=sug.completionStatus;
+      renderProjectSiteCompletionReport();
+      qtsCompletionSetMessage("現場日報と進捗から自動入力しました。内容を確認して保存してください。","success");
+    }
+
+    async function saveProjectSiteCompletionReport(){
+      if(!activeProjectCard||!currentUser)return;
+      const c=qtsCompletionSyncFromForm();
+      if(c.startDate&&c.endDate&&c.endDate<c.startDate){qtsCompletionSetMessage("作業終了日は開始日以降にしてください。","error");return;}
+      const btn=document.getElementById("projectSiteCompletionSaveBtn");
+      if(btn){btn.disabled=true;btn.textContent="保存中…";}
+      qtsCompletionSetMessage("作業完了報告書を共有データへ保存しています…");
+      try{
+        c.updatedAt=new Date().toISOString();c.updatedBy=currentUserProfile?.displayName||currentUser.email||"";
+        const payload=normalizeProjectSiteCompletionReport(c);
+        await db.collection("projectContacts").doc(getProjectContactDocId(activeProjectCard)).set({
+          projectNo:activeProjectCard.dataset.projectNo||"",projectId:activeProjectCard.dataset.projectId||"",projectName:activeProjectCard.dataset.projectName||"",
+          siteCompletionReport:payload,siteManagementUpdatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp(),appVersion:APP_VERSION
+        },{merge:true});
+        activeProjectSiteCompletionReport=payload;
+        qtsCompletionSetMessage("作業完了報告書を保存しました。","success");
+      }catch(e){console.error("completion report save error",e);qtsCompletionSetMessage("保存できませんでした。接続または権限をご確認ください。","error");}
+      finally{if(btn){btn.disabled=false;btn.textContent="💾 報告書を保存";}}
+    }
+
+    function qtsCompletionPhotoEntryByPath(path){return (projectCompletionPhotoEntries||[]).find(e=>String(e.path||"")===String(path||""))||null;}
+
+    async function qtsLoadCompletionPhotoEntries(){
+      if(!activeProjectCard)throw new Error("案件が選択されていません。");
+      if(!projectLocalFileSystemSupported())throw new Error("完了写真の選択はPC版Chrome / Edgeでご利用ください。");
+      if(!(await ensureProjectRootPermission(true)))throw new Error("案件管理フォルダへのアクセスが許可されていません。");
+      const state=await getProjectLocalFolderState(activeProjectCard);
+      if(!["active","complete"].includes(state.location)||!state.handle)throw new Error("案件フォルダが見つかりません。");
+      const photoRoot=await qtsTryGetDirectory(state.handle,"現場写真");
+      if(!photoRoot){projectCompletionPhotoEntries=[];return [];}
+      const entries=await qtsLoadPhotoGalleryEntries(photoRoot);
+      projectCompletionPhotoEntries=entries.sort((a,b)=>String(b.dateName).localeCompare(String(a.dateName))||String(b.takenAt).localeCompare(String(a.takenAt)));
+      return projectCompletionPhotoEntries;
+    }
+
+    async function qtsOpenCompletionPhotoChooser(){
+      qtsCompletionSyncFromForm();
+      qtsCompletionSetMessage("現場写真を読み込んでいます…");
+      try{
+        await qtsLoadCompletionPhotoEntries();
+        projectCompletionPhotoChooserOpen=true;
+        const hasCompleted=projectCompletionPhotoEntries.some(e=>e.category==="完了");
+        if(projectCompletionPhotoFilter==="完了"&&!hasCompleted)projectCompletionPhotoFilter="すべて";
+        renderProjectSiteCompletionReport();
+        qtsCompletionSetMessage(projectCompletionPhotoEntries.length?"完了報告書に載せる写真を最大6枚まで選んでください。":"このPCの現場写真はまだありません。",projectCompletionPhotoEntries.length?"":"error");
+      }catch(e){console.error("completion photo load error",e);qtsCompletionSetMessage(e.message||"現場写真を読み込めませんでした。","error");}
+    }
+
+    function qtsToggleCompletionPhoto(path){
+      const c=qtsCompletionSyncFromForm();
+      const paths=Array.isArray(c.photoPaths)?c.photoPaths:[];
+      const i=paths.indexOf(path);
+      if(i>=0)paths.splice(i,1);
+      else{
+        if(paths.length>=6){qtsCompletionSetMessage("完了写真は最大6枚までです。","error");return;}
+        paths.push(path);
+      }
+      c.photoPaths=paths.slice(0,6);
+      renderProjectSiteCompletionReport();
+      qtsCompletionSetMessage(`${c.photoPaths.length}枚選択中です。保存すると選択も記録されます。`);
+    }
+
+    function qtsCompletionCreateThumb(entry, selected=false, removable=false){
+      const card=document.createElement("div");card.className=removable?"project-site-completion-selected-card":`project-site-completion-photo-option${selected?" selected":""}`;
+      const img=document.createElement("img");img.alt=entry?.comment||entry?.name||"現場写真";img.loading="lazy";
+      if(entry?.handle){entry.handle.getFile().then(file=>{const url=URL.createObjectURL(file);projectCompletionPhotoObjectUrls.push(url);img.src=url;}).catch(()=>{});}
+      card.appendChild(img);
+      if(removable){
+        const label=document.createElement("span");label.textContent=entry?.comment||`${entry?.dateName||""} ${entry?.category||""}`.trim()||entry?.name||"写真";card.appendChild(label);
+        const del=document.createElement("button");del.type="button";del.textContent="×";del.title="選択解除";del.addEventListener("click",()=>qtsToggleCompletionPhoto(entry.path));card.appendChild(del);
+      }else{
+        const check=document.createElement("span");check.className="check";check.textContent=selected?"✓":"";card.appendChild(check);
+        const meta=document.createElement("div");meta.className="meta";meta.textContent=`${entry?.dateName||""}｜${entry?.category||"その他"}${entry?.comment?`｜${entry.comment}`:""}`;card.appendChild(meta);
+        card.addEventListener("click",()=>qtsToggleCompletionPhoto(entry.path));
+      }
+      return card;
+    }
+
+    function renderProjectSiteCompletionReport(){
+      const panel=document.getElementById("projectSiteCompletionPanel");if(!panel)return;
+      qtsClearCompletionPhotoUrls();panel.innerHTML="";
+      const c=qtsCompletionEnsureDraft();
+      const toolbar=document.createElement("div");toolbar.className="project-site-completion-toolbar";
+      const left=document.createElement("div");left.className="project-site-completion-toolbar-left";const title=document.createElement("strong");title.textContent="📄 作業完了報告書";left.appendChild(title);
+      const auto=document.createElement("button");auto.type="button";auto.className="btn-secondary btn-small";auto.textContent="↻ 日報・進捗から自動入力";auto.addEventListener("click",qtsCompletionAutoFill);
+      toolbar.append(left,auto);panel.appendChild(toolbar);
+      const card=document.createElement("div");card.className="project-site-completion-card";panel.appendChild(card);
+      const form=document.createElement("div");form.className="project-site-completion-form";card.appendChild(form);
+      const mk=(label,id,type="text",wide=false)=>{const l=document.createElement("label");if(wide)l.className="wide";l.textContent=label;const el=type==="textarea"?document.createElement("textarea"):document.createElement("input");el.id=id;el.className=type==="textarea"?"project-site-textarea":"project-site-input";if(type!=="textarea")el.type=type;l.appendChild(el);form.appendChild(l);return el;};
+      const start=mk("作業開始日","projectSiteCompletionStart","date");start.value=c.startDate||"";
+      const end=mk("作業終了日","projectSiteCompletionEnd","date");end.value=c.endDate||"";
+      const work=mk("作業内容","projectSiteCompletionWork","textarea",true);work.rows=5;work.maxLength=2400;work.value=c.workContent||"";work.placeholder="現場日報の作業内容から自動入力できます。必要に応じて整えてください。";
+      const status=mk("完了状況","projectSiteCompletionStatus","textarea",true);status.rows=4;status.maxLength=1600;status.value=c.completionStatus||"";status.placeholder="例：客室40/40室完了、是正5件対応完了";
+      const remarks=mk("備考","projectSiteCompletionRemarks","textarea",true);remarks.rows=3;remarks.maxLength=1600;remarks.value=c.remarks||"";remarks.placeholder="客先への申し送りなど。なければ空欄でOK。";
+      [start,end,work,status,remarks].forEach(el=>el.addEventListener("input",()=>qtsCompletionSyncFromForm()));
+      const help=document.createElement("div");help.className="project-site-completion-help";help.textContent="作業期間・作業内容・完了状況は現場日報と現在の進捗から自動入力できます。内容は自由に修正してから保存・印刷できます。";card.appendChild(help);
+
+      const photoSection=document.createElement("div");photoSection.className="project-site-completion-photo-section";card.appendChild(photoSection);
+      const photoHead=document.createElement("div");photoHead.className="project-site-completion-photo-head";
+      const phLeft=document.createElement("div");const phTitle=document.createElement("strong");phTitle.textContent="📷 完了写真";const phCount=document.createElement("span");phCount.className="project-site-completion-photo-count";phCount.textContent=`　${(c.photoPaths||[]).length}/6枚選択`;phLeft.append(phTitle,phCount);
+      const phActions=document.createElement("div");phActions.className="project-site-completion-toolbar-left";
+      const choose=document.createElement("button");choose.type="button";choose.className="btn-secondary btn-small";choose.textContent="📷 現場写真から選ぶ";choose.addEventListener("click",qtsOpenCompletionPhotoChooser);
+      const clear=document.createElement("button");clear.type="button";clear.className="btn-secondary btn-small";clear.textContent="選択解除";clear.disabled=!(c.photoPaths||[]).length;clear.addEventListener("click",()=>{qtsCompletionSyncFromForm().photoPaths=[];renderProjectSiteCompletionReport();});
+      phActions.append(choose,clear);photoHead.append(phLeft,phActions);photoSection.appendChild(photoHead);
+
+      const selected=document.createElement("div");selected.className="project-site-completion-selected";photoSection.appendChild(selected);
+      if(!(c.photoPaths||[]).length){const empty=document.createElement("div");empty.className="project-site-completion-photo-empty";empty.textContent="完了報告書に載せる写真はまだ選択されていません。PCの現場写真から最大6枚選べます。";selected.appendChild(empty);}
+      else (c.photoPaths||[]).forEach(path=>{const entry=qtsCompletionPhotoEntryByPath(path);if(entry)selected.appendChild(qtsCompletionCreateThumb(entry,true,true));else{const placeholder=document.createElement("div");placeholder.className="project-site-completion-photo-empty";placeholder.textContent=`選択済み：${path}`;selected.appendChild(placeholder);}});
+
+      if(projectCompletionPhotoChooserOpen){
+        const chooser=document.createElement("div");chooser.className="project-site-completion-chooser";photoSection.appendChild(chooser);
+        const filters=document.createElement("div");filters.className="project-site-completion-filters";chooser.appendChild(filters);
+        ["完了","すべて",...PROJECT_PHOTO_TRANSFER_CATEGORIES.filter(x=>x!=="完了")].forEach(name=>{const b=document.createElement("button");b.type="button";b.className=`project-site-completion-filter${projectCompletionPhotoFilter===name?" active":""}`;b.textContent=name;b.addEventListener("click",()=>{qtsCompletionSyncFromForm();projectCompletionPhotoFilter=name;renderProjectSiteCompletionReport();});filters.appendChild(b);});
+        const entries=(projectCompletionPhotoFilter==="すべて"?projectCompletionPhotoEntries:projectCompletionPhotoEntries.filter(e=>e.category===projectCompletionPhotoFilter)).slice(0,60);
+        if(!entries.length){const empty=document.createElement("div");empty.className="project-site-completion-photo-empty";empty.textContent=`「${projectCompletionPhotoFilter}」の写真はありません。`;chooser.appendChild(empty);}
+        else{const grid=document.createElement("div");grid.className="project-site-completion-photo-grid";chooser.appendChild(grid);entries.forEach(entry=>grid.appendChild(qtsCompletionCreateThumb(entry,(c.photoPaths||[]).includes(entry.path),false)));}
+        const note=document.createElement("div");note.className="project-site-completion-help";note.textContent=`${projectCompletionPhotoEntries.length}枚を確認済み。選択画面は各分類の新しい写真から最大60枚を表示します。`;chooser.appendChild(note);
+      }
+
+      const actions=document.createElement("div");actions.className="project-site-completion-actions";card.appendChild(actions);
+      const save=document.createElement("button");save.type="button";save.id="projectSiteCompletionSaveBtn";save.className="btn-primary btn-small";save.textContent="💾 報告書を保存";save.addEventListener("click",saveProjectSiteCompletionReport);
+      const print=document.createElement("button");print.type="button";print.className="btn-secondary btn-small";print.textContent="🖨️ A4印刷 / PDF保存";print.addEventListener("click",qtsPrintProjectSiteCompletionReport);
+      const msg=document.createElement("span");msg.id="projectSiteCompletionMessage";msg.className="project-site-message";actions.append(save,print,msg);
+    }
+
+    async function qtsEnsureCompletionPhotoEntriesForSelection(){
+      const c=qtsCompletionEnsureDraft();
+      if(!(c.photoPaths||[]).length)return [];
+      if(!projectCompletionPhotoEntries.length)await qtsLoadCompletionPhotoEntries();
+      return (c.photoPaths||[]).map(path=>qtsCompletionPhotoEntryByPath(path)).filter(Boolean);
+    }
+
+    async function qtsCompletionImageDataUrl(entry){
+      const file=await entry.handle.getFile();
+      const image=await loadImageFromFile(file);
+      const maxDimension=1400;const scale=Math.min(1,maxDimension/Math.max(image.naturalWidth||1,image.naturalHeight||1));
+      const width=Math.max(1,Math.round((image.naturalWidth||1)*scale));const height=Math.max(1,Math.round((image.naturalHeight||1)*scale));
+      const canvas=document.createElement("canvas");canvas.width=width;canvas.height=height;const ctx=canvas.getContext("2d",{alpha:false});ctx.fillStyle="#fff";ctx.fillRect(0,0,width,height);ctx.drawImage(image,0,0,width,height);
+      return canvas.toDataURL("image/jpeg",.82);
+    }
+
+    function qtsCompletionPrintEscape(value=""){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
+    function qtsCompletionPrintText(value=""){return qtsCompletionPrintEscape(value).replace(/\n/g,"<br>");}
+
+    async function qtsPrintProjectSiteCompletionReport(){
+      if(!activeProjectCard)return;
+      const c=qtsCompletionSyncFromForm();
+      if(c.startDate&&c.endDate&&c.endDate<c.startDate){qtsCompletionSetMessage("作業終了日は開始日以降にしてください。","error");return;}
+      const w=window.open("","_blank");
+      if(!w){qtsCompletionSetMessage("印刷プレビューを開けませんでした。ブラウザのポップアップ許可をご確認ください。","error");return;}
+      try{w.opener=null;}catch(_){}
+      try{
+        w.document.open();w.document.write('<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>作業完了報告書を準備中</title></head><body style="font-family:sans-serif;padding:30px">作業完了報告書を準備しています…</body></html>');w.document.close();
+        let photoEntries=[];
+        if((c.photoPaths||[]).length){
+          try{photoEntries=await qtsEnsureCompletionPhotoEntriesForSelection();}
+          catch(e){qtsCompletionSetMessage(`選択済み写真を読み込めませんでした：${e.message||e}`,"error");}
+        }
+        const photos=[];
+        for(const entry of photoEntries.slice(0,6)){
+          try{photos.push({src:await qtsCompletionImageDataUrl(entry),caption:entry.comment||`${entry.dateName||""} ${entry.category||""}`.trim()||entry.name});}catch(e){console.warn("completion print photo skipped",e);}
+        }
+        const projectName=activeProjectCard.dataset.projectName||"";const projectId=activeProjectCard.dataset.projectId||activeProjectCard.dataset.projectNo||"";
+        const now=new Date();const issueDate=`${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,"0")}/${String(now.getDate()).padStart(2,"0")}`;
+        const period=c.startDate||c.endDate?`${c.startDate||c.endDate}${c.endDate&&c.endDate!==(c.startDate||c.endDate)?` ～ ${c.endDate}`:""}`:"未設定";
+        const photoHtml=photos.length?`<section class="photos"><h2>完了写真</h2><div class="photo-grid">${photos.map((p,i)=>`<figure><img src="${p.src}" alt="完了写真${i+1}"><figcaption>${qtsCompletionPrintEscape(p.caption||`完了写真${i+1}`)}</figcaption></figure>`).join("")}</div></section>`:'<section class="photos"><h2>完了写真</h2><div class="no-photo">完了写真は未添付です。</div></section>';
+        const doc=`<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>${qtsCompletionPrintEscape(projectName)} 作業完了報告書</title><style>
+          *{box-sizing:border-box}html,body{margin:0;padding:0;background:#ececec;color:#111;font-family:"Yu Gothic","Meiryo",sans-serif}.toolbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;background:#273747;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.18)}.toolbar span{font-size:13px}.toolbar button{border:0;border-radius:7px;background:#fff;color:#263849;padding:8px 16px;font-weight:700;cursor:pointer}.sheet{width:210mm;min-height:297mm;margin:12px auto;padding:12mm 11mm;background:#fff;box-shadow:0 3px 18px rgba(0,0,0,.18)}h1{margin:0;text-align:center;font-size:21px;letter-spacing:.16em}.meta{display:grid;grid-template-columns:1fr 1fr;gap:5px 18px;margin:9mm 0 6mm;font-size:11px}.meta div{border-bottom:1px solid #777;padding:0 2px 4px}.meta .wide{grid-column:1/-1}.section{margin-top:5mm;border:1px solid #777}.section h2,.photos h2{margin:0;padding:2.4mm 3mm;background:#f0f0f0;border-bottom:1px solid #777;font-size:11px}.section .body{min-height:18mm;padding:3mm;font-size:11px;line-height:1.7;overflow-wrap:anywhere}.photos{margin-top:6mm;border:1px solid #777}.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:4mm;padding:4mm}.photo-grid figure{margin:0;border:1px solid #bbb;break-inside:avoid;page-break-inside:avoid}.photo-grid img{width:100%;height:56mm;object-fit:contain;display:block;background:#f4f4f4}.photo-grid figcaption{padding:2mm 2.5mm;font-size:9px;line-height:1.4;min-height:8mm}.no-photo{padding:10mm;text-align:center;color:#777;font-size:10px}.sign{display:grid;grid-template-columns:1fr 1fr;gap:15mm;margin-top:8mm;font-size:11px}.sign div{border-bottom:1px solid #555;padding:0 2px 7px;min-height:9mm}.footer{margin-top:5mm;text-align:right;font-size:8px;color:#777}@page{size:A4 portrait;margin:8mm}@media print{html,body{background:#fff}.toolbar{display:none}.sheet{width:auto;min-height:0;margin:0;padding:0;box-shadow:none}.section,.photos,.sign{break-inside:avoid;page-break-inside:avoid}.photos{break-inside:auto;page-break-inside:auto}.photo-grid figure{break-inside:avoid;page-break-inside:avoid}}
+        </style></head><body><div class="toolbar"><span>作業完了報告書｜写真 ${photos.length}枚</span><button type="button" onclick="window.print()">🖨️ 印刷 / PDF保存</button></div><main class="sheet"><h1>作 業 完 了 報 告 書</h1><div class="meta"><div class="wide"><strong>案件名：</strong>${qtsCompletionPrintEscape(projectName||"-")}</div><div><strong>案件No.：</strong>${qtsCompletionPrintEscape(projectId||"-")}</div><div><strong>報告日：</strong>${issueDate}</div><div class="wide"><strong>作業期間：</strong>${qtsCompletionPrintEscape(period)}</div></div><section class="section"><h2>作業内容</h2><div class="body">${qtsCompletionPrintText(c.workContent||"-")}</div></section><section class="section"><h2>完了状況</h2><div class="body">${qtsCompletionPrintText(c.completionStatus||"-")}</div></section>${c.remarks?`<section class="section"><h2>備考</h2><div class="body">${qtsCompletionPrintText(c.remarks)}</div></section>`:""}${photoHtml}<div class="sign"><div><strong>報告者：</strong>${qtsCompletionPrintEscape(c.updatedBy||currentUserProfile?.displayName||"")}</div><div><strong>確認：</strong></div></div><div class="footer">Q.T.S Scheduler Ver.${APP_VERSION}</div></main></body></html>`;
+        w.document.open();w.document.write(doc);w.document.close();
+        qtsCompletionSetMessage(`作業完了報告書の印刷プレビューを開きました（写真 ${photos.length}枚）。`,"success");
+      }catch(e){console.error("completion print error",e);try{w.close();}catch(_){}qtsCompletionSetMessage(`作業完了報告書を作成できませんでした：${e.message||e}`,"error");}
     }
 
     function setProjectContactsEditMode(editing) {
