@@ -2008,7 +2008,7 @@
       outline: 2px solid rgba(46,154,120,.28);
       outline-offset: 2px;
     }
-    .project-detail-modal-content { max-width: 780px; }
+    .project-detail-modal-content { max-width: 1040px; }
     .project-detail-hero {
       display:flex; gap:14px; align-items:center; padding:15px;
       background:linear-gradient(135deg,#eef7f4,#eef3f8);
@@ -2326,6 +2326,88 @@
     }
 
 
+
+    /* ===== Ver.6.8.26 現場進捗・客室チェック管理（試作） ===== */
+    .project-site-section {
+      margin:14px 0; padding:14px; border:1px solid #cbdce4; border-radius:14px;
+      background:linear-gradient(145deg,#fbfdfd,#f2f8f6);
+    }
+    .project-site-heading { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+    .project-site-heading h4 { margin:0 0 4px; color:#173e5b; font-size:1rem; }
+    .project-site-heading p { margin:0; color:#6c7f8d; font-size:.73rem; line-height:1.55; }
+    .project-site-badges { display:flex; flex-wrap:wrap; gap:6px; align-items:center; justify-content:flex-end; }
+    .project-site-proto { padding:4px 8px; border-radius:999px; background:#fff3d8; border:1px solid #ead29d; color:#73551b; font-size:.66rem; font-weight:850; white-space:nowrap; }
+    .project-site-summary { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; margin-top:11px; }
+    .project-site-summary-card { padding:9px; border:1px solid #d9e4e8; border-radius:10px; background:#fff; }
+    .project-site-summary-card strong { display:block; color:#183e5a; font-size:1.02rem; }
+    .project-site-summary-card span { color:#778995; font-size:.65rem; }
+    .project-site-empty { margin-top:10px; padding:12px; border:1px dashed #cbd9df; border-radius:10px; background:#fff; color:#6e8190; font-size:.75rem; line-height:1.6; }
+    .project-site-tabs { display:flex; flex-wrap:wrap; gap:7px; margin:12px 0 9px; }
+    .project-site-tab { border:1px solid #cad9df; border-radius:999px; background:#fff; color:#31536a; padding:6px 11px; font-size:.72rem; font-weight:850; cursor:pointer; }
+    .project-site-tab.active { background:#1f5b83; border-color:#1f5b83; color:#fff; }
+    .project-site-panel { padding:11px; border:1px solid #d7e2e6; border-radius:11px; background:#fff; }
+    .project-site-panel[hidden] { display:none; }
+    .project-site-toolbar { display:flex; flex-wrap:wrap; gap:7px; align-items:center; justify-content:space-between; margin-bottom:9px; }
+    .project-site-toolbar-left, .project-site-toolbar-right { display:flex; flex-wrap:wrap; gap:7px; align-items:center; }
+    .project-site-select, .project-site-input, .project-site-textarea {
+      border:1px solid #cbd8df; border-radius:8px; background:#fff; color:#304e63; font-size:.73rem; box-sizing:border-box;
+    }
+    .project-site-select, .project-site-input { padding:7px 8px; min-height:34px; }
+    .project-site-textarea { width:100%; padding:8px; min-height:72px; resize:vertical; line-height:1.45; }
+    .project-site-room-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:7px; }
+    .project-site-room-card { border:1px solid #d7e1e6; border-radius:9px; background:#fbfcfd; padding:8px; cursor:pointer; text-align:left; min-width:0; }
+    .project-site-room-card:hover { background:#f0f6f8; }
+    .project-site-room-card.selected { outline:2px solid #2d789f; background:#eef7fa; }
+    .project-site-room-no { display:flex; justify-content:space-between; gap:5px; align-items:center; color:#183e5a; font-size:.8rem; font-weight:900; }
+    .project-site-room-type { margin-top:3px; color:#788994; font-size:.62rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .project-site-state { display:inline-flex; align-items:center; padding:2px 6px; border-radius:999px; font-size:.58rem; font-weight:900; }
+    .project-site-state.pending { background:#eef1f3; color:#677984; }
+    .project-site-state.progress { background:#fff3d8; color:#7a5a18; }
+    .project-site-state.done { background:#e7f5ef; color:#176d55; }
+    .project-site-state.ng { background:#fff0f0; color:#a23f3f; }
+    .project-site-detail { margin-top:11px; padding:11px; border:1px solid #cfdde3; border-radius:10px; background:#f9fbfc; }
+    .project-site-detail[hidden] { display:none; }
+    .project-site-detail-head { display:flex; justify-content:space-between; gap:10px; align-items:flex-start; margin-bottom:9px; }
+    .project-site-detail-head h5 { margin:0 0 3px; color:#173e5b; font-size:.88rem; }
+    .project-site-detail-head p { margin:0; color:#788a96; font-size:.66rem; }
+    .project-site-check-list { display:grid; gap:7px; }
+    .project-site-check-row { display:grid; grid-template-columns:minmax(150px,1fr) auto minmax(160px,1fr); gap:8px; align-items:center; padding:8px; border:1px solid #dce5e9; border-radius:9px; background:#fff; }
+    .project-site-check-name { color:#294a61; font-size:.73rem; font-weight:800; }
+    .project-site-check-phase { display:block; color:#8897a1; font-size:.6rem; font-weight:700; margin-bottom:2px; }
+    .project-site-status-buttons { display:flex; gap:4px; flex-wrap:wrap; }
+    .project-site-status-btn { border:1px solid #cedae0; border-radius:7px; background:#fff; color:#637683; padding:5px 7px; font-size:.62rem; font-weight:850; cursor:pointer; }
+    .project-site-status-btn.active[data-status="ok"] { background:#e7f5ef; border-color:#abd7c7; color:#176d55; }
+    .project-site-status-btn.active[data-status="ng"] { background:#fff0f0; border-color:#e6bcbc; color:#9c3737; }
+    .project-site-status-btn.active[data-status="na"] { background:#edf1f4; border-color:#ccd5da; color:#647681; }
+    .project-site-comment { width:100%; min-width:0; padding:6px 7px; border:1px solid #d3dee3; border-radius:7px; font-size:.68rem; color:#365468; box-sizing:border-box; }
+    .project-site-savebar { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:9px; }
+    .project-site-message { min-height:1.1em; color:#6f818d; font-size:.68rem; }
+    .project-site-message.success { color:#176d55; font-weight:800; }
+    .project-site-message.error { color:#a23f3f; font-weight:800; }
+    .project-site-setup { margin-top:11px; padding:12px; border:1px solid #d6e1e5; border-radius:11px; background:#fff; }
+    .project-site-setup[hidden] { display:none; }
+    .project-site-setup h5 { margin:0 0 8px; color:#173e5b; }
+    .project-site-mode-checks { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:10px; }
+    .project-site-mode-checks label { display:flex; align-items:center; gap:5px; color:#36566d; font-size:.75rem; font-weight:800; }
+    .project-site-setup-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .project-site-setup-box { padding:10px; border:1px solid #e0e7ea; border-radius:9px; background:#fafcfc; }
+    .project-site-setup-box h6 { margin:0 0 7px; color:#31546a; font-size:.76rem; }
+    .project-site-form-grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+    .project-site-form-grid .full { grid-column:1/-1; }
+    .project-site-form-grid label { display:flex; flex-direction:column; gap:3px; color:#6c7f8c; font-size:.65rem; font-weight:750; }
+    .project-site-config-list { display:grid; gap:5px; margin-top:8px; max-height:180px; overflow:auto; }
+    .project-site-config-row { display:flex; justify-content:space-between; gap:7px; align-items:center; padding:6px 7px; border:1px solid #e0e7ea; border-radius:8px; background:#fff; font-size:.67rem; color:#405d71; }
+    .project-site-config-row button { border:1px solid #e1caca; border-radius:6px; background:#fff8f8; color:#a24545; padding:3px 6px; font-size:.6rem; font-weight:800; cursor:pointer; }
+    .project-site-setup-actions { display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin-top:10px; }
+    .project-site-muted { color:#82919b; font-size:.65rem; line-height:1.5; }
+    @media (max-width:900px) { .project-site-room-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+    @media (max-width:700px) {
+      .project-site-summary { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .project-site-setup-grid { grid-template-columns:1fr; }
+      .project-site-check-row { grid-template-columns:1fr; }
+      .project-site-room-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .project-site-detail-head { flex-direction:column; }
+    }
     /* ===== Ver.6.8.25 重要事項・申し送り ===== */
     .project-important-section {
       margin-bottom: 14px;
@@ -4191,6 +4273,78 @@
         </div>
       </section>
 
+      <section class="project-site-section" id="projectSiteSection">
+        <div class="project-site-heading">
+          <div>
+            <h4>🏨 現場進捗・客室チェック</h4>
+            <p>ホテルを中心に、現場全体・客室・パブリックの進捗とアイテム確認をまとめます。</p>
+          </div>
+          <div class="project-site-badges">
+            <span class="project-site-proto">Ver.6.8.26 試作</span>
+            <button type="button" class="btn-secondary btn-small" id="projectSiteSetupBtn">⚙️ 初期設定</button>
+          </div>
+        </div>
+
+        <div id="projectSiteSummary" class="project-site-summary" hidden></div>
+        <div id="projectSiteEmpty" class="project-site-empty">客室・パブリックの管理はまだ設定されていません。「初期設定」から、この案件で使う範囲を選んでください。</div>
+
+        <div id="projectSiteSetup" class="project-site-setup" hidden>
+          <h5>⚙️ 現場管理の初期設定</h5>
+          <div class="project-site-mode-checks">
+            <label><input type="checkbox" id="projectSiteGuestEnabled"> 🛏️ 客室を管理する</label>
+            <label><input type="checkbox" id="projectSitePublicEnabled"> 🛋️ パブリックを管理する</label>
+          </div>
+          <div class="project-site-setup-grid">
+            <div class="project-site-setup-box">
+              <h6>✅ 現場全体チェック</h6>
+              <div class="project-site-muted">1行1項目。「区分｜項目」の形式で編集できます。</div>
+              <textarea id="projectSiteCommonItems" class="project-site-textarea" rows="7"></textarea>
+            </div>
+            <div class="project-site-setup-box" id="projectSiteRoomTypeBox">
+              <h6>🛏️ 客室タイプ</h6>
+              <div class="project-site-form-grid">
+                <label>タイプ名<input id="projectSiteRoomTypeName" class="project-site-input" placeholder="例：TYPE-A"></label>
+                <label class="full">アイテム（1行1品目）<textarea id="projectSiteRoomTypeItems" class="project-site-textarea" rows="4" placeholder="ベッドヘッド&#10;ナイトテーブル&#10;TVボード"></textarea></label>
+              </div>
+              <button type="button" class="btn-secondary btn-small" id="projectSiteAddRoomTypeBtn">＋ 客室タイプ追加</button>
+              <div id="projectSiteRoomTypeList" class="project-site-config-list"></div>
+            </div>
+            <div class="project-site-setup-box" id="projectSiteRoomBox">
+              <h6>🚪 客室をまとめて追加</h6>
+              <div class="project-site-form-grid">
+                <label>階<input id="projectSiteRoomFloor" class="project-site-input" placeholder="例：5F"></label>
+                <label>客室タイプ<select id="projectSiteRoomTypeSelect" class="project-site-select"></select></label>
+                <label class="full">部屋番号<input id="projectSiteRoomNumbers" class="project-site-input" placeholder="例：501-520 または 501,502,503"></label>
+              </div>
+              <button type="button" class="btn-secondary btn-small" id="projectSiteAddRoomsBtn">＋ 客室追加</button>
+              <div id="projectSiteRoomConfigList" class="project-site-config-list"></div>
+            </div>
+            <div class="project-site-setup-box" id="projectSitePublicBox">
+              <h6>🛋️ パブリックエリア追加</h6>
+              <div class="project-site-form-grid">
+                <label>階・ゾーン<input id="projectSitePublicFloor" class="project-site-input" placeholder="例：1F"></label>
+                <label>場所<input id="projectSitePublicName" class="project-site-input" placeholder="例：ロビー"></label>
+                <label class="full">アイテム（1行1品目）<textarea id="projectSitePublicItems" class="project-site-textarea" rows="4" placeholder="ソファ&#10;ラウンジチェア&#10;テーブル"></textarea></label>
+              </div>
+              <button type="button" class="btn-secondary btn-small" id="projectSiteAddPublicBtn">＋ パブリック追加</button>
+              <div id="projectSitePublicConfigList" class="project-site-config-list"></div>
+            </div>
+          </div>
+          <div class="project-site-setup-actions">
+            <button type="button" class="btn-primary btn-small" id="projectSiteSaveConfigBtn">💾 初期設定を保存</button>
+            <button type="button" class="btn-secondary btn-small" id="projectSiteCancelConfigBtn">閉じる</button>
+            <span id="projectSiteConfigMessage" class="project-site-message"></span>
+          </div>
+        </div>
+
+        <div id="projectSiteMain" hidden>
+          <div class="project-site-tabs" id="projectSiteTabs"></div>
+          <div id="projectSiteCommonPanel" class="project-site-panel"></div>
+          <div id="projectSiteGuestPanel" class="project-site-panel" hidden></div>
+          <div id="projectSitePublicPanel" class="project-site-panel" hidden></div>
+        </div>
+      </section>
+
       <section class="project-stakeholder-section">
         <div class="project-section-heading">
           <div>
@@ -4592,7 +4746,7 @@
         </div>
         <div class="app-info-panel">
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.21</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.8.25：案件詳細に「重要事項・申し送り」を追加。搬入条件・立会い・駐車・現場ルール等をPC/スマホで共有保存し、案件を開いた直後に目立つ固定欄で確認可能<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.8.26：現場進捗・客室チェック管理の試作版を追加。案件ごとに客室/パブリックをON/OFFし、現場全体チェック、客室タイプ、部屋一括登録、客室/パブリックのアイテムOK/NG/対象外・コメント・進捗集計に対応<br>Ver.6.8.25：案件詳細に「重要事項・申し送り」を追加。搬入条件・立会い・駐車・現場ルール等をPC/スマホで共有保存し、案件を開いた直後に目立つ固定欄で確認可能<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
           Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年8月26日
         </div>
@@ -4698,8 +4852,8 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.25";
-    const APP_BUILD_DATE = "2026-08-27";
+    const APP_VERSION = "6.8.26";
+    const APP_BUILD_DATE = "2026-08-28";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCL6VijHRZryh7DdxNVcBdDXhRJtx2JU-4",
@@ -4919,6 +5073,15 @@
         setProjectImportantEditMode(false);
       });
       document.getElementById("projectImportantSaveBtn").addEventListener("click", saveProjectImportantNotes);
+
+      document.getElementById("projectSiteSetupBtn").addEventListener("click", () => setProjectSiteSetupMode(document.getElementById("projectSiteSetup").hidden));
+      document.getElementById("projectSiteCancelConfigBtn").addEventListener("click", () => setProjectSiteSetupMode(false));
+      document.getElementById("projectSiteGuestEnabled").addEventListener("change", renderProjectSiteConfigEditor);
+      document.getElementById("projectSitePublicEnabled").addEventListener("change", renderProjectSiteConfigEditor);
+      document.getElementById("projectSiteAddRoomTypeBtn").addEventListener("click", addProjectSiteRoomType);
+      document.getElementById("projectSiteAddRoomsBtn").addEventListener("click", addProjectSiteRooms);
+      document.getElementById("projectSiteAddPublicBtn").addEventListener("click", addProjectSitePublic);
+      document.getElementById("projectSiteSaveConfigBtn").addEventListener("click", saveProjectSiteConfig);
 
       document.getElementById("projectContactsEditBtn").addEventListener("click", () => {
         setProjectContactsEditMode(true);
@@ -8781,6 +8944,15 @@ ${error.message||error}`); }
       if (event.key === "Escape" && document.getElementById("photoViewer")?.classList.contains("open")) closePhotoViewer();
     });
     let activeProjectCard = null;
+    let activeProjectSiteConfig = null;
+    let activeProjectSiteRoomChecks = {};
+    let activeProjectSitePublicChecks = {};
+    let activeProjectSiteCommonChecks = {};
+    let activeProjectSiteTab = "common";
+    let activeProjectSiteSelectedRoomId = "";
+    let activeProjectSiteSelectedPublicId = "";
+    let activeProjectSiteGuestFloorFilter = "";
+    let activeProjectSiteGuestStateFilter = "";
     let activeProjectImportantNotes = "";
     let activeProjectContactData = null;
 
@@ -9090,6 +9262,7 @@ ${error.message||error}`); }
       document.getElementById("projectImportantInput").value = "";
       setProjectImportantMessage("");
       setProjectImportantEditMode(false);
+      resetProjectSiteManagement();
 
       const n = normalizeText(name);
       const related = schedules.filter(s => {
@@ -9221,6 +9394,7 @@ ${error.message||error}`); }
         if (activeProjectCard !== card) return;
 
         const rawProjectData = snap.exists ? snap.data() : {};
+        loadProjectSiteManagementFromRaw(rawProjectData);
         activeProjectImportantNotes = String(rawProjectData?.importantNotes || "");
         renderProjectImportantNotes(activeProjectImportantNotes, rawProjectData);
         document.getElementById("projectImportantInput").value = activeProjectImportantNotes;
@@ -9249,6 +9423,7 @@ ${error.message||error}`); }
       } catch (error) {
         console.error("project contacts load error", error);
         if (activeProjectCard !== card) return;
+        resetProjectSiteManagement();
         activeProjectImportantNotes = "";
         renderProjectImportantNotes("", {});
         document.getElementById("projectImportantInput").value = "";
@@ -9349,6 +9524,273 @@ ${error.message||error}`); }
         saveBtn.disabled = false;
         saveBtn.textContent = "💾 保存";
       }
+    }
+
+
+    // ===== Ver.6.8.26 現場進捗・客室チェック管理（試作） =====
+    const PROJECT_SITE_DEFAULT_COMMON = [
+      ["搬入前","搬入口確認"],["搬入前","搬入時間確認"],["搬入前","養生範囲確認"],["搬入前","エレベーター使用条件確認"],["搬入前","車両・駐車場所確認"],
+      ["施工前","図面最新版確認"],["施工前","商品・数量確認"],["施工前","現場寸法・納まり確認"],["施工前","搬入時の傷・破損確認"],
+      ["施工完了","ガタつき・動作確認"],["施工完了","傷・汚れ確認"],["施工完了","完了写真撮影"],
+      ["撤収前","工具・忘れ物確認"],["撤収前","梱包材・ゴミ回収"],["撤収前","養生撤去・現場担当者確認"]
+    ];
+
+    function qtsSiteId(prefix="id") {
+      try { if (crypto?.randomUUID) return `${prefix}_${crypto.randomUUID().replace(/-/g,"").slice(0,12)}`; } catch (_) {}
+      return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,8)}`;
+    }
+
+    function qtsDefaultSiteConfig() {
+      return {
+        guestEnabled:false, publicEnabled:false,
+        commonItems: PROJECT_SITE_DEFAULT_COMMON.map(([phase,name],i)=>({id:`common_${i+1}`,phase,name})),
+        roomTypes:[], rooms:[], publicAreas:[]
+      };
+    }
+
+    function normalizeProjectSiteConfig(raw={}) {
+      const base=qtsDefaultSiteConfig();
+      const common=Array.isArray(raw?.commonItems) && raw.commonItems.length ? raw.commonItems : base.commonItems;
+      return {
+        guestEnabled:Boolean(raw?.guestEnabled), publicEnabled:Boolean(raw?.publicEnabled),
+        commonItems:common.map((x,i)=>({id:String(x?.id||`common_${i+1}`).replace(/\./g,"_"), phase:String(x?.phase||"共通").slice(0,30), name:String(x?.name||"").slice(0,100)})).filter(x=>x.name),
+        roomTypes:(Array.isArray(raw?.roomTypes)?raw.roomTypes:[]).map((x,i)=>({
+          id:String(x?.id||`type_${i+1}`).replace(/\./g,"_"), name:String(x?.name||`TYPE-${i+1}`).slice(0,40),
+          items:(Array.isArray(x?.items)?x.items:[]).map((it,j)=>({id:String(it?.id||`item_${j+1}`).replace(/\./g,"_"),name:String(it?.name||"").slice(0,100)})).filter(it=>it.name)
+        })),
+        rooms:(Array.isArray(raw?.rooms)?raw.rooms:[]).map((x,i)=>({id:String(x?.id||`room_${i+1}`).replace(/\./g,"_"), floor:String(x?.floor||"").slice(0,30), roomNo:String(x?.roomNo||"").slice(0,30), typeId:String(x?.typeId||"").replace(/\./g,"_")})).filter(x=>x.roomNo),
+        publicAreas:(Array.isArray(raw?.publicAreas)?raw.publicAreas:[]).map((x,i)=>({
+          id:String(x?.id||`public_${i+1}`).replace(/\./g,"_"), floor:String(x?.floor||"").slice(0,30), name:String(x?.name||"").slice(0,60),
+          items:(Array.isArray(x?.items)?x.items:[]).map((it,j)=>({id:String(it?.id||`item_${j+1}`).replace(/\./g,"_"),name:String(it?.name||"").slice(0,100)})).filter(it=>it.name)
+        })).filter(x=>x.name)
+      };
+    }
+
+    function resetProjectSiteManagement() {
+      activeProjectSiteConfig=qtsDefaultSiteConfig();
+      activeProjectSiteRoomChecks={}; activeProjectSitePublicChecks={}; activeProjectSiteCommonChecks={};
+      activeProjectSiteTab="common"; activeProjectSiteSelectedRoomId=""; activeProjectSiteSelectedPublicId="";
+      activeProjectSiteGuestFloorFilter=""; activeProjectSiteGuestStateFilter="";
+      renderProjectSiteManagement();
+    }
+
+    function loadProjectSiteManagementFromRaw(raw={}) {
+      activeProjectSiteConfig=normalizeProjectSiteConfig(raw?.siteManagementConfig || {});
+      activeProjectSiteRoomChecks=(raw?.siteRoomChecks && typeof raw.siteRoomChecks === "object") ? raw.siteRoomChecks : {};
+      activeProjectSitePublicChecks=(raw?.sitePublicChecks && typeof raw.sitePublicChecks === "object") ? raw.sitePublicChecks : {};
+      activeProjectSiteCommonChecks=(raw?.siteCommonChecks && typeof raw.siteCommonChecks === "object") ? raw.siteCommonChecks : {};
+      if (activeProjectSiteTab === "guest" && !activeProjectSiteConfig.guestEnabled) activeProjectSiteTab="common";
+      if (activeProjectSiteTab === "public" && !activeProjectSiteConfig.publicEnabled) activeProjectSiteTab="common";
+      renderProjectSiteManagement();
+    }
+
+    function qtsSiteStatusLabel(status) { return status === "ok" ? "OK" : status === "ng" ? "NG" : status === "na" ? "対象外" : "未確認"; }
+    function qtsSiteOverall(items=[], check={}) {
+      if (!items.length) return "pending";
+      const st=items.map(it=>String(check?.statuses?.[it.id]||"pending"));
+      if (st.includes("ng")) return "ng";
+      const touched=st.filter(x=>x!=="pending").length;
+      if (!touched) return "pending";
+      if (st.every(x=>x==="ok"||x==="na")) return "done";
+      return "progress";
+    }
+    function qtsSiteOverallLabel(state) { return state === "ng" ? "是正あり" : state === "done" ? "完了" : state === "progress" ? "施工中" : "未着手"; }
+    function qtsSiteTypeById(id) { return activeProjectSiteConfig?.roomTypes?.find(x=>x.id===id) || null; }
+
+    function renderProjectSiteSummary() {
+      const summary=document.getElementById("projectSiteSummary");
+      const empty=document.getElementById("projectSiteEmpty");
+      const main=document.getElementById("projectSiteMain");
+      if (!summary||!empty||!main||!activeProjectSiteConfig) return;
+      const configured=activeProjectSiteConfig.guestEnabled || activeProjectSiteConfig.publicEnabled;
+      empty.hidden=configured; main.hidden=!configured; summary.hidden=!configured;
+      if (!configured) return;
+      const rooms=activeProjectSiteConfig.rooms||[];
+      const roomStates=rooms.map(r=>qtsSiteOverall(qtsSiteTypeById(r.typeId)?.items||[], activeProjectSiteRoomChecks[r.id]||{}));
+      const pubs=activeProjectSiteConfig.publicAreas||[];
+      const pubStates=pubs.map(a=>qtsSiteOverall(a.items||[], activeProjectSitePublicChecks[a.id]||{}));
+      const correction=roomStates.filter(x=>x==="ng").length + pubStates.filter(x=>x==="ng").length;
+      const commonState=qtsSiteOverall(activeProjectSiteConfig.commonItems||[], {statuses:activeProjectSiteCommonChecks?.statuses||{}});
+      summary.innerHTML="";
+      const cards=[
+        [qtsSiteOverallLabel(commonState),"現場全体"],
+        [activeProjectSiteConfig.guestEnabled?`${roomStates.filter(x=>x==="done").length}/${rooms.length}`:"―","客室完了"],
+        [activeProjectSiteConfig.publicEnabled?`${pubStates.filter(x=>x==="done").length}/${pubs.length}`:"―","パブリック完了"],
+        [String(correction),"是正あり"]
+      ];
+      cards.forEach(([value,label])=>{ const el=document.createElement("div"); el.className="project-site-summary-card"; el.innerHTML=`<strong>${value}</strong><span>${label}</span>`; summary.appendChild(el); });
+    }
+
+    function renderProjectSiteTabs() {
+      const tabs=document.getElementById("projectSiteTabs"); if(!tabs) return; tabs.innerHTML="";
+      const defs=[["common","✅ 現場全体"],["guest","🛏️ 客室"],["public","🛋️ パブリック"]];
+      defs.forEach(([id,label])=>{
+        if (id==="guest"&&!activeProjectSiteConfig.guestEnabled) return;
+        if (id==="public"&&!activeProjectSiteConfig.publicEnabled) return;
+        const b=document.createElement("button"); b.type="button"; b.className=`project-site-tab${activeProjectSiteTab===id?" active":""}`; b.textContent=label;
+        b.addEventListener("click",()=>{activeProjectSiteTab=id; renderProjectSiteManagement();}); tabs.appendChild(b);
+      });
+      ["common","guest","public"].forEach(id=>{ const p=document.getElementById(`projectSite${id[0].toUpperCase()+id.slice(1)}Panel`); if(p) p.hidden=activeProjectSiteTab!==id; });
+    }
+
+    function renderProjectSiteCheckRows(container, items, checkData, scope, scopeId="") {
+      container.innerHTML="";
+      if(!items.length){container.innerHTML='<div class="project-site-empty">チェック項目がありません。初期設定から追加してください。</div>';return;}
+      const list=document.createElement("div"); list.className="project-site-check-list";
+      items.forEach(item=>{
+        const row=document.createElement("div"); row.className="project-site-check-row";
+        const name=document.createElement("div"); name.className="project-site-check-name";
+        name.innerHTML=`${item.phase?`<span class="project-site-check-phase">${item.phase}</span>`:""}${item.name}`;
+        const buttons=document.createElement("div"); buttons.className="project-site-status-buttons";
+        const current=String(checkData?.statuses?.[item.id]||"pending");
+        [["pending","未"],["ok","OK"],["ng","NG"],["na","対象外"]].forEach(([st,label])=>{
+          const b=document.createElement("button"); b.type="button"; b.className=`project-site-status-btn${current===st?" active":""}`; b.dataset.status=st; b.textContent=label;
+          b.addEventListener("click",()=>{
+            if(!checkData.statuses) checkData.statuses={}; checkData.statuses[item.id]=st;
+            renderProjectSiteManagement(); setProjectSiteMessage(scope,"未保存の変更があります。");
+          }); buttons.appendChild(b);
+        });
+        const comment=document.createElement("input"); comment.className="project-site-comment"; comment.placeholder="コメント（音声入力OK）"; comment.maxLength=200; comment.value=String(checkData?.comments?.[item.id]||"");
+        comment.addEventListener("input",()=>{ if(!checkData.comments) checkData.comments={}; checkData.comments[item.id]=comment.value.slice(0,200); setProjectSiteMessage(scope,"未保存の変更があります。"); });
+        row.append(name,buttons,comment); list.appendChild(row);
+      });
+      container.appendChild(list);
+      const bar=document.createElement("div"); bar.className="project-site-savebar";
+      const all=document.createElement("button"); all.type="button"; all.className="btn-secondary btn-small"; all.textContent="✓ 全アイテムOK";
+      all.addEventListener("click",()=>{ if(!checkData.statuses)checkData.statuses={}; items.forEach(it=>checkData.statuses[it.id]="ok"); renderProjectSiteManagement(); setProjectSiteMessage(scope,"全項目をOKにしました。保存してください。"); });
+      const save=document.createElement("button"); save.type="button"; save.className="btn-primary btn-small"; save.textContent="💾 保存";
+      save.addEventListener("click",()=>saveProjectSiteCheck(scope,scopeId));
+      const msg=document.createElement("span"); msg.id=`projectSiteMessage_${scope}`; msg.className="project-site-message";
+      bar.append(all,save,msg); container.appendChild(bar);
+    }
+
+    function setProjectSiteMessage(scope,message="",type="") { const el=document.getElementById(`projectSiteMessage_${scope}`); if(el){el.textContent=message;el.className=`project-site-message${type?` ${type}`:""}`;} }
+
+    function renderProjectSiteCommon() {
+      const panel=document.getElementById("projectSiteCommonPanel"); if(!panel)return;
+      panel.innerHTML='<div class="project-site-toolbar"><div class="project-site-toolbar-left"><strong>✅ 現場全体チェック</strong></div><div class="project-site-muted">搬入前〜撤収前まで、案件全体で1回確認</div></div><div id="projectSiteCommonChecks"></div>';
+      const data=activeProjectSiteCommonChecks || (activeProjectSiteCommonChecks={statuses:{},comments:{}});
+      if(!data.statuses)data.statuses={}; if(!data.comments)data.comments={};
+      renderProjectSiteCheckRows(document.getElementById("projectSiteCommonChecks"),activeProjectSiteConfig.commonItems||[],data,"common","");
+    }
+
+    function roomStateFor(room){return qtsSiteOverall(qtsSiteTypeById(room.typeId)?.items||[],activeProjectSiteRoomChecks[room.id]||{});}
+    function renderProjectSiteGuest() {
+      const panel=document.getElementById("projectSiteGuestPanel"); if(!panel)return; panel.innerHTML="";
+      const toolbar=document.createElement("div"); toolbar.className="project-site-toolbar";
+      const left=document.createElement("div"); left.className="project-site-toolbar-left";
+      const floor=document.createElement("select"); floor.className="project-site-select"; floor.id="projectSiteFloorFilter";
+      const floors=[...new Set((activeProjectSiteConfig.rooms||[]).map(r=>r.floor||"未設定"))]; floor.innerHTML='<option value="">全フロア</option>'+floors.map(x=>`<option>${x}</option>`).join("");
+      const state=document.createElement("select"); state.className="project-site-select"; state.id="projectSiteStateFilter"; state.innerHTML='<option value="">全状態</option><option value="pending">未着手</option><option value="progress">施工中</option><option value="done">完了</option><option value="ng">是正あり</option>';
+      floor.value=floors.includes(activeProjectSiteGuestFloorFilter)?activeProjectSiteGuestFloorFilter:"";
+      state.value=activeProjectSiteGuestStateFilter || "";
+      left.append(floor,state); toolbar.append(left); panel.appendChild(toolbar);
+      const grid=document.createElement("div"); grid.className="project-site-room-grid"; panel.appendChild(grid);
+      const detail=document.createElement("div"); detail.className="project-site-detail"; detail.id="projectSiteRoomDetail"; detail.hidden=true; panel.appendChild(detail);
+      const draw=()=>{
+        grid.innerHTML=""; const f=floor.value, st=state.value;
+        const rooms=(activeProjectSiteConfig.rooms||[]).filter(r=>(!f||(r.floor||"未設定")===f)&&(!st||roomStateFor(r)===st));
+        if(!rooms.length){grid.innerHTML='<div class="project-site-empty" style="grid-column:1/-1">該当する客室がありません。初期設定から客室を追加できます。</div>'; detail.hidden=true; return;}
+        rooms.forEach(r=>{ const type=qtsSiteTypeById(r.typeId); const rs=roomStateFor(r); const b=document.createElement("button"); b.type="button"; b.className=`project-site-room-card${activeProjectSiteSelectedRoomId===r.id?" selected":""}`; b.innerHTML=`<div class="project-site-room-no"><span>${r.roomNo}</span><span class="project-site-state ${rs}">${qtsSiteOverallLabel(rs)}</span></div><div class="project-site-room-type">${r.floor||""}${r.floor?" ｜ ":""}${type?.name||"タイプ未設定"}</div>`; b.addEventListener("click",()=>{activeProjectSiteSelectedRoomId=r.id;renderProjectSiteGuest();}); grid.appendChild(b); });
+        renderSelectedRoomDetail(detail);
+      };
+      floor.addEventListener("change",()=>{activeProjectSiteGuestFloorFilter=floor.value;draw();}); state.addEventListener("change",()=>{activeProjectSiteGuestStateFilter=state.value;draw();}); draw();
+    }
+
+    function renderSelectedRoomDetail(detail) {
+      const room=activeProjectSiteConfig.rooms.find(r=>r.id===activeProjectSiteSelectedRoomId); if(!room){detail.hidden=true;return;}
+      const type=qtsSiteTypeById(room.typeId); detail.hidden=false; detail.innerHTML=`<div class="project-site-detail-head"><div><h5>🚪 ${room.roomNo}号室</h5><p>${room.floor||"階未設定"} ｜ ${type?.name||"客室タイプ未設定"}</p></div><span class="project-site-state ${roomStateFor(room)}">${qtsSiteOverallLabel(roomStateFor(room))}</span></div><div id="projectSiteRoomChecks"></div>`;
+      const data=activeProjectSiteRoomChecks[room.id] || (activeProjectSiteRoomChecks[room.id]={statuses:{},comments:{}}); if(!data.statuses)data.statuses={};if(!data.comments)data.comments={};
+      renderProjectSiteCheckRows(document.getElementById("projectSiteRoomChecks"),type?.items||[],data,"room",room.id);
+    }
+
+    function publicStateFor(area){return qtsSiteOverall(area.items||[],activeProjectSitePublicChecks[area.id]||{});}
+    function renderProjectSitePublic() {
+      const panel=document.getElementById("projectSitePublicPanel"); if(!panel)return; panel.innerHTML="";
+      const grid=document.createElement("div"); grid.className="project-site-room-grid"; panel.appendChild(grid);
+      const areas=activeProjectSiteConfig.publicAreas||[];
+      if(!areas.length) grid.innerHTML='<div class="project-site-empty" style="grid-column:1/-1">パブリックエリアがありません。初期設定からロビー・宴会場などを追加できます。</div>';
+      areas.forEach(a=>{const st=publicStateFor(a);const b=document.createElement("button");b.type="button";b.className=`project-site-room-card${activeProjectSiteSelectedPublicId===a.id?" selected":""}`;b.innerHTML=`<div class="project-site-room-no"><span>${a.name}</span><span class="project-site-state ${st}">${qtsSiteOverallLabel(st)}</span></div><div class="project-site-room-type">${a.floor||"階・ゾーン未設定"} ｜ ${a.items.length}アイテム</div>`;b.addEventListener("click",()=>{activeProjectSiteSelectedPublicId=a.id;renderProjectSitePublic();});grid.appendChild(b);});
+      const detail=document.createElement("div");detail.className="project-site-detail";panel.appendChild(detail);
+      const area=areas.find(a=>a.id===activeProjectSiteSelectedPublicId); if(!area){detail.hidden=true;return;} detail.hidden=false;
+      detail.innerHTML=`<div class="project-site-detail-head"><div><h5>🛋️ ${area.name}</h5><p>${area.floor||"階・ゾーン未設定"}</p></div><span class="project-site-state ${publicStateFor(area)}">${qtsSiteOverallLabel(publicStateFor(area))}</span></div><div id="projectSitePublicChecks"></div>`;
+      const data=activeProjectSitePublicChecks[area.id]||(activeProjectSitePublicChecks[area.id]={statuses:{},comments:{}});if(!data.statuses)data.statuses={};if(!data.comments)data.comments={};
+      renderProjectSiteCheckRows(document.getElementById("projectSitePublicChecks"),area.items||[],data,"public",area.id);
+    }
+
+    function renderProjectSiteManagement() {
+      if(!document.getElementById("projectSiteSection")) return;
+      if(!activeProjectSiteConfig) activeProjectSiteConfig=qtsDefaultSiteConfig();
+      renderProjectSiteSummary(); renderProjectSiteTabs();
+      renderProjectSiteCommon(); if(activeProjectSiteConfig.guestEnabled)renderProjectSiteGuest(); if(activeProjectSiteConfig.publicEnabled)renderProjectSitePublic();
+      renderProjectSiteConfigEditor();
+    }
+
+    function setProjectSiteSetupMode(open) {
+      const box=document.getElementById("projectSiteSetup"); if(!box)return; box.hidden=!open; document.getElementById("projectSiteSetupBtn").textContent=open?"⚙️ 設定中":"⚙️ 初期設定";
+      if(open){ document.getElementById("projectSiteGuestEnabled").checked=activeProjectSiteConfig.guestEnabled; document.getElementById("projectSitePublicEnabled").checked=activeProjectSiteConfig.publicEnabled; renderProjectSiteConfigEditor(); }
+    }
+
+    function renderProjectSiteConfigEditor() {
+      const common=document.getElementById("projectSiteCommonItems"); if(!common||!activeProjectSiteConfig)return;
+      common.value=(activeProjectSiteConfig.commonItems||[]).map(x=>`${x.phase}｜${x.name}`).join("\n");
+      const typeList=document.getElementById("projectSiteRoomTypeList"); const select=document.getElementById("projectSiteRoomTypeSelect"); if(typeList&&select){
+        typeList.innerHTML=""; select.innerHTML=activeProjectSiteConfig.roomTypes.length?activeProjectSiteConfig.roomTypes.map(t=>`<option value="${t.id}">${t.name}</option>`).join(""):'<option value="">先に客室タイプを追加</option>';
+        activeProjectSiteConfig.roomTypes.forEach(t=>{const row=document.createElement("div");row.className="project-site-config-row";const used=activeProjectSiteConfig.rooms.filter(r=>r.typeId===t.id).length;row.innerHTML=`<span><strong>${t.name}</strong>　${t.items.length}品目 / ${used}室</span>`;const del=document.createElement("button");del.type="button";del.textContent="削除";del.disabled=used>0;del.title=used>0?"使用中の客室タイプは削除できません":"";del.addEventListener("click",()=>{activeProjectSiteConfig.roomTypes=activeProjectSiteConfig.roomTypes.filter(x=>x.id!==t.id);renderProjectSiteConfigEditor();});row.appendChild(del);typeList.appendChild(row);});
+      }
+      const rooms=document.getElementById("projectSiteRoomConfigList"); if(rooms){rooms.innerHTML="";(activeProjectSiteConfig.rooms||[]).slice().sort((a,b)=>`${a.floor}${a.roomNo}`.localeCompare(`${b.floor}${b.roomNo}`,"ja",{numeric:true})).forEach(r=>{const row=document.createElement("div");row.className="project-site-config-row";row.innerHTML=`<span>${r.floor?`${r.floor} / `:""}<strong>${r.roomNo}</strong>　${qtsSiteTypeById(r.typeId)?.name||"未設定"}</span>`;const del=document.createElement("button");del.type="button";del.textContent="削除";del.addEventListener("click",()=>{activeProjectSiteConfig.rooms=activeProjectSiteConfig.rooms.filter(x=>x.id!==r.id);delete activeProjectSiteRoomChecks[r.id];if(activeProjectSiteSelectedRoomId===r.id)activeProjectSiteSelectedRoomId="";renderProjectSiteConfigEditor();});row.appendChild(del);rooms.appendChild(row);});}
+      const pubs=document.getElementById("projectSitePublicConfigList"); if(pubs){pubs.innerHTML="";(activeProjectSiteConfig.publicAreas||[]).forEach(a=>{const row=document.createElement("div");row.className="project-site-config-row";row.innerHTML=`<span>${a.floor?`${a.floor} / `:""}<strong>${a.name}</strong>　${a.items.length}品目</span>`;const del=document.createElement("button");del.type="button";del.textContent="削除";del.addEventListener("click",()=>{activeProjectSiteConfig.publicAreas=activeProjectSiteConfig.publicAreas.filter(x=>x.id!==a.id);delete activeProjectSitePublicChecks[a.id];if(activeProjectSiteSelectedPublicId===a.id)activeProjectSiteSelectedPublicId="";renderProjectSiteConfigEditor();});row.appendChild(del);pubs.appendChild(row);});}
+      const guest=document.getElementById("projectSiteRoomTypeBox"), room=document.getElementById("projectSiteRoomBox"), pub=document.getElementById("projectSitePublicBox");
+      const ge=document.getElementById("projectSiteGuestEnabled")?.checked ?? activeProjectSiteConfig.guestEnabled; const pe=document.getElementById("projectSitePublicEnabled")?.checked ?? activeProjectSiteConfig.publicEnabled;
+      if(guest)guest.style.opacity=ge?"1":".45"; if(room)room.style.opacity=ge?"1":".45"; if(pub)pub.style.opacity=pe?"1":".45";
+    }
+
+    function qtsParseSiteItemLines(text, withPhase=false) {
+      return String(text||"").split(/\r?\n/).map(x=>x.trim()).filter(Boolean).map((line,i)=>{
+        if(withPhase){const parts=line.split(/[｜|]/);return {id:qtsSiteId("common"),phase:String(parts.length>1?parts.shift():"共通").trim().slice(0,30),name:parts.join("｜").trim().slice(0,100)};}
+        return {id:qtsSiteId("item"),name:line.slice(0,100)};
+      }).filter(x=>x.name);
+    }
+
+    function qtsParseRoomNumbers(text) {
+      const raw=String(text||"").normalize("NFKC").replace(/[、，]/g,",").trim(); if(!raw)return[]; const out=[];
+      raw.split(/[,\s]+/).filter(Boolean).forEach(token=>{const m=token.match(/^(\d+)\s*-\s*(\d+)$/);if(m){let a=Number(m[1]),b=Number(m[2]);if(a<=b&&b-a<=500){for(let n=a;n<=b;n++)out.push(String(n));}}else out.push(token);});
+      return [...new Set(out)].slice(0,500);
+    }
+
+    function addProjectSiteRoomType() {
+      const name=document.getElementById("projectSiteRoomTypeName").value.trim(); const items=qtsParseSiteItemLines(document.getElementById("projectSiteRoomTypeItems").value); if(!name||!items.length){setProjectSiteConfigMessage("タイプ名とアイテムを入力してください。","error");return;}
+      activeProjectSiteConfig.roomTypes.push({id:qtsSiteId("type"),name:name.slice(0,40),items}); document.getElementById("projectSiteRoomTypeName").value="";document.getElementById("projectSiteRoomTypeItems").value="";setProjectSiteConfigMessage("客室タイプを追加しました。最後に初期設定を保存してください。");renderProjectSiteConfigEditor();
+    }
+    function addProjectSiteRooms() {
+      const floor=document.getElementById("projectSiteRoomFloor").value.trim().slice(0,30);const typeId=document.getElementById("projectSiteRoomTypeSelect").value;const nums=qtsParseRoomNumbers(document.getElementById("projectSiteRoomNumbers").value);if(!typeId||!nums.length){setProjectSiteConfigMessage("客室タイプと部屋番号を指定してください。","error");return;}
+      let added=0;nums.forEach(roomNo=>{if(activeProjectSiteConfig.rooms.some(r=>r.roomNo===roomNo&&r.floor===floor))return;activeProjectSiteConfig.rooms.push({id:qtsSiteId("room"),floor,roomNo:roomNo.slice(0,30),typeId});added++;});document.getElementById("projectSiteRoomNumbers").value="";setProjectSiteConfigMessage(`${added}室を追加しました。最後に初期設定を保存してください。`);renderProjectSiteConfigEditor();
+    }
+    function addProjectSitePublic() {
+      const floor=document.getElementById("projectSitePublicFloor").value.trim().slice(0,30);const name=document.getElementById("projectSitePublicName").value.trim().slice(0,60);const items=qtsParseSiteItemLines(document.getElementById("projectSitePublicItems").value);if(!name||!items.length){setProjectSiteConfigMessage("場所とアイテムを入力してください。","error");return;}activeProjectSiteConfig.publicAreas.push({id:qtsSiteId("public"),floor,name,items});document.getElementById("projectSitePublicName").value="";document.getElementById("projectSitePublicItems").value="";setProjectSiteConfigMessage("パブリックエリアを追加しました。最後に初期設定を保存してください。");renderProjectSiteConfigEditor();
+    }
+    function setProjectSiteConfigMessage(message="",type=""){const el=document.getElementById("projectSiteConfigMessage");if(el){el.textContent=message;el.className=`project-site-message${type?` ${type}`:""}`;}}
+
+    async function saveProjectSiteConfig() {
+      if(!activeProjectCard||!currentUser)return;const btn=document.getElementById("projectSiteSaveConfigBtn");
+      activeProjectSiteConfig.guestEnabled=document.getElementById("projectSiteGuestEnabled").checked;activeProjectSiteConfig.publicEnabled=document.getElementById("projectSitePublicEnabled").checked;
+      const common=qtsParseSiteItemLines(document.getElementById("projectSiteCommonItems").value,true);
+      if(common.length){
+        const prev=activeProjectSiteConfig.commonItems||[];
+        common.forEach(item=>{const same=prev.find(x=>x.phase===item.phase&&x.name===item.name);if(same)item.id=same.id;});
+        activeProjectSiteConfig.commonItems=common;
+      }
+      btn.disabled=true;btn.textContent="保存中…";setProjectSiteConfigMessage("共有データへ保存しています…");
+      try{const docId=getProjectContactDocId(activeProjectCard);await db.collection("projectContacts").doc(docId).set({projectNo:activeProjectCard.dataset.projectNo||"",projectId:activeProjectCard.dataset.projectId||"",projectName:activeProjectCard.dataset.projectName||"",siteManagementConfig:activeProjectSiteConfig,siteRoomChecks:activeProjectSiteRoomChecks,sitePublicChecks:activeProjectSitePublicChecks,siteCommonChecks:activeProjectSiteCommonChecks,siteManagementUpdatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp(),appVersion:APP_VERSION},{merge:true});setProjectSiteConfigMessage("初期設定を保存しました。","success");setProjectSiteSetupMode(false);renderProjectSiteManagement();}catch(e){console.error("site config save error",e);setProjectSiteConfigMessage("保存できませんでした。接続または権限をご確認ください。","error");}finally{btn.disabled=false;btn.textContent="💾 初期設定を保存";}
+    }
+
+    async function saveProjectSiteCheck(scope,scopeId="") {
+      if(!activeProjectCard||!currentUser)return; const updatedBy=currentUserProfile?.displayName||currentUser.email||""; const updatedAt=new Date().toISOString(); const docId=getProjectContactDocId(activeProjectCard); let field="",payload=null;
+      if(scope==="common"){activeProjectSiteCommonChecks.updatedBy=updatedBy;activeProjectSiteCommonChecks.updatedAt=updatedAt;field="siteCommonChecks";payload=activeProjectSiteCommonChecks;}
+      else if(scope==="room"){const d=activeProjectSiteRoomChecks[scopeId]||(activeProjectSiteRoomChecks[scopeId]={statuses:{},comments:{}});d.updatedBy=updatedBy;d.updatedAt=updatedAt;field=`siteRoomChecks.${scopeId}`;payload=d;}
+      else if(scope==="public"){const d=activeProjectSitePublicChecks[scopeId]||(activeProjectSitePublicChecks[scopeId]={statuses:{},comments:{}});d.updatedBy=updatedBy;d.updatedAt=updatedAt;field=`sitePublicChecks.${scopeId}`;payload=d;}
+      if(!field)return;setProjectSiteMessage(scope,"保存中…");
+      try{await db.collection("projectContacts").doc(docId).update({[field]:payload,siteManagementUpdatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp(),appVersion:APP_VERSION});renderProjectSiteManagement();setProjectSiteMessage(scope,"保存しました。","success");}catch(e){console.error("site check save error",e);setProjectSiteMessage(scope,"保存できませんでした。先に初期設定を保存してください。","error");}
     }
 
     function setProjectContactsEditMode(editing) {
