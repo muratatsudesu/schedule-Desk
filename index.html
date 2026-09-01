@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.8.33.3</title>
+  <title>Q.T.S Scheduler — Ver.6.8.33.5</title>
   <link rel="icon" href="favicon.ico?v=655" sizes="any">
   <link rel="shortcut icon" href="favicon.ico?v=655" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=655">
@@ -4845,7 +4845,7 @@
             </div>
             <div class="project-local-message" id="projectLocalMessage"></div>
             <p class="project-local-note">
-              新規作成時は「図面・工程表・現場写真・その他」を自動で用意します。
+              新規作成時は「図面・工程表・製作写真・現場写真・その他」を自動で用意します。
               PDF・画像・テキストは資料一覧から直接確認できます。ExcelなどはPCへ保存して開きます。
               図面・工程表・その他は「資料名（系統）・版・メモ」を登録し、最新版を明示できます。元ファイル自体は変更しません。
               「完了案件へ整理」は案件状態が「完了」または「アーカイブ」のときだけ実行できます。
@@ -5083,7 +5083,7 @@
         </div>
         <div class="app-info-panel">
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.21</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.8.33.4：案件管理に「＋ 新規案件を追加」を追加。案件名・担当者・納期・状態を入力すると固定案件No.を自動採番し、案件共有データへ保存。再ログイン時も共有案件を復元し、案件一覧・詳細納期順・年間予定表Excel更新へそのまま連携。登録案件数も自動集計<br>Ver.6.8.33.3：図面一覧を大量資料向けに改善。図番・図面名の即時検索、最新版中心/すべての版の切替、図番の親番号（例：F-193）単位のまとまり表示、コンパクトな1行表示を追加。単独図面と最新版未指定の系統は最新版中心でも表示し、旧版だけを必要時に隠せる安全方式<br>Ver.6.8.33.2.1：案件一覧の色分けと「今年／来年以降」絞り込みを、固定の年度情報ではなく最新の詳細納期に追従するよう修正。納期を2027年から2026年へ変更した案件は、保存後すぐ今年側の緑表示へ切り替わる。管理用の年度情報は変更せず保持<br>Ver.6.8.33.2：案件一覧の左丸数字を非表示化し、詳細納期の開始日順へ自動整列。納期保存後も即座に並び替え、日付未確定の「○年○月ごろ」案件も概算月順で配置。固定の案件No.は従来どおり保持<br>Ver.6.8.33.1：交通費精算書Excelの後半明細で日付がシリアル値（例：46265）表示になる書式不具合を修正。明細末尾まで「8月31日」のような日付表示を維持<br>Ver.6.8.33：作業完了報告書を追加。現場日報と進捗から作業期間・作業内容・完了状況を自動取り込みでき、PCの現場写真から最大6枚を選択してA4印刷/PDF保存に対応。報告書内容は案件共有データへ保存<br>Ver.6.8.32：是正・残工事からリペア業者向けA4「是正リスト」を印刷/PDF保存できる帳票出力を追加。期限・内部状態は印刷せず、場所・アイテム・是正内容・是正済み・是正後チェックに絞り、現在の絞り込み結果を現場で回りやすい場所順に出力<br>Ver.6.8.31：バックアップ・復元を追加。共有予定・カテゴリー・案件共有情報・自分のプライベート予定・このPCの経費メモ等をJSONへ保存し、管理者は復元前の自動安全バックアップ後に上書き復元可能。復元は新規データを勝手に削除しない安全方式<br>Ver.6.8.30：PC案件資料の図面・工程表・その他に版管理を追加。Rev表記の自動判定、最新版指定、版メモ、案件ダッシュボードの最新版未指定警告に対応<br>Ver.6.8.29.1：案件ダッシュボードにPC資料アクセス許可の案内と、図面・現場写真へのワンタップ導線を追加<br>Ver.6.8.29：案件詳細の先頭に「案件ダッシュボード」を追加。客室・パブリック未完了、是正、当日日報、写真受取待ち、重要事項を一目で確認し、各機能へ直接移動できる未処理ナビに対応<br>Ver.6.8.28.1：大項目「年間予定表」を「案件管理」へ名称変更。年間予定表Excel連携の名称はそのまま残し、案件管理画面として役割を整理<br>Ver.6.8.28：現場日報を追加。日付・入退場時間・作業人数・作業内容・問題点・翌日の予定を案件ごとに共有保存し、日付別一覧・編集・削除・当日の是正状況確認に対応<br>Ver.6.8.27.1：是正・残工事から担当者欄を撤去。場所・アイテム・内容・期限・状態・対応メモに絞り、既存の見た目を崩さず入力と一覧表示を簡潔化<br>Ver.6.8.27：是正・残工事管理を追加。NGチェックから是正登録し、期限・状態・コメントを共有管理。未対応/対応中/完了の絞り込み、元チェックへの移動、完了＋元チェックOK、手動追加、現場写真への導線に対応<br>Ver.6.8.26.1：客室タイプの編集に対応。タイプ名・アイテム追加/名称変更/削除を行え、使用中タイプも安全に更新。削除アイテムに既存チェックがある場合は確認表示<br>Ver.6.8.26：現場進捗・客室チェック管理の試作版を追加。案件ごとに客室/パブリックをON/OFFし、現場全体チェック、客室タイプ、部屋一括登録、客室/パブリックのアイテムOK/NG/対象外・コメント・進捗集計に対応<br>Ver.6.8.25：案件詳細に「重要事項・申し送り」を追加。搬入条件・立会い・駐車・現場ルール等をPC/スマホで共有保存し、案件を開いた直後に目立つ固定欄で確認可能<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.8.33.5：PC案件管理に「製作写真」を正式追加。新規・既存案件のフォルダへ「製作写真」を用意し、画像枚数を案件ダッシュボードと資料件数に表示。ダッシュボードの「製作写真」からサムネイルギャラリーを直接開けるよう対応<br>Ver.6.8.33.4：案件管理に「＋ 新規案件を追加」を追加。案件名・担当者・納期・状態を入力すると固定案件No.を自動採番し、案件共有データへ保存。再ログイン時も共有案件を復元し、案件一覧・詳細納期順・年間予定表Excel更新へそのまま連携。登録案件数も自動集計<br>Ver.6.8.33.3：図面一覧を大量資料向けに改善。図番・図面名の即時検索、最新版中心/すべての版の切替、図番の親番号（例：F-193）単位のまとまり表示、コンパクトな1行表示を追加。単独図面と最新版未指定の系統は最新版中心でも表示し、旧版だけを必要時に隠せる安全方式<br>Ver.6.8.33.2.1：案件一覧の色分けと「今年／来年以降」絞り込みを、固定の年度情報ではなく最新の詳細納期に追従するよう修正。納期を2027年から2026年へ変更した案件は、保存後すぐ今年側の緑表示へ切り替わる。管理用の年度情報は変更せず保持<br>Ver.6.8.33.2：案件一覧の左丸数字を非表示化し、詳細納期の開始日順へ自動整列。納期保存後も即座に並び替え、日付未確定の「○年○月ごろ」案件も概算月順で配置。固定の案件No.は従来どおり保持<br>Ver.6.8.33.1：交通費精算書Excelの後半明細で日付がシリアル値（例：46265）表示になる書式不具合を修正。明細末尾まで「8月31日」のような日付表示を維持<br>Ver.6.8.33：作業完了報告書を追加。現場日報と進捗から作業期間・作業内容・完了状況を自動取り込みでき、PCの現場写真から最大6枚を選択してA4印刷/PDF保存に対応。報告書内容は案件共有データへ保存<br>Ver.6.8.32：是正・残工事からリペア業者向けA4「是正リスト」を印刷/PDF保存できる帳票出力を追加。期限・内部状態は印刷せず、場所・アイテム・是正内容・是正済み・是正後チェックに絞り、現在の絞り込み結果を現場で回りやすい場所順に出力<br>Ver.6.8.31：バックアップ・復元を追加。共有予定・カテゴリー・案件共有情報・自分のプライベート予定・このPCの経費メモ等をJSONへ保存し、管理者は復元前の自動安全バックアップ後に上書き復元可能。復元は新規データを勝手に削除しない安全方式<br>Ver.6.8.30：PC案件資料の図面・工程表・その他に版管理を追加。Rev表記の自動判定、最新版指定、版メモ、案件ダッシュボードの最新版未指定警告に対応<br>Ver.6.8.29.1：案件ダッシュボードにPC資料アクセス許可の案内と、図面・現場写真へのワンタップ導線を追加<br>Ver.6.8.29：案件詳細の先頭に「案件ダッシュボード」を追加。客室・パブリック未完了、是正、当日日報、写真受取待ち、重要事項を一目で確認し、各機能へ直接移動できる未処理ナビに対応<br>Ver.6.8.28.1：大項目「年間予定表」を「案件管理」へ名称変更。年間予定表Excel連携の名称はそのまま残し、案件管理画面として役割を整理<br>Ver.6.8.28：現場日報を追加。日付・入退場時間・作業人数・作業内容・問題点・翌日の予定を案件ごとに共有保存し、日付別一覧・編集・削除・当日の是正状況確認に対応<br>Ver.6.8.27.1：是正・残工事から担当者欄を撤去。場所・アイテム・内容・期限・状態・対応メモに絞り、既存の見た目を崩さず入力と一覧表示を簡潔化<br>Ver.6.8.27：是正・残工事管理を追加。NGチェックから是正登録し、期限・状態・コメントを共有管理。未対応/対応中/完了の絞り込み、元チェックへの移動、完了＋元チェックOK、手動追加、現場写真への導線に対応<br>Ver.6.8.26.1：客室タイプの編集に対応。タイプ名・アイテム追加/名称変更/削除を行え、使用中タイプも安全に更新。削除アイテムに既存チェックがある場合は確認表示<br>Ver.6.8.26：現場進捗・客室チェック管理の試作版を追加。案件ごとに客室/パブリックをON/OFFし、現場全体チェック、客室タイプ、部屋一括登録、客室/パブリックのアイテムOK/NG/対象外・コメント・進捗集計に対応<br>Ver.6.8.25：案件詳細に「重要事項・申し送り」を追加。搬入条件・立会い・駐車・現場ルール等をPC/スマホで共有保存し、案件を開いた直後に目立つ固定欄で確認可能<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
           Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年9月1日
         </div>
@@ -5125,7 +5125,7 @@
           <div class="qts-backup-warning">復元を実行する直前に、現在のQ.T.Sデータを自動で「復元前バックアップ」としてダウンロードします。バックアップ後に追加された新しい予定や案件データは削除せず、同じIDのデータだけをバックアップ内容で上書きします。</div>
         </section>
 
-        <div class="qts-backup-local-note">📁 <strong>PCの図面・現場写真・工程表などはこのJSONには含まれません。</strong><br>それらは通常のWindowsフォルダ「QTS案件管理」にあるため、PC故障対策としてはフォルダ自体を外付けSSD・NAS・OneDrive等へコピーしてください。QTS_版管理.json も案件フォルダ内にあるので一緒に保護されます。<br><span style="display:inline-block;margin-top:5px">※ Firebase AuthenticationのログインアカウントやFirestoreの権限ルール自体は、ブラウザから作るこのバックアップの対象外です。</span></div>
+        <div class="qts-backup-local-note">📁 <strong>PCの図面・製作写真・現場写真・工程表などはこのJSONには含まれません。</strong><br>それらは通常のWindowsフォルダ「QTS案件管理」にあるため、PC故障対策としてはフォルダ自体を外付けSSD・NAS・OneDrive等へコピーしてください。QTS_版管理.json も案件フォルダ内にあるので一緒に保護されます。<br><span style="display:inline-block;margin-top:5px">※ Firebase AuthenticationのログインアカウントやFirestoreの権限ルール自体は、ブラウザから作るこのバックアップの対象外です。</span></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn-secondary" data-close-modal="backupRestoreModal">閉じる</button>
@@ -5227,7 +5227,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.33.4";
+    const APP_VERSION = "6.8.33.5";
     const APP_BUILD_DATE = "2026-09-01";
 
     const firebaseConfig = {
@@ -10540,8 +10540,8 @@ ${error.message||error}`); }
         document.querySelector(".project-local-storage")?.scrollIntoView({ behavior:"smooth", block:"start" });
         return;
       }
-      if (["local-drawings","local-photos","local-files"].includes(target)) {
-        const category = target === "local-drawings" ? "図面" : target === "local-photos" ? "現場写真" : "";
+      if (["local-drawings","local-production-photos","local-photos","local-files"].includes(target)) {
+        const category = target === "local-drawings" ? "図面" : target === "local-production-photos" ? "製作写真" : target === "local-photos" ? "現場写真" : "";
         Promise.resolve(showProjectLocalFiles(category)).then(() => {
           const browser = document.getElementById("projectLocalBrowser");
           const destination = browser && !browser.hidden ? browser : document.querySelector(".project-local-storage");
@@ -10645,6 +10645,7 @@ ${error.message||error}`); }
           const revisionNeeds=isActive&&revisionPending>0;
           tiles.push({icon:"📐",value:`${localState.drawings||0}件`,label:"図面",detail:revisionPending?`最新版未指定 ${revisionPending}系統`:"版管理を開く",tone:revisionNeeds?"attention":"info",target:"local-drawings"});
           if(revisionNeeds) attention++;
+          tiles.push({icon:"🏭",value:`${localState.productionPhotos||0}枚`,label:"製作写真",detail:"製作写真ギャラリーを開く",tone:"info",target:"local-production-photos"});
           tiles.push({icon:"📷",value:`${localState.photos||0}枚`,label:"現場写真",detail:"写真ギャラリーを開く",tone:"info",target:"local-photos"});
         } else if(localState.status === "missing"){
           tiles.push({icon:"📁",value:"未準備",label:"PC資料",detail:"案件フォルダを準備",tone:"info",target:"local-prepare"});
@@ -11934,7 +11935,7 @@ ${error.message||error}`); }
     const PROJECT_LOCAL_DB_NAME = "qtsProjectLocal";
     const PROJECT_LOCAL_DB_STORE = "handles";
     const PROJECT_LOCAL_ROOT_KEY = "projectRootDirectory";
-    const PROJECT_LOCAL_SUBFOLDERS = ["図面", "工程表", "現場写真", "その他"];
+    const PROJECT_LOCAL_SUBFOLDERS = ["図面", "工程表", "製作写真", "現場写真", "その他"];
     const PROJECT_REVISION_META_FILE = "QTS_版管理.json";
     const PROJECT_REVISION_CATEGORIES = new Set(["図面", "工程表", "その他"]);
     const PROJECT_LOCAL_FILE_LIST_LIMIT = 200;
@@ -12155,13 +12156,13 @@ ${error.message||error}`); }
       for (const name of PROJECT_LOCAL_SUBFOLDERS) {
         const dir = await qtsTryGetDirectory(projectHandle, name);
         if (!dir) stats.push({ name, count: 0, capped: false });
-        else if (name === "現場写真") stats.push({ name, ...(await qtsCountPhotoImagesRecursive(dir)) });
+        else if (name === "現場写真" || name === "製作写真") stats.push({ name, ...(await qtsCountPhotoImagesRecursive(dir)) });
         else stats.push({ name, ...(await qtsCountFilesRecursive(dir)) });
       }
       return stats;
     }
 
-    function projectLocalCategoryIcon(name) { return name === "図面" ? "📐" : name === "工程表" ? "📅" : name === "現場写真" ? "📷" : "📁"; }
+    function projectLocalCategoryIcon(name) { return name === "図面" ? "📐" : name === "工程表" ? "📅" : name === "製作写真" ? "🏭" : name === "現場写真" ? "📷" : "📁"; }
 
     function hideProjectLocalBrowser() {
       const browser = document.getElementById("projectLocalBrowser");
@@ -12182,7 +12183,8 @@ ${error.message||error}`); }
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "project-local-count-btn";
-        btn.textContent = `${projectLocalCategoryIcon(stat.name)} ${stat.name}　${stat.count}${stat.capped ? "+" : ""}件`;
+        const unit = (stat.name === "製作写真" || stat.name === "現場写真") ? "枚" : "件";
+        btn.textContent = `${projectLocalCategoryIcon(stat.name)} ${stat.name}　${stat.count}${stat.capped ? "+" : ""}${unit}`;
         btn.addEventListener("click", () => showProjectLocalFiles(stat.name));
         box.appendChild(btn);
       });
@@ -12545,6 +12547,7 @@ ${error.message||error}`); }
     async function showProjectLocalFiles(category = "") {
       const card = activeProjectCard;
       if (!card || !projectRootDirectoryHandle) return;
+      if (category === "製作写真") { await showProjectProductionPhotoGallery(); return; }
       if (category === "現場写真") { await showProjectPhotoGallery(); return; }
       try {
         if (!(await ensureProjectRootPermission(true))) throw new Error("案件管理フォルダへのアクセスが許可されていません。");
@@ -12593,6 +12596,156 @@ ${error.message||error}`); }
       } catch (error) {
         console.error("show project local files error", error);
         setProjectLocalMessage(`資料を表示できませんでした：${error.message || error}`, "error");
+      }
+    }
+
+
+    // ===== Ver.6.8.33.5 製作写真ギャラリー =====
+    // 工場・製作途中の写真は「現場写真」と分離してPC内で管理する。
+    // 現場写真の分類CSVは使わず、ファイル名・保存場所をそのままサムネイル表示する。
+    async function showProjectProductionPhotoGallery() {
+      const card = activeProjectCard;
+      if (!card || !projectRootDirectoryHandle) return;
+      const renderToken = ++projectPhotoGalleryRenderToken;
+      try {
+        if (!(await ensureProjectRootPermission(true))) throw new Error("案件管理フォルダへのアクセスが許可されていません。");
+        const state = await getProjectLocalFolderState(card);
+        if (!["active", "complete"].includes(state.location) || !state.handle) throw new Error("案件フォルダが見つかりません。");
+        const photoRoot = await qtsTryGetDirectory(state.handle, "製作写真");
+        const browser = document.getElementById("projectLocalBrowser");
+        const title = document.getElementById("projectLocalBrowserTitle");
+        const list = document.getElementById("projectLocalFileList");
+        hideProjectLocalBrowser();
+        browser.hidden = false;
+        browser.classList.remove("revision-mode", "drawing-list-mode");
+        browser.classList.add("photo-gallery-mode");
+        title.textContent = "🏭 製作写真ギャラリー";
+        list.innerHTML = "";
+
+        if (!photoRoot) {
+          const empty = document.createElement("div");
+          empty.className = "project-local-empty";
+          empty.textContent = "製作写真はまだありません。";
+          list.appendChild(empty);
+          return;
+        }
+
+        const allFiles = await qtsCollectFilesRecursive(photoRoot, "", [], PROJECT_PHOTO_GALLERY_SCAN_LIMIT);
+        if (renderToken !== projectPhotoGalleryRenderToken) return;
+        const entries = allFiles
+          .filter(entry => /\.(jpe?g|png|webp|heic|heif|gif)$/i.test(entry.name))
+          .sort((a,b) => String(a.path || a.name).localeCompare(String(b.path || b.name), "ja", { numeric:true, sensitivity:"base" }));
+        const scanCapped = allFiles.length >= PROJECT_PHOTO_GALLERY_SCAN_LIMIT;
+
+        const summary = document.createElement("div");
+        summary.className = "project-photo-gallery-summary";
+        summary.textContent = `このPCに保存されている製作写真 ${entries.length}${scanCapped ? "+" : ""}枚。画面負荷を抑えるため30枚ずつ表示します。`;
+        list.appendChild(summary);
+
+        if (!entries.length) {
+          const empty = document.createElement("div");
+          empty.className = "project-local-empty";
+          empty.textContent = "製作写真はまだありません。";
+          list.appendChild(empty);
+          return;
+        }
+
+        let rendered = 0;
+        let cardIndex = 0;
+        const grid = document.createElement("div");
+        grid.className = "project-photo-gallery-grid";
+        list.appendChild(grid);
+        const progress = document.createElement("div");
+        progress.className = "project-photo-gallery-progress";
+        list.appendChild(progress);
+        const moreWrap = document.createElement("div");
+        moreWrap.className = "project-photo-gallery-more-wrap";
+        const moreBtn = document.createElement("button");
+        moreBtn.type = "button";
+        moreBtn.className = "project-photo-gallery-more";
+        moreBtn.textContent = "さらに30枚表示";
+        moreWrap.appendChild(moreBtn);
+        list.appendChild(moreWrap);
+
+        async function appendNextPage() {
+          if (renderToken !== projectPhotoGalleryRenderToken) return;
+          moreBtn.disabled = true;
+          moreBtn.textContent = "読み込み中…";
+          const page = entries.slice(rendered, rendered + PROJECT_PHOTO_GALLERY_PAGE_SIZE);
+          if (!page.length) { moreWrap.hidden = true; return; }
+
+          for (const entry of page) {
+            if (renderToken !== projectPhotoGalleryRenderToken) return;
+            const key = `production_${Date.now()}_${cardIndex++}`;
+            projectLocalVisibleFiles.set(key, entry);
+
+            const cardEl = document.createElement("div");
+            cardEl.className = "project-photo-gallery-card";
+            const thumbWrap = document.createElement("div");
+            thumbWrap.className = "project-photo-gallery-thumb-wrap";
+            const img = document.createElement("img");
+            img.className = "project-photo-gallery-thumb";
+            img.alt = entry.name || "製作写真";
+            img.loading = "lazy";
+            try {
+              const file = await entry.handle.getFile();
+              const url = URL.createObjectURL(file);
+              projectPhotoGalleryObjectUrls.push(url);
+              img.src = url;
+            } catch (_) {}
+            img.addEventListener("click", () => openProjectLocalFile(key));
+            thumbWrap.appendChild(img);
+
+            const body = document.createElement("div");
+            body.className = "project-photo-gallery-body";
+            const meta = document.createElement("div");
+            meta.className = "project-photo-gallery-meta";
+            const badge = document.createElement("span");
+            badge.className = "project-photo-gallery-category";
+            badge.textContent = "製作写真";
+            meta.appendChild(badge);
+            const fileName = document.createElement("div");
+            fileName.className = "project-photo-gallery-comment";
+            fileName.textContent = entry.name;
+            const path = document.createElement("div");
+            path.className = "project-photo-gallery-file";
+            path.textContent = entry.path || entry.name;
+            const actions = document.createElement("div");
+            actions.className = "project-photo-gallery-actions";
+            const open = document.createElement("button");
+            open.type = "button";
+            open.className = "project-photo-gallery-open";
+            open.textContent = "開く";
+            open.addEventListener("click", () => openProjectLocalFile(key));
+            actions.appendChild(open);
+            body.append(meta, fileName, path, actions);
+            cardEl.append(thumbWrap, body);
+            grid.appendChild(cardEl);
+          }
+
+          rendered += page.length;
+          progress.textContent = `${entries.length}枚中 ${rendered}枚を表示中`;
+          const remaining = entries.length - rendered;
+          if (remaining > 0) {
+            moreWrap.hidden = false;
+            moreBtn.disabled = false;
+            moreBtn.textContent = `さらに${Math.min(PROJECT_PHOTO_GALLERY_PAGE_SIZE, remaining)}枚表示`;
+          } else {
+            moreWrap.hidden = true;
+          }
+        }
+
+        moreBtn.addEventListener("click", appendNextPage);
+        await appendNextPage();
+        if (scanCapped) {
+          const note = document.createElement("div");
+          note.className = "project-local-empty";
+          note.textContent = `高速表示のため、1回の読込対象は先頭${PROJECT_PHOTO_GALLERY_SCAN_LIMIT}件までです。`;
+          list.appendChild(note);
+        }
+      } catch (error) {
+        console.error("show project production photo gallery error", error);
+        setProjectLocalMessage(`製作写真を表示できませんでした：${error.message || error}`, "error");
       }
     }
 
@@ -12963,6 +13116,8 @@ ${error.message||error}`); }
         const qtsStatus = String(card?.dataset?.projectStatus || "未稼働");
         const qtsCompleted = ["完了", "アーカイブ"].includes(qtsStatus);
         if (state.location === "active" || state.location === "complete") {
+          // Ver.6.8.33.5: 既存案件にも不足している標準フォルダ（製作写真など）を安全に追加する。
+          for (const sub of PROJECT_LOCAL_SUBFOLDERS) await state.handle.getDirectoryHandle(sub, { create:true });
           if (state.location === "active") {
             statusEl.textContent = qtsCompleted
               ? `⚠ Q.T.S状態は「${qtsStatus}」ですが、PC資料は ${state.path} にあります。`
@@ -12984,9 +13139,10 @@ ${error.message||error}`); }
           const stats = await getProjectLocalCategoryStats(state.handle);
           renderProjectLocalCounts(stats);
           const drawings = Number(stats.find(x => x.name === "図面")?.count || 0);
+          const productionPhotos = Number(stats.find(x => x.name === "製作写真")?.count || 0);
           const photos = Number(stats.find(x => x.name === "現場写真")?.count || 0);
           const revisionSummary = await qtsGetProjectRevisionSummary(state.handle, "図面");
-          projectLocalDashboardState = { status: "ready", drawings, photos, location: state.location, drawingRevisionPending: revisionSummary.pendingGroups, drawingRevisionGroups: revisionSummary.multiGroups };
+          projectLocalDashboardState = { status: "ready", drawings, productionPhotos, photos, location: state.location, drawingRevisionPending: revisionSummary.pendingGroups, drawingRevisionGroups: revisionSummary.multiGroups };
           renderProjectActionDashboard();
         } else {
           statusEl.textContent = `このPC：案件フォルダ未作成（${state.folderName}）`;
@@ -13012,12 +13168,18 @@ ${error.message||error}`); }
         if (!(await ensureProjectRootPermission(true))) throw new Error("案件管理フォルダへの書き込みが許可されていません。");
         await ensureProjectBaseFolders();
         const current = await getProjectLocalFolderState(card);
-        if (current.location === "complete") { setProjectLocalMessage("この案件はこのPCで完了案件へ整理済みです。", "success"); return; }
-        if (current.location === "active") { setProjectLocalMessage("既存の案件フォルダを確認しました。中の資料はそのままです。", "success"); return; }
+        if (current.location === "complete" && current.handle) {
+          for (const sub of PROJECT_LOCAL_SUBFOLDERS) await current.handle.getDirectoryHandle(sub, { create:true });
+          setProjectLocalMessage("この案件はこのPCで完了案件へ整理済みです。標準フォルダも確認しました。", "success"); return;
+        }
+        if (current.location === "active" && current.handle) {
+          for (const sub of PROJECT_LOCAL_SUBFOLDERS) await current.handle.getDirectoryHandle(sub, { create:true });
+          setProjectLocalMessage("既存の案件フォルダを確認しました。不足している標準フォルダだけ追加し、中の資料はそのままです。", "success"); return;
+        }
         const activeRoot = await projectRootDirectoryHandle.getDirectoryHandle("進行案件", { create: true });
         const folder = await activeRoot.getDirectoryHandle(qtsSafeProjectFolderName(card), { create: true });
         for (const sub of PROJECT_LOCAL_SUBFOLDERS) await folder.getDirectoryHandle(sub, { create: true });
-        setProjectLocalMessage("案件フォルダを準備しました。図面・工程表・現場写真・その他を保存できます。", "success");
+        setProjectLocalMessage("案件フォルダを準備しました。図面・工程表・製作写真・現場写真・その他を保存できます。", "success");
       } catch (error) {
         console.error("prepare project local folder error", error); setProjectLocalMessage(`案件フォルダを作成できませんでした：${error.message || error}`, "error");
       } finally { await refreshProjectLocalFolderUi(card); }
