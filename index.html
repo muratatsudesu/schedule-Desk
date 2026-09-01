@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.8.33.5</title>
+  <title>Q.T.S Scheduler — Ver.6.8.33.5.1</title>
   <link rel="icon" href="favicon.ico?v=655" sizes="any">
   <link rel="shortcut icon" href="favicon.ico?v=655" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=655">
@@ -2465,14 +2465,15 @@
     .project-action-dashboard-state.loading { background:#eef3f6; color:#607482; border-color:#d7e1e6; }
     .project-action-dashboard-grid { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:7px; }
     .project-action-tile {
-      appearance:none; width:100%; min-width:0; min-height:74px; padding:9px 10px; text-align:left; cursor:pointer;
+      appearance:none; width:100%; min-width:0; min-height:88px; padding:11px 10px; text-align:left; cursor:pointer;
       border:1px solid #dce5e9; border-radius:10px; background:#fff; color:#294a61; font:inherit;
       transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
     }
     .project-action-tile:hover, .project-action-tile:focus-visible { transform:translateY(-1px); box-shadow:0 5px 14px rgba(25,63,86,.09); outline:none; border-color:#b9ced9; }
-    .project-action-tile .project-action-icon { display:block; margin-bottom:3px; font-size:.9rem; }
-    .project-action-tile strong { display:block; overflow:hidden; text-overflow:ellipsis; color:#173e5b; font-size:.92rem; line-height:1.25; white-space:nowrap; }
-    .project-action-tile span { display:block; margin-top:2px; color:#758792; font-size:.61rem; line-height:1.35; }
+    .project-action-tile .project-action-icon { display:block; margin-bottom:3px; font-size:.98rem; }
+    .project-action-tile strong { display:block; overflow:hidden; text-overflow:ellipsis; color:#173e5b; font-size:1.02rem; line-height:1.2; white-space:nowrap; }
+    .project-action-tile .project-action-label { display:block; margin-top:4px; color:#38566c; font-size:.67rem; font-weight:900; line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .project-action-tile .project-action-detail { display:block; margin-top:2px; color:#7a8b96; font-size:.59rem; font-weight:600; line-height:1.3; }
     .project-action-tile.attention { background:#fffaf0; border-color:#ead5a9; }
     .project-action-tile.attention strong { color:#7c5716; }
     .project-action-tile.danger { background:#fff7f7; border-color:#e7c4c4; }
@@ -2485,7 +2486,7 @@
       .project-action-dashboard { padding:11px; }
       .project-action-dashboard-head { align-items:flex-start; }
       .project-action-dashboard-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
-      .project-action-tile { min-height:70px; }
+      .project-action-tile { min-height:82px; }
     }
 
     /* ===== Ver.6.8.26 現場進捗・客室チェック管理（試作） ===== */
@@ -5083,7 +5084,7 @@
         </div>
         <div class="app-info-panel">
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.21</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.8.33.5：PC案件管理に「製作写真」を正式追加。新規・既存案件のフォルダへ「製作写真」を用意し、画像枚数を案件ダッシュボードと資料件数に表示。ダッシュボードの「製作写真」からサムネイルギャラリーを直接開けるよう対応<br>Ver.6.8.33.4：案件管理に「＋ 新規案件を追加」を追加。案件名・担当者・納期・状態を入力すると固定案件No.を自動採番し、案件共有データへ保存。再ログイン時も共有案件を復元し、案件一覧・詳細納期順・年間予定表Excel更新へそのまま連携。登録案件数も自動集計<br>Ver.6.8.33.3：図面一覧を大量資料向けに改善。図番・図面名の即時検索、最新版中心/すべての版の切替、図番の親番号（例：F-193）単位のまとまり表示、コンパクトな1行表示を追加。単独図面と最新版未指定の系統は最新版中心でも表示し、旧版だけを必要時に隠せる安全方式<br>Ver.6.8.33.2.1：案件一覧の色分けと「今年／来年以降」絞り込みを、固定の年度情報ではなく最新の詳細納期に追従するよう修正。納期を2027年から2026年へ変更した案件は、保存後すぐ今年側の緑表示へ切り替わる。管理用の年度情報は変更せず保持<br>Ver.6.8.33.2：案件一覧の左丸数字を非表示化し、詳細納期の開始日順へ自動整列。納期保存後も即座に並び替え、日付未確定の「○年○月ごろ」案件も概算月順で配置。固定の案件No.は従来どおり保持<br>Ver.6.8.33.1：交通費精算書Excelの後半明細で日付がシリアル値（例：46265）表示になる書式不具合を修正。明細末尾まで「8月31日」のような日付表示を維持<br>Ver.6.8.33：作業完了報告書を追加。現場日報と進捗から作業期間・作業内容・完了状況を自動取り込みでき、PCの現場写真から最大6枚を選択してA4印刷/PDF保存に対応。報告書内容は案件共有データへ保存<br>Ver.6.8.32：是正・残工事からリペア業者向けA4「是正リスト」を印刷/PDF保存できる帳票出力を追加。期限・内部状態は印刷せず、場所・アイテム・是正内容・是正済み・是正後チェックに絞り、現在の絞り込み結果を現場で回りやすい場所順に出力<br>Ver.6.8.31：バックアップ・復元を追加。共有予定・カテゴリー・案件共有情報・自分のプライベート予定・このPCの経費メモ等をJSONへ保存し、管理者は復元前の自動安全バックアップ後に上書き復元可能。復元は新規データを勝手に削除しない安全方式<br>Ver.6.8.30：PC案件資料の図面・工程表・その他に版管理を追加。Rev表記の自動判定、最新版指定、版メモ、案件ダッシュボードの最新版未指定警告に対応<br>Ver.6.8.29.1：案件ダッシュボードにPC資料アクセス許可の案内と、図面・現場写真へのワンタップ導線を追加<br>Ver.6.8.29：案件詳細の先頭に「案件ダッシュボード」を追加。客室・パブリック未完了、是正、当日日報、写真受取待ち、重要事項を一目で確認し、各機能へ直接移動できる未処理ナビに対応<br>Ver.6.8.28.1：大項目「年間予定表」を「案件管理」へ名称変更。年間予定表Excel連携の名称はそのまま残し、案件管理画面として役割を整理<br>Ver.6.8.28：現場日報を追加。日付・入退場時間・作業人数・作業内容・問題点・翌日の予定を案件ごとに共有保存し、日付別一覧・編集・削除・当日の是正状況確認に対応<br>Ver.6.8.27.1：是正・残工事から担当者欄を撤去。場所・アイテム・内容・期限・状態・対応メモに絞り、既存の見た目を崩さず入力と一覧表示を簡潔化<br>Ver.6.8.27：是正・残工事管理を追加。NGチェックから是正登録し、期限・状態・コメントを共有管理。未対応/対応中/完了の絞り込み、元チェックへの移動、完了＋元チェックOK、手動追加、現場写真への導線に対応<br>Ver.6.8.26.1：客室タイプの編集に対応。タイプ名・アイテム追加/名称変更/削除を行え、使用中タイプも安全に更新。削除アイテムに既存チェックがある場合は確認表示<br>Ver.6.8.26：現場進捗・客室チェック管理の試作版を追加。案件ごとに客室/パブリックをON/OFFし、現場全体チェック、客室タイプ、部屋一括登録、客室/パブリックのアイテムOK/NG/対象外・コメント・進捗集計に対応<br>Ver.6.8.25：案件詳細に「重要事項・申し送り」を追加。搬入条件・立会い・駐車・現場ルール等をPC/スマホで共有保存し、案件を開いた直後に目立つ固定欄で確認可能<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.8.33.5.1：案件ダッシュボードの視認性を改善。6列1段レイアウトは維持したまま、項目名を太字化し、状態・件数表示を少し大きく、カード高さをわずかに拡大。補足説明を項目名と分離して読みやすく調整<br>Ver.6.8.33.5：PC案件管理に「製作写真」を正式追加。新規・既存案件のフォルダへ「製作写真」を用意し、画像枚数を案件ダッシュボードと資料件数に表示。ダッシュボードの「製作写真」からサムネイルギャラリーを直接開けるよう対応<br>Ver.6.8.33.4：案件管理に「＋ 新規案件を追加」を追加。案件名・担当者・納期・状態を入力すると固定案件No.を自動採番し、案件共有データへ保存。再ログイン時も共有案件を復元し、案件一覧・詳細納期順・年間予定表Excel更新へそのまま連携。登録案件数も自動集計<br>Ver.6.8.33.3：図面一覧を大量資料向けに改善。図番・図面名の即時検索、最新版中心/すべての版の切替、図番の親番号（例：F-193）単位のまとまり表示、コンパクトな1行表示を追加。単独図面と最新版未指定の系統は最新版中心でも表示し、旧版だけを必要時に隠せる安全方式<br>Ver.6.8.33.2.1：案件一覧の色分けと「今年／来年以降」絞り込みを、固定の年度情報ではなく最新の詳細納期に追従するよう修正。納期を2027年から2026年へ変更した案件は、保存後すぐ今年側の緑表示へ切り替わる。管理用の年度情報は変更せず保持<br>Ver.6.8.33.2：案件一覧の左丸数字を非表示化し、詳細納期の開始日順へ自動整列。納期保存後も即座に並び替え、日付未確定の「○年○月ごろ」案件も概算月順で配置。固定の案件No.は従来どおり保持<br>Ver.6.8.33.1：交通費精算書Excelの後半明細で日付がシリアル値（例：46265）表示になる書式不具合を修正。明細末尾まで「8月31日」のような日付表示を維持<br>Ver.6.8.33：作業完了報告書を追加。現場日報と進捗から作業期間・作業内容・完了状況を自動取り込みでき、PCの現場写真から最大6枚を選択してA4印刷/PDF保存に対応。報告書内容は案件共有データへ保存<br>Ver.6.8.32：是正・残工事からリペア業者向けA4「是正リスト」を印刷/PDF保存できる帳票出力を追加。期限・内部状態は印刷せず、場所・アイテム・是正内容・是正済み・是正後チェックに絞り、現在の絞り込み結果を現場で回りやすい場所順に出力<br>Ver.6.8.31：バックアップ・復元を追加。共有予定・カテゴリー・案件共有情報・自分のプライベート予定・このPCの経費メモ等をJSONへ保存し、管理者は復元前の自動安全バックアップ後に上書き復元可能。復元は新規データを勝手に削除しない安全方式<br>Ver.6.8.30：PC案件資料の図面・工程表・その他に版管理を追加。Rev表記の自動判定、最新版指定、版メモ、案件ダッシュボードの最新版未指定警告に対応<br>Ver.6.8.29.1：案件ダッシュボードにPC資料アクセス許可の案内と、図面・現場写真へのワンタップ導線を追加<br>Ver.6.8.29：案件詳細の先頭に「案件ダッシュボード」を追加。客室・パブリック未完了、是正、当日日報、写真受取待ち、重要事項を一目で確認し、各機能へ直接移動できる未処理ナビに対応<br>Ver.6.8.28.1：大項目「年間予定表」を「案件管理」へ名称変更。年間予定表Excel連携の名称はそのまま残し、案件管理画面として役割を整理<br>Ver.6.8.28：現場日報を追加。日付・入退場時間・作業人数・作業内容・問題点・翌日の予定を案件ごとに共有保存し、日付別一覧・編集・削除・当日の是正状況確認に対応<br>Ver.6.8.27.1：是正・残工事から担当者欄を撤去。場所・アイテム・内容・期限・状態・対応メモに絞り、既存の見た目を崩さず入力と一覧表示を簡潔化<br>Ver.6.8.27：是正・残工事管理を追加。NGチェックから是正登録し、期限・状態・コメントを共有管理。未対応/対応中/完了の絞り込み、元チェックへの移動、完了＋元チェックOK、手動追加、現場写真への導線に対応<br>Ver.6.8.26.1：客室タイプの編集に対応。タイプ名・アイテム追加/名称変更/削除を行え、使用中タイプも安全に更新。削除アイテムに既存チェックがある場合は確認表示<br>Ver.6.8.26：現場進捗・客室チェック管理の試作版を追加。案件ごとに客室/パブリックをON/OFFし、現場全体チェック、客室タイプ、部屋一括登録、客室/パブリックのアイテムOK/NG/対象外・コメント・進捗集計に対応<br>Ver.6.8.25：案件詳細に「重要事項・申し送り」を追加。搬入条件・立会い・駐車・現場ルール等をPC/スマホで共有保存し、案件を開いた直後に目立つ固定欄で確認可能<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
           Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年9月1日
         </div>
@@ -5227,7 +5228,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.33.5";
+    const APP_VERSION = "6.8.33.5.1";
     const APP_BUILD_DATE = "2026-09-01";
 
     const firebaseConfig = {
@@ -10666,8 +10667,13 @@ ${error.message||error}`); }
         const b=document.createElement("button"); b.type="button"; b.className=`project-action-tile ${t.tone||"info"}`; b.title=`${t.label}を開く`;
         const icon=document.createElement("span"); icon.className="project-action-icon"; icon.textContent=t.icon;
         const value=document.createElement("strong"); value.textContent=t.value;
-        const label=document.createElement("span"); label.textContent=`${t.label}${t.detail?`｜${t.detail}`:""}`;
-        b.append(icon,value,label); b.addEventListener("click",()=>qtsOpenProjectDashboardTarget(t.target)); grid.appendChild(b);
+        const label=document.createElement("span"); label.className="project-action-label"; label.textContent=t.label;
+        b.append(icon,value,label);
+        if(t.detail){
+          const detail=document.createElement("span"); detail.className="project-action-detail"; detail.textContent=t.detail;
+          b.appendChild(detail);
+        }
+        b.addEventListener("click",()=>qtsOpenProjectDashboardTarget(t.target)); grid.appendChild(b);
       });
 
       if(projectPhotoTransferQueueState==="loading" || (desktopLocalUi && localState.status==="loading")){
