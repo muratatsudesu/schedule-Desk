@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Q.T.S Scheduler — Ver.6.8.33.6.8</title>
+  <title>Q.T.S Scheduler — Ver.6.8.33.6.9</title>
   <link rel="icon" href="favicon.ico?v=655" sizes="any">
   <link rel="shortcut icon" href="favicon.ico?v=655" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=655">
@@ -3720,6 +3720,55 @@
       border: 1px solid #416a90;
     }
 
+    /* Ver.6.8.33.6.9：出張旅費の複数選択・まとめExcel出力 */
+    .expense-travel-batch-controls {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px;
+      min-width: 0;
+    }
+    .expense-travel-batch-info {
+      color: #5b4939;
+      font-size: .76rem;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+    .expense-travel-batch-mini {
+      padding: 6px 9px;
+      color: #5b4635;
+      font-size: .7rem;
+      font-weight: 800;
+      background: #fffaf3;
+      border: 1px solid #d8c2a8;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+    .expense-travel-batch-select {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 8px;
+      color: #694b2e;
+      font-size: .69rem;
+      font-weight: 850;
+      background: #fff8e8;
+      border: 1px solid #dfc18d;
+      border-radius: 7px;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .expense-travel-batch-select input {
+      width: auto;
+      margin: 0;
+      accent-color: #8a5b2e;
+    }
+    .expense-month-item.is-batch-selected {
+      box-shadow: 0 0 0 2px rgba(176, 117, 46, .22), 0 3px 10px rgba(65, 47, 34, .055);
+      background: #fffaf1;
+    }
+
     /* Ver.6.8.33.6.5:
        経費一覧の小型操作ボタンは hover 時に位置を動かさない。
        共通 button:hover の translateY(-1px) がポインター境界で反復し、
@@ -4478,9 +4527,18 @@
           <select id="expenseTravelExportSelect" aria-label="出張旅費Excel出力対象"></select>
           <button type="button" class="expense-export-btn travel" id="expenseExportTravelBtn">🧳 出張旅費Excel出力</button>
         </div>
+        <div class="expense-export-row">
+          <span class="expense-export-label">出張旅費まとめ</span>
+          <div class="expense-travel-batch-controls">
+            <button type="button" class="expense-travel-batch-mini" id="expenseTravelBatchAllBtn">今月の出張を全選択</button>
+            <span class="expense-travel-batch-info" id="expenseTravelBatchInfo">0件選択 / 0円</span>
+            <button type="button" class="expense-travel-batch-mini" id="expenseTravelBatchClearBtn" disabled>選択解除</button>
+          </div>
+          <button type="button" class="expense-export-btn travel" id="expenseExportTravelBatchBtn" disabled>🧳 選択分をまとめてExcel出力</button>
+        </div>
         <div class="expense-export-note">
           ※ 現在選択している月と「未精算 / 精算済み / すべて」を反映します。Excel出力しても自動で「精算済み」には変更しません。<br>
-          ※ 出張旅費は、選んだ出張メモ内の全移動区間を漏れなく出力し、同じ出張期間内に保存された出張交通費も日付順にまとめます。日当は1日ごとに2,000円、宿泊費は最終日を除く各宿泊日に1泊単価を反映します。業務費は1回だけ反映します。未保存の経費編集がある場合はExcel出力前に警告します。時刻は現在未入力のため空欄です。
+          ※ 出張旅費は、1件出力では選んだ出張期間内の交通費も日付順にまとめます。「選択分をまとめてExcel出力」は月次一覧でチェックした経費カードだけを1回ずつ合算します。日当は1日ごとに2,000円、宿泊費は最終日を除く各宿泊日に1泊単価、業務費は各経費につき1回だけ反映します。会社様式は明細19行までです。未保存の経費編集がある場合はExcel出力前に警告します。時刻は現在未入力のため空欄です。
         </div>
       </div>
     </section>
@@ -5120,7 +5178,7 @@
         </div>
         <div class="app-info-panel">
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.21</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.8.33.6.8：出張旅費Excelで業務費を入力しても小計・旅費総額へ即時反映されない問題を修正。業務費セルへの書込みに加え、交通費・日当・宿泊費・業務費の各小計と旅費総額の数式キャッシュをQ.T.S側で計算して保存し、Excel側の再計算状態に左右されず正しい金額を表示<br>Ver.6.8.33.6.7：経費同期ドキュメントの更新でprivateSchedules監視が反応するたびスケジュール全体と月次経費一覧を再描画し、経費編集ボタンがDOMごと差し替わって小刻みに揺れクリックできない問題を修正。経費だけの更新ではrenderAllを実行せず、月次一覧も表示内容が同一なら既存DOMを保持する二重対策を追加<br>Ver.6.8.33.6.6：月次経費一覧で同期済み経費の元予定を照合できない場合に「経費編集」が無効になる問題を修正。保存済みの予定名・開始日・終了日と経費キーから編集用情報を安全に復元し、元予定の読込状態に左右されず経費を編集可能に改善<br>Ver.6.8.33.6.5：月次経費一覧の「経費編集」「精算済みにする」等で、共通ボタンhoverの1px移動によりカーソル境界で上下振動しクリックできない場合がある問題を修正。経費一覧の操作ボタンだけ位置移動を無効化し、明るさ・影のhover表現は維持<br>Ver.6.8.33.6.4：スマホ写真転送の画像読み込み互換性を強化。通常画像のデコード失敗時はcreateImageBitmapを試し、HEIC/HEIFはブラウザ内でJPEG変換して送信可能に改善。写真送信先に「製作写真／現場写真」を追加し、工場写真はPCの製作写真\撮影日へ直接取り込めるよう対応。既存の現場写真転送とCSV管理は維持<br>Ver.6.8.33.6.3：スマホの出張経費入力でPC用7列レイアウトが残り、乗車駅・降車駅欄が極端に細くなる不具合を修正。スマホでは移動明細を確実に2列表示へ切替<br>Ver.6.8.33.6.2：経費同期の経路履歴ドキュメントIDをFirestoreの予約形式 `__...__` から通常IDへ変更。連続同期時のステータス表示も安定化し、「同期中／失敗」の点滅を抑制<br>Ver.6.8.33.6.1：経費クラウド同期のFirestore権限不具合を修正。本人用privateSchedulesの保存条件に合わせてvisibility="private"を付与し、PC・スマホ間の経費同期が権限拒否される問題を解消<br>Ver.6.8.33.6：経費メモと経路履歴をログイン本人専用のFirebaseへ同期。PC・スマホ・タブレットで同じ経費を共有し、端末内キャッシュを安全用に維持。既存の端末内経費は初回同期時にupdatedAtで新しい内容を優先して統合し、削除はクラウド側に削除記録を残して別端末からの復活を防止。精算済み状態とExcel出力対象も端末間で統一<br>Ver.6.8.33.5.1：案件ダッシュボードの視認性を改善。6列1段レイアウトは維持したまま、項目名を太字化し、状態・件数表示を少し大きく、カード高さをわずかに拡大。補足説明を項目名と分離して読みやすく調整<br>Ver.6.8.33.5：PC案件管理に「製作写真」を正式追加。新規・既存案件のフォルダへ「製作写真」を用意し、画像枚数を案件ダッシュボードと資料件数に表示。ダッシュボードの「製作写真」からサムネイルギャラリーを直接開けるよう対応<br>Ver.6.8.33.4：案件管理に「＋ 新規案件を追加」を追加。案件名・担当者・納期・状態を入力すると固定案件No.を自動採番し、案件共有データへ保存。再ログイン時も共有案件を復元し、案件一覧・詳細納期順・年間予定表Excel更新へそのまま連携。登録案件数も自動集計<br>Ver.6.8.33.3：図面一覧を大量資料向けに改善。図番・図面名の即時検索、最新版中心/すべての版の切替、図番の親番号（例：F-193）単位のまとまり表示、コンパクトな1行表示を追加。単独図面と最新版未指定の系統は最新版中心でも表示し、旧版だけを必要時に隠せる安全方式<br>Ver.6.8.33.2.1：案件一覧の色分けと「今年／来年以降」絞り込みを、固定の年度情報ではなく最新の詳細納期に追従するよう修正。納期を2027年から2026年へ変更した案件は、保存後すぐ今年側の緑表示へ切り替わる。管理用の年度情報は変更せず保持<br>Ver.6.8.33.2：案件一覧の左丸数字を非表示化し、詳細納期の開始日順へ自動整列。納期保存後も即座に並び替え、日付未確定の「○年○月ごろ」案件も概算月順で配置。固定の案件No.は従来どおり保持<br>Ver.6.8.33.1：交通費精算書Excelの後半明細で日付がシリアル値（例：46265）表示になる書式不具合を修正。明細末尾まで「8月31日」のような日付表示を維持<br>Ver.6.8.33：作業完了報告書を追加。現場日報と進捗から作業期間・作業内容・完了状況を自動取り込みでき、PCの現場写真から最大6枚を選択してA4印刷/PDF保存に対応。報告書内容は案件共有データへ保存<br>Ver.6.8.32：是正・残工事からリペア業者向けA4「是正リスト」を印刷/PDF保存できる帳票出力を追加。期限・内部状態は印刷せず、場所・アイテム・是正内容・是正済み・是正後チェックに絞り、現在の絞り込み結果を現場で回りやすい場所順に出力<br>Ver.6.8.31：バックアップ・復元を追加。共有予定・カテゴリー・案件共有情報・自分のプライベート予定・本人専用経費メモ等をJSONへ保存し、管理者は復元前の自動安全バックアップ後に上書き復元可能。復元は新規データを勝手に削除しない安全方式<br>Ver.6.8.30：PC案件資料の図面・工程表・その他に版管理を追加。Rev表記の自動判定、最新版指定、版メモ、案件ダッシュボードの最新版未指定警告に対応<br>Ver.6.8.29.1：案件ダッシュボードにPC資料アクセス許可の案内と、図面・現場写真へのワンタップ導線を追加<br>Ver.6.8.29：案件詳細の先頭に「案件ダッシュボード」を追加。客室・パブリック未完了、是正、当日日報、写真受取待ち、重要事項を一目で確認し、各機能へ直接移動できる未処理ナビに対応<br>Ver.6.8.28.1：大項目「年間予定表」を「案件管理」へ名称変更。年間予定表Excel連携の名称はそのまま残し、案件管理画面として役割を整理<br>Ver.6.8.28：現場日報を追加。日付・入退場時間・作業人数・作業内容・問題点・翌日の予定を案件ごとに共有保存し、日付別一覧・編集・削除・当日の是正状況確認に対応<br>Ver.6.8.27.1：是正・残工事から担当者欄を撤去。場所・アイテム・内容・期限・状態・対応メモに絞り、既存の見た目を崩さず入力と一覧表示を簡潔化<br>Ver.6.8.27：是正・残工事管理を追加。NGチェックから是正登録し、期限・状態・コメントを共有管理。未対応/対応中/完了の絞り込み、元チェックへの移動、完了＋元チェックOK、手動追加、現場写真への導線に対応<br>Ver.6.8.26.1：客室タイプの編集に対応。タイプ名・アイテム追加/名称変更/削除を行え、使用中タイプも安全に更新。削除アイテムに既存チェックがある場合は確認表示<br>Ver.6.8.26：現場進捗・客室チェック管理の試作版を追加。案件ごとに客室/パブリックをON/OFFし、現場全体チェック、客室タイプ、部屋一括登録、客室/パブリックのアイテムOK/NG/対象外・コメント・進捗集計に対応<br>Ver.6.8.25：案件詳細に「重要事項・申し送り」を追加。搬入条件・立会い・駐車・現場ルール等をPC/スマホで共有保存し、案件を開いた直後に目立つ固定欄で確認可能<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.8.33.6.9：月次経費一覧の出張カードに「Excel選択」を追加し、複数の出張経費を会社様式の出張旅費精算書1枚へまとめて出力できる機能を追加。選択したカードだけを1回ずつ合算し、交通費・日当・宿泊費・業務費を各経費単位で反映。画面カード合計とExcel計算合計が一致しない場合は金額事故防止のため出力を中止。会社様式19明細行を超える場合も自動切捨てせず警告して停止<br>Ver.6.8.33.6.8：出張旅費Excelで業務費を入力しても小計・旅費総額へ即時反映されない問題を修正。業務費セルへの書込みに加え、交通費・日当・宿泊費・業務費の各小計と旅費総額の数式キャッシュをQ.T.S側で計算して保存し、Excel側の再計算状態に左右されず正しい金額を表示<br>Ver.6.8.33.6.7：経費同期ドキュメントの更新でprivateSchedules監視が反応するたびスケジュール全体と月次経費一覧を再描画し、経費編集ボタンがDOMごと差し替わって小刻みに揺れクリックできない問題を修正。経費だけの更新ではrenderAllを実行せず、月次一覧も表示内容が同一なら既存DOMを保持する二重対策を追加<br>Ver.6.8.33.6.6：月次経費一覧で同期済み経費の元予定を照合できない場合に「経費編集」が無効になる問題を修正。保存済みの予定名・開始日・終了日と経費キーから編集用情報を安全に復元し、元予定の読込状態に左右されず経費を編集可能に改善<br>Ver.6.8.33.6.5：月次経費一覧の「経費編集」「精算済みにする」等で、共通ボタンhoverの1px移動によりカーソル境界で上下振動しクリックできない場合がある問題を修正。経費一覧の操作ボタンだけ位置移動を無効化し、明るさ・影のhover表現は維持<br>Ver.6.8.33.6.4：スマホ写真転送の画像読み込み互換性を強化。通常画像のデコード失敗時はcreateImageBitmapを試し、HEIC/HEIFはブラウザ内でJPEG変換して送信可能に改善。写真送信先に「製作写真／現場写真」を追加し、工場写真はPCの製作写真\撮影日へ直接取り込めるよう対応。既存の現場写真転送とCSV管理は維持<br>Ver.6.8.33.6.3：スマホの出張経費入力でPC用7列レイアウトが残り、乗車駅・降車駅欄が極端に細くなる不具合を修正。スマホでは移動明細を確実に2列表示へ切替<br>Ver.6.8.33.6.2：経費同期の経路履歴ドキュメントIDをFirestoreの予約形式 `__...__` から通常IDへ変更。連続同期時のステータス表示も安定化し、「同期中／失敗」の点滅を抑制<br>Ver.6.8.33.6.1：経費クラウド同期のFirestore権限不具合を修正。本人用privateSchedulesの保存条件に合わせてvisibility="private"を付与し、PC・スマホ間の経費同期が権限拒否される問題を解消<br>Ver.6.8.33.6：経費メモと経路履歴をログイン本人専用のFirebaseへ同期。PC・スマホ・タブレットで同じ経費を共有し、端末内キャッシュを安全用に維持。既存の端末内経費は初回同期時にupdatedAtで新しい内容を優先して統合し、削除はクラウド側に削除記録を残して別端末からの復活を防止。精算済み状態とExcel出力対象も端末間で統一<br>Ver.6.8.33.5.1：案件ダッシュボードの視認性を改善。6列1段レイアウトは維持したまま、項目名を太字化し、状態・件数表示を少し大きく、カード高さをわずかに拡大。補足説明を項目名と分離して読みやすく調整<br>Ver.6.8.33.5：PC案件管理に「製作写真」を正式追加。新規・既存案件のフォルダへ「製作写真」を用意し、画像枚数を案件ダッシュボードと資料件数に表示。ダッシュボードの「製作写真」からサムネイルギャラリーを直接開けるよう対応<br>Ver.6.8.33.4：案件管理に「＋ 新規案件を追加」を追加。案件名・担当者・納期・状態を入力すると固定案件No.を自動採番し、案件共有データへ保存。再ログイン時も共有案件を復元し、案件一覧・詳細納期順・年間予定表Excel更新へそのまま連携。登録案件数も自動集計<br>Ver.6.8.33.3：図面一覧を大量資料向けに改善。図番・図面名の即時検索、最新版中心/すべての版の切替、図番の親番号（例：F-193）単位のまとまり表示、コンパクトな1行表示を追加。単独図面と最新版未指定の系統は最新版中心でも表示し、旧版だけを必要時に隠せる安全方式<br>Ver.6.8.33.2.1：案件一覧の色分けと「今年／来年以降」絞り込みを、固定の年度情報ではなく最新の詳細納期に追従するよう修正。納期を2027年から2026年へ変更した案件は、保存後すぐ今年側の緑表示へ切り替わる。管理用の年度情報は変更せず保持<br>Ver.6.8.33.2：案件一覧の左丸数字を非表示化し、詳細納期の開始日順へ自動整列。納期保存後も即座に並び替え、日付未確定の「○年○月ごろ」案件も概算月順で配置。固定の案件No.は従来どおり保持<br>Ver.6.8.33.1：交通費精算書Excelの後半明細で日付がシリアル値（例：46265）表示になる書式不具合を修正。明細末尾まで「8月31日」のような日付表示を維持<br>Ver.6.8.33：作業完了報告書を追加。現場日報と進捗から作業期間・作業内容・完了状況を自動取り込みでき、PCの現場写真から最大6枚を選択してA4印刷/PDF保存に対応。報告書内容は案件共有データへ保存<br>Ver.6.8.32：是正・残工事からリペア業者向けA4「是正リスト」を印刷/PDF保存できる帳票出力を追加。期限・内部状態は印刷せず、場所・アイテム・是正内容・是正済み・是正後チェックに絞り、現在の絞り込み結果を現場で回りやすい場所順に出力<br>Ver.6.8.31：バックアップ・復元を追加。共有予定・カテゴリー・案件共有情報・自分のプライベート予定・本人専用経費メモ等をJSONへ保存し、管理者は復元前の自動安全バックアップ後に上書き復元可能。復元は新規データを勝手に削除しない安全方式<br>Ver.6.8.30：PC案件資料の図面・工程表・その他に版管理を追加。Rev表記の自動判定、最新版指定、版メモ、案件ダッシュボードの最新版未指定警告に対応<br>Ver.6.8.29.1：案件ダッシュボードにPC資料アクセス許可の案内と、図面・現場写真へのワンタップ導線を追加<br>Ver.6.8.29：案件詳細の先頭に「案件ダッシュボード」を追加。客室・パブリック未完了、是正、当日日報、写真受取待ち、重要事項を一目で確認し、各機能へ直接移動できる未処理ナビに対応<br>Ver.6.8.28.1：大項目「年間予定表」を「案件管理」へ名称変更。年間予定表Excel連携の名称はそのまま残し、案件管理画面として役割を整理<br>Ver.6.8.28：現場日報を追加。日付・入退場時間・作業人数・作業内容・問題点・翌日の予定を案件ごとに共有保存し、日付別一覧・編集・削除・当日の是正状況確認に対応<br>Ver.6.8.27.1：是正・残工事から担当者欄を撤去。場所・アイテム・内容・期限・状態・対応メモに絞り、既存の見た目を崩さず入力と一覧表示を簡潔化<br>Ver.6.8.27：是正・残工事管理を追加。NGチェックから是正登録し、期限・状態・コメントを共有管理。未対応/対応中/完了の絞り込み、元チェックへの移動、完了＋元チェックOK、手動追加、現場写真への導線に対応<br>Ver.6.8.26.1：客室タイプの編集に対応。タイプ名・アイテム追加/名称変更/削除を行え、使用中タイプも安全に更新。削除アイテムに既存チェックがある場合は確認表示<br>Ver.6.8.26：現場進捗・客室チェック管理の試作版を追加。案件ごとに客室/パブリックをON/OFFし、現場全体チェック、客室タイプ、部屋一括登録、客室/パブリックのアイテムOK/NG/対象外・コメント・進捗集計に対応<br>Ver.6.8.25：案件詳細に「重要事項・申し送り」を追加。搬入条件・立会い・駐車・現場ルール等をPC/スマホで共有保存し、案件を開いた直後に目立つ固定欄で確認可能<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
           Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年9月1日
         </div>
@@ -5264,7 +5322,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.33.6.8";
+    const APP_VERSION = "6.8.33.6.9";
     const APP_BUILD_DATE = "2026-09-02";
 
     const firebaseConfig = {
@@ -5338,6 +5396,8 @@
     let expenseOriginalFormSnapshot = "";
     let expenseSnapshotReady = false;
     let expenseBypassUnsavedWarning = false;
+    // Ver.6.8.33.6.9：月次一覧から選択した出張経費キー
+    const expenseTravelBatchSelectedKeys = new Set();
 
     // ===== Ver.6.8.21 端末別UI =====
     function qtsIsMobileOrTabletUi() {
@@ -5439,6 +5499,9 @@
       document.getElementById("expenseTypeFilter").addEventListener("change", renderExpenseMonthlyView);
       document.getElementById("expenseExportNormalBtn").addEventListener("click", exportNormalExpenseExcel);
       document.getElementById("expenseExportTravelBtn").addEventListener("click", exportTravelExpenseExcel);
+      document.getElementById("expenseExportTravelBatchBtn").addEventListener("click", exportSelectedTravelExpensesExcel);
+      document.getElementById("expenseTravelBatchAllBtn").addEventListener("click", selectAllExpenseTravelBatch);
+      document.getElementById("expenseTravelBatchClearBtn").addEventListener("click", clearExpenseTravelBatchSelection);
       document.getElementById("annualSearch").addEventListener("input", filterAnnualProjects);
       document.getElementById("annualYearFilter").addEventListener("change", filterAnnualProjects);
       document.getElementById("annualExcelFile").addEventListener("change", handleAnnualExcelSelection);
@@ -8747,6 +8810,26 @@
       const actions = document.createElement("div");
       actions.className = "expense-month-actions";
 
+      if ((expense.type || "normal") === "trip") {
+        const batchLabel = document.createElement("label");
+        batchLabel.className = "expense-travel-batch-select";
+        const batchCheck = document.createElement("input");
+        batchCheck.type = "checkbox";
+        batchCheck.dataset.expenseBatchKey = entry.key;
+        batchCheck.checked = expenseTravelBatchSelectedKeys.has(entry.key);
+        item.classList.toggle("is-batch-selected", batchCheck.checked);
+        const batchText = document.createElement("span");
+        batchText.textContent = "Excel選択";
+        batchCheck.addEventListener("change", () => {
+          if (batchCheck.checked) expenseTravelBatchSelectedKeys.add(entry.key);
+          else expenseTravelBatchSelectedKeys.delete(entry.key);
+          item.classList.toggle("is-batch-selected", batchCheck.checked);
+          updateExpenseTravelBatchUi();
+        });
+        batchLabel.append(batchCheck, batchText);
+        actions.appendChild(batchLabel);
+      }
+
       const toggle = document.createElement("button");
       toggle.type = "button";
       toggle.className = expense.settled ? "expense-unsettle-btn" : "expense-settle-btn";
@@ -8917,6 +9000,13 @@
         }
       }
       if (travelBtn) travelBtn.disabled = !travelEntries.length;
+
+      // 月・精算状態が変わったら、その画面で対象外になった選択は外す。
+      const allowedBatchKeys = new Set(travelEntries.map(entry => entry.key));
+      Array.from(expenseTravelBatchSelectedKeys).forEach(key => {
+        if (!allowedBatchKeys.has(key)) expenseTravelBatchSelectedKeys.delete(key);
+      });
+      updateExpenseTravelBatchUi(travelEntries);
     }
 
     function qtsBase64ToBytes(base64) {
@@ -9182,6 +9272,235 @@
         businessParty: selectedExpense?.businessParty || withBusiness?.expense?.businessParty || "",
         note: selectedExpense?.note || ""
       };
+    }
+
+    function getExpenseTravelBatchAvailableEntries() {
+      return getExpenseExportEntries("trip");
+    }
+
+    function updateExpenseTravelBatchUi(availableEntries = null) {
+      const entries = Array.isArray(availableEntries) ? availableEntries : getExpenseTravelBatchAvailableEntries();
+      const selectedEntries = entries.filter(entry => expenseTravelBatchSelectedKeys.has(entry.key));
+      const selectedTotal = selectedEntries.reduce((sum, entry) => sum + getExpenseTotal(entry.expense || {}), 0);
+
+      const info = document.getElementById("expenseTravelBatchInfo");
+      const exportBtn = document.getElementById("expenseExportTravelBatchBtn");
+      const clearBtn = document.getElementById("expenseTravelBatchClearBtn");
+      const allBtn = document.getElementById("expenseTravelBatchAllBtn");
+      if (info) info.textContent = `${selectedEntries.length}件選択 / ${formatExpenseMoney(selectedTotal)}円`;
+      if (exportBtn) exportBtn.disabled = selectedEntries.length === 0;
+      if (clearBtn) clearBtn.disabled = selectedEntries.length === 0;
+      if (allBtn) allBtn.disabled = entries.length === 0;
+
+      document.querySelectorAll('input[data-expense-batch-key]').forEach(input => {
+        const key = input.dataset.expenseBatchKey || "";
+        input.checked = expenseTravelBatchSelectedKeys.has(key);
+        input.closest(".expense-month-item")?.classList.toggle("is-batch-selected", input.checked);
+      });
+    }
+
+    function selectAllExpenseTravelBatch() {
+      const entries = getExpenseTravelBatchAvailableEntries();
+      entries.forEach(entry => expenseTravelBatchSelectedKeys.add(entry.key));
+      updateExpenseTravelBatchUi(entries);
+    }
+
+    function clearExpenseTravelBatchSelection() {
+      expenseTravelBatchSelectedKeys.clear();
+      updateExpenseTravelBatchUi();
+    }
+
+    function qtsBuildSelectedTravelExportRows(entries) {
+      const rows = [];
+      const sorted = [...(entries || [])].sort((a,b) =>
+        String(a.date || "").localeCompare(String(b.date || "")) ||
+        String(a.title || "").localeCompare(String(b.title || ""), "ja")
+      );
+
+      sorted.forEach(entry => {
+        const expense = entry.expense || {};
+        const start = entry.schedule?.startDate || expense.scheduleDate || entry.date || "";
+        const end = entry.schedule?.endDate || expense.scheduleEndDate || start;
+        const dates = getExpenseTripDateList(start, end);
+        const lines = getExpenseLinesWithTripDates(expense, start, end);
+        const lodgingNights = Math.max(0, dates.length - 1);
+        const lodgingRate = Math.max(0, Number(expense.lodgingAmount || 0));
+        const perDiemTotal = getExpensePerDiemAmount(expense);
+        let remainingPerDiem = perDiemTotal;
+        let entryFirstRow = true;
+
+        dates.forEach((date, dayIndex) => {
+          const dayLines = lines.filter(line => line.date === date);
+          const rowsForDay = dayLines.length ? dayLines : [{}];
+          rowsForDay.forEach((line, lineIndex) => {
+            let perDiem = 0;
+            if (lineIndex === 0 && remainingPerDiem > 0) {
+              perDiem = dayIndex === dates.length - 1
+                ? remainingPerDiem
+                : Math.min(EXPENSE_PER_DIEM_RATE, remainingPerDiem);
+              remainingPerDiem = Math.max(0, remainingPerDiem - perDiem);
+            }
+
+            rows.push({
+              date: lineIndex === 0 ? date : "",
+              perDiem,
+              lodgingPlace: lineIndex === 0 && dayIndex < lodgingNights ? String(expense.lodgingPlace || "") : "",
+              lodgingAmount: lineIndex === 0 && dayIndex < lodgingNights ? lodgingRate : 0,
+              businessPurpose: entryFirstRow ? String(expense.businessPurpose || "") : "",
+              businessAmount: entryFirstRow ? Math.max(0, Number(expense.businessAmount || 0)) : 0,
+              businessParty: entryFirstRow ? String(expense.businessParty || "") : "",
+              line,
+              entryKey: entry.key,
+              entryTitle: entry.title || expense.destination || "予定"
+            });
+            entryFirstRow = false;
+          });
+        });
+
+        if (!dates.length) {
+          const fallbackLines = lines.length ? lines : [{}];
+          fallbackLines.forEach((line, index) => {
+            rows.push({
+              date: index === 0 ? (start || entry.date || "") : "",
+              perDiem: index === 0 ? perDiemTotal : 0,
+              lodgingPlace: "",
+              lodgingAmount: 0,
+              businessPurpose: index === 0 ? String(expense.businessPurpose || "") : "",
+              businessAmount: index === 0 ? Math.max(0, Number(expense.businessAmount || 0)) : 0,
+              businessParty: index === 0 ? String(expense.businessParty || "") : "",
+              line,
+              entryKey: entry.key,
+              entryTitle: entry.title || expense.destination || "予定"
+            });
+          });
+        }
+      });
+
+      return rows;
+    }
+
+    async function exportSelectedTravelExpensesExcel() {
+      if (!ensureExpenseExportHasNoUnsavedChanges()) return;
+
+      const availableEntries = getExpenseTravelBatchAvailableEntries();
+      const selectedEntries = availableEntries.filter(entry => expenseTravelBatchSelectedKeys.has(entry.key));
+      if (!selectedEntries.length) {
+        alert("月次一覧で、まとめて出力する出張経費に「Excel選択」を付けてください。");
+        return;
+      }
+
+      const exportRows = qtsBuildSelectedTravelExportRows(selectedEntries);
+      if (exportRows.length > 19) {
+        alert(`選択した経費は会社様式で${exportRows.length}明細行になります。\nこの様式は最大19行です。選択する経費を減らしてからもう一度出力してください。`);
+        return;
+      }
+
+      const starts = selectedEntries.map(entry =>
+        entry.schedule?.startDate || entry.expense?.scheduleDate || entry.date || ""
+      ).filter(Boolean).sort();
+      const ends = selectedEntries.map(entry =>
+        entry.schedule?.endDate || entry.expense?.scheduleEndDate ||
+        entry.schedule?.startDate || entry.expense?.scheduleDate || entry.date || ""
+      ).filter(Boolean).sort();
+
+      const start = starts[0] || "";
+      const end = ends[ends.length - 1] || start;
+      const totalTripDays = selectedEntries.reduce((sum, entry) => {
+        const e = entry.expense || {};
+        const s = entry.schedule?.startDate || e.scheduleDate || entry.date || "";
+        const t = entry.schedule?.endDate || e.scheduleEndDate || s;
+        return sum + getExpenseTripDateList(s, t).length;
+      }, 0);
+
+      const destinations = Array.from(new Set(selectedEntries.map(entry =>
+        String(entry.expense?.destination || entry.title || "").trim()
+      ).filter(Boolean)));
+      let destinationText = destinations.join(" / ");
+      if (destinationText.length > 55) destinationText = `複数出張（${selectedEntries.length}件）`;
+
+      const monthValue = document.getElementById("expenseMonthPicker")?.value || String(start || "").slice(0,7);
+      const monthLabel = /^\d{4}-\d{2}$/.test(monthValue)
+        ? `${Number(monthValue.slice(0,4))}年${Number(monthValue.slice(5,7))}月`
+        : "月次";
+      const purposeText = `${monthLabel} 選択経費${selectedEntries.length}件`;
+
+      const notes = selectedEntries
+        .filter(entry => String(entry.expense?.note || "").trim())
+        .map(entry => `${formatExpenseListDate(entry.date)} ${entry.title || "予定"}：${String(entry.expense.note).trim()}`);
+      let noteText = notes.join(" / ");
+      if (noteText.length > 180) noteText = noteText.slice(0,177) + "…";
+
+      const transportSubtotal = exportRows.reduce((sum,row) => sum + Math.max(0, Number(row.line?.amount || 0)), 0);
+      const perDiemSubtotal = exportRows.reduce((sum,row) => sum + Math.max(0, Number(row.perDiem || 0)), 0);
+      const lodgingSubtotal = exportRows.reduce((sum,row) => sum + Math.max(0, Number(row.lodgingAmount || 0)), 0);
+      const businessSubtotal = exportRows.reduce((sum,row) => sum + Math.max(0, Number(row.businessAmount || 0)), 0);
+      const grandTotal = transportSubtotal + perDiemSubtotal + lodgingSubtotal + businessSubtotal;
+      const selectedCardTotal = selectedEntries.reduce((sum,entry) => sum + getExpenseTotal(entry.expense || {}), 0);
+
+      if (Math.abs(grandTotal - selectedCardTotal) > 0.01) {
+        alert(`選択した経費カード合計 ${formatExpenseMoney(selectedCardTotal)}円 と、Excel作成用合計 ${formatExpenseMoney(grandTotal)}円 が一致しません。\n金額事故防止のため出力を中止しました。各経費を開いて保存し直してからお試しください。`);
+        return;
+      }
+
+      try {
+        const ctx = await qtsPrepareTemplate(QTS_TRAVEL_TEMPLATE_B64);
+        const sheetEntry = ctx.map.get("xl/worksheets/sheet1.xml");
+        const wbEntry = ctx.map.get("xl/workbook.xml");
+        let xml = ctx.decoder.decode(sheetEntry.data);
+        let wbxml = ctx.decoder.decode(wbEntry.data);
+
+        for (let r=12; r<=30; r++) {
+          for (const ref of [`A${r}`,`B${r}`,`C${r}`,`I${r}`,`O${r}`,`T${r}`,`W${r}`,`Z${r}`,`AE${r}`,`AH${r}`,`AM${r}`,`AP${r}`]) {
+            xml = qtsSetCellXml(xml, ref, "");
+          }
+        }
+
+        if (start) xml = qtsSetCellXml(xml, "B4", qtsExcelSerial(start), "number");
+        if (end) xml = qtsSetCellXml(xml, "J4", qtsExcelSerial(end), "number");
+        xml = qtsSetCellXml(xml, "Q4", totalTripDays, "number");
+        xml = qtsSetCellXml(xml, "L6", destinationText || `複数出張（${selectedEntries.length}件）`);
+        xml = qtsSetCellXml(xml, "U6", purposeText);
+        xml = qtsSetCellXml(xml, "A35", noteText);
+
+        exportRows.forEach((row, i) => {
+          const r = 12 + i;
+          if (row.date) {
+            const parts = String(row.date).split("-").map(Number);
+            xml = qtsSetCellXml(xml, `A${r}`, parts[1] || "", "number");
+            xml = qtsSetCellXml(xml, `B${r}`, parts[2] || "", "number");
+          }
+          const line = row.line || {};
+          xml = qtsSetCellXml(xml, `C${r}`, line.from || "");
+          xml = qtsSetCellXml(xml, `I${r}`, line.to || "");
+          xml = qtsSetCellXml(xml, `O${r}`, line.route || ((line.from || line.to || line.amount) ? getExpenseModeLabel(line.mode) : ""));
+          if (Math.max(0, Number(line.amount || 0)) > 0) xml = qtsSetCellXml(xml, `T${r}`, Math.max(0, Number(line.amount || 0)), "number");
+          if (row.perDiem > 0) xml = qtsSetCellXml(xml, `W${r}`, row.perDiem, "number");
+          if (row.lodgingPlace) xml = qtsSetCellXml(xml, `Z${r}`, row.lodgingPlace);
+          if (row.lodgingAmount > 0) xml = qtsSetCellXml(xml, `AE${r}`, row.lodgingAmount, "number");
+          if (row.businessPurpose) xml = qtsSetCellXml(xml, `AH${r}`, row.businessPurpose);
+          if (row.businessAmount > 0) xml = qtsSetCellXml(xml, `AM${r}`, row.businessAmount, "number");
+          if (row.businessParty) xml = qtsSetCellXml(xml, `AP${r}`, row.businessParty);
+        });
+
+        xml = qtsSetFormulaCache(xml, "T31", transportSubtotal);
+        xml = qtsSetFormulaCache(xml, "W31", perDiemSubtotal);
+        xml = qtsSetFormulaCache(xml, "AE31", lodgingSubtotal);
+        xml = qtsSetFormulaCache(xml, "AM31", businessSubtotal);
+        xml = qtsSetFormulaCache(xml, "AS31", grandTotal);
+        xml = qtsSetFormulaCache(xml, "AR34", grandTotal);
+        xml = qtsSetFormulaCache(xml, "AR36", grandTotal);
+        wbxml = qtsForceRecalc(wbxml);
+
+        sheetEntry.data = ctx.encoder.encode(xml);
+        wbEntry.data = ctx.encoder.encode(wbxml);
+        const bytes = qtsZipStore(ctx.entries);
+        const monthFile = /^\d{4}-\d{2}$/.test(monthValue) ? monthValue : (start || "まとめ");
+        qtsDownloadBytes(bytes, `出張旅費精算書_${qtsSafeFileName(monthFile)}_選択${selectedEntries.length}件.xlsx`);
+        showStatusMessage(`選択した出張経費${selectedEntries.length}件を1枚のExcelへまとめました（${exportRows.length}明細・合計${formatExpenseMoney(grandTotal)}円）。`, "success");
+      } catch (error) {
+        console.error(error);
+        alert(`まとめExcel出力に失敗しました。\n${error.message || error}`);
+      }
     }
 
     async function exportTravelExpenseExcel() {
