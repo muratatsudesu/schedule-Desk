@@ -10226,6 +10226,21 @@
       return `<xdr:oneCellAnchor><xdr:from><xdr:col>${Math.max(0,Number(col)||0)}</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>${Math.max(0,Number(row)||0)}</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:from><xdr:ext cx="${emu}" cy="${emu}"/><xdr:pic><xdr:nvPicPr><xdr:cNvPr id="${pictureId}" name="QTS Reimbursement QR" descr="Q.T.S返金照合QR"/><xdr:cNvPicPr/></xdr:nvPicPr><xdr:blipFill><a:blip r:embed="${relationshipId}"/><a:stretch><a:fillRect/></a:stretch></xdr:blipFill><xdr:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${emu}" cy="${emu}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></xdr:spPr></xdr:pic><xdr:clientData/></xdr:oneCellAnchor>`;
     }
 
+    // Ver.6.8.33.6.26: 一般交通費テンプレートにはゼロサイズの旧描画オブジェクトが1つ残っている。
+    // QR画像を追加するとExcelが描画パーツを修復する場合があるため、一般交通費だけ
+    // その不要な旧描画を空の描画コンテナへ置き換えてからQRを追加する。
+    function qtsPrepareTransportDrawingForQr(ctx) {
+      const drawingName = "xl/drawings/drawing1.xml";
+      const drawingEntry = ctx?.map?.get(drawingName);
+      if (!drawingEntry) throw new Error("交通費精算書テンプレートの描画情報が見つかりません。");
+      drawingEntry.data = ctx.encoder.encode(
+        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>` +
+        `<xdr:wsDr xmlns:xdr="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing" ` +
+        `xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" ` +
+        `xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"></xdr:wsDr>`
+      );
+    }
+
     function qtsAddQrToWorkbook(ctx, pngBytes, anchors = []) {
       if (!ctx?.map || !pngBytes?.length || !anchors.length) throw new Error("返金照合QRをExcelへ配置できませんでした。");
       const drawingName = "xl/drawings/drawing1.xml";
@@ -10314,6 +10329,7 @@
           fileName
         });
         const qrPng=await qtsCreateQrPngBytes(reimbursement.id);
+        qtsPrepareTransportDrawingForQr(ctx);
         qtsAddQrToWorkbook(
           ctx,
           qrPng,
