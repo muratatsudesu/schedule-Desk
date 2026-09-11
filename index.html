@@ -5744,7 +5744,7 @@
         </div>
         <div class="app-info-panel">
           <strong>Q.T.S Scheduler</strong><span class="app-info-version" id="settingsVersion">Ver.6.8.21</span><br>
-          無料プラン対応・写真圧縮保存版<br>Ver.6.8.33.6.23：案件詳細の整理整頓フェーズ第1弾。案件名・納期・状態は上部にコンパクト表示し、「案件概要を編集」を押した時だけ従来の編集欄を表示。案件ダッシュボードを「今日やること」へ名称整理し、重要事項・検査/現場進捗は常時表示。打合せ/口頭メモ＋関係者を「連絡・関係者」、関連予定＋PC案件資料＋写真転送を「資料・写真」の折りたたみに収納。既存の保存処理・工場検査・是正・日報・写真転送・PC資料管理機能は変更せず、ダッシュボードから折りたたみ内の機能へ移動する際は自動で展開するよう対応<br>Ver.6.8.33.6.22：工場検査の品番追加にQ.T.S独自の「品番履歴」を追加。同じ案件内で一度登録した品番を最大100件まで候補として保持し、ブラウザの入力履歴に依存せず常に選択可能に改善。履歴を選ぶと品番・数量・補足をまとめて入力し、必要ならその場で編集して追加できる。同一品番の候補は重複表示せず、直近に登録されている内容を優先<br>Ver.6.8.33.6.21：完了案件を専用リストへ移した後も通常の案件一覧に残って見える表示不具合を修正。案件カードのgrid表示がHTMLのhidden状態を上書きしていたため、完了案件カードは確実に非表示となるCSSを追加。完了案件リスト・年度別表示・完了日記録・PC側の手動「完了案件へ整理」は従来仕様を維持<br>Ver.6.8.33.6.20：案件管理に「📦 完了案件リスト」を追加。案件状態を「完了」にした時点で完了日を自動記録し、通常の案件一覧から完了案件を外して専用リストへ整理。完了案件リストは年度ごとに折りたたみ表示し、各案件は「案件名＋完了日」だけのコンパクト表示。タップすると従来どおり案件詳細を開ける。完了から進行中・未稼働などへ戻した場合は完了日を解除して通常一覧へ復帰。PC側の「完了案件」フォルダ整理は従来どおり手動操作を維持<br>Ver.6.8.33.6.19：工場検査の「家具タイプ」を検査テンプレートとして何度でも選べる方式へ変更。アイテム追加時に「検査テンプレート」と「アイテム名」を分離し、同じチェアテンプレートから「ダイニングチェア」「デスクチェア」など複数アイテムを登録可能に改善。登録済みテンプレートが選択肢から消える制限を撤廃し、アイテム名だけ重複禁止を維持<br>Ver.6.8.33.6.17：客室・パブリック未設定案件でも「検査・現場進捗」の基本レイアウトを常時表示するよう改善。工場検査・現場全体・是正・残工事・現場日報・作業完了報告書は初期設定前から利用でき、上部進捗カードも常時表示。客室・パブリックのタブだけ設定内容に応じて表示し、案件ごとの画面差を減らして時系列導線を統一<br>Ver.6.8.33.6.16：案件詳細の「現場進捗・客室チェック」を「検査・現場進捗」へ整理し、左端に「🏭 工場検査」を追加。ナイトテーブル・ヘッドボード・デスク・TVボード・ミニバー・ワードローブ・ベンチ・チェア・テーブル・ソファ・サイドテーブル・姿見・バゲージラック・パブリック什器・その他の標準テンプレート、品番追加/編集/削除/複製、品番ごとの検査項目編集、○/×自動判定、指摘コメント、その他指摘、再検査OK・是正確認済み履歴、検査日時を案件共有データへ自動保存。写真は既存の製作写真側で管理し、工場検査画面には持たせない軽量構成で実装<br>Ver.6.8.33.6.15：案件詳細に「🗣 打合せ・口頭メモ」を追加。お客様・現場担当者などから口頭で聞いた内容を、日付・相手・内容・対応済み状態で案件ごとに共有保存。新しい順の履歴表示、追加・編集・削除・対応済み切替に対応。1案件最大100件、内容は1件1,200文字まで。Firestore書き込み暴走対策を維持するため、案件基本情報と同じオンライン確認付き共通保存処理を使用し、操作時だけ1回ずつ保存する方式で実装<br>Ver.6.8.33.6.14：PC案件資料の図面・工程表・その他に「名前変更」を追加。Q.T.SからWindows上の実ファイル名を変更でき、拡張子は自動維持。ファイル名変更時はQTS_版管理.jsonの紐付けキーも旧名から新名へ自動移行し、版情報・最新版指定・メモを引き継ぐ。重複名・Windows禁止文字・予約名を事前チェックし、失敗時は新規コピーと版情報を可能な限りロールバック。版情報の「資料名」はQ.T.S上の系統名であり実ファイル名を変更しないことも画面上に明記<br>Ver.6.8.33.6.13：Firestore書き込み上限到達を受けた緊急止血版。経費メモのドキュメントIDがFirestore予約形式「__.*__」になっていた不具合を修正し、安全なIDへ変更。同一内容の自動再送をセッション中禁止し、キャッシュ由来snapshotでは自動書込みを行わない。自動移行は1セッション最大12件、経費同期全体は1分20書込みで安全停止。resource-exhausted / Quota exceededを検知した場合はページ再読込まで経費クラウド書込みを即停止し、端末内キャッシュを保持してFirebaseの連打を防止<br>Ver.6.8.33.6.12：案件名・案件状態・詳細納期の保存方式を共通化。Firestoreの通常setがオフライン時に書込キューへ残って「保存中」のままになり、後続の案件状態保存まで巻き込む問題を避けるため、オンライン接続必須のtransaction保存へ変更。案件基本情報の同時保存を防ぐロック、ネットワーク有効化、12秒タイムアウト、具体的なエラー表示を追加。案件状態保存後のPC資料確認もバックグラウンド化<br>Ver.6.8.33.6.11：案件名変更で「保存中…」のまま長時間戻らない問題を修正。クラウド保存完了とPC案件フォルダの資料再確認を分離し、図面・写真件数の確認はバックグラウンド実行へ変更。Firestore通信が応答しない場合も12秒で保存確認を打ち切って操作を戻せるよう改善<br>Ver.6.8.33.6.10：案件詳細の案件名横に「✏️ 案件名を変更」を追加。案件名を共有データへ保存し、案件一覧・検索・年間予定表Excel連携へ新しい名称を反映。案件No.は固定のまま変更せず、既存のPC案件フォルダも案件No.で引き続き認識するためフォルダ名を自動変更せず安全に保持<br>Ver.6.8.33.6.9：月次経費一覧の出張カードに「Excel選択」を追加し、複数の出張経費を会社様式の出張旅費精算書1枚へまとめて出力できる機能を追加。選択したカードだけを1回ずつ合算し、交通費・日当・宿泊費・業務費を各経費単位で反映。画面カード合計とExcel計算合計が一致しない場合は金額事故防止のため出力を中止。会社様式19明細行を超える場合も自動切捨てせず警告して停止<br>Ver.6.8.33.6.8：出張旅費Excelで業務費を入力しても小計・旅費総額へ即時反映されない問題を修正。業務費セルへの書込みに加え、交通費・日当・宿泊費・業務費の各小計と旅費総額の数式キャッシュをQ.T.S側で計算して保存し、Excel側の再計算状態に左右されず正しい金額を表示<br>Ver.6.8.33.6.7：経費同期ドキュメントの更新でprivateSchedules監視が反応するたびスケジュール全体と月次経費一覧を再描画し、経費編集ボタンがDOMごと差し替わって小刻みに揺れクリックできない問題を修正。経費だけの更新ではrenderAllを実行せず、月次一覧も表示内容が同一なら既存DOMを保持する二重対策を追加<br>Ver.6.8.33.6.6：月次経費一覧で同期済み経費の元予定を照合できない場合に「経費編集」が無効になる問題を修正。保存済みの予定名・開始日・終了日と経費キーから編集用情報を安全に復元し、元予定の読込状態に左右されず経費を編集可能に改善<br>Ver.6.8.33.6.5：月次経費一覧の「経費編集」「精算済みにする」等で、共通ボタンhoverの1px移動によりカーソル境界で上下振動しクリックできない場合がある問題を修正。経費一覧の操作ボタンだけ位置移動を無効化し、明るさ・影のhover表現は維持<br>Ver.6.8.33.6.4：スマホ写真転送の画像読み込み互換性を強化。通常画像のデコード失敗時はcreateImageBitmapを試し、HEIC/HEIFはブラウザ内でJPEG変換して送信可能に改善。写真送信先に「製作写真／現場写真」を追加し、工場写真はPCの製作写真\撮影日へ直接取り込めるよう対応。既存の現場写真転送とCSV管理は維持<br>Ver.6.8.33.6.3：スマホの出張経費入力でPC用7列レイアウトが残り、乗車駅・降車駅欄が極端に細くなる不具合を修正。スマホでは移動明細を確実に2列表示へ切替<br>Ver.6.8.33.6.2：経費同期の経路履歴ドキュメントIDをFirestoreの予約形式 `__...__` から通常IDへ変更。連続同期時のステータス表示も安定化し、「同期中／失敗」の点滅を抑制<br>Ver.6.8.33.6.1：経費クラウド同期のFirestore権限不具合を修正。本人用privateSchedulesの保存条件に合わせてvisibility="private"を付与し、PC・スマホ間の経費同期が権限拒否される問題を解消<br>Ver.6.8.33.6：経費メモと経路履歴をログイン本人専用のFirebaseへ同期。PC・スマホ・タブレットで同じ経費を共有し、端末内キャッシュを安全用に維持。既存の端末内経費は初回同期時にupdatedAtで新しい内容を優先して統合し、削除はクラウド側に削除記録を残して別端末からの復活を防止。精算済み状態とExcel出力対象も端末間で統一<br>Ver.6.8.33.5.1：案件ダッシュボードの視認性を改善。6列1段レイアウトは維持したまま、項目名を太字化し、状態・件数表示を少し大きく、カード高さをわずかに拡大。補足説明を項目名と分離して読みやすく調整<br>Ver.6.8.33.5：PC案件管理に「製作写真」を正式追加。新規・既存案件のフォルダへ「製作写真」を用意し、画像枚数を案件ダッシュボードと資料件数に表示。ダッシュボードの「製作写真」からサムネイルギャラリーを直接開けるよう対応<br>Ver.6.8.33.4：案件管理に「＋ 新規案件を追加」を追加。案件名・担当者・納期・状態を入力すると固定案件No.を自動採番し、案件共有データへ保存。再ログイン時も共有案件を復元し、案件一覧・詳細納期順・年間予定表Excel更新へそのまま連携。登録案件数も自動集計<br>Ver.6.8.33.3：図面一覧を大量資料向けに改善。図番・図面名の即時検索、最新版中心/すべての版の切替、図番の親番号（例：F-193）単位のまとまり表示、コンパクトな1行表示を追加。単独図面と最新版未指定の系統は最新版中心でも表示し、旧版だけを必要時に隠せる安全方式<br>Ver.6.8.33.2.1：案件一覧の色分けと「今年／来年以降」絞り込みを、固定の年度情報ではなく最新の詳細納期に追従するよう修正。納期を2027年から2026年へ変更した案件は、保存後すぐ今年側の緑表示へ切り替わる。管理用の年度情報は変更せず保持<br>Ver.6.8.33.2：案件一覧の左丸数字を非表示化し、詳細納期の開始日順へ自動整列。納期保存後も即座に並び替え、日付未確定の「○年○月ごろ」案件も概算月順で配置。固定の案件No.は従来どおり保持<br>Ver.6.8.33.1：交通費精算書Excelの後半明細で日付がシリアル値（例：46265）表示になる書式不具合を修正。明細末尾まで「8月31日」のような日付表示を維持<br>Ver.6.8.33：作業完了報告書を追加。現場日報と進捗から作業期間・作業内容・完了状況を自動取り込みでき、PCの現場写真から最大6枚を選択してA4印刷/PDF保存に対応。報告書内容は案件共有データへ保存<br>Ver.6.8.32：是正・残工事からリペア業者向けA4「是正リスト」を印刷/PDF保存できる帳票出力を追加。期限・内部状態は印刷せず、場所・アイテム・是正内容・是正済み・是正後チェックに絞り、現在の絞り込み結果を現場で回りやすい場所順に出力<br>Ver.6.8.31：バックアップ・復元を追加。共有予定・カテゴリー・案件共有情報・自分のプライベート予定・本人専用経費メモ等をJSONへ保存し、管理者は復元前の自動安全バックアップ後に上書き復元可能。復元は新規データを勝手に削除しない安全方式<br>Ver.6.8.30：PC案件資料の図面・工程表・その他に版管理を追加。Rev表記の自動判定、最新版指定、版メモ、案件ダッシュボードの最新版未指定警告に対応<br>Ver.6.8.29.1：案件ダッシュボードにPC資料アクセス許可の案内と、図面・現場写真へのワンタップ導線を追加<br>Ver.6.8.29：案件詳細の先頭に「案件ダッシュボード」を追加。客室・パブリック未完了、是正、当日日報、写真受取待ち、重要事項を一目で確認し、各機能へ直接移動できる未処理ナビに対応<br>Ver.6.8.28.1：大項目「年間予定表」を「案件管理」へ名称変更。年間予定表Excel連携の名称はそのまま残し、案件管理画面として役割を整理<br>Ver.6.8.28：現場日報を追加。日付・入退場時間・作業人数・作業内容・問題点・翌日の予定を案件ごとに共有保存し、日付別一覧・編集・削除・当日の是正状況確認に対応<br>Ver.6.8.27.1：是正・残工事から担当者欄を撤去。場所・アイテム・内容・期限・状態・対応メモに絞り、既存の見た目を崩さず入力と一覧表示を簡潔化<br>Ver.6.8.27：是正・残工事管理を追加。NGチェックから是正登録し、期限・状態・コメントを共有管理。未対応/対応中/完了の絞り込み、元チェックへの移動、完了＋元チェックOK、手動追加、現場写真への導線に対応<br>Ver.6.8.26.1：客室タイプの編集に対応。タイプ名・アイテム追加/名称変更/削除を行え、使用中タイプも安全に更新。削除アイテムに既存チェックがある場合は確認表示<br>Ver.6.8.26：現場進捗・客室チェック管理の試作版を追加。案件ごとに客室/パブリックをON/OFFし、現場全体チェック、客室タイプ、部屋一括登録、客室/パブリックのアイテムOK/NG/対象外・コメント・進捗集計に対応<br>Ver.6.8.25：案件詳細に「重要事項・申し送り」を追加。搬入条件・立会い・駐車・現場ルール等をPC/スマホで共有保存し、案件を開いた直後に目立つ固定欄で確認可能<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
+          無料プラン対応・写真圧縮保存版<br>Ver.6.8.33.6.24：経費返金管理の土台として、Excel出力ごとにQ.T.S内部専用の返金照合IDを発行・本人専用Firebaseへ同期。提出する交通費／出張旅費精算書には照合番号の文字を表示せず、受領欄付近へQRコードだけを埋め込む方式を追加。同じ出力対象を再出力した場合は同じ照合IDを再利用し、通常交通費の2ページ目にも同じQRを表示。返金状態UIやQR読取は次段階で追加予定。<br>Ver.6.8.33.6.23：案件詳細の整理整頓フェーズ第1弾。案件名・納期・状態は上部にコンパクト表示し、「案件概要を編集」を押した時だけ従来の編集欄を表示。案件ダッシュボードを「今日やること」へ名称整理し、重要事項・検査/現場進捗は常時表示。打合せ/口頭メモ＋関係者を「連絡・関係者」、関連予定＋PC案件資料＋写真転送を「資料・写真」の折りたたみに収納。既存の保存処理・工場検査・是正・日報・写真転送・PC資料管理機能は変更せず、ダッシュボードから折りたたみ内の機能へ移動する際は自動で展開するよう対応<br>Ver.6.8.33.6.22：工場検査の品番追加にQ.T.S独自の「品番履歴」を追加。同じ案件内で一度登録した品番を最大100件まで候補として保持し、ブラウザの入力履歴に依存せず常に選択可能に改善。履歴を選ぶと品番・数量・補足をまとめて入力し、必要ならその場で編集して追加できる。同一品番の候補は重複表示せず、直近に登録されている内容を優先<br>Ver.6.8.33.6.21：完了案件を専用リストへ移した後も通常の案件一覧に残って見える表示不具合を修正。案件カードのgrid表示がHTMLのhidden状態を上書きしていたため、完了案件カードは確実に非表示となるCSSを追加。完了案件リスト・年度別表示・完了日記録・PC側の手動「完了案件へ整理」は従来仕様を維持<br>Ver.6.8.33.6.20：案件管理に「📦 完了案件リスト」を追加。案件状態を「完了」にした時点で完了日を自動記録し、通常の案件一覧から完了案件を外して専用リストへ整理。完了案件リストは年度ごとに折りたたみ表示し、各案件は「案件名＋完了日」だけのコンパクト表示。タップすると従来どおり案件詳細を開ける。完了から進行中・未稼働などへ戻した場合は完了日を解除して通常一覧へ復帰。PC側の「完了案件」フォルダ整理は従来どおり手動操作を維持<br>Ver.6.8.33.6.19：工場検査の「家具タイプ」を検査テンプレートとして何度でも選べる方式へ変更。アイテム追加時に「検査テンプレート」と「アイテム名」を分離し、同じチェアテンプレートから「ダイニングチェア」「デスクチェア」など複数アイテムを登録可能に改善。登録済みテンプレートが選択肢から消える制限を撤廃し、アイテム名だけ重複禁止を維持<br>Ver.6.8.33.6.17：客室・パブリック未設定案件でも「検査・現場進捗」の基本レイアウトを常時表示するよう改善。工場検査・現場全体・是正・残工事・現場日報・作業完了報告書は初期設定前から利用でき、上部進捗カードも常時表示。客室・パブリックのタブだけ設定内容に応じて表示し、案件ごとの画面差を減らして時系列導線を統一<br>Ver.6.8.33.6.16：案件詳細の「現場進捗・客室チェック」を「検査・現場進捗」へ整理し、左端に「🏭 工場検査」を追加。ナイトテーブル・ヘッドボード・デスク・TVボード・ミニバー・ワードローブ・ベンチ・チェア・テーブル・ソファ・サイドテーブル・姿見・バゲージラック・パブリック什器・その他の標準テンプレート、品番追加/編集/削除/複製、品番ごとの検査項目編集、○/×自動判定、指摘コメント、その他指摘、再検査OK・是正確認済み履歴、検査日時を案件共有データへ自動保存。写真は既存の製作写真側で管理し、工場検査画面には持たせない軽量構成で実装<br>Ver.6.8.33.6.15：案件詳細に「🗣 打合せ・口頭メモ」を追加。お客様・現場担当者などから口頭で聞いた内容を、日付・相手・内容・対応済み状態で案件ごとに共有保存。新しい順の履歴表示、追加・編集・削除・対応済み切替に対応。1案件最大100件、内容は1件1,200文字まで。Firestore書き込み暴走対策を維持するため、案件基本情報と同じオンライン確認付き共通保存処理を使用し、操作時だけ1回ずつ保存する方式で実装<br>Ver.6.8.33.6.14：PC案件資料の図面・工程表・その他に「名前変更」を追加。Q.T.SからWindows上の実ファイル名を変更でき、拡張子は自動維持。ファイル名変更時はQTS_版管理.jsonの紐付けキーも旧名から新名へ自動移行し、版情報・最新版指定・メモを引き継ぐ。重複名・Windows禁止文字・予約名を事前チェックし、失敗時は新規コピーと版情報を可能な限りロールバック。版情報の「資料名」はQ.T.S上の系統名であり実ファイル名を変更しないことも画面上に明記<br>Ver.6.8.33.6.13：Firestore書き込み上限到達を受けた緊急止血版。経費メモのドキュメントIDがFirestore予約形式「__.*__」になっていた不具合を修正し、安全なIDへ変更。同一内容の自動再送をセッション中禁止し、キャッシュ由来snapshotでは自動書込みを行わない。自動移行は1セッション最大12件、経費同期全体は1分20書込みで安全停止。resource-exhausted / Quota exceededを検知した場合はページ再読込まで経費クラウド書込みを即停止し、端末内キャッシュを保持してFirebaseの連打を防止<br>Ver.6.8.33.6.12：案件名・案件状態・詳細納期の保存方式を共通化。Firestoreの通常setがオフライン時に書込キューへ残って「保存中」のままになり、後続の案件状態保存まで巻き込む問題を避けるため、オンライン接続必須のtransaction保存へ変更。案件基本情報の同時保存を防ぐロック、ネットワーク有効化、12秒タイムアウト、具体的なエラー表示を追加。案件状態保存後のPC資料確認もバックグラウンド化<br>Ver.6.8.33.6.11：案件名変更で「保存中…」のまま長時間戻らない問題を修正。クラウド保存完了とPC案件フォルダの資料再確認を分離し、図面・写真件数の確認はバックグラウンド実行へ変更。Firestore通信が応答しない場合も12秒で保存確認を打ち切って操作を戻せるよう改善<br>Ver.6.8.33.6.10：案件詳細の案件名横に「✏️ 案件名を変更」を追加。案件名を共有データへ保存し、案件一覧・検索・年間予定表Excel連携へ新しい名称を反映。案件No.は固定のまま変更せず、既存のPC案件フォルダも案件No.で引き続き認識するためフォルダ名を自動変更せず安全に保持<br>Ver.6.8.33.6.9：月次経費一覧の出張カードに「Excel選択」を追加し、複数の出張経費を会社様式の出張旅費精算書1枚へまとめて出力できる機能を追加。選択したカードだけを1回ずつ合算し、交通費・日当・宿泊費・業務費を各経費単位で反映。画面カード合計とExcel計算合計が一致しない場合は金額事故防止のため出力を中止。会社様式19明細行を超える場合も自動切捨てせず警告して停止<br>Ver.6.8.33.6.8：出張旅費Excelで業務費を入力しても小計・旅費総額へ即時反映されない問題を修正。業務費セルへの書込みに加え、交通費・日当・宿泊費・業務費の各小計と旅費総額の数式キャッシュをQ.T.S側で計算して保存し、Excel側の再計算状態に左右されず正しい金額を表示<br>Ver.6.8.33.6.7：経費同期ドキュメントの更新でprivateSchedules監視が反応するたびスケジュール全体と月次経費一覧を再描画し、経費編集ボタンがDOMごと差し替わって小刻みに揺れクリックできない問題を修正。経費だけの更新ではrenderAllを実行せず、月次一覧も表示内容が同一なら既存DOMを保持する二重対策を追加<br>Ver.6.8.33.6.6：月次経費一覧で同期済み経費の元予定を照合できない場合に「経費編集」が無効になる問題を修正。保存済みの予定名・開始日・終了日と経費キーから編集用情報を安全に復元し、元予定の読込状態に左右されず経費を編集可能に改善<br>Ver.6.8.33.6.5：月次経費一覧の「経費編集」「精算済みにする」等で、共通ボタンhoverの1px移動によりカーソル境界で上下振動しクリックできない場合がある問題を修正。経費一覧の操作ボタンだけ位置移動を無効化し、明るさ・影のhover表現は維持<br>Ver.6.8.33.6.4：スマホ写真転送の画像読み込み互換性を強化。通常画像のデコード失敗時はcreateImageBitmapを試し、HEIC/HEIFはブラウザ内でJPEG変換して送信可能に改善。写真送信先に「製作写真／現場写真」を追加し、工場写真はPCの製作写真\撮影日へ直接取り込めるよう対応。既存の現場写真転送とCSV管理は維持<br>Ver.6.8.33.6.3：スマホの出張経費入力でPC用7列レイアウトが残り、乗車駅・降車駅欄が極端に細くなる不具合を修正。スマホでは移動明細を確実に2列表示へ切替<br>Ver.6.8.33.6.2：経費同期の経路履歴ドキュメントIDをFirestoreの予約形式 `__...__` から通常IDへ変更。連続同期時のステータス表示も安定化し、「同期中／失敗」の点滅を抑制<br>Ver.6.8.33.6.1：経費クラウド同期のFirestore権限不具合を修正。本人用privateSchedulesの保存条件に合わせてvisibility="private"を付与し、PC・スマホ間の経費同期が権限拒否される問題を解消<br>Ver.6.8.33.6：経費メモと経路履歴をログイン本人専用のFirebaseへ同期。PC・スマホ・タブレットで同じ経費を共有し、端末内キャッシュを安全用に維持。既存の端末内経費は初回同期時にupdatedAtで新しい内容を優先して統合し、削除はクラウド側に削除記録を残して別端末からの復活を防止。精算済み状態とExcel出力対象も端末間で統一<br>Ver.6.8.33.5.1：案件ダッシュボードの視認性を改善。6列1段レイアウトは維持したまま、項目名を太字化し、状態・件数表示を少し大きく、カード高さをわずかに拡大。補足説明を項目名と分離して読みやすく調整<br>Ver.6.8.33.5：PC案件管理に「製作写真」を正式追加。新規・既存案件のフォルダへ「製作写真」を用意し、画像枚数を案件ダッシュボードと資料件数に表示。ダッシュボードの「製作写真」からサムネイルギャラリーを直接開けるよう対応<br>Ver.6.8.33.4：案件管理に「＋ 新規案件を追加」を追加。案件名・担当者・納期・状態を入力すると固定案件No.を自動採番し、案件共有データへ保存。再ログイン時も共有案件を復元し、案件一覧・詳細納期順・年間予定表Excel更新へそのまま連携。登録案件数も自動集計<br>Ver.6.8.33.3：図面一覧を大量資料向けに改善。図番・図面名の即時検索、最新版中心/すべての版の切替、図番の親番号（例：F-193）単位のまとまり表示、コンパクトな1行表示を追加。単独図面と最新版未指定の系統は最新版中心でも表示し、旧版だけを必要時に隠せる安全方式<br>Ver.6.8.33.2.1：案件一覧の色分けと「今年／来年以降」絞り込みを、固定の年度情報ではなく最新の詳細納期に追従するよう修正。納期を2027年から2026年へ変更した案件は、保存後すぐ今年側の緑表示へ切り替わる。管理用の年度情報は変更せず保持<br>Ver.6.8.33.2：案件一覧の左丸数字を非表示化し、詳細納期の開始日順へ自動整列。納期保存後も即座に並び替え、日付未確定の「○年○月ごろ」案件も概算月順で配置。固定の案件No.は従来どおり保持<br>Ver.6.8.33.1：交通費精算書Excelの後半明細で日付がシリアル値（例：46265）表示になる書式不具合を修正。明細末尾まで「8月31日」のような日付表示を維持<br>Ver.6.8.33：作業完了報告書を追加。現場日報と進捗から作業期間・作業内容・完了状況を自動取り込みでき、PCの現場写真から最大6枚を選択してA4印刷/PDF保存に対応。報告書内容は案件共有データへ保存<br>Ver.6.8.32：是正・残工事からリペア業者向けA4「是正リスト」を印刷/PDF保存できる帳票出力を追加。期限・内部状態は印刷せず、場所・アイテム・是正内容・是正済み・是正後チェックに絞り、現在の絞り込み結果を現場で回りやすい場所順に出力<br>Ver.6.8.31：バックアップ・復元を追加。共有予定・カテゴリー・案件共有情報・自分のプライベート予定・本人専用経費メモ等をJSONへ保存し、管理者は復元前の自動安全バックアップ後に上書き復元可能。復元は新規データを勝手に削除しない安全方式<br>Ver.6.8.30：PC案件資料の図面・工程表・その他に版管理を追加。Rev表記の自動判定、最新版指定、版メモ、案件ダッシュボードの最新版未指定警告に対応<br>Ver.6.8.29.1：案件ダッシュボードにPC資料アクセス許可の案内と、図面・現場写真へのワンタップ導線を追加<br>Ver.6.8.29：案件詳細の先頭に「案件ダッシュボード」を追加。客室・パブリック未完了、是正、当日日報、写真受取待ち、重要事項を一目で確認し、各機能へ直接移動できる未処理ナビに対応<br>Ver.6.8.28.1：大項目「年間予定表」を「案件管理」へ名称変更。年間予定表Excel連携の名称はそのまま残し、案件管理画面として役割を整理<br>Ver.6.8.28：現場日報を追加。日付・入退場時間・作業人数・作業内容・問題点・翌日の予定を案件ごとに共有保存し、日付別一覧・編集・削除・当日の是正状況確認に対応<br>Ver.6.8.27.1：是正・残工事から担当者欄を撤去。場所・アイテム・内容・期限・状態・対応メモに絞り、既存の見た目を崩さず入力と一覧表示を簡潔化<br>Ver.6.8.27：是正・残工事管理を追加。NGチェックから是正登録し、期限・状態・コメントを共有管理。未対応/対応中/完了の絞り込み、元チェックへの移動、完了＋元チェックOK、手動追加、現場写真への導線に対応<br>Ver.6.8.26.1：客室タイプの編集に対応。タイプ名・アイテム追加/名称変更/削除を行え、使用中タイプも安全に更新。削除アイテムに既存チェックがある場合は確認表示<br>Ver.6.8.26：現場進捗・客室チェック管理の試作版を追加。案件ごとに客室/パブリックをON/OFFし、現場全体チェック、客室タイプ、部屋一括登録、客室/パブリックのアイテムOK/NG/対象外・コメント・進捗集計に対応<br>Ver.6.8.25：案件詳細に「重要事項・申し送り」を追加。搬入条件・立会い・駐車・現場ルール等をPC/スマホで共有保存し、案件を開いた直後に目立つ固定欄で確認可能<br>Ver.6.8.24：現場写真ギャラリーを30枚ずつ段階表示して大量写真時の負荷を軽減。PCでは写真送信側を非表示にし、受取・ギャラリー中心の画面に整理<br>Ver.6.8.23：PCの現場写真を専用ギャラリー表示に変更。分類・コメント・登録者を写真ごとに表示し、Q.T.Sから写真削除＋CSV連動削除に対応。新規取込は「現場写真\\撮影日」直下へ保存し、CSVはExcel向けUTF-8 BOMを維持<br>Ver.6.8.22：現場写真転送に写真ごとの分類・コメントと一括設定を追加。PC取込時は撮影日＋分類フォルダへ整理し、コメント付き「現場写真一覧.csv」を自動作成<br>Ver.6.8.21：完了案件側にあるPC資料を「進行案件へ戻す」に対応。Q.T.S状態とPC保存場所の食い違いを表示し、スマホ・タブレットではExcel連携やPC案件管理などPC専用UIを非表示<br>Ver.6.8.20.1：ログイン画面から進めなくなる初期化不具合を修正（写真転送コードの改行展開を修正）<br>Ver.6.8.20：スマホ→PCの現場写真転送Ver.1を追加。案件ごとに最大30枚を標準画質へ圧縮して一時送信し、PCの現場写真フォルダへ一括受取後は画像本体をクラウドから除去<br>Ver.6.8.19：PC案件資料の再アクセス許可を明確化。既存案件フォルダを再認識し、資料件数・資料一覧・PDF等の直接表示に対応<br>Ver.6.8.18：PCごとの「QTS案件管理」フォルダ設定、案件別資料フォルダ作成、完了案件へのローカル整理を追加<br>Ver.6.8.17：年間予定表画面の旧「Excelと同じ年間工程表」画像・拡大縮小UIを撤去し画面を整理<br>Ver.6.8.16：年間予定表Excelの保存先フォルダをPCごとに登録し、同じ基準ファイルを上書き更新。更新前ファイルはバックアップフォルダへ自動保存<br>Ver.6.8.15：年間案件の詳細納期を案件詳細から手動編集・共有保存できるよう対応。Excel更新にも最新納期を反映<br>Ver.6.8.14：Excel内の日本語ふりがな情報を除外して読み取るよう修正。入力シートの見出し認識を安定化<br>Ver.6.8.13：年間予定表Excel連携を追加。PCのExcelを選び、入力シートだけを案件Noで安全に更新したコピーを作成できます<br>Ver.6.8.12：年間案件に詳細納期と手動状態（未稼働／進行中／完了／アーカイブ）を表示。案件詳細から状態を共有保存できます<br>Ver.6.8.11：年間案件へ案件No.自動採番の土台を追加<br>Ver.6.6.3：カレンダー境界線安定化＋完了/未完了ボタン視認性改善版<br>
           Ver.6.8.10：年月表示を白字化、PC時刻入力表示を安定化、開始クイック入力を8:00〜24:00へ拡張、終了時間の加算ボタンを連続加算対応、バージョン表示を統一<br>Ver.6.8.9：カレンダー日別入力に変更。選択日の明細だけを表示・保存し、他の日の明細は保持して上書きしません<br>Ver.6.8.8：カレンダーで選択した日を、新しく追加する出張移動明細の「利用日」に自動設定。保存済み明細の日付は変更しません<br>Ver.6.8.7：月次経費一覧に「経費メモ件数 / 移動区間数」を併記し、各カードにも区間数を表示<br>Ver.6.8.6：経費区分を「通常交通費 / 出張」のどちらか一方へ所属させ、切替時は移動確認を表示<br>Ver.6.8.4：出張交通費の複数区間を漏れなくExcelへ反映し、経費メモの未保存警告を追加<br>Ver.6.8.3：出張期間内の交通費をまとめてExcelへ反映し、宿泊費を1泊単価×泊数で日別表示<br>Ver.6.8.2：出張の移動明細に利用日を追加し、Excelの日当を1日2,000円ずつ日別表示<br>Ver.6.8.1：出張の日当自動計算・宿泊費・業務費入力とExcel反映を追加<br>Ver.6.8：会社様式の交通費・出張旅費Excel出力を追加<br>Ver.6.7：月次経費一覧・未精算管理を追加<br>Ver.6.6.3：カレンダー境界線・完了/未完了ボタン視認性を改善<br>          Ver.6.3.1：利用者名・権限を管理者固定<br>Ver.6.3：本人ログイン・完全非公開のプライベート予定に対応<br>Ver.6.2：案件関係者情報（お客様・工場・搬入業者・大工）の登録・編集に対応<br>Ver.6.1.1：案件詳細の表示不具合を修正<br>Ver.6.1：年間案件票更新・空白案件削除・案件詳細画面を追加<br>Ver.6.0.1：新アイコン一式・丸形表示対応<br>Ver.6.0：新ロゴ・年間予定表画面を追加<br>Ver.5.4：正式アイコン対応<br>Ver.5.3：ドラッグコピー対応<br>
           更新日：2026年9月10日
         </div>
@@ -5888,7 +5888,7 @@
   </div>
 
   <script>
-    const APP_VERSION = "6.8.33.6.23";
+    const APP_VERSION = "6.8.33.6.24";
     const APP_BUILD_DATE = "2026-09-09";
 
     const firebaseConfig = {
@@ -6373,6 +6373,7 @@
       });
       return {
         expenseMemos: qtsBackupSerializeValue(loadExpenseStore()),
+        expenseReimbursements: qtsBackupSerializeValue(loadExpenseReimbursementStore()),
         expenseRouteHistory: qtsBackupSerializeValue(loadExpenseRouteHistory()),
         expenseRouteTombstones: qtsBackupSerializeValue(loadExpenseRouteTombstones()),
         settings
@@ -6411,7 +6412,8 @@
           categories: categoryDocs.length,
           projectContacts: projects.length,
           privateSchedules: privateDocs.length,
-          expenseMemos: Object.keys(loadExpenseStore() || {}).length
+          expenseMemos: Object.keys(loadExpenseStore() || {}).length,
+          expenseReimbursements: Object.keys(loadExpenseReimbursementStore() || {}).length
         },
         annualProjectReference: annualProjects,
         data: {
@@ -6554,6 +6556,14 @@
           if (expense && typeof expense === "object") expense.updatedAt = restoreStamp;
         });
         localStorage.setItem(getExpenseStorageKey(), JSON.stringify(restoredExpenses));
+      }
+      if (local.expenseReimbursements && typeof local.expenseReimbursements === "object") {
+        const restoredReimbursements = qtsBackupDeserializeValue(local.expenseReimbursements) || {};
+        const restoreStamp = new Date().toISOString();
+        Object.values(restoredReimbursements).forEach(item => {
+          if (item && typeof item === "object") item.updatedAt = restoreStamp;
+        });
+        localStorage.setItem(getExpenseReimbursementStorageKey(), JSON.stringify(restoredReimbursements));
       }
       if (Array.isArray(local.expenseRouteHistory)) {
         localStorage.setItem(getExpenseRouteHistoryKey(), JSON.stringify(qtsBackupDeserializeValue(local.expenseRouteHistory) || []));
@@ -8097,6 +8107,7 @@
     // ===== Ver.6.8.33.6 経費メモ：本人専用Firebase同期＋端末内キャッシュ =====
     const QTS_EXPENSE_MEMO_TYPE = "expenseMemo";
     const QTS_EXPENSE_ROUTE_TYPE = "expenseRouteHistory";
+    const QTS_EXPENSE_REIMBURSEMENT_TYPE = "expenseReimbursement";
     const QTS_EXPENSE_ROUTE_DOC_ID = "qts_expense_routes_v1";
     let expenseSyncApplyingCloud = false;
     let expenseSyncCloudReady = false;
@@ -8108,6 +8119,9 @@
     // Ver.6.8.33.6.13：Firestore書き込み暴走防止
     const expenseSyncSuccessfulMemoFingerprints = new Map();
     const expenseSyncAutoAttemptedMemoFingerprints = new Map();
+    const expenseSyncSuccessfulReimbursementFingerprints = new Map();
+    const expenseSyncPendingReimbursementWrites = new Map();
+    const expenseSyncAutoAttemptedReimbursementFingerprints = new Map();
     const expenseSyncAutoAttemptedRouteFingerprints = new Set();
     const expenseSyncWriteTimestamps = [];
     const QTS_EXPENSE_MAX_WRITES_PER_MINUTE = 20;
@@ -8143,6 +8157,92 @@
 
     function saveExpenseStore(store) {
       localStorage.setItem(getExpenseStorageKey(), JSON.stringify(store || {}));
+    }
+
+    // ===== Ver.6.8.33.6.24 返金照合ID（画面・紙面には番号を表示しない） =====
+    function getExpenseReimbursementStorageKey() {
+      const uid = currentUser?.uid || "guest";
+      return `qtsExpenseReimbursementsV1:${uid}`;
+    }
+
+    function loadExpenseReimbursementStore() {
+      try {
+        const raw = localStorage.getItem(getExpenseReimbursementStorageKey());
+        const data = raw ? JSON.parse(raw) : {};
+        return data && typeof data === "object" && !Array.isArray(data) ? data : {};
+      } catch (error) {
+        console.warn("expense reimbursement read error", error);
+        return {};
+      }
+    }
+
+    function saveExpenseReimbursementStore(store) {
+      localStorage.setItem(getExpenseReimbursementStorageKey(), JSON.stringify(store || {}));
+    }
+
+    function qtsExpenseReimbursementFingerprint(kind, entryKeys = []) {
+      const keys = Array.from(new Set((entryKeys || []).map(value => String(value || "")).filter(Boolean))).sort();
+      return `${String(kind || "expense")}|${keys.join("|")}`;
+    }
+
+    function qtsCreateExpenseReimbursementId(referenceDate = "") {
+      const yearMatch = String(referenceDate || "").match(/^(\d{4})/);
+      const year = yearMatch ? yearMatch[1].slice(-2) : String(new Date().getFullYear()).slice(-2);
+      const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      const existing = loadExpenseReimbursementStore();
+      for (let attempt = 0; attempt < 20; attempt++) {
+        const bytes = new Uint8Array(10);
+        if (globalThis.crypto?.getRandomValues) crypto.getRandomValues(bytes);
+        else for (let i = 0; i < bytes.length; i++) bytes[i] = Math.floor(Math.random() * 256);
+        let suffix = "";
+        for (const byte of bytes) suffix += alphabet[byte % alphabet.length];
+        const id = `QTS${year}-${suffix}`;
+        if (!existing[id]) return id;
+      }
+      throw new Error("返金照合IDを発行できませんでした。もう一度お試しください。");
+    }
+
+    function qtsResolveExpenseReimbursementRecord({ kind = "expense", entryKeys = [], amount = 0, referenceDate = "", startDate = "", endDate = "", monthValue = "", fileName = "" } = {}) {
+      const keys = Array.from(new Set((entryKeys || []).map(value => String(value || "")).filter(Boolean))).sort();
+      if (!keys.length) throw new Error("返金照合IDの対象経費がありません。");
+      const fingerprint = qtsExpenseReimbursementFingerprint(kind, keys);
+      const store = loadExpenseReimbursementStore();
+      const existing = Object.values(store).find(item => item && item.fingerprint === fingerprint && !item.deleted);
+      if (existing?.id) return { ...existing, _isNew:false };
+
+      const now = new Date().toISOString();
+      return {
+        id: qtsCreateExpenseReimbursementId(referenceDate || startDate || monthValue),
+        fingerprint,
+        kind: String(kind || "expense"),
+        entryKeys: keys,
+        amount: Math.max(0, Number(amount || 0)),
+        referenceDate: String(referenceDate || ""),
+        startDate: String(startDate || ""),
+        endDate: String(endDate || ""),
+        monthValue: String(monthValue || ""),
+        fileName: String(fileName || ""),
+        status: "created",
+        createdAt: now,
+        updatedAt: now,
+        _isNew: true
+      };
+    }
+
+    function qtsCommitExpenseReimbursementRecord(record) {
+      if (!record?.id) return null;
+      const isNew = record._isNew === true;
+      const clean = { ...record };
+      delete clean._isNew;
+      const store = loadExpenseReimbursementStore();
+      store[clean.id] = clean;
+      saveExpenseReimbursementStore(store);
+      if (isNew) qtsWriteExpenseReimbursementCloud(clean, false);
+      return clean;
+    }
+
+    function qtsExpenseReimbursementDocId(id) {
+      return `qts_reimbursement_v1_${String(id || "").replace(/[^A-Za-z0-9_-]/g, "_")}`;
     }
 
     function qtsExpenseTimestamp(value) {
@@ -8271,6 +8371,101 @@
         });
     }
 
+    function qtsWriteExpenseReimbursementCloud(record, deleted = false, options = {}) {
+      if (!currentUser || !record?.id || expenseSyncWriteBlocked) return Promise.resolve(false);
+
+      const id = String(record.id);
+      const updatedAt = String(record.updatedAt || new Date().toISOString());
+      const fingerprint = `${deleted ? "D" : "A"}:${updatedAt}`;
+
+      if (expenseSyncSuccessfulReimbursementFingerprints.get(id) === fingerprint) return Promise.resolve(true);
+      if (expenseSyncPendingReimbursementWrites.get(id) === fingerprint) return Promise.resolve(true);
+
+      if (options.auto) {
+        if (expenseSyncAutoWriteCount >= QTS_EXPENSE_MAX_AUTO_WRITES_PER_SESSION) return Promise.resolve(false);
+        if (expenseSyncAutoAttemptedReimbursementFingerprints.get(id) === fingerprint) return Promise.resolve(false);
+        expenseSyncAutoAttemptedReimbursementFingerprints.set(id, fingerprint);
+        expenseSyncAutoWriteCount += 1;
+      }
+
+      expenseSyncPendingReimbursementWrites.set(id, fingerprint);
+      const payload = {
+        _qtsType: QTS_EXPENSE_REIMBURSEMENT_TYPE,
+        reimbursementId: id,
+        reimbursement: deleted ? null : qtsBackupSerializeValue(record || {}),
+        deleted: Boolean(deleted),
+        updatedAt,
+        ownerUid: currentUser.uid,
+        visibility: "private",
+        appVersion: APP_VERSION,
+        syncedAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      return qtsQueueExpenseCloudWrite(
+        () => getPrivateScheduleCollection().doc(qtsExpenseReimbursementDocId(id)).set(payload, { merge:false }),
+        options.auto ? "返金照合ID自動同期" : "返金照合ID保存"
+      )
+        .then(success => {
+          if (success) expenseSyncSuccessfulReimbursementFingerprints.set(id, fingerprint);
+          return success;
+        })
+        .finally(() => {
+          if (expenseSyncPendingReimbursementWrites.get(id) === fingerprint) expenseSyncPendingReimbursementWrites.delete(id);
+        });
+    }
+
+    function qtsMergeExpenseReimbursementCloudDocs(rawDocs = [], options = {}) {
+      const docs = rawDocs.filter(item => item.data?._qtsType === QTS_EXPENSE_REIMBURSEMENT_TYPE);
+      const allowAutoUpload = options.allowAutoUpload === true && !expenseSyncWriteBlocked;
+      const local = loadExpenseReimbursementStore();
+      const merged = { ...local };
+      const seen = new Set();
+      const uploadLocal = [];
+
+      docs.forEach(item => {
+        const data = item.data || {};
+        const id = String(data.reimbursementId || data.reimbursement?.id || "");
+        if (!id) return;
+        seen.add(id);
+        const cloudUpdated = qtsExpenseTimestamp(data.updatedAt || data.reimbursement?.updatedAt);
+        const localItem = local[id] || null;
+        const localUpdated = qtsExpenseTimestamp(localItem?.updatedAt);
+
+        if (data.deleted) {
+          if (localItem && localUpdated > cloudUpdated) {
+            merged[id] = localItem;
+            if (allowAutoUpload) uploadLocal.push(localItem);
+          } else {
+            delete merged[id];
+          }
+          return;
+        }
+
+        const cloudItem = qtsBackupDeserializeValue(data.reimbursement || {});
+        if (localItem && localUpdated > cloudUpdated) {
+          merged[id] = localItem;
+          if (allowAutoUpload) uploadLocal.push(localItem);
+        } else if (cloudItem && typeof cloudItem === "object") {
+          merged[id] = cloudItem;
+        }
+      });
+
+      if (allowAutoUpload) {
+        Object.values(local).forEach(item => {
+          if (item?.id && !seen.has(String(item.id))) uploadLocal.push(item);
+        });
+      }
+
+      if (!qtsExpenseStoresEqual(local, merged)) saveExpenseReimbursementStore(merged);
+
+      const uniqueUploads = new Map(uploadLocal.filter(item => item?.id).map(item => [String(item.id), item]));
+      uniqueUploads.forEach(item => {
+        if (expenseSyncAutoWriteCount < QTS_EXPENSE_MAX_AUTO_WRITES_PER_SESSION) {
+          qtsWriteExpenseReimbursementCloud(item, false, { auto:true });
+        }
+      });
+    }
+
     function qtsExpenseStoresEqual(a, b) {
       try { return JSON.stringify(a || {}) === JSON.stringify(b || {}); }
       catch (_) { return false; }
@@ -8329,6 +8524,7 @@
           qtsWriteExpenseMemoCloud(key, expense, false, { auto:true });
         }
       });
+      qtsMergeExpenseReimbursementCloudDocs(rawDocs, { allowAutoUpload });
       qtsMergeExpenseRouteCloudDoc(routeDoc?.data || null, { allowAutoUpload });
 
       expenseSyncCloudReady = true;
@@ -9844,6 +10040,240 @@
       return {entries,map,decoder,encoder};
     }
 
+    // ===== Ver.6.8.33.6.24 返金照合QR生成・Excel埋め込み =====
+    // 返金照合IDは16文字のASCII固定なので、QR Version 1-L（最大17バイト）で生成する。
+    // 紙面にはID文字列を印字せず、QR画像だけを表示する。
+    function qtsQrGfMul(x, y) {
+      let z = 0;
+      x &= 0xff;
+      y &= 0xff;
+      while (y) {
+        if (y & 1) z ^= x;
+        y >>>= 1;
+        x <<= 1;
+        if (x & 0x100) x ^= 0x11d;
+      }
+      return z & 0xff;
+    }
+
+    function qtsQrPow2(power) {
+      let x = 1;
+      for (let i = 0; i < power; i++) x = qtsQrGfMul(x, 2);
+      return x;
+    }
+
+    function qtsQrGenerator(degree) {
+      let result = [1];
+      for (let i = 0; i < degree; i++) {
+        const factor = qtsQrPow2(i);
+        const next = new Array(result.length + 1).fill(0);
+        result.forEach((value, index) => {
+          next[index] ^= value;
+          next[index + 1] ^= qtsQrGfMul(value, factor);
+        });
+        result = next;
+      }
+      return result;
+    }
+
+    function qtsQrRsRemainder(data, eccLength = 7) {
+      const generator = qtsQrGenerator(eccLength);
+      let remainder = new Array(eccLength).fill(0);
+      data.forEach(byte => {
+        const factor = byte ^ remainder[0];
+        remainder = remainder.slice(1);
+        remainder.push(0);
+        for (let i = 0; i < eccLength; i++) remainder[i] ^= qtsQrGfMul(generator[i + 1], factor);
+      });
+      return remainder;
+    }
+
+    function qtsQrV1LMatrix(text) {
+      const raw = new TextEncoder().encode(String(text || ""));
+      if (!raw.length || raw.some(byte => byte > 0x7f) || raw.length > 17) {
+        throw new Error("返金照合QRのID形式が正しくありません。");
+      }
+
+      const bits = [0,1,0,0]; // byte mode
+      for (let i = 7; i >= 0; i--) bits.push((raw.length >>> i) & 1);
+      raw.forEach(byte => {
+        for (let i = 7; i >= 0; i--) bits.push((byte >>> i) & 1);
+      });
+
+      const capacityBits = 19 * 8;
+      for (let i = 0; i < Math.min(4, capacityBits - bits.length); i++) bits.push(0);
+      while (bits.length % 8) bits.push(0);
+
+      const data = [];
+      for (let i = 0; i < bits.length; i += 8) {
+        let value = 0;
+        for (let j = 0; j < 8; j++) value = (value << 1) | (bits[i + j] || 0);
+        data.push(value);
+      }
+      const pads = [0xec, 0x11];
+      let padIndex = 0;
+      while (data.length < 19) data.push(pads[padIndex++ % 2]);
+
+      const codewords = [...data, ...qtsQrRsRemainder(data, 7)];
+      const dataBits = [];
+      codewords.forEach(byte => {
+        for (let i = 7; i >= 0; i--) dataBits.push((byte >>> i) & 1);
+      });
+
+      const size = 21;
+      const matrix = Array.from({length:size}, () => Array(size).fill(false));
+      const reserved = Array.from({length:size}, () => Array(size).fill(false));
+
+      const setFunction = (row, col, value) => {
+        if (row < 0 || col < 0 || row >= size || col >= size) return;
+        matrix[row][col] = Boolean(value);
+        reserved[row][col] = true;
+      };
+
+      const drawFinder = (top, left) => {
+        for (let dr = -1; dr <= 7; dr++) {
+          for (let dc = -1; dc <= 7; dc++) {
+            const row = top + dr;
+            const col = left + dc;
+            if (row < 0 || col < 0 || row >= size || col >= size) continue;
+            const black = dr >= 0 && dr <= 6 && dc >= 0 && dc <= 6
+              && (dr === 0 || dr === 6 || dc === 0 || dc === 6 || (dr >= 2 && dr <= 4 && dc >= 2 && dc <= 4));
+            setFunction(row, col, black);
+          }
+        }
+      };
+
+      drawFinder(0, 0);
+      drawFinder(0, size - 7);
+      drawFinder(size - 7, 0);
+
+      for (let i = 8; i < size - 8; i++) {
+        setFunction(6, i, i % 2 === 0);
+        setFunction(i, 6, i % 2 === 0);
+      }
+
+      // Error correction level L + mask 0 = format bits 0x77C4.
+      const formatBits = 0x77c4;
+      for (let i = 0; i < 6; i++) setFunction(i, 8, (formatBits >>> i) & 1);
+      setFunction(7, 8, (formatBits >>> 6) & 1);
+      setFunction(8, 8, (formatBits >>> 7) & 1);
+      setFunction(8, 7, (formatBits >>> 8) & 1);
+      for (let i = 9; i < 15; i++) setFunction(8, 14 - i, (formatBits >>> i) & 1);
+      for (let i = 0; i < 8; i++) setFunction(8, size - 1 - i, (formatBits >>> i) & 1);
+      for (let i = 8; i < 15; i++) setFunction(size - 15 + i, 8, (formatBits >>> i) & 1);
+      setFunction(size - 8, 8, true);
+
+      let bitIndex = 0;
+      let upward = true;
+      for (let right = size - 1; right >= 1; right -= 2) {
+        if (right === 6) right--;
+        for (let offset = 0; offset < size; offset++) {
+          const row = upward ? size - 1 - offset : offset;
+          for (const col of [right, right - 1]) {
+            if (reserved[row][col]) continue;
+            let bit = dataBits[bitIndex++] || 0;
+            if ((row + col) % 2 === 0) bit ^= 1; // mask 0
+            matrix[row][col] = Boolean(bit);
+          }
+        }
+        upward = !upward;
+      }
+
+      if (bitIndex !== 208) throw new Error("返金照合QRの生成に失敗しました。");
+      return matrix;
+    }
+
+    async function qtsCreateQrPngBytes(text) {
+      const matrix = qtsQrV1LMatrix(text);
+      const quiet = 4;
+      const moduleSize = 5;
+      const side = (matrix.length + quiet * 2) * moduleSize;
+      const canvas = document.createElement("canvas");
+      canvas.width = side;
+      canvas.height = side;
+      const ctx = canvas.getContext("2d", { alpha:false });
+      if (!ctx) throw new Error("返金照合QR画像を作成できませんでした。");
+      ctx.imageSmoothingEnabled = false;
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, side, side);
+      ctx.fillStyle = "#000000";
+      matrix.forEach((row, r) => row.forEach((black, c) => {
+        if (black) ctx.fillRect((c + quiet) * moduleSize, (r + quiet) * moduleSize, moduleSize, moduleSize);
+      }));
+
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
+      if (blob) return new Uint8Array(await blob.arrayBuffer());
+
+      const base64 = String(canvas.toDataURL("image/png") || "").split(",")[1] || "";
+      if (!base64) throw new Error("返金照合QR画像をPNGへ変換できませんでした。");
+      return qtsBase64ToBytes(base64);
+    }
+
+    function qtsUpsertZipEntry(ctx, name, data) {
+      const existing = ctx.map.get(name);
+      if (existing) {
+        existing.data = data;
+        return existing;
+      }
+      const entry = { name, data };
+      ctx.entries.push(entry);
+      ctx.map.set(name, entry);
+      return entry;
+    }
+
+    function qtsQrPictureAnchorXml({ col = 0, row = 0, sizePx = 52, pictureId = 9001, relationshipId = "rIdQTSQR" } = {}) {
+      const emu = Math.max(24, Number(sizePx || 52)) * 9525;
+      return `<xdr:oneCellAnchor><xdr:from><xdr:col>${Math.max(0,Number(col)||0)}</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>${Math.max(0,Number(row)||0)}</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:from><xdr:ext cx="${emu}" cy="${emu}"/><xdr:pic><xdr:nvPicPr><xdr:cNvPr id="${pictureId}" name="QTS Reimbursement QR" descr="Q.T.S返金照合QR"/><xdr:cNvPicPr/></xdr:nvPicPr><xdr:blipFill><a:blip r:embed="${relationshipId}"/><a:stretch><a:fillRect/></a:stretch></xdr:blipFill><xdr:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${emu}" cy="${emu}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></xdr:spPr></xdr:pic><xdr:clientData/></xdr:oneCellAnchor>`;
+    }
+
+    function qtsAddQrToWorkbook(ctx, pngBytes, anchors = []) {
+      if (!ctx?.map || !pngBytes?.length || !anchors.length) throw new Error("返金照合QRをExcelへ配置できませんでした。");
+      const drawingName = "xl/drawings/drawing1.xml";
+      const drawingEntry = ctx.map.get(drawingName);
+      const contentEntry = ctx.map.get("[Content_Types].xml");
+      if (!drawingEntry || !contentEntry) throw new Error("精算書テンプレートの描画情報が見つかりません。");
+
+      const relationshipId = "rIdQTSQR";
+      const imageName = "xl/media/qts_reimbursement_qr.png";
+      const relsName = "xl/drawings/_rels/drawing1.xml.rels";
+      const imageRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image";
+
+      let contentXml = ctx.decoder.decode(contentEntry.data);
+      if (!/<Default\b[^>]*Extension="png"/i.test(contentXml)) {
+        contentXml = contentXml.replace(
+          /<Default\b[^>]*Extension="rels"[^>]*\/>/i,
+          match => `<Default Extension="png" ContentType="image/png"/>${match}`
+        );
+      }
+      contentEntry.data = ctx.encoder.encode(contentXml);
+
+      let relsEntry = ctx.map.get(relsName);
+      let relsXml = relsEntry
+        ? ctx.decoder.decode(relsEntry.data)
+        : `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"></Relationships>`;
+      if (!new RegExp(`\\bId="${relationshipId}"`).test(relsXml)) {
+        relsXml = relsXml.replace(
+          "</Relationships>",
+          `<Relationship Id="${relationshipId}" Type="${imageRelationshipType}" Target="../media/qts_reimbursement_qr.png"/></Relationships>`
+        );
+      }
+      qtsUpsertZipEntry(ctx, relsName, ctx.encoder.encode(relsXml));
+      qtsUpsertZipEntry(ctx, imageName, pngBytes);
+
+      let drawingXml = ctx.decoder.decode(drawingEntry.data);
+      if (!/\bxmlns:r=/.test(drawingXml)) {
+        drawingXml = drawingXml.replace(
+          /<xdr:wsDr\b/,
+          `<xdr:wsDr xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"`
+        );
+      }
+      const pictureXml = anchors.map((anchor, index) =>
+        qtsQrPictureAnchorXml({ ...anchor, pictureId:9001 + index, relationshipId })
+      ).join("");
+      drawingXml = drawingXml.replace("</xdr:wsDr>", `${pictureXml}</xdr:wsDr>`);
+      drawingEntry.data = ctx.encoder.encode(drawingXml);
+    }
+
     async function exportNormalExpenseExcel() {
       if (!ensureExpenseExportHasNoUnsavedChanges()) return;
       const entriesToExport=getExpenseExportEntries("normal");
@@ -9873,8 +10303,27 @@
         ["H38","H78","H79"].forEach(ref=>{xml=qtsClearFormulaCache(xml,ref);}); wbxml=qtsForceRecalc(wbxml);
         wbxml=wbxml.replace(/('交通費精算書（PC版）'!\$A\$1:)\$N\$(?:40|79)/,`$1$N$${rows.length>28?79:40}`);
         sheetEntry.data=ctx.encoder.encode(xml); wbEntry.data=ctx.encoder.encode(wbxml);
-        const bytes=qtsZipStore(ctx.entries); qtsDownloadBytes(bytes,`交通費精算書_${year}年${String(month).padStart(2,"0")}月_${qtsStatusSuffix()}.xlsx`);
-        showStatusMessage("交通費精算書Excelを作成しました。", "success");
+
+        const fileName=`交通費精算書_${year}年${String(month).padStart(2,"0")}月_${qtsStatusSuffix()}.xlsx`;
+        const reimbursement=qtsResolveExpenseReimbursementRecord({
+          kind:"normal",
+          entryKeys:entriesToExport.map(entry=>entry.key),
+          amount:entriesToExport.reduce((sum,entry)=>sum+getExpenseTotal(entry.expense||{}),0),
+          referenceDate:monthValue ? `${monthValue}-01` : "",
+          monthValue,
+          fileName
+        });
+        const qrPng=await qtsCreateQrPngBytes(reimbursement.id);
+        qtsAddQrToWorkbook(
+          ctx,
+          qrPng,
+          rows.length>28 ? [{col:4,row:77,sizePx:44}] : [{col:4,row:37,sizePx:52}]
+        );
+
+        const bytes=qtsZipStore(ctx.entries);
+        qtsCommitExpenseReimbursementRecord(reimbursement);
+        qtsDownloadBytes(bytes,fileName);
+        showStatusMessage("交通費精算書Excelを作成しました（返金照合用QR付き）。", "success");
       } catch(error) { console.error(error); alert(`Excel出力に失敗しました。\n${error.message||error}`); }
     }
 
@@ -10171,10 +10620,24 @@
 
         sheetEntry.data = ctx.encoder.encode(xml);
         wbEntry.data = ctx.encoder.encode(wbxml);
-        const bytes = qtsZipStore(ctx.entries);
         const monthFile = /^\d{4}-\d{2}$/.test(monthValue) ? monthValue : (start || "まとめ");
-        qtsDownloadBytes(bytes, `出張旅費精算書_${qtsSafeFileName(monthFile)}_選択${selectedEntries.length}件.xlsx`);
-        showStatusMessage(`選択した出張経費${selectedEntries.length}件を1枚のExcelへまとめました（${exportRows.length}明細・合計${formatExpenseMoney(grandTotal)}円）。`, "success");
+        const fileName = `出張旅費精算書_${qtsSafeFileName(monthFile)}_選択${selectedEntries.length}件.xlsx`;
+        const reimbursement = qtsResolveExpenseReimbursementRecord({
+          kind:"travelBatch",
+          entryKeys:selectedEntries.map(entry=>entry.key),
+          amount:grandTotal,
+          referenceDate:start || (monthValue ? `${monthValue}-01` : ""),
+          startDate:start,
+          endDate:end,
+          monthValue,
+          fileName
+        });
+        const qrPng = await qtsCreateQrPngBytes(reimbursement.id);
+        qtsAddQrToWorkbook(ctx, qrPng, [{col:27,row:33,sizePx:58}]);
+        const bytes = qtsZipStore(ctx.entries);
+        qtsCommitExpenseReimbursementRecord(reimbursement);
+        qtsDownloadBytes(bytes, fileName);
+        showStatusMessage(`選択した出張経費${selectedEntries.length}件を1枚のExcelへまとめました（${exportRows.length}明細・合計${formatExpenseMoney(grandTotal)}円・返金照合用QR付き）。`, "success");
       } catch (error) {
         console.error(error);
         alert(`まとめExcel出力に失敗しました。\n${error.message || error}`);
@@ -10273,9 +10736,27 @@
         xml=qtsSetFormulaCache(xml,"AR36",grandTotal);
 
         wbxml=qtsForceRecalc(wbxml);
-        sheetEntry.data=ctx.encoder.encode(xml); wbEntry.data=ctx.encoder.encode(wbxml); const bytes=qtsZipStore(ctx.entries);
-        qtsDownloadBytes(bytes,`出張旅費精算書_${qtsSafeFileName(start)}_${qtsSafeFileName(expense.destination||entry.title)}.xlsx`);
-        showStatusMessage(`出張旅費精算書Excelを作成しました（交通費${datedLines.length}区間・日当${days}日・宿泊${lodgingNights}泊・業務費${formatExpenseMoney(businessSubtotal)}円）。`, "success");
+        sheetEntry.data=ctx.encoder.encode(xml);
+        wbEntry.data=ctx.encoder.encode(wbxml);
+
+        const fileName=`出張旅費精算書_${qtsSafeFileName(start)}_${qtsSafeFileName(expense.destination||entry.title)}.xlsx`;
+        const reimbursement=qtsResolveExpenseReimbursementRecord({
+          kind:"travel",
+          entryKeys:travelEntries.map(item=>item.key),
+          amount:grandTotal,
+          referenceDate:start,
+          startDate:start,
+          endDate:end,
+          monthValue:String(start||"").slice(0,7),
+          fileName
+        });
+        const qrPng=await qtsCreateQrPngBytes(reimbursement.id);
+        qtsAddQrToWorkbook(ctx,qrPng,[{col:27,row:33,sizePx:58}]);
+
+        const bytes=qtsZipStore(ctx.entries);
+        qtsCommitExpenseReimbursementRecord(reimbursement);
+        qtsDownloadBytes(bytes,fileName);
+        showStatusMessage(`出張旅費精算書Excelを作成しました（交通費${datedLines.length}区間・日当${days}日・宿泊${lodgingNights}泊・業務費${formatExpenseMoney(businessSubtotal)}円・返金照合用QR付き）。`, "success");
       } catch(error) { console.error(error); alert(`Excel出力に失敗しました。
 ${error.message||error}`); }
     }
