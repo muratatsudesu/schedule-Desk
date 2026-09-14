@@ -1,9 +1,9 @@
 /* Q.T.S Scheduler PWA Service Worker
- * Ver.6.8.33.6.40
+ * Ver.6.8.33.6.41
  * 目的: オンライン時は最新版を優先し、オフライン時は最後に保存したQ.T.S本体を起動する。
  */
 
-const QTS_SW_VERSION = "6.8.33.6.40";
+const QTS_SW_VERSION = "6.8.33.6.41";
 const QTS_CACHE_PREFIX = "qts-scheduler-pwa-";
 const QTS_CACHE_NAME = `${QTS_CACHE_PREFIX}${QTS_SW_VERSION}`;
 
